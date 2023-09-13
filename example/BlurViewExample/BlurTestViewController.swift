@@ -49,7 +49,7 @@ class BlurTestViewController : UIViewController {
     let boxView: UIView = {
       let containerView = UIView();
       
-      let bgBlurView = BlurView(blurEffect: UIBlurEffect(style: .dark));
+      let bgBlurView = BlurView(blurEffectStyle: .dark);
       bgBlurView.blurRadius = 0;
     
       
