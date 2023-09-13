@@ -244,6 +244,7 @@ public class BlurView: UIVisualEffectView {
       else { return };
       
       gaussianBlurFilter.setValue(newValue, forKey: "inputRadius");
+      self.setBlurRadius(newValue);
     }
     get {
       guard let gaussianBlurFilter = self.gaussianBlurFilter,
@@ -299,6 +300,9 @@ public class BlurView: UIVisualEffectView {
     }
   };
   
+  // MARK: - Init
+  // ------------
+  
   public init(blurEffectStyle: UIBlurEffect.Style) {
     self.blurEffectStyle = blurEffectStyle;
     let blurEffect = UIBlurEffect(style: blurEffectStyle);
@@ -309,6 +313,133 @@ public class BlurView: UIVisualEffectView {
   
   public required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  };
+  
+  // MARK: - Functions
+  // -----------------
+  
+  func setBlurRadius(_ blurRadius: CGFloat){
+    guard let effectDescriptor = self.effectDescriptorForCurrentEffect
+    else {
+      #if DEBUG
+      print(
+        "BlurView.setBlurRadius",
+        "- failed to get: effectDescriptorForCurrentEffect"
+      );
+      #endif
+      return;
+    };
+    
+    // NSArray<_UIVisualEffectFilterEntry *>
+    let filterEntries = Helpers.performSelector(
+      forObject: effectDescriptor,
+      selector: NSSelectorFromString("filterEntries"),
+      type: NSArray.self
+    );
+    
+    guard let filterEntries = filterEntries,
+          filterEntries.count > 0,
+          let filterEntriesCopy = filterEntries.mutableCopy() as? NSMutableArray
+    else {
+      #if DEBUG
+      print(
+        "BlurView.setBlurRadius",
+        "- selector failed to get value for: filterEntries"
+      );
+      #endif
+      return;
+    };
+    
+    /// `_UIVisualEffectFilterEntry`
+    /// * `filter: String`
+    /// * `parameters: NSDictionary`
+    let filterEntryMatch = filterEntries.enumerated().first {
+      let filterType = Helpers.performSelector(
+        forObject: $0.element as AnyObject,
+        selector:  NSSelectorFromString("filterType"),
+        type: String.self
+      );
+      
+      guard let filterType = filterType else {
+        #if DEBUG
+        print(
+          "BlurView.setBlurRadius",
+          "- selector failed for: \($0.element)",
+          "- unable to get: filterType",
+          "- at index: \($0.offset)"
+        );
+        #endif
+        return false;
+      };
+      
+      return filterType.lowercased().contains("blur");
+    };
+
+    guard let filterEntryMatch = filterEntryMatch else {
+      #if DEBUG
+      print(
+        "BlurView.setBlurRadius",
+        "- unable to get matching filter from: filterEntries"
+      );
+      #endif
+      return;
+    };
+    
+    let (gaussianBlurFilterEntryIndex, gaussianBlurFilterEntry) = filterEntryMatch;
+    
+    let requestedValues = Helpers.performSelector(
+      forObject: gaussianBlurFilterEntry as AnyObject,
+      selector: NSSelectorFromString("requestedValues"),
+      type: NSDictionary.self
+    );
+    
+    guard let requestedValues = requestedValues,
+          requestedValues.count > 0,
+          
+          let requestedValuesCopy =
+            requestedValues.mutableCopy() as? NSMutableDictionary
+    else {
+      #if DEBUG
+      print(
+        "BlurView.setBlurRadius",
+        "- selector failed to get value for: requestedValues"
+      );
+      #endif
+      return;
+    };
+    
+    requestedValuesCopy["inputRadius"] = NSNumber(value: blurRadius);
+    
+    guard let backgroundHostView = self.visualEffectBackgroundHostView,
+          let backdropView = self.visualEffectBackdropView
+    else {
+      #if DEBUG
+      print(
+        "BlurView.setBlurRadius",
+        "- unable to get backgroundHostView and/or backdropView"
+      );
+      #endif
+      return;
+    };
+    
+    Helpers.performSelector(
+      forObject: gaussianBlurFilterEntry as AnyObject,
+      selector: NSSelectorFromString("setRequestedValues:"),
+      withArg1: requestedValuesCopy as NSDictionary
+    );
+    
+    filterEntriesCopy[gaussianBlurFilterEntryIndex] = gaussianBlurFilterEntry;
+    
+    Helpers.performSelector(
+      forObject: backgroundHostView,
+      selector: NSSelectorFromString("setCurrentEffectDescriptor:"),
+      withArg1: effectDescriptor
+    );
+    
+    Helpers.performSelector(
+      forObject: backdropView,
+      selector: NSSelectorFromString("applyRequestedFilterEffects")
+    );
   };
 };
 
