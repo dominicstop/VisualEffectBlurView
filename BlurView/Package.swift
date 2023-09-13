@@ -13,7 +13,7 @@ let package = Package(
     .library(
       name: "BlurView",
       targets: ["BlurView"]
-    ),
+    )
   ],
   dependencies: [
     // Dependencies declare other packages that this package depends on.
@@ -24,6 +24,7 @@ let package = Package(
     // Targets can depend on other targets in this package, and on products in packages this package depends on.
     .target(
       name: "BlurView",
+      path: "Sources",
       linkerSettings: [
 				.linkedFramework("UIKit"),
 			]
