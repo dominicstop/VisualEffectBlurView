@@ -22,7 +22,7 @@ extension UIBlurEffect.Style {
     };
   };
 
-  var defaultBlurRadius: CGFloat? {
+  public var defaultBlurRadius: CGFloat? {
     Self.setDefaultBlurRadiusCacheIfNeeded();
     return Self.defaultBlurRadiusCache[self];
   };

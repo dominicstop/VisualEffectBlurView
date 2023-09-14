@@ -15,9 +15,16 @@ public class VisualEffectBlurView: UIVisualEffectView {
 
   private var initialBlurRadius: CGFloat?;
   
-  public var blurEffectStyle: UIBlurEffect.Style {
+  public var blurEffectStyle: UIBlurEffect.Style? {
     willSet {
+      guard let newValue = newValue else {
+        self.effect = nil;
+        self.initialBlurRadius = nil;
+        return;
+      };
+      
       self.effect = UIBlurEffect(style: newValue);
+      self.initialBlurRadius = self.blurRadius;
     }
   };
   
@@ -274,7 +281,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
   // ---------------------------
   
   public var defaultBlurRadius: CGFloat {
-    if let defaultBlurRadius = self.blurEffectStyle.defaultBlurRadius {
+    if let defaultBlurRadius = self.blurEffectStyle?.defaultBlurRadius {
       return defaultBlurRadius;
     };
     
@@ -301,12 +308,14 @@ public class VisualEffectBlurView: UIVisualEffectView {
   // MARK: - Init
   // ------------
   
-  public init(blurEffectStyle: UIBlurEffect.Style) {
-    self.blurEffectStyle = blurEffectStyle;
-    let blurEffect = UIBlurEffect(style: blurEffectStyle);
+  public init(blurEffectStyle: UIBlurEffect.Style?) {
+    let blurEffect: UIVisualEffect? = {
+      guard let blurEffectStyle = blurEffectStyle else { return nil };
+      return UIBlurEffect(style: blurEffectStyle);
+    }();
     
     super.init(effect: blurEffect);
-    self.initialBlurRadius = self.blurRadius;
+    self.blurEffectStyle = blurEffectStyle;
   };
   
   public required init?(coder: NSCoder) {
