@@ -70,7 +70,7 @@ class VisualEffectBlurTestViewController: UIViewController {
       let bgBlurView = VisualEffectBlurView(blurEffectStyle: .dark);
       self.visualEffectBlurView = bgBlurView;
       
-      bgBlurView.blurRadius = 0;
+      bgBlurView.blurIntensity = 0.5;
     
       bgBlurView.translatesAutoresizingMaskIntoConstraints = false;
       containerView.addSubview(bgBlurView);
@@ -119,6 +119,7 @@ class VisualEffectBlurTestViewController: UIViewController {
       
       slider.minimumValue = 0;
       slider.maximumValue = 50;
+      slider.value = Float(self.visualEffectBlurView!.blurRadius);
       slider.isContinuous = true;
       
       slider.addTarget(
