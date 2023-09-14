@@ -288,20 +288,13 @@ public class VisualEffectBlurView: UIVisualEffectView {
   public var blurIntensity: CGFloat {
     set {
       let defaultBlurRadius = self.defaultBlurRadius;
-      
-      let nextBlurRadius = defaultBlurRadius * newValue;
-      let clampedBlurRadius = max(min(0, nextBlurRadius), 1);
-      
-      self.blurRadius = clampedBlurRadius;
+      self.blurRadius = defaultBlurRadius * newValue;
     }
     get {
       let defaultBlurRadius = self.defaultBlurRadius;
       let currentBlurRadius = self.blurRadius;
       
-      let intensity = currentBlurRadius / defaultBlurRadius;
-      let intensityClamped = max(min(0, intensity), 1);
-      
-      return intensityClamped;
+      return currentBlurRadius / defaultBlurRadius;
     }
   };
   
