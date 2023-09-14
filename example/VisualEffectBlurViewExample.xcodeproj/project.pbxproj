@@ -11,7 +11,7 @@
 		88625F252AB08D530086B4FC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88625F242AB08D530086B4FC /* SceneDelegate.swift */; };
 		88625F2C2AB08D550086B4FC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 88625F2B2AB08D550086B4FC /* Assets.xcassets */; };
 		88625F2F2AB08D550086B4FC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 88625F2D2AB08D550086B4FC /* LaunchScreen.storyboard */; };
-		88625F372AB08E250086B4FC /* BlurTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88625F362AB08E250086B4FC /* BlurTestViewController.swift */; };
+		88625F372AB08E250086B4FC /* VisualEffectBlurTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88625F362AB08E250086B4FC /* VisualEffectBlurTestViewController.swift */; };
 		88651D212AB2CF3B00AA5A92 /* VisualEffectBlurView in Frameworks */ = {isa = PBXBuildFile; productRef = 88651D202AB2CF3B00AA5A92 /* VisualEffectBlurView */; };
 		88FD5E002AB0A31100E89681 /* Transform3D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88FD5DFF2AB0A31100E89681 /* Transform3D.swift */; };
 		88FD5E022AB0A35100E89681 /* Angle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88FD5E012AB0A35100E89681 /* Angle.swift */; };
@@ -24,7 +24,7 @@
 		88625F2B2AB08D550086B4FC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		88625F2E2AB08D550086B4FC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		88625F302AB08D550086B4FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		88625F362AB08E250086B4FC /* BlurTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurTestViewController.swift; sourceTree = "<group>"; };
+		88625F362AB08E250086B4FC /* VisualEffectBlurTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectBlurTestViewController.swift; sourceTree = "<group>"; };
 		88651D222AB2CFB600AA5A92 /* VisualEffectBlurView */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = VisualEffectBlurView; path = ../VisualEffectBlurView; sourceTree = "<group>"; };
 		88FD5DFF2AB0A31100E89681 /* Transform3D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transform3D.swift; sourceTree = "<group>"; };
 		88FD5E012AB0A35100E89681 /* Angle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Angle.swift; sourceTree = "<group>"; };
@@ -46,7 +46,7 @@
 			isa = PBXGroup;
 			children = (
 				88625F382AB08F8D0086B4FC /* Packages */,
-				88625F212AB08D530086B4FC /* BlurViewExample */,
+				88625F212AB08D530086B4FC /* VisualEffectBlurViewExample */,
 				88625F202AB08D530086B4FC /* Products */,
 				88FD5DFC2AB0A27A00E89681 /* Frameworks */,
 			);
@@ -60,11 +60,11 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		88625F212AB08D530086B4FC /* BlurViewExample */ = {
+		88625F212AB08D530086B4FC /* VisualEffectBlurViewExample */ = {
 			isa = PBXGroup;
 			children = (
 				88625F222AB08D530086B4FC /* AppDelegate.swift */,
-				88625F362AB08E250086B4FC /* BlurTestViewController.swift */,
+				88625F362AB08E250086B4FC /* VisualEffectBlurTestViewController.swift */,
 				88625F242AB08D530086B4FC /* SceneDelegate.swift */,
 				88625F2B2AB08D550086B4FC /* Assets.xcassets */,
 				88625F2D2AB08D550086B4FC /* LaunchScreen.storyboard */,
@@ -72,7 +72,7 @@
 				88FD5DFF2AB0A31100E89681 /* Transform3D.swift */,
 				88FD5E012AB0A35100E89681 /* Angle.swift */,
 			);
-			path = BlurViewExample;
+			path = VisualEffectBlurViewExample;
 			sourceTree = "<group>";
 		};
 		88625F382AB08F8D0086B4FC /* Packages */ = {
@@ -166,7 +166,7 @@
 				88625F232AB08D530086B4FC /* AppDelegate.swift in Sources */,
 				88FD5E022AB0A35100E89681 /* Angle.swift in Sources */,
 				88625F252AB08D530086B4FC /* SceneDelegate.swift in Sources */,
-				88625F372AB08E250086B4FC /* BlurTestViewController.swift in Sources */,
+				88625F372AB08E250086B4FC /* VisualEffectBlurTestViewController.swift in Sources */,
 				88FD5E002AB0A31100E89681 /* Transform3D.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -308,7 +308,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ZC7A6XV8GR;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = BlurViewExample/Info.plist;
+				INFOPLIST_FILE = VisualEffectBlurViewExample/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
@@ -336,7 +336,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ZC7A6XV8GR;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = BlurViewExample/Info.plist;
+				INFOPLIST_FILE = VisualEffectBlurViewExample/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarStyle = "";

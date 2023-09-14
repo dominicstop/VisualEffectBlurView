@@ -1,5 +1,5 @@
 //
-//  BlurTestViewController.swift
+//  VisualEffectBlurTestViewController.swift
 //  BlurViewExample
 //
 //  Created by Dominic Go on 9/12/23.
@@ -9,7 +9,7 @@ import UIKit
 import VisualEffectBlurView
 
 
-class BlurTestViewController : UIViewController {
+class VisualEffectBlurTestViewController : UIViewController {
   override func loadView() {
     let view = UIView();
     view.backgroundColor = .white;
