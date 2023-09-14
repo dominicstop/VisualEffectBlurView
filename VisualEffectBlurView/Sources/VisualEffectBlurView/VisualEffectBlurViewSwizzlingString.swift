@@ -1,5 +1,5 @@
 //
-//  BlurViewSwizzlingString.swift
+//  VisualEffectBlurViewSwizzlingString.swift
 //  
 //
 //  Created by Dominic Go on 9/12/23.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum BlurViewSwizzlingString: String {
+enum VisualEffectBlurViewSwizzlingString: String {
   case backgroundHost;
   case contentView;
   case backdropLayer;

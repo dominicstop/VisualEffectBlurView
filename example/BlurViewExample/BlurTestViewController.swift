@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import BlurView
+import VisualEffectBlurView
 
 
 class BlurTestViewController : UIViewController {
@@ -49,7 +49,7 @@ class BlurTestViewController : UIViewController {
     let boxView: UIView = {
       let containerView = UIView();
       
-      let bgBlurView = BlurView(blurEffectStyle: .dark);
+      let bgBlurView = VisualEffectBlurView(blurEffectStyle: .dark);
       bgBlurView.blurRadius = 0;
     
       

@@ -17,7 +17,7 @@ extension UIBlurEffect.Style {
     Self.didSetDefaultBlurRadiusCache = true;
     
     Self.allCases.forEach {
-      let blurView = BlurView(blurEffectStyle: $0);
+      let blurView = VisualEffectBlurView(blurEffectStyle: $0);
       self.defaultBlurRadiusCache[$0] = blurView.blurRadius;
     };
   };

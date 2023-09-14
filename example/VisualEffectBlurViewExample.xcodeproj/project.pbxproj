@@ -12,20 +12,20 @@
 		88625F2C2AB08D550086B4FC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 88625F2B2AB08D550086B4FC /* Assets.xcassets */; };
 		88625F2F2AB08D550086B4FC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 88625F2D2AB08D550086B4FC /* LaunchScreen.storyboard */; };
 		88625F372AB08E250086B4FC /* BlurTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88625F362AB08E250086B4FC /* BlurTestViewController.swift */; };
-		88FD5DFE2AB0A27A00E89681 /* BlurView in Frameworks */ = {isa = PBXBuildFile; productRef = 88FD5DFD2AB0A27A00E89681 /* BlurView */; };
+		88651D212AB2CF3B00AA5A92 /* VisualEffectBlurView in Frameworks */ = {isa = PBXBuildFile; productRef = 88651D202AB2CF3B00AA5A92 /* VisualEffectBlurView */; };
 		88FD5E002AB0A31100E89681 /* Transform3D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88FD5DFF2AB0A31100E89681 /* Transform3D.swift */; };
 		88FD5E022AB0A35100E89681 /* Angle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88FD5E012AB0A35100E89681 /* Angle.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		88625F1F2AB08D530086B4FC /* BlurViewExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlurViewExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		88625F1F2AB08D530086B4FC /* VisualEffectBlurViewExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VisualEffectBlurViewExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		88625F222AB08D530086B4FC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		88625F242AB08D530086B4FC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		88625F2B2AB08D550086B4FC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		88625F2E2AB08D550086B4FC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		88625F302AB08D550086B4FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		88625F362AB08E250086B4FC /* BlurTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurTestViewController.swift; sourceTree = "<group>"; };
-		88625F3A2AB090FE0086B4FC /* BlurView */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = BlurView; path = ../BlurView; sourceTree = "<group>"; };
+		88651D222AB2CFB600AA5A92 /* VisualEffectBlurView */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = VisualEffectBlurView; path = ../VisualEffectBlurView; sourceTree = "<group>"; };
 		88FD5DFF2AB0A31100E89681 /* Transform3D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transform3D.swift; sourceTree = "<group>"; };
 		88FD5E012AB0A35100E89681 /* Angle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Angle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -35,7 +35,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				88FD5DFE2AB0A27A00E89681 /* BlurView in Frameworks */,
+				88651D212AB2CF3B00AA5A92 /* VisualEffectBlurView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -55,7 +55,7 @@
 		88625F202AB08D530086B4FC /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				88625F1F2AB08D530086B4FC /* BlurViewExample.app */,
+				88625F1F2AB08D530086B4FC /* VisualEffectBlurViewExample.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -78,7 +78,7 @@
 		88625F382AB08F8D0086B4FC /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				88625F3A2AB090FE0086B4FC /* BlurView */,
+				88651D222AB2CFB600AA5A92 /* VisualEffectBlurView */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
@@ -93,9 +93,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		88625F1E2AB08D530086B4FC /* BlurViewExample */ = {
+		88625F1E2AB08D530086B4FC /* VisualEffectBlurViewExample */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 88625F332AB08D550086B4FC /* Build configuration list for PBXNativeTarget "BlurViewExample" */;
+			buildConfigurationList = 88625F332AB08D550086B4FC /* Build configuration list for PBXNativeTarget "VisualEffectBlurViewExample" */;
 			buildPhases = (
 				88625F1B2AB08D530086B4FC /* Sources */,
 				88625F1C2AB08D530086B4FC /* Frameworks */,
@@ -105,12 +105,12 @@
 			);
 			dependencies = (
 			);
-			name = BlurViewExample;
+			name = VisualEffectBlurViewExample;
 			packageProductDependencies = (
-				88FD5DFD2AB0A27A00E89681 /* BlurView */,
+				88651D202AB2CF3B00AA5A92 /* VisualEffectBlurView */,
 			);
 			productName = BlurViewExample;
-			productReference = 88625F1F2AB08D530086B4FC /* BlurViewExample.app */;
+			productReference = 88625F1F2AB08D530086B4FC /* VisualEffectBlurViewExample.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -128,7 +128,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 88625F1A2AB08D530086B4FC /* Build configuration list for PBXProject "BlurViewExample" */;
+			buildConfigurationList = 88625F1A2AB08D530086B4FC /* Build configuration list for PBXProject "VisualEffectBlurViewExample" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -141,7 +141,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				88625F1E2AB08D530086B4FC /* BlurViewExample */,
+				88625F1E2AB08D530086B4FC /* VisualEffectBlurViewExample */,
 			);
 		};
 /* End PBXProject section */
@@ -358,7 +358,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		88625F1A2AB08D530086B4FC /* Build configuration list for PBXProject "BlurViewExample" */ = {
+		88625F1A2AB08D530086B4FC /* Build configuration list for PBXProject "VisualEffectBlurViewExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				88625F312AB08D550086B4FC /* Debug */,
@@ -367,7 +367,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		88625F332AB08D550086B4FC /* Build configuration list for PBXNativeTarget "BlurViewExample" */ = {
+		88625F332AB08D550086B4FC /* Build configuration list for PBXNativeTarget "VisualEffectBlurViewExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				88625F342AB08D550086B4FC /* Debug */,
@@ -379,9 +379,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		88FD5DFD2AB0A27A00E89681 /* BlurView */ = {
+		88651D202AB2CF3B00AA5A92 /* VisualEffectBlurView */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = BlurView;
+			productName = VisualEffectBlurView;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

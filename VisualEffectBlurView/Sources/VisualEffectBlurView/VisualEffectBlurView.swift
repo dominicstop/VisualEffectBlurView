@@ -1,5 +1,5 @@
 //
-//  BlurView.swift
+//  VisualEffectBlurView.swift
 //
 //
 //  Created by Dominic Go on 9/12/23.
@@ -8,7 +8,7 @@
 import UIKit
 
 
-public class BlurView: UIVisualEffectView {
+public class VisualEffectBlurView: UIVisualEffectView {
 
   // MARK: - Properties
   // ------------------
@@ -26,7 +26,7 @@ public class BlurView: UIVisualEffectView {
       return _visualEffectHostView;
     };
   
-    let swizzlingString: BlurViewSwizzlingString = .backgroundHost;
+    let swizzlingString: VisualEffectBlurViewSwizzlingString = .backgroundHost;
     guard let decodedString = swizzlingString.decodedString else {
       #if DEBUG
       print(
@@ -63,7 +63,7 @@ public class BlurView: UIVisualEffectView {
       return _visualEffectBackdropView;
     };
   
-    let swizzlingString: BlurViewSwizzlingString = .contentView;
+    let swizzlingString: VisualEffectBlurViewSwizzlingString = .contentView;
     guard let decodedString = swizzlingString.decodedString else {
       #if DEBUG
       print(
@@ -104,7 +104,7 @@ public class BlurView: UIVisualEffectView {
       return _visualEffectBackdropLayer;
     };
   
-    let swizzlingString: BlurViewSwizzlingString = .backdropLayer;
+    let swizzlingString: VisualEffectBlurViewSwizzlingString = .backdropLayer;
     guard let decodedString = swizzlingString.decodedString else {
       #if DEBUG
       print(
@@ -202,7 +202,7 @@ public class BlurView: UIVisualEffectView {
   /// * `overlays: [_UIOverlayEffectViewEntry]`
   ///
   var effectDescriptorForCurrentEffect: AnyObject? {
-    let swizzlingString: BlurViewSwizzlingString = .effectDescriptorForEffectsUsage;
+    let swizzlingString: VisualEffectBlurViewSwizzlingString = .effectDescriptorForEffectsUsage;
     guard let decodedString = swizzlingString.decodedString else {
       #if DEBUG
       print(
