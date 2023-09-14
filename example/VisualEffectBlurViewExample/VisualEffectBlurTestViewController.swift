@@ -1,15 +1,28 @@
 //
 //  VisualEffectBlurTestViewController.swift
-//  BlurViewExample
+//  VisualEffectBlurViewExample
 //
-//  Created by Dominic Go on 9/12/23.
+//  Created by Dominic Go on 9/14/23.
 //
 
 import UIKit
 import VisualEffectBlurView
 
+class VisualEffectBlurTestViewController: UIViewController {
 
-class VisualEffectBlurTestViewController : UIViewController {
+  weak var visualEffectBlurView: VisualEffectBlurView?;
+  weak var blurRadiusSlider: UISlider?;
+  weak var blurRadiusLabel: UILabel?;
+  
+  var blurEffectStyleCounter = 0;
+  
+  var currentBlurEffectStyle: UIBlurEffect.Style {
+    let index = blurEffectStyleCounter % UIBlurEffect.Style.allCases.count;
+    return UIBlurEffect.Style.allCases[index];
+  };
+  
+  var isBlurViewTransformed = false;
+
   override func loadView() {
     let view = UIView();
     view.backgroundColor = .white;
@@ -18,14 +31,19 @@ class VisualEffectBlurTestViewController : UIViewController {
   };
   
   override func viewDidLoad() {
-    let bgView = UILabel();
-    bgView.text = "🖼️\n🌆\n🌄";
-    bgView.font = .systemFont(ofSize: 100);
-    
-    bgView.numberOfLines = 0
-    bgView.lineBreakMode = .byWordWrapping;
-    bgView.sizeToFit();
-    
+  
+    let bgView: UIView = {
+      let label = UILabel();
+      label.text = "🖼️\n🌆\n🌄";
+      label.font = .systemFont(ofSize: 128);
+      
+      label.numberOfLines = 0
+      label.lineBreakMode = .byWordWrapping;
+      label.sizeToFit();
+      
+      return label;
+    }();
+  
     bgView.translatesAutoresizingMaskIntoConstraints = false;
     self.view.addSubview(bgView);
     
@@ -46,13 +64,14 @@ class VisualEffectBlurTestViewController : UIViewController {
       ),
     ]);
     
-    let boxView: UIView = {
+    let blurContainerView: UIView = {
       let containerView = UIView();
       
       let bgBlurView = VisualEffectBlurView(blurEffectStyle: .dark);
+      self.visualEffectBlurView = bgBlurView;
+      
       bgBlurView.blurRadius = 0;
     
-      
       bgBlurView.translatesAutoresizingMaskIntoConstraints = false;
       containerView.addSubview(bgBlurView);
       
@@ -76,56 +95,211 @@ class VisualEffectBlurTestViewController : UIViewController {
       return containerView;
     }();
  
-    boxView.translatesAutoresizingMaskIntoConstraints = false;
-    self.view.addSubview(boxView);
-    
-    let heightConstraint = boxView.heightAnchor.constraint(equalToConstant: 300);
+    blurContainerView.translatesAutoresizingMaskIntoConstraints = false;
+    self.view.addSubview(blurContainerView);
     
     NSLayoutConstraint.activate([
-      heightConstraint,
-      boxView.widthAnchor.constraint(equalToConstant: 200),
-      
-      boxView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-      boxView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
+      blurContainerView.topAnchor.constraint(
+        equalTo: self.view.topAnchor
+      ),
+      blurContainerView.bottomAnchor.constraint(
+        equalTo: self.view.bottomAnchor
+      ),
+      blurContainerView.leadingAnchor.constraint(
+        equalTo: self.view.leadingAnchor
+      ),
+      blurContainerView.trailingAnchor.constraint(
+        equalTo: self.view.trailingAnchor
+      ),
     ]);
     
-    let transform3d = Transform3D(
-      translateX: 0,
-      translateY: 0,
-      translateZ: 0,
-      scaleX: 1,
-      scaleY: 1,
-      rotateX: .degrees(0),
-      rotateY: .degrees(45),
-      rotateZ: .degrees(0),
-      perspective: 1/1000,
-      skewX: 0,
-      skewY: 0
-    );
+    let blurSliderControl: UISlider = {
+      let slider = UISlider();
+      self.blurRadiusSlider = slider;
+      
+      slider.minimumValue = 0;
+      slider.maximumValue = 50;
+      slider.isContinuous = true;
+      
+      slider.addTarget(
+        self,
+        action: #selector(self.onBlurSliderValueChanged(_:)),
+        for: .valueChanged
+      );
+      
+      return slider;
+    }();
     
-    let nextTransform3d = Transform3D(
-      translateX: 100,
-      translateY: 0,
-      translateZ: 0,
-      scaleX: 1,
-      scaleY: 1,
-      rotateX: .degrees(0),
-      rotateY: .degrees(15),
-      rotateZ: .degrees(0),
-      perspective: 1/1000,
-      skewX: 0,
-      skewY: 0
-    );
+    let nextBlurEffectButton: UIButton = {
+      let button = UIButton();
+      
+      button.setTitle("Next Effect", for: .normal);
+      button.configuration = .filled();
+      
+      button.addTarget(
+        self,
+        action: #selector(self.onPressButtonNextEffect(_:)),
+        for: .touchUpInside
+      );
+      
+      return button;
+    }();
     
-    boxView.layer.transform = transform3d.transform;
+    let controlStack: UIStackView = {
+      let stack = UIStackView();
+      
+      stack.axis = .vertical;
+      stack.distribution = .equalSpacing;
+      stack.alignment = .fill;
+      stack.spacing = 20;
+      
+      stack.addArrangedSubview(blurSliderControl);
+      stack.addArrangedSubview(nextBlurEffectButton);
     
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-      UIView.animate(withDuration: 3) {
-        heightConstraint.constant = 500;
-        boxView.layer.transform = nextTransform3d.transform;
-        boxView.updateConstraints();
-        boxView.layoutIfNeeded();
+      return stack;
+    }();
+    
+    controlStack.translatesAutoresizingMaskIntoConstraints = false;
+    self.view.addSubview(controlStack);
+    
+    NSLayoutConstraint.activate([
+      controlStack.bottomAnchor.constraint(
+        equalTo: self.view.safeAreaLayoutGuide.bottomAnchor,
+        constant: -20
+      ),
+      controlStack.leadingAnchor.constraint(
+        equalTo: self.view.safeAreaLayoutGuide.leadingAnchor,
+        constant: 20
+      ),
+      controlStack.trailingAnchor.constraint(
+        equalTo: self.view.safeAreaLayoutGuide.trailingAnchor,
+        constant: -20
+      ),
+    ]);
+    
+    let blurRadiusLabel: UIView = {
+      let containerView = UIView();
+      containerView.backgroundColor = UIColor(
+        red: 0/255,
+        green: 0/255,
+        blue: 0/255,
+        alpha: 0.4
+      );
+      
+      containerView.layer.cornerRadius = 15;
+      
+      let initialBlurRadius = self.visualEffectBlurView?.blurRadius ?? 0;
+    
+      let label = UILabel();
+      self.blurRadiusLabel = label;
+      
+      label.text = "\(initialBlurRadius)";
+      label.font = .boldSystemFont(ofSize: 32);
+      
+      label.textColor = UIColor(
+        red: 255/255,
+        green: 255/255,
+        blue: 255/255,
+        alpha: 0.8
+      );
+      
+      label.translatesAutoresizingMaskIntoConstraints = false;
+      containerView.addSubview(label);
+      
+      NSLayoutConstraint.activate([
+        label.centerXAnchor.constraint(
+          equalTo: containerView.centerXAnchor
+        ),
+        label.centerYAnchor.constraint(
+          equalTo: containerView.centerYAnchor
+        ),
+      ]);
+      
+      let tapGesture = UITapGestureRecognizer(
+        target: self,
+        action: #selector(Self.onPressBlurRadiusLabel(_:))
+      );
+      
+      containerView.addGestureRecognizer(tapGesture);
+
+      return containerView;
+    }();
+    
+    blurRadiusLabel.translatesAutoresizingMaskIntoConstraints = false;
+    self.view.addSubview(blurRadiusLabel);
+    
+    NSLayoutConstraint.activate([
+      blurRadiusLabel.heightAnchor.constraint(
+        equalToConstant: 125
+      ),
+      blurRadiusLabel.widthAnchor.constraint(
+        equalToConstant: 125
+      ),
+      blurRadiusLabel.centerXAnchor.constraint(
+        equalTo: self.view.centerXAnchor
+      ),
+      
+      blurRadiusLabel.centerYAnchor.constraint(
+        equalTo: self.view.centerYAnchor
+      ),
+    ]);
+  };
+  
+    
+  @objc func onPressBlurRadiusLabel(_ sender: UILabel!){
+    guard let visualEffectBlurView = self.visualEffectBlurView else { return };
+    
+    self.isBlurViewTransformed.toggle();
+    
+    let nextTransform: Transform3D = {
+      if isBlurViewTransformed {
+        return .default;
       };
+      
+      return Transform3D(
+        translateX: 0,
+        translateY: 0,
+        translateZ: 0,
+        scaleX: 0.75,
+        scaleY: 0.75,
+        rotateX: .degrees(15),
+        rotateY: .degrees(30),
+        rotateZ: .degrees(7),
+        perspective: 1/1000,
+        skewX: 0,
+        skewY: 0
+      );
+    }();
+    
+    UIView.animate(withDuration: 3) {
+      visualEffectBlurView.layer.transform = nextTransform.transform;
     };
+  };
+  
+  @objc func onBlurSliderValueChanged(_ sender: UISlider!){
+    guard let visualEffectBlurView = self.visualEffectBlurView,
+          let blurRadiusLabel = self.blurRadiusLabel
+    else { return };
+    
+    let sliderValue = CGFloat(floor(sender.value));
+    
+    visualEffectBlurView.blurRadius = sliderValue;
+    blurRadiusLabel.text = "\(sliderValue)";
+  };
+  
+  @objc func onPressButtonNextEffect(_ sender: UIButton){
+    self.blurEffectStyleCounter += 1;
+    
+    guard let visualEffectBlurView = self.visualEffectBlurView,
+          let blurRadiusLabel = self.blurRadiusLabel,
+          let blurRadiusSlider = self.blurRadiusSlider
+    else { return };
+    
+    let blurEffect = UIBlurEffect(style: self.currentBlurEffectStyle);
+    visualEffectBlurView.effect = blurEffect;
+    
+    let currentBlurRadius = floor(visualEffectBlurView.blurRadius);
+    blurRadiusLabel.text = "\(currentBlurRadius)";
+    blurRadiusSlider.value = Float(currentBlurRadius);
   };
 };
