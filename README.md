@@ -6,7 +6,9 @@ A subclass of `UIVisualEffectView` that lets you set a custom blur radius + inte
 
 ## Demo Gifs
 
-TBA
+[`VisualEffectBlurTestViewController.swift`](./example/Examples/VisualEffectBlurTestViewController.swift)
+
+![VisualEffectBlurTestViewController](./assets/VisualEffectBlurTestViewController.gif)
 
 <br><br>
 
