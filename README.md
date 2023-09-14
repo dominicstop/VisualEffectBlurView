@@ -41,7 +41,7 @@ pod 'VisualEffectBlurView'
 ```swift
 dependencies: [
   .package(url: "https://github.com/dominicstop/VisualEffectBlurView.git",
-  .upToNextMajor(from: "1.0.0"))
+  .upToNextMajor(from: "0.1.0"))
 ]
 ```
 
