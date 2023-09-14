@@ -11,6 +11,7 @@ enum Route: CaseIterable {
 
   case visualEffectBlurTest;
   case basicUsage01;
+  case SwiftUIBasicUsage01;
 
   var viewController: UIViewController {
     switch self {
@@ -19,6 +20,9 @@ enum Route: CaseIterable {
         
       case .basicUsage01:
         return BasicUsage01();
+        
+      case .SwiftUIBasicUsage01:
+        return SwiftUIBasicUsage01ViewController();
     };
   };
 };
@@ -31,6 +35,7 @@ class RouteManager {
   var routes: [Route] = [
     .visualEffectBlurTest,
     .basicUsage01,
+    .SwiftUIBasicUsage01,
   ];
   
   var routeCounter = 0;
