@@ -47,9 +47,9 @@ dependencies: [
 
 <br><br>
 
-## Basic Usage
+## Basic Usage - UIKit
 
-[🔗 Full Example](./example/Examples/BasicUsage01.swift.swift)
+[🔗 Full Example](./example/Examples/BasicUsage01.swift)
 
 ```swift
 // ✨ Code omitted for brevity
@@ -87,6 +87,37 @@ class BasicUsage01: UIViewController {
 ```
 
 <br><br>
+
+## Basic Usage - SwiftUI
+
+[🔗 Full Example](./example/Examples/VisualEffectBlurTestViewController.swift)
+
+```swift
+import SwiftUI
+import VisualEffectBlurView
+
+struct SwiftUIBasicUsage01: View {
+
+  var body: some View {
+    Text("🖼️\n🌆\n🌄")
+      .font(.system(size: 128))
+      .frame(
+        maxWidth: .infinity,
+        maxHeight: .infinity
+      )
+      .overlay(self.overlay, alignment: .center)
+  }
+  
+  var overlay: some View {
+    VisualEffectBlur(
+      blurEffectStyle: .constant(.regular),
+      blurRadius: .constant(nil)
+    )
+  };
+}
+```
+
+
 
 ## Documentation
 
