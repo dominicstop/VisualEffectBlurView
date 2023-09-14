@@ -14,7 +14,12 @@ public class VisualEffectBlurView: UIVisualEffectView {
   // ------------------
 
   private var initialBlurRadius: CGFloat?;
-  public var blurEffectStyle: UIBlurEffect.Style;
+  
+  public var blurEffectStyle: UIBlurEffect.Style {
+    willSet {
+      self.effect = UIBlurEffect(style: newValue);
+    }
+  };
   
   // MARK: - Properties - Private API
   // --------------------------------
