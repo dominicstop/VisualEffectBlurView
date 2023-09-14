@@ -8,14 +8,17 @@
 import UIKit
 
 enum Route: CaseIterable {
-  static let rootRoute: Self = .visualEffectBlurTest;
 
   case visualEffectBlurTest;
+  case basicUsage01;
 
   var viewController: UIViewController {
     switch self {
       case .visualEffectBlurTest:
         return VisualEffectBlurTestViewController();
+        
+      case .basicUsage01:
+        return BasicUsage01();
     };
   };
 };
@@ -27,6 +30,7 @@ class RouteManager {
   
   var routes: [Route] = [
     .visualEffectBlurTest,
+    .basicUsage01,
   ];
   
   var routeCounter = 0;

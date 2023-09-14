@@ -14,6 +14,7 @@
 		88651D212AB2CF3B00AA5A92 /* VisualEffectBlurView in Frameworks */ = {isa = PBXBuildFile; productRef = 88651D202AB2CF3B00AA5A92 /* VisualEffectBlurView */; };
 		88F123622AB2D5DD00DEB121 /* VisualEffectBlurTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F123612AB2D5DD00DEB121 /* VisualEffectBlurTestViewController.swift */; };
 		88F123732AB2EE6600DEB121 /* Routes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F123722AB2EE6600DEB121 /* Routes.swift */; };
+		88F123782AB2FDC200DEB121 /* BasicUsage01.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F123772AB2FDC200DEB121 /* BasicUsage01.swift.swift */; };
 		88FD5E002AB0A31100E89681 /* Transform3D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88FD5DFF2AB0A31100E89681 /* Transform3D.swift */; };
 		88FD5E022AB0A35100E89681 /* Angle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88FD5E012AB0A35100E89681 /* Angle.swift */; };
 /* End PBXBuildFile section */
@@ -28,6 +29,7 @@
 		88651D222AB2CFB600AA5A92 /* VisualEffectBlurView */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = VisualEffectBlurView; path = ../VisualEffectBlurView; sourceTree = "<group>"; };
 		88F123612AB2D5DD00DEB121 /* VisualEffectBlurTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectBlurTestViewController.swift; sourceTree = "<group>"; };
 		88F123722AB2EE6600DEB121 /* Routes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Routes.swift; sourceTree = "<group>"; };
+		88F123772AB2FDC200DEB121 /* BasicUsage01.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicUsage01.swift.swift; sourceTree = "<group>"; };
 		88FD5DFF2AB0A31100E89681 /* Transform3D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transform3D.swift; sourceTree = "<group>"; };
 		88FD5E012AB0A35100E89681 /* Angle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Angle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -89,6 +91,7 @@
 			children = (
 				88F123722AB2EE6600DEB121 /* Routes.swift */,
 				88F123612AB2D5DD00DEB121 /* VisualEffectBlurTestViewController.swift */,
+				88F123772AB2FDC200DEB121 /* BasicUsage01.swift.swift */,
 			);
 			path = Examples;
 			sourceTree = "<group>";
@@ -182,6 +185,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				88F123782AB2FDC200DEB121 /* BasicUsage01.swift.swift in Sources */,
 				88F123622AB2D5DD00DEB121 /* VisualEffectBlurTestViewController.swift in Sources */,
 				88F123732AB2EE6600DEB121 /* Routes.swift in Sources */,
 				88625F232AB08D530086B4FC /* AppDelegate.swift in Sources */,
