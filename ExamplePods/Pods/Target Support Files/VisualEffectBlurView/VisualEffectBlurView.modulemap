@@ -1,0 +1,6 @@
+framework module VisualEffectBlurView {
+  umbrella header "VisualEffectBlurView-umbrella.h"
+
+  export *
+  module * { export * }
+}

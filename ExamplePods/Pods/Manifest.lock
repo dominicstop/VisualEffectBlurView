@@ -1,0 +1,16 @@
+PODS:
+  - VisualEffectBlurView (0.1.0)
+
+DEPENDENCIES:
+  - VisualEffectBlurView (from `../`)
+
+EXTERNAL SOURCES:
+  VisualEffectBlurView:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  VisualEffectBlurView: 305fa97376fd219afc5899cb79d19799318b593c
+
+PODFILE CHECKSUM: 332cb291b5cf7cc5ceadc0c699ed7a9008f34dbf
+
+COCOAPODS: 1.12.0
