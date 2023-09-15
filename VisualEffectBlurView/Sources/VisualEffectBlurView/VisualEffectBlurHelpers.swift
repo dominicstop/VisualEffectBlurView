@@ -1,13 +1,13 @@
 //
-//  Helpers.swift
+//  VisualEffectBlurHelpers.swift
 //  
 //
 //  Created by Dominic Go on 9/12/23.
 //
 
-import Foundation
+import UIKit
 
-class Helpers {
+public class VisualEffectBlurHelpers {
 
   static func decodeString(_ encodedString: String) -> String? {
     guard let data = Data(base64Encoded: encodedString),

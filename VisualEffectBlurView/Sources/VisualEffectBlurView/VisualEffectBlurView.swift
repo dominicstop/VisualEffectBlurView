@@ -49,7 +49,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
       return nil;
     };
     
-    let selectorResult = Helpers.performSelector(
+    let selectorResult = VisualEffectBlurHelpers.performSelector(
       forObject: self,
       selector: NSSelectorFromString(decodedString)
     );
@@ -89,7 +89,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
     guard let visualEffectHostView = self.visualEffectBackgroundHostView
     else { return nil };
     
-    let selectorResult = Helpers.performSelector(
+    let selectorResult = VisualEffectBlurHelpers.performSelector(
       forObject: visualEffectHostView,
       selector: NSSelectorFromString(decodedString),
       type: UIView.self
@@ -130,7 +130,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
     guard let visualEffectBackdropView = self.visualEffectBackdropView
     else { return nil };
     
-    let selectorResult = Helpers.performSelector(
+    let selectorResult = VisualEffectBlurHelpers.performSelector(
       forObject: visualEffectBackdropView,
       selector: NSSelectorFromString(decodedString),
       type: CALayer.self
@@ -174,7 +174,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
     };
     
     let match = filters.first {
-      let filterType = Helpers.performSelector(
+      let filterType = VisualEffectBlurHelpers.performSelector(
         forObject: $0,
         selector:  NSSelectorFromString("type"),
         type: String.self
@@ -227,7 +227,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
     
     guard let effect = self.effect else { return nil };
     
-    let selectorResult = Helpers.performSelector(
+    let selectorResult = VisualEffectBlurHelpers.performSelector(
       forObject: self,
       selector: NSSelectorFromString(decodedString),
       withArg1: [effect],
@@ -338,7 +338,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
     };
     
     // NSArray<_UIVisualEffectFilterEntry *>
-    let filterEntries = Helpers.performSelector(
+    let filterEntries = VisualEffectBlurHelpers.performSelector(
       forObject: effectDescriptor,
       selector: NSSelectorFromString("filterEntries"),
       type: NSArray.self
@@ -361,7 +361,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
     /// * `filter: String`
     /// * `parameters: NSDictionary`
     let filterEntryMatch = filterEntries.enumerated().first {
-      let filterType = Helpers.performSelector(
+      let filterType = VisualEffectBlurHelpers.performSelector(
         forObject: $0.element as AnyObject,
         selector:  NSSelectorFromString("filterType"),
         type: String.self
@@ -394,7 +394,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
     
     let (gaussianBlurFilterEntryIndex, gaussianBlurFilterEntry) = filterEntryMatch;
     
-    let requestedValues = Helpers.performSelector(
+    let requestedValues = VisualEffectBlurHelpers.performSelector(
       forObject: gaussianBlurFilterEntry as AnyObject,
       selector: NSSelectorFromString("requestedValues"),
       type: NSDictionary.self
@@ -429,7 +429,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
       return;
     };
     
-    Helpers.performSelector(
+    VisualEffectBlurHelpers.performSelector(
       forObject: gaussianBlurFilterEntry as AnyObject,
       selector: NSSelectorFromString("setRequestedValues:"),
       withArg1: requestedValuesCopy as NSDictionary
@@ -437,13 +437,13 @@ public class VisualEffectBlurView: UIVisualEffectView {
     
     filterEntriesCopy[gaussianBlurFilterEntryIndex] = gaussianBlurFilterEntry;
     
-    Helpers.performSelector(
+    VisualEffectBlurHelpers.performSelector(
       forObject: backgroundHostView,
       selector: NSSelectorFromString("setCurrentEffectDescriptor:"),
       withArg1: effectDescriptor
     );
     
-    Helpers.performSelector(
+    VisualEffectBlurHelpers.performSelector(
       forObject: backdropView,
       selector: NSSelectorFromString("applyRequestedFilterEffects")
     );

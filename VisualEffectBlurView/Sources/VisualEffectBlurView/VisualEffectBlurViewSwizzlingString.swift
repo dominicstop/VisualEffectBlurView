@@ -5,7 +5,6 @@
 //  Created by Dominic Go on 9/12/23.
 //
 
-import Foundation
 
 enum VisualEffectBlurViewSwizzlingString: String {
   case backgroundHost;
@@ -36,7 +35,7 @@ enum VisualEffectBlurViewSwizzlingString: String {
   var decodedString: String? {
     let encodedString = self.encodedString;
     
-    guard let decodedString = Helpers.decodeString(encodedString) else {
+    guard let decodedString = VisualEffectBlurHelpers.decodeString(encodedString) else {
       #if DEBUG
       print(
         "BlurViewSwizzlingString.decodedString",
