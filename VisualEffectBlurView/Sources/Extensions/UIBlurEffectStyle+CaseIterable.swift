@@ -16,6 +16,9 @@ extension UIBlurEffect.Style: CaseIterable {
       blurEffects += [
         .regular,
         .prominent,
+        .extraLight,
+        .light,
+        .dark,
       ];
     };
     
