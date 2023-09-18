@@ -37,28 +37,17 @@ public class VisualEffectBlurView: UIVisualEffectView {
     if let _visualEffectHostView = self._visualEffectBackgroundHostView {
       return _visualEffectHostView;
     };
-  
-    let swizzlingString: VisualEffectBlurViewSwizzlingString = .backgroundHost;
-    guard let decodedString = swizzlingString.decodedString else {
-      #if DEBUG
-      print(
-        "BlurView.visualEffectHostView - get",
-        "- failed to decode string for: \(swizzlingString)"
-      );
-      #endif
-      return nil;
-    };
-    
+
     let selectorResult = VisualEffectBlurHelpers.performSelector(
       forObject: self,
-      selector: NSSelectorFromString(decodedString)
+      selector: NSSelectorFromString("_backgroundHost")
     );
     
     guard let selectorResult = selectorResult else {
       #if DEBUG
       print(
         "BlurView.visualEffectHostView - get",
-        "- selector failed to get value from: \(decodedString)"
+        "- selector failed to get value"
       );
       #endif
       return nil;
@@ -74,24 +63,13 @@ public class VisualEffectBlurView: UIVisualEffectView {
     if let _visualEffectBackdropView = self._visualEffectBackdropView {
       return _visualEffectBackdropView;
     };
-  
-    let swizzlingString: VisualEffectBlurViewSwizzlingString = .contentView;
-    guard let decodedString = swizzlingString.decodedString else {
-      #if DEBUG
-      print(
-        "BlurView.visualEffectBackdropView - get",
-        "- failed to decode string for: \(swizzlingString)"
-      );
-      #endif
-      return nil;
-    };
     
     guard let visualEffectHostView = self.visualEffectBackgroundHostView
     else { return nil };
     
     let selectorResult = VisualEffectBlurHelpers.performSelector(
       forObject: visualEffectHostView,
-      selector: NSSelectorFromString(decodedString),
+      selector: NSSelectorFromString("contentView"),
       type: UIView.self
     );
     
@@ -99,7 +77,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
       #if DEBUG
       print(
         "BlurView.visualEffectBackdropView - get",
-        "- selector failed to get value from: \(decodedString)"
+        "- selector failed to get value"
       );
       #endif
       return nil;
@@ -115,24 +93,13 @@ public class VisualEffectBlurView: UIVisualEffectView {
     if let _visualEffectBackdropLayer = self._visualEffectBackdropLayer {
       return _visualEffectBackdropLayer;
     };
-  
-    let swizzlingString: VisualEffectBlurViewSwizzlingString = .backdropLayer;
-    guard let decodedString = swizzlingString.decodedString else {
-      #if DEBUG
-      print(
-        "BlurView.visualEffectBackdropLayer - get",
-        "- failed to decode string for: \(swizzlingString)"
-      );
-      #endif
-      return nil;
-    };
     
     guard let visualEffectBackdropView = self.visualEffectBackdropView
     else { return nil };
     
     let selectorResult = VisualEffectBlurHelpers.performSelector(
       forObject: visualEffectBackdropView,
-      selector: NSSelectorFromString(decodedString),
+      selector: NSSelectorFromString("backdropLayer"),
       type: CALayer.self
     );
     
@@ -214,22 +181,11 @@ public class VisualEffectBlurView: UIVisualEffectView {
   /// * `overlays: [_UIOverlayEffectViewEntry]`
   ///
   var effectDescriptorForCurrentEffect: AnyObject? {
-    let swizzlingString: VisualEffectBlurViewSwizzlingString = .effectDescriptorForEffectsUsage;
-    guard let decodedString = swizzlingString.decodedString else {
-      #if DEBUG
-      print(
-        "BlurView.effectDescriptorForCurrentEffect - get",
-        "- failed to decode string for: \(swizzlingString)"
-      );
-      #endif
-      return nil;
-    };
-    
     guard let effect = self.effect else { return nil };
     
     let selectorResult = VisualEffectBlurHelpers.performSelector(
       forObject: self,
-      selector: NSSelectorFromString(decodedString),
+      selector: NSSelectorFromString("_effectDescriptorForEffects:usage:"),
       withArg1: [effect],
       withArg2: 1
     );
@@ -238,7 +194,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
       #if DEBUG
       print(
         "BlurView.effectDescriptorForCurrentEffect - get",
-        "- selector failed to get value from: \(decodedString)"
+        "- selector failed to get value"
       );
       #endif
       return nil;
