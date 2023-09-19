@@ -8,16 +8,6 @@
 import UIKit
 
 public class VisualEffectBlurHelpers {
-
-  static func decodeString(_ encodedString: String) -> String? {
-    guard let data = Data(base64Encoded: encodedString),
-          let string = String(data: data, encoding: .utf8)
-    else {
-      return nil;
-    };
-    
-    return string;
-  };
   
   @discardableResult
   static func performSelector<T>(
@@ -52,5 +42,38 @@ public class VisualEffectBlurHelpers {
       : selectorResult.takeUnretainedValue();
       
     return rawValue as? T;
+  };
+  
+  @discardableResult
+  static func performSelector<T>(
+    forObject object: AnyObject,
+    hashedString: any HashedStringDecodable,
+    withArg1 arg1: Any? = nil,
+    withArg2 arg2: Any? = nil,
+    type: T.Type = AnyObject,
+    shouldRetainValue: Bool = false
+  ) -> T? {
+  
+    guard let decodedString = hashedString.decodedString else {
+      #if DEBUG
+      print(
+        "VisualEffectBlurHelpers.performSelector",
+        "- failed to decode string w/ rawValue:", hashedString.rawValue,
+        "- encodedString:", hashedString.encodedString
+      );
+      #endif
+      return nil;
+    };
+    
+    let selector = NSSelectorFromString(decodedString);
+    
+    return Self.performSelector(
+      forObject: object,
+      selector: selector,
+      withArg1: arg1,
+      withArg2: arg2,
+      type: type,
+      shouldRetainValue: shouldRetainValue
+    );
   };
 };
