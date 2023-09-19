@@ -42,7 +42,7 @@ extension HashedStringDecodable {
       return nil;
     };
     
-    decodedStringCache[encodedString] = encodedString;
+    decodedStringCache[encodedString] = decodedString;
     return decodedString;
   };
 };
