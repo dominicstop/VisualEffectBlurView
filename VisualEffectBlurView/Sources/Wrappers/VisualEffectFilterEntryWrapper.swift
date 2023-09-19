@@ -10,6 +10,29 @@ import Foundation
 // Wrapper for: _UIVisualEffectFilterEntry
 class VisualEffectFilterEntryWrapper: ObjectWrapping {
 
+  fileprivate enum EncodedString: String, HashedStringDecodable {
+    case filterType;
+    case requestedValues;
+    case setRequestedValues;
+    
+    var encodedString: String {
+      switch self {
+        case .filterType:
+          // filterType
+          return "ZmlsdGVyVHlwZQ==";
+          
+        case .requestedValues:
+          // requestedValues
+          return "cmVxdWVzdGVkVmFsdWVz";
+          
+        case .setRequestedValues:
+          // setRequestedValues:
+          return "c2V0UmVxdWVzdGVkVmFsdWVzOg==";
+      };
+    };
+  };
+
+
   var objectWrapper: ObjectWrapper<AnyObject>;
   
   var filterType: String? {
@@ -17,7 +40,7 @@ class VisualEffectFilterEntryWrapper: ObjectWrapping {
   
     let filterType = VisualEffectBlurHelpers.performSelector(
       forObject: filterEntry,
-      selector:  NSSelectorFromString("filterType"),
+      selectorFromHashedString: EncodedString.filterType,
       type: String.self
     );
     
@@ -38,7 +61,7 @@ class VisualEffectFilterEntryWrapper: ObjectWrapping {
     
     return VisualEffectBlurHelpers.performSelector(
       forObject: filterEntry,
-      selector: NSSelectorFromString("requestedValues"),
+      selectorFromHashedString: EncodedString.requestedValues,
       type: NSDictionary.self
     );
   };
@@ -66,7 +89,7 @@ class VisualEffectFilterEntryWrapper: ObjectWrapping {
     
     VisualEffectBlurHelpers.performSelector(
       forObject: filterEntry,
-      selector: NSSelectorFromString("setRequestedValues:"),
+      selectorFromHashedString: EncodedString.setRequestedValues,
       withArg1: requestedValues
     );
   };

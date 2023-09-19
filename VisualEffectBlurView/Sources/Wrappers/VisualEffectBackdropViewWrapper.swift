@@ -9,6 +9,24 @@ import UIKit
 
 // Wrapper for: _UIVisualEffectBackdropView
 class VisualEffectBackdropViewWrapper: ObjectWrapping {
+
+  fileprivate enum EncodedString: String, HashedStringDecodable {
+    case contentView;
+    case applyRequestedFilterEffects;
+    
+    var encodedString: String {
+      switch self {
+        case .contentView:
+          // contentView
+          return "Y29udGVudFZpZXc=";
+          
+        case .applyRequestedFilterEffects:
+          // applyRequestedFilterEffects
+          return "YXBwbHlSZXF1ZXN0ZWRGaWx0ZXJFZmZlY3Rz";
+      };
+    };
+  };
+  
   var objectWrapper: ObjectWrapper<UIView>;
   
   var backdropLayerWrapper: BackdropLayerWrapper? {
@@ -24,7 +42,7 @@ class VisualEffectBackdropViewWrapper: ObjectWrapping {
     
     let selectorResult = VisualEffectBlurHelpers.performSelector(
       forObject: sourceObject,
-      selector: NSSelectorFromString("contentView"),
+      selectorFromHashedString: EncodedString.contentView,
       type: UIView.self
     );
     
@@ -32,7 +50,7 @@ class VisualEffectBackdropViewWrapper: ObjectWrapping {
       #if DEBUG
       print(
         "VisualEffectBackdropViewWrapper.init",
-        "- selector failed to get value from: \("contentView")"
+        "- selector failed to get value from contentView"
       );
       #endif
       return nil;
@@ -57,7 +75,7 @@ class VisualEffectBackdropViewWrapper: ObjectWrapping {
   
     VisualEffectBlurHelpers.performSelector(
       forObject: wrappedObject,
-      selector: NSSelectorFromString("applyRequestedFilterEffects")
+      selectorFromHashedString: EncodedString.applyRequestedFilterEffects
     );
   };
 };

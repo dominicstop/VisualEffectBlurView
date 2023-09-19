@@ -47,7 +47,7 @@ public class VisualEffectBlurHelpers {
   @discardableResult
   static func performSelector<T>(
     forObject object: AnyObject,
-    hashedString: any HashedStringDecodable,
+    selectorFromHashedString hashedString: any HashedStringDecodable,
     withArg1 arg1: Any? = nil,
     withArg2 arg2: Any? = nil,
     type: T.Type = AnyObject,

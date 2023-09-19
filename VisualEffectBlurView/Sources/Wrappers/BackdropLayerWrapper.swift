@@ -10,6 +10,18 @@ import UIKit
 // Wrapper for: UICABackdropLayer
 class BackdropLayerWrapper: ObjectWrapping {
 
+  fileprivate enum EncodedString: String, HashedStringDecodable {
+    case backdropLayer;
+    
+    var encodedString: String {
+      switch self {
+        case .backdropLayer:
+          // backdropLayer
+          return "YmFja2Ryb3BMYXllcg==";
+      };
+    };
+  };
+
   var objectWrapper: ObjectWrapper<CALayer>;
   
   var gaussianBlurFilterWrapper: GaussianBlurFilterWrapper? {
@@ -25,7 +37,7 @@ class BackdropLayerWrapper: ObjectWrapping {
     
     let selectorResult = VisualEffectBlurHelpers.performSelector(
       forObject: sourceObject,
-      selector: NSSelectorFromString("backdropLayer"),
+      selectorFromHashedString: EncodedString.backdropLayer,
       type: CALayer.self
     );
     

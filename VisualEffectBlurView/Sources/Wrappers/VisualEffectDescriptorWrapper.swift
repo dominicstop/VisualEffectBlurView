@@ -9,6 +9,18 @@ import Foundation
 
 // Wrapper for: _UIVisualEffectDescriptor
 class VisualEffectDescriptorWrapper: ObjectWrapping {
+  
+  fileprivate enum EncodedString: String, HashedStringDecodable {
+    case filterEntries;
+    
+    var encodedString: String {
+      switch self {
+        case .filterEntries:
+          // filterEntries
+          return "ZmlsdGVyRW50cmllcw==";
+      };
+    };
+  };
 
   var objectWrapper: ObjectWrapper<AnyObject>;
   
@@ -18,7 +30,7 @@ class VisualEffectDescriptorWrapper: ObjectWrapping {
     // NSArray<_UIVisualEffectFilterEntry *>
     let filterEntries = VisualEffectBlurHelpers.performSelector(
       forObject: effectDescriptor,
-      selector: NSSelectorFromString("filterEntries"),
+      selectorFromHashedString: EncodedString.filterEntries,
       type: NSArray.self
     );
     

@@ -8,12 +8,38 @@
 import UIKit
 
 class GaussianBlurFilterWrapper: ObjectWrapping {
+
+  fileprivate enum EncodedString: String, HashedStringDecodable {
+    case inputRadius;
+    
+    var encodedString: String {
+      switch self {
+        case .inputRadius:
+          // inputRadius
+          return "aW5wdXRSYWRpdXM=";
+      };
+    };
+  };
+  
   var objectWrapper: ObjectWrapper<AnyObject>;
   
   var inputRadius: CGFloat? {
     get {
+      let encodedString: EncodedString = .inputRadius;
+      guard let decodedString = encodedString.decodedString else {
+        #if DEBUG
+        print(
+          "GaussianBlurFilterWrapper.inputRadius - get",
+          "- failed to get decodedString",
+          "- encodedString.rawValue:", encodedString.rawValue,
+          "- encodedString.encodedString:", encodedString.encodedString
+        );
+        #endif
+        return nil;
+      };
+    
       guard let wrappedObject = self.wrappedObject,
-            let inputRadiusRaw = wrappedObject.value(forKey: "inputRadius"),
+            let inputRadiusRaw = wrappedObject.value(forKey: decodedString),
             let inputRadius = inputRadiusRaw as? CGFloat
       else {
         #if DEBUG
@@ -28,6 +54,19 @@ class GaussianBlurFilterWrapper: ObjectWrapping {
       return inputRadius;
     }
     set {
+      let encodedString: EncodedString = .inputRadius;
+      guard let decodedString = encodedString.decodedString else {
+        #if DEBUG
+        print(
+          "GaussianBlurFilterWrapper.inputRadius - set",
+          "- failed to get decodedString",
+          "- encodedString.rawValue:", encodedString.rawValue,
+          "- encodedString.encodedString:", encodedString.encodedString
+        );
+        #endif
+        return;
+      };
+      
       guard let wrappedObject = self.wrappedObject else {
         #if DEBUG
         print(
@@ -38,7 +77,7 @@ class GaussianBlurFilterWrapper: ObjectWrapping {
         return;
       };
       
-      wrappedObject.setValue(newValue, forKey: "inputRadius");
+      wrappedObject.setValue(newValue, forKey: decodedString);
     }
   };
   
