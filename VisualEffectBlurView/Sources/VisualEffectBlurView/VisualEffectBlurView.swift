@@ -31,193 +31,42 @@ public class VisualEffectBlurView: UIVisualEffectView {
   // MARK: - Properties - Private API
   // --------------------------------
   
-  // _UIVisualEffectHost
-  private weak var _visualEffectBackgroundHostView: AnyObject?;
-  var visualEffectBackgroundHostView: AnyObject? {
-    if let _visualEffectHostView = self._visualEffectBackgroundHostView {
-      return _visualEffectHostView;
-    };
-
-    let selectorResult = VisualEffectBlurHelpers.performSelector(
-      forObject: self,
-      selector: NSSelectorFromString("_backgroundHost")
+   var backgroundHostWrapper: VisualEffectBackgroundHostViewWrapper? {
+    VisualEffectBackgroundHostViewWrapper(
+      fromVisualEffectView: self,
+      shouldRetainObject: false
     );
-    
-    guard let selectorResult = selectorResult else {
-      #if DEBUG
-      print(
-        "BlurView.visualEffectHostView - get",
-        "- selector failed to get value"
-      );
-      #endif
-      return nil;
-    };
-    
-    self._visualEffectBackgroundHostView = selectorResult;
-    return selectorResult;
   };
   
-  // _UIVisualEffectBackdropView
-  private var _visualEffectBackdropView: UIView?;
-  var visualEffectBackdropView: UIView? {
-    if let _visualEffectBackdropView = self._visualEffectBackdropView {
-      return _visualEffectBackdropView;
-    };
-    
-    guard let visualEffectHostView = self.visualEffectBackgroundHostView
-    else { return nil };
-    
-    let selectorResult = VisualEffectBlurHelpers.performSelector(
-      forObject: visualEffectHostView,
-      selector: NSSelectorFromString("contentView"),
-      type: UIView.self
-    );
-    
-    guard let selectorResult = selectorResult else {
-      #if DEBUG
-      print(
-        "BlurView.visualEffectBackdropView - get",
-        "- selector failed to get value"
-      );
-      #endif
-      return nil;
-    };
-    
-    self._visualEffectBackdropView = selectorResult;
-    return selectorResult;
-  };
-  
-  // UICABackdropLayer
-  private weak var _visualEffectBackdropLayer: CALayer?;
-  var visualEffectBackdropLayer: CALayer? {
-    if let _visualEffectBackdropLayer = self._visualEffectBackdropLayer {
-      return _visualEffectBackdropLayer;
-    };
-    
-    guard let visualEffectBackdropView = self.visualEffectBackdropView
-    else { return nil };
-    
-    let selectorResult = VisualEffectBlurHelpers.performSelector(
-      forObject: visualEffectBackdropView,
-      selector: NSSelectorFromString("backdropLayer"),
-      type: CALayer.self
-    );
-    
-    guard let selectorResult = selectorResult else {
-      #if DEBUG
-      print(
-        "BlurView.visualEffectBackdropLayer - get",
-        "- selector failed to get value"
-      );
-      #endif
-      return nil;
-    };
-    
-    self._visualEffectBackdropLayer = selectorResult;
-    return selectorResult;
-  };
-  
-  private weak var _gaussianBlurFilter: AnyObject?;
-  var gaussianBlurFilter: AnyObject? {
-    if let _gaussianBlurFilter = self._gaussianBlurFilter {
-      return _gaussianBlurFilter;
-    };
-  
-    guard let visualEffectBackdropLayer = self.visualEffectBackdropLayer,
-          let filtersRaw = visualEffectBackdropLayer.filters,
-          filtersRaw.count > 0
-    else {
-      #if DEBUG
-      print(
-        "BlurView.gaussianBlurFilter - get",
-        "- could not get visualEffectBackdropLayer filters"
-      );
-      #endif
-      return nil;
-    };
-    
-    let filters = filtersRaw.map {
-      $0 as AnyObject
-    };
-    
-    let match = filters.first {
-      let filterType = VisualEffectBlurHelpers.performSelector(
-        forObject: $0,
-        selector:  NSSelectorFromString("type"),
-        type: String.self
-      );
-      
-      guard let filterType = filterType else {
-        #if DEBUG
-        print(
-          "BlurView.gaussianBlurFilter - get",
-          "- unable to get: filterType",
-          "- selector failed for: \($0)"
-        );
-        #endif
-        return false;
-      };
-      
-      return filterType.lowercased().contains("blur");
-    };
-    
-    guard let match = match else {
-      #if DEBUG
-      print(
-        "BlurView.gaussianBlurFilter - get",
-        "- no matching filters found"
-      );
-      #endif
-      return nil;
-    };
-    
-    self._gaussianBlurFilter = match;
-    return match;
-  };
-  
-  /// `_UIVisualEffectDescriptor`
-  /// * `disableInPlaceFiltering`
-  /// * `filters: [_UIVisualEffectFilterEntry]`
-  /// * `overlays: [_UIOverlayEffectViewEntry]`
-  ///
-  var effectDescriptorForCurrentEffect: AnyObject? {
+  var effectDescriptorForCurrentEffectWrapper: VisualEffectDescriptorWrapper? {
     guard let effect = self.effect else { return nil };
-    
-    let selectorResult = VisualEffectBlurHelpers.performSelector(
-      forObject: self,
-      selector: NSSelectorFromString("_effectDescriptorForEffects:usage:"),
-      withArg1: [effect],
-      withArg2: 1
-    );
-    
-    guard let selectorResult = selectorResult else {
-      #if DEBUG
-      print(
-        "BlurView.effectDescriptorForCurrentEffect - get",
-        "- selector failed to get value"
-      );
-      #endif
-      return nil;
-    };
-    
-    return selectorResult;
+    return self.effectDescriptorForEffects(effects: [effect], usage: true);
   };
+  
+  // MARK: Computed Properties
+  // -------------------------
   
   private var _blurRadius: CGFloat?;
   public var blurRadius: CGFloat {
     set {
       self._blurRadius = newValue;
       
-      guard let gaussianBlurFilter = self.gaussianBlurFilter
+      guard let backgroundHostWrapper = self.backgroundHostWrapper,
+            let contentViewWrapper = backgroundHostWrapper.contentViewWrapper,
+            let backdropLayerWrapper = contentViewWrapper.backdropLayerWrapper,
+            let gaussianBlurFilterWrapper = backdropLayerWrapper.gaussianBlurFilterWrapper
       else { return };
       
-      gaussianBlurFilter.setValue(newValue, forKey: "inputRadius");
+      gaussianBlurFilterWrapper.inputRadius = newValue;
       self.setBlurRadius(newValue);
     }
     get {
-      guard let gaussianBlurFilter = self.gaussianBlurFilter,
-            let inputRadiusRaw = gaussianBlurFilter.value(forKey: "inputRadius"),
-            let inputRadius = inputRadiusRaw as? CGFloat
+    
+      guard let backgroundHostWrapper = self.backgroundHostWrapper,
+            let contentViewWrapper = backgroundHostWrapper.contentViewWrapper,
+            let backdropLayerWrapper = contentViewWrapper.backdropLayerWrapper,
+            let gaussianBlurFilterWrapper = backdropLayerWrapper.gaussianBlurFilterWrapper,
+            let inputRadius = gaussianBlurFilterWrapper.inputRadius
       else {
         #if DEBUG
         print(
@@ -281,8 +130,28 @@ public class VisualEffectBlurView: UIVisualEffectView {
   // MARK: - Functions
   // -----------------
   
+  func effectDescriptorForEffects(
+    effects: [UIVisualEffect],
+    usage: Bool
+  ) -> VisualEffectDescriptorWrapper? {
+  
+    let selectorResult = VisualEffectBlurHelpers.performSelector(
+      forObject: self,
+      selector: NSSelectorFromString("_effectDescriptorForEffects:usage:"),
+      withArg1: effects,
+      withArg2: usage ? 1 : 0
+    );
+    
+    guard let selectorResult = selectorResult else { return nil };
+    
+    return VisualEffectDescriptorWrapper(
+      sourceObject: selectorResult,
+      shouldRetainObject: false
+    );
+  };
+  
   func setBlurRadius(_ blurRadius: CGFloat){
-    guard let effectDescriptor = self.effectDescriptorForCurrentEffect
+    guard let effectDescriptorWrapper = self.effectDescriptorForCurrentEffectWrapper
     else {
       #if DEBUG
       print(
@@ -293,16 +162,8 @@ public class VisualEffectBlurView: UIVisualEffectView {
       return;
     };
     
-    // NSArray<_UIVisualEffectFilterEntry *>
-    let filterEntries = VisualEffectBlurHelpers.performSelector(
-      forObject: effectDescriptor,
-      selector: NSSelectorFromString("filterEntries"),
-      type: NSArray.self
-    );
-    
-    guard let filterEntries = filterEntries,
-          filterEntries.count > 0,
-          let filterEntriesCopy = filterEntries.mutableCopy() as? NSMutableArray
+    guard let filterEntriesWrapped = effectDescriptorWrapper.filterEntriesWrapped,
+          filterEntriesWrapped.count > 0
     else {
       #if DEBUG
       print(
@@ -312,33 +173,23 @@ public class VisualEffectBlurView: UIVisualEffectView {
       #endif
       return;
     };
-    
-    /// `_UIVisualEffectFilterEntry`
-    /// * `filter: String`
-    /// * `parameters: NSDictionary`
-    let filterEntryMatch = filterEntries.enumerated().first {
-      let filterType = VisualEffectBlurHelpers.performSelector(
-        forObject: $0.element as AnyObject,
-        selector:  NSSelectorFromString("filterType"),
-        type: String.self
-      );
-      
-      guard let filterType = filterType else {
+
+    let filterEntryMatchWrapped = filterEntriesWrapped.enumerated().first {
+      guard let filterType = $0.element.filterType else {
         #if DEBUG
         print(
           "BlurView.setBlurRadius",
-          "- selector failed for: \($0.element)",
           "- unable to get: filterType",
           "- at index: \($0.offset)"
         );
         #endif
         return false;
       };
-      
+    
       return filterType.lowercased().contains("blur");
     };
 
-    guard let filterEntryMatch = filterEntryMatch else {
+    guard let gaussianBlurFilterEntryWrapped = filterEntryMatchWrapped?.element else {
       #if DEBUG
       print(
         "BlurView.setBlurRadius",
@@ -348,15 +199,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
       return;
     };
     
-    let (gaussianBlurFilterEntryIndex, gaussianBlurFilterEntry) = filterEntryMatch;
-    
-    let requestedValues = VisualEffectBlurHelpers.performSelector(
-      forObject: gaussianBlurFilterEntry as AnyObject,
-      selector: NSSelectorFromString("requestedValues"),
-      type: NSDictionary.self
-    );
-    
-    guard let requestedValues = requestedValues,
+    guard let requestedValues = gaussianBlurFilterEntryWrapped.requestedValues,
           requestedValues.count > 0,
           
           let requestedValuesCopy =
@@ -365,7 +208,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
       #if DEBUG
       print(
         "BlurView.setBlurRadius",
-        "- selector failed to get value for: requestedValues"
+        "- failed to get requestedValues"
       );
       #endif
       return;
@@ -373,36 +216,21 @@ public class VisualEffectBlurView: UIVisualEffectView {
     
     requestedValuesCopy["inputRadius"] = NSNumber(value: blurRadius);
     
-    guard let backgroundHostView = self.visualEffectBackgroundHostView,
-          let backdropView = self.visualEffectBackdropView
+    guard let backgroundHostWrapper = self.backgroundHostWrapper,
+          let contentViewWrapper = backgroundHostWrapper.contentViewWrapper
     else {
       #if DEBUG
       print(
         "BlurView.setBlurRadius",
-        "- unable to get backgroundHostView and/or backdropView"
+        "- unable to get backgroundHostWrapper and/or contentViewWrapper"
       );
       #endif
       return;
     };
     
-    VisualEffectBlurHelpers.performSelector(
-      forObject: gaussianBlurFilterEntry as AnyObject,
-      selector: NSSelectorFromString("setRequestedValues:"),
-      withArg1: requestedValuesCopy as NSDictionary
-    );
-    
-    filterEntriesCopy[gaussianBlurFilterEntryIndex] = gaussianBlurFilterEntry;
-    
-    VisualEffectBlurHelpers.performSelector(
-      forObject: backgroundHostView,
-      selector: NSSelectorFromString("setCurrentEffectDescriptor:"),
-      withArg1: effectDescriptor
-    );
-    
-    VisualEffectBlurHelpers.performSelector(
-      forObject: backdropView,
-      selector: NSSelectorFromString("applyRequestedFilterEffects")
-    );
+    gaussianBlurFilterEntryWrapped.setRequestedValues(requestedValuesCopy);
+    backgroundHostWrapper.setCurrentEffectDescriptor(effectDescriptorWrapper);
+    contentViewWrapper.applyRequestedFilterEffects();
   };
 };
 
