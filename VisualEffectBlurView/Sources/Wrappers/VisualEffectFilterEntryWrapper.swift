@@ -66,6 +66,24 @@ class VisualEffectFilterEntryWrapper: ObjectWrapping {
     );
   };
   
+  var identityValues: NSDictionary? {
+    guard let filterEntry = self.wrappedObject else {
+      #if DEBUG
+      print(
+        "VisualEffectFilterEntryWrapper.identityValues",
+        "- failed to get value"
+      );
+      #endif
+      return nil;
+    };
+    
+    return VisualEffectBlurHelpers.performSelector(
+      forObject: filterEntry,
+      selector: NSSelectorFromString("identityValues"),
+      type: NSDictionary.self
+    );
+  };
+  
   init(
     sourceObject: AnyObject?,
     shouldRetainObject: Bool = false
