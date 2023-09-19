@@ -73,7 +73,7 @@ extension UIBlurEffect.Style: CustomStringConvertible {
         return "systemChromeMaterialDark";
         
       @unknown default:
-        return "@unknown";
+        return "unknown";
     };
   };
 };
