@@ -17,4 +17,10 @@ extension ObjectWrapping {
   var wrappedObject: WrapperType? {
     self.objectWrapper.object;
   };
+  
+  func debugPrintWrappedObject(){
+    #if DEBUG
+    print(self.wrappedObject.debugDescription);
+    #endif
+  };
 };
