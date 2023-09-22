@@ -9,18 +9,51 @@ import UIKit
 
 extension UIBlurEffect.Style {
 
-  fileprivate static var defaultBlurRadiusCache: Dictionary<Self, CGFloat> = [:];
-  fileprivate static var didSetDefaultBlurRadiusCache = false;
+  public typealias FilterEntry = (
+    filterType: String,
+    requestedValues: Dictionary<String, NSNumber>
+  );
   
-  static func setDefaultBlurRadiusCacheIfNeeded(){
-    guard !self.didSetDefaultBlurRadiusCache else { return };
-    Self.didSetDefaultBlurRadiusCache = true;
+  // [filterType: [inputRadius/inputAmount: Number]]
+  fileprivate static var defaultFilterEntriesCache:
+    Dictionary<Self, [FilterEntry]> = [:];
     
-    Self.allCases.forEach {
+  fileprivate static var defaultBlurRadiusCache: Dictionary<Self, CGFloat> = [:];
+  fileprivate static var didSetDefaultCache = false;
+  
+  static func setDefaultCacheIfNeeded(){
+    guard !self.didSetDefaultCache else { return };
+    Self.didSetDefaultCache = true;
+    
+    Self.allCases.forEach { blurStyle in
       let blurView = VisualEffectBlurView(blurEffectStyle: nil);
-      blurView.effect = UIBlurEffect(style: $0);
+      blurView.effect = UIBlurEffect(style: blurStyle);
       
-      self.defaultBlurRadiusCache[$0] = blurView.blurRadius;
+      if let effectDescriptionWrapper = blurView.effectDescriptorForCurrentEffectWrapper,
+         let filterEntriesWrapped = effectDescriptionWrapper.filterEntriesWrapped,
+         filterEntriesWrapped.count > 0 {
+         
+         Self.defaultFilterEntriesCache[blurStyle] = filterEntriesWrapped.compactMap {
+            guard let filterType = $0.filterType,
+                  let requestedValuesRaw = $0.requestedValues,
+                  let requestedValue = requestedValuesRaw as? Dictionary<String, NSNumber>
+            else {
+              #if DEBUG
+              print(
+                "UIBlurEffect.Style - setDefaultCacheIfNeeded",
+                "\n- Set defaultRequestedValuesCache",
+                "\n- could not set for item:", blurStyle,
+                "\n"
+              );
+              #endif
+              return nil;
+            };
+            
+            return (filterType, requestedValue);
+         };
+      };
+      
+      self.defaultBlurRadiusCache[blurStyle] = blurView.blurRadius;
     };
   };
   
@@ -92,13 +125,32 @@ extension UIBlurEffect.Style {
   };
 
   public var defaultBlurRadius: CGFloat? {
-    Self.setDefaultBlurRadiusCacheIfNeeded();
+    Self.setDefaultCacheIfNeeded();
     
     if let blurRadius = Self.defaultBlurRadiusCache[self] {
       return blurRadius;
     };
     
     return self.defaultBlurRadiusFallback;
+  };
+  
+  public var defaultFilterEntries: [FilterEntry] {
+    Self.setDefaultCacheIfNeeded();
+    
+    if let cachedFilterEntry = Self.defaultFilterEntriesCache[self] {
+      return cachedFilterEntry;
+    };
+    
+    #if DEBUG
+    print(
+      "UIBlurEffect.Style - defaultBlurRadius",
+      "\n- get defaultFilterEntriesCache",
+      "\n- could not set for item:", self.description,
+      "\n"
+    );
+    #endif
+    
+    return [];
   };
 };
 
