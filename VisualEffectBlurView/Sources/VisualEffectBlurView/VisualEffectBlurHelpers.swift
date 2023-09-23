@@ -76,4 +76,14 @@ public class VisualEffectBlurHelpers {
       shouldRetainValue: shouldRetainValue
     );
   };
+  
+  static func lerp<T: FloatingPoint>(
+    valueStart: T,
+    valueEnd: T,
+    percent: T
+  ) -> T {
+    let valueDelta = valueEnd - valueStart;
+    let valueProgress = valueDelta * percent
+    return valueStart + valueProgress;
+  };
 };

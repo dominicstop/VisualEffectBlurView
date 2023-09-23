@@ -61,7 +61,6 @@ public class VisualEffectBlurView: UIVisualEffectView {
       self.setBlurRadius(newValue);
     }
     get {
-    
       guard let backgroundHostWrapper = self.backgroundHostWrapper,
             let contentViewWrapper = backgroundHostWrapper.contentViewWrapper,
             let backdropLayerWrapper = contentViewWrapper.backdropLayerWrapper,
@@ -231,6 +230,132 @@ public class VisualEffectBlurView: UIVisualEffectView {
     gaussianBlurFilterEntryWrapped.setRequestedValues(requestedValuesCopy);
     backgroundHostWrapper.setCurrentEffectDescriptor(effectDescriptorWrapper);
     contentViewWrapper.applyRequestedFilterEffects();
+  };
+  
+  // wip
+  func setFilterIntensity(
+    _ nextEffectIntensity: Double,
+    shouldSetBlurRadiusIntensity: Bool = false
+  ){
+    guard let blurEffectStyle = self.blurEffectStyle,
+          let effectDescriptorWrapper = self.effectDescriptorForCurrentEffectWrapper
+    else {
+      #if DEBUG
+      print(
+        "BlurView.setEffectIntensity",
+        "- failed to get: effectDescriptorForCurrentEffect",
+        "- for blurEffectStyle:", self.blurEffectStyle?.description ?? "N/A"
+      );
+      #endif
+      return;
+    };
+    
+    guard let filterEntriesWrapped = effectDescriptorWrapper.filterEntriesWrapped,
+          filterEntriesWrapped.count > 0
+    else {
+      #if DEBUG
+      print(
+        "BlurView.setEffectIntensity",
+        "- selector failed to get value for: filterEntries"
+      );
+      #endif
+      return;
+    };
+    
+    guard let backgroundHostWrapper = self.backgroundHostWrapper,
+          let contentViewWrapper = backgroundHostWrapper.contentViewWrapper
+    else {
+      #if DEBUG
+      print(
+        "BlurView.setEffectIntensity",
+        "- unable to get backgroundHostWrapper and/or contentViewWrapper"
+      );
+      #endif
+      return;
+    };
+    
+
+    for (offset, filterEntryWrapped) in filterEntriesWrapped.enumerated() {
+      guard let filterType = filterEntryWrapped.filterType else {
+        #if DEBUG
+        print(
+          "BlurView.setEffectIntensity",
+          "- unable to get: filterType",
+          "- at index: \(offset)"
+        );
+        #endif
+        continue;
+      };
+      
+      guard let requestedValues = filterEntryWrapped.requestedValues,
+            requestedValues.count > 0,
+            
+            let requestedValuesCopy =
+              requestedValues.mutableCopy() as? NSMutableDictionary
+      else {
+        #if DEBUG
+        print(
+          "BlurView.setEffectIntensity",
+          "- failed to get requestedValues",
+          "- at index: \(offset)"
+        );
+        #endif
+        continue;
+      };
+      
+      guard let identityValues = filterEntryWrapped.identityValues,
+            identityValues.count > 0
+      else {
+        #if DEBUG
+        print(
+          "BlurView.setEffectIntensity",
+          "- failed to get identityValues",
+          "- at index: \(offset)"
+        );
+        #endif
+        continue;
+      };
+      
+      let defaultFilterEntry = blurEffectStyle.defaultFilterEntries.first {
+        $0.filterType == filterType;
+      };
+      
+      guard let defaultFilterEntry = defaultFilterEntry else { return };
+      
+      requestedValuesCopy.forEach {
+        guard let key = $0.key as? String,
+              let prevValue = $0.value as? Double
+        else { return };
+        
+        let identityValue =
+          identityValues[key] as? Double ?? 0;
+        
+        let defaultValue =
+          defaultFilterEntry.requestedValues[key]?.doubleValue ?? prevValue;
+          
+        let nextValue = VisualEffectBlurHelpers.lerp(
+          valueStart: identityValue,
+          valueEnd: defaultValue,
+          percent: nextEffectIntensity
+        );
+        
+        requestedValuesCopy[key] = nextValue;
+        
+        print(
+          "filterType:", filterType,
+          "- key:", key,
+          "- prevValue:", prevValue,
+          "- defaultValue:", defaultValue,
+          "- identityValue:", identityValue,
+          "- nextValue:", nextValue,
+          "\n"
+        );
+        
+        filterEntryWrapped.setRequestedValues(requestedValuesCopy);
+        backgroundHostWrapper.setCurrentEffectDescriptor(effectDescriptorWrapper);
+        contentViewWrapper.applyRequestedFilterEffects();
+      };
+    };
   };
 };
 
