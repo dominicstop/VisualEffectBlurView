@@ -15,7 +15,7 @@ public class VisualEffectBlurHelpers {
     selector: Selector,
     withArg1 arg1: Any? = nil,
     withArg2 arg2: Any? = nil,
-    type: T.Type = AnyObject,
+    type: T.Type = AnyObject.self,
     shouldRetainValue: Bool = false
   ) -> T? {
   
@@ -50,7 +50,7 @@ public class VisualEffectBlurHelpers {
     selectorFromHashedString hashedString: any HashedStringDecodable,
     withArg1 arg1: Any? = nil,
     withArg2 arg2: Any? = nil,
-    type: T.Type = AnyObject,
+    type: T.Type = AnyObject.self,
     shouldRetainValue: Bool = false
   ) -> T? {
   
