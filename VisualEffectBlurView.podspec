@@ -5,8 +5,9 @@ Pod::Spec.new do |s|
   s.summary          = 'UIVisualEffectView blur w/ custom blur radius.'
 
   s.description      = <<-DESC
-A subclass of `UIVisualEffectView` that lets you set a custom blur radius + intensity. 
-                      DESC
+    A subclass of `UIVisualEffectView` that lets you set a custom blur radius
+    + intensity.
+  DESC
 
   s.homepage         = 'https://github.com/dominicstop/VisualEffectBlurView'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
@@ -21,4 +22,6 @@ A subclass of `UIVisualEffectView` that lets you set a custom blur radius + inte
 
   s.source_files = 'VisualEffectBlurView/Sources/**/*'
   s.frameworks = 'UIKit'
+  
+  s.dependency 'DGSwiftUtilities', '~> 0.22'
 end

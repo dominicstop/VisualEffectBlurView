@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:/Users/dominicgo/Documents/Programming/BlurView/example/VisualEffectBlurViewExample.xcodeproj">
+      location = "self:">
    </FileRef>
 </Workspace>

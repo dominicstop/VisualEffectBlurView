@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		883DA9172AB34229003D3982 /* VisualEffectBlurView in Frameworks */ = {isa = PBXBuildFile; productRef = 883DA9162AB34229003D3982 /* VisualEffectBlurView */; };
+		8823BF402C21C1CD00C7238A /* VisualEffectBlurView in Frameworks */ = {isa = PBXBuildFile; productRef = 8823BF3F2C21C1CD00C7238A /* VisualEffectBlurView */; };
 		88625F232AB08D530086B4FC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88625F222AB08D530086B4FC /* AppDelegate.swift */; };
 		88625F252AB08D530086B4FC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88625F242AB08D530086B4FC /* SceneDelegate.swift */; };
 		88625F2C2AB08D550086B4FC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 88625F2B2AB08D550086B4FC /* Assets.xcassets */; };
@@ -21,7 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		883DA9152AB34214003D3982 /* VisualEffectBlurView */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = VisualEffectBlurView; path = ..; sourceTree = "<group>"; };
+		8823BF3E2C21C1BC00C7238A /* VisualEffectBlurView */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = VisualEffectBlurView; path = ..; sourceTree = "<group>"; };
 		88625F1F2AB08D530086B4FC /* VisualEffectBlurViewExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VisualEffectBlurViewExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		88625F222AB08D530086B4FC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		88625F242AB08D530086B4FC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -41,7 +41,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				883DA9172AB34229003D3982 /* VisualEffectBlurView in Frameworks */,
+				8823BF402C21C1CD00C7238A /* VisualEffectBlurView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -51,7 +51,7 @@
 		88625F162AB08D530086B4FC = {
 			isa = PBXGroup;
 			children = (
-				88625F382AB08F8D0086B4FC /* Packages */,
+				8823BF3E2C21C1BC00C7238A /* VisualEffectBlurView */,
 				88F123752AB2FD5E00DEB121 /* Examples */,
 				88625F212AB08D530086B4FC /* VisualEffectBlurViewExample */,
 				88F123762AB2FD7500DEB121 /* Misc */,
@@ -78,14 +78,6 @@
 				88625F302AB08D550086B4FC /* Info.plist */,
 			);
 			path = VisualEffectBlurViewExample;
-			sourceTree = "<group>";
-		};
-		88625F382AB08F8D0086B4FC /* Packages */ = {
-			isa = PBXGroup;
-			children = (
-				883DA9152AB34214003D3982 /* VisualEffectBlurView */,
-			);
-			name = Packages;
 			sourceTree = "<group>";
 		};
 		88F123752AB2FD5E00DEB121 /* Examples */ = {
@@ -132,7 +124,7 @@
 			);
 			name = VisualEffectBlurViewExample;
 			packageProductDependencies = (
-				883DA9162AB34229003D3982 /* VisualEffectBlurView */,
+				8823BF3F2C21C1CD00C7238A /* VisualEffectBlurView */,
 			);
 			productName = BlurViewExample;
 			productReference = 88625F1F2AB08D530086B4FC /* VisualEffectBlurViewExample.app */;
@@ -407,7 +399,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		883DA9162AB34229003D3982 /* VisualEffectBlurView */ = {
+		8823BF3F2C21C1CD00C7238A /* VisualEffectBlurView */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = VisualEffectBlurView;
 		};
