@@ -6,7 +6,9 @@
 //
 
 import UIKit
+import DGSwiftUtilities
 import VisualEffectBlurView
+
 
 class VisualEffectBlurTestViewController: UIViewController {
 
