@@ -1,13 +1,8 @@
 use_frameworks!
 
-platform :ios, '10.0'
+platform :ios, '12.0'
 
 target 'VisualEffectBlurView_Example' do
   pod 'VisualEffectBlurView', :path => '../'
 
-  target 'VisualEffectBlurView_Tests' do
-    inherit! :search_paths
-
-    
-  end
 end
