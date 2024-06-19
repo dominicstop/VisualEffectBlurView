@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import DGSwiftUtilities
 
 
 public class VisualEffectBlurView: UIVisualEffectView {
@@ -31,16 +32,20 @@ public class VisualEffectBlurView: UIVisualEffectView {
   // MARK: - Properties - Private API
   // --------------------------------
   
-   var backgroundHostWrapper: VisualEffectBackgroundHostViewWrapper? {
-    VisualEffectBackgroundHostViewWrapper(
-      fromVisualEffectView: self,
-      shouldRetainObject: false
-    );
-  };
-  
+  public lazy var wrapper: VisualEffectViewWrapper? = .init(objectToWrap: self);
+
+  @available(iOS 13, *)
   var effectDescriptorForCurrentEffectWrapper: VisualEffectDescriptorWrapper? {
-    guard let effect = self.effect else { return nil };
-    return self.effectDescriptorForEffects(effects: [effect], usage: true);
+    guard let effect = self.effect,
+          let wrapper = self.wrapper
+    else {
+      return nil;
+    };
+    
+    return try? wrapper.effectDescriptor(
+      forEffects: [effect],
+      usage: true
+    );
   };
   
   // MARK: Computed Properties
@@ -51,17 +56,22 @@ public class VisualEffectBlurView: UIVisualEffectView {
     set {
       self._blurRadius = newValue;
       
-      guard let backgroundHostWrapper = self.backgroundHostWrapper,
+      guard #available(iOS 13, *),
+            let wrapper = self.wrapper,
+            let backgroundHostWrapper = wrapper.backgroundHostWrapper,
             let contentViewWrapper = backgroundHostWrapper.contentViewWrapper,
             let backdropLayerWrapper = contentViewWrapper.backdropLayerWrapper,
             let gaussianBlurFilterWrapper = backdropLayerWrapper.gaussianBlurFilterWrapper
-      else { return };
+      else {
+        return;
+      };
       
       gaussianBlurFilterWrapper.inputRadius = newValue;
-      self.setBlurRadius(newValue);
+      try? self.setBlurRadius(newValue);
     }
     get {
-      guard let backgroundHostWrapper = self.backgroundHostWrapper,
+      guard let wrapper = self.wrapper,
+            let backgroundHostWrapper = wrapper.backgroundHostWrapper,
             let contentViewWrapper = backgroundHostWrapper.contentViewWrapper,
             let backdropLayerWrapper = contentViewWrapper.backdropLayerWrapper,
             let gaussianBlurFilterWrapper = backdropLayerWrapper.gaussianBlurFilterWrapper,
@@ -129,27 +139,8 @@ public class VisualEffectBlurView: UIVisualEffectView {
   // MARK: - Functions
   // -----------------
   
-  func effectDescriptorForEffects(
-    effects: [UIVisualEffect],
-    usage: Bool
-  ) -> VisualEffectDescriptorWrapper? {
-  
-    let selectorResult = VisualEffectBlurHelpers.performSelector(
-      forObject: self,
-      selector: NSSelectorFromString("_effectDescriptorForEffects:usage:"),
-      withArg1: effects,
-      withArg2: usage ? 1 : 0
-    );
-    
-    guard let selectorResult = selectorResult else { return nil };
-    
-    return VisualEffectDescriptorWrapper(
-      sourceObject: selectorResult,
-      shouldRetainObject: false
-    );
-  };
-  
-  func setBlurRadius(_ blurRadius: CGFloat){
+  @available(iOS 13, *)
+  func setBlurRadius(_ blurRadius: CGFloat) throws {
     guard let effectDescriptorWrapper = self.effectDescriptorForCurrentEffectWrapper
     else {
       #if DEBUG
@@ -215,7 +206,8 @@ public class VisualEffectBlurView: UIVisualEffectView {
     
     requestedValuesCopy["inputRadius"] = NSNumber(value: blurRadius);
     
-    guard let backgroundHostWrapper = self.backgroundHostWrapper,
+    guard let wrapper = self.wrapper,
+          let backgroundHostWrapper = wrapper.backgroundHostWrapper,
           let contentViewWrapper = backgroundHostWrapper.contentViewWrapper
     else {
       #if DEBUG
@@ -227,16 +219,17 @@ public class VisualEffectBlurView: UIVisualEffectView {
       return;
     };
     
-    gaussianBlurFilterEntryWrapped.setRequestedValues(requestedValuesCopy);
-    backgroundHostWrapper.setCurrentEffectDescriptor(effectDescriptorWrapper);
-    contentViewWrapper.applyRequestedFilterEffects();
+    try gaussianBlurFilterEntryWrapped.setRequestedValues(requestedValuesCopy);
+    try backgroundHostWrapper.setCurrentEffectDescriptor(effectDescriptorWrapper);
+    try contentViewWrapper.applyRequestedFilterEffects();
   };
   
   // wip
+  @available(iOS 13, *)
   func setFilterIntensity(
     _ nextEffectIntensity: Double,
     shouldSetBlurRadiusIntensity: Bool = false
-  ){
+  ) throws {
     guard let blurEffectStyle = self.blurEffectStyle,
           let effectDescriptorWrapper = self.effectDescriptorForCurrentEffectWrapper
     else {
@@ -262,7 +255,8 @@ public class VisualEffectBlurView: UIVisualEffectView {
       return;
     };
     
-    guard let backgroundHostWrapper = self.backgroundHostWrapper,
+    guard let wrapper = self.wrapper,
+          let backgroundHostWrapper = wrapper.backgroundHostWrapper,
           let contentViewWrapper = backgroundHostWrapper.contentViewWrapper
     else {
       #if DEBUG
@@ -322,7 +316,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
       
       guard let defaultFilterEntry = defaultFilterEntry else { return };
       
-      requestedValuesCopy.forEach {
+      try requestedValuesCopy.forEach {
         guard let key = $0.key as? String,
               let prevValue = $0.value as? Double
         else { return };
@@ -333,7 +327,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
         let defaultValue =
           defaultFilterEntry.requestedValues[key]?.doubleValue ?? prevValue;
           
-        let nextValue = VisualEffectBlurHelpers.lerp(
+        let nextValue = AdaptiveModalUtilities.lerp(
           valueStart: identityValue,
           valueEnd: defaultValue,
           percent: nextEffectIntensity
@@ -351,9 +345,9 @@ public class VisualEffectBlurView: UIVisualEffectView {
           "\n"
         );
         
-        filterEntryWrapped.setRequestedValues(requestedValuesCopy);
-        backgroundHostWrapper.setCurrentEffectDescriptor(effectDescriptorWrapper);
-        contentViewWrapper.applyRequestedFilterEffects();
+        try filterEntryWrapped.setRequestedValues(requestedValuesCopy);
+        try backgroundHostWrapper.setCurrentEffectDescriptor(effectDescriptorWrapper);
+        try contentViewWrapper.applyRequestedFilterEffects();
       };
     };
   };

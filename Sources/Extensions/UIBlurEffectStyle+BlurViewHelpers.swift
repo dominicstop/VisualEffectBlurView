@@ -30,7 +30,8 @@ extension UIBlurEffect.Style {
       let blurView = VisualEffectBlurView(blurEffectStyle: nil);
       blurView.effect = UIBlurEffect(style: blurStyle);
       
-      if let effectDescriptionWrapper = blurView.effectDescriptorForCurrentEffectWrapper,
+      if #available(iOS 13, *),
+         let effectDescriptionWrapper = blurView.effectDescriptorForCurrentEffectWrapper,
          let filterEntriesWrapped = effectDescriptionWrapper.filterEntriesWrapped,
          filterEntriesWrapped.count > 0 {
          

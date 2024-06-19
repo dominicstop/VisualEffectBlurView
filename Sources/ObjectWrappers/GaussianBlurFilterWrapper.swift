@@ -2,17 +2,22 @@
 //  GaussianBlurFilterWrapper.swift
 //  
 //
-//  Created by Dominic Go on 9/17/23.
+//  Created by Dominic Go on 6/19/24.
 //
 
 import UIKit
+import DGSwiftUtilities
 
-class GaussianBlurFilterWrapper: ObjectWrapping {
 
-  fileprivate enum EncodedString: String, HashedStringDecodable {
+public class GaussianBlurFilterWrapper: ObjectWrapper<
+  NSObject,
+  GaussianBlurFilterWrapper.EncodedString
+> {
+  
+  public enum EncodedString: String, HashedStringDecodable {
     case inputRadius;
     
-    var encodedString: String {
+    public var encodedString: String {
       switch self {
         case .inputRadius:
           // inputRadius
@@ -21,9 +26,7 @@ class GaussianBlurFilterWrapper: ObjectWrapping {
     };
   };
   
-  var objectWrapper: ObjectWrapper<AnyObject>;
-  
-  var inputRadius: CGFloat? {
+  public var inputRadius: CGFloat? {
     get {
       let encodedString: EncodedString = .inputRadius;
       guard let decodedString = encodedString.decodedString else {
@@ -79,61 +82,6 @@ class GaussianBlurFilterWrapper: ObjectWrapping {
       
       wrappedObject.setValue(newValue, forKey: decodedString);
     }
-  };
-  
-  init?(
-    fromBackdropLayer backdropLayer: CALayer?,
-    shouldRetainObject: Bool = false
-  ){
-  
-    guard let backdropLayer = backdropLayer,
-          let filters = backdropLayer.filters,
-          filters.count > 0
-    else {
-      #if DEBUG
-      print(
-        "GaussianBlurFilterWrapper.init",
-        "- could not get backdropLayer filters"
-      );
-      #endif
-      return nil;
-    };
-    
-    let match = filters.first {
-      let filterType = VisualEffectBlurHelpers.performSelector(
-        forObject: $0 as AnyObject,
-        selector:  NSSelectorFromString("type"),
-        type: String.self
-      );
-      
-      guard let filterType = filterType else {
-        #if DEBUG
-        print(
-          "GaussianBlurFilterWrapper.init",
-          "- unable to get: filterType",
-          "- selector failed for: \($0)"
-        );
-        #endif
-        return false;
-      };
-      
-      return filterType.lowercased().contains("blur");
-    };
-    
-    guard let match = match else {
-      #if DEBUG
-      print(
-        "GaussianBlurFilterWrapper.init",
-        "- no matching filters found"
-      );
-      #endif
-      return nil;
-    };
-    
-    self.objectWrapper = .init(
-      objectToWrap: match as AnyObject,
-      shouldRetainObject: shouldRetainObject
-    );
   };
 };
 
