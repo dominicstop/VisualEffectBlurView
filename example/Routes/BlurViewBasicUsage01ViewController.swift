@@ -1,5 +1,5 @@
 //
-//  BasicUsage01.swift.swift
+//  BlurViewBasicUsage01ViewController.swift
 //  VisualEffectBlurViewExample
 //
 //  Created by Dominic Go on 9/14/23.
@@ -8,7 +8,7 @@
 import UIKit
 import VisualEffectBlurView;
 
-class BasicUsage01: UIViewController {
+class BlurViewBasicUsage01ViewController: UIViewController {
 
   override func loadView() {
     let view = UIView();

@@ -29,7 +29,7 @@ struct SwiftUIBasicUsage01: View {
   };
 }
 
-class SwiftUIBasicUsage01ViewController: UIViewController {
+class BlurViewSwiftUIBasicUsage01ViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad();
     

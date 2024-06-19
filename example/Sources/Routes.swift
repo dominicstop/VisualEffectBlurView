@@ -24,10 +24,10 @@ enum Route: String, CaseIterable {
         return VisualEffectBlurTestViewController();
         
       case .blurViewBasicUsage01:
-        return BasicUsage01();
+        return BlurViewBasicUsage01ViewController();
         
       case .blurViewSwiftUIBasicUsage01:
-        return SwiftUIBasicUsage01ViewController();
+        return BlurViewSwiftUIBasicUsage01ViewController();
     };
   };
   
