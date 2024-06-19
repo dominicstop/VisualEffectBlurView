@@ -36,6 +36,9 @@ class RouteManager {
   func setRoute(_ route: Route){
     guard let window = self.window else { return };
     
+    let isUsingNavController =
+      window.rootViewController is UINavigationController;
+    
     let navVC: UINavigationController? = {
       guard self.shouldUseNavigationController else {
         return nil;
@@ -53,20 +56,18 @@ class RouteManager {
       return navVC;
     }();
     
-    let isFirstSetupForNavVC = window.rootViewController !== navVC;
-    
-    if isFirstSetupForNavVC {
-      window.rootViewController = navController;
+    if !isUsingNavController {
+      window.rootViewController = navVC;
     };
     
     let nextVC = route.viewController;
     
     if self.shouldUseNavigationController,
-       !isFirstSetupForNavVC {
+       isUsingNavController {
       
       navVC?.pushViewController(nextVC, animated: true);
     
-    } else {
+    } else if !self.shouldUseNavigationController {
       window.rootViewController = nextVC;
     };
   };
