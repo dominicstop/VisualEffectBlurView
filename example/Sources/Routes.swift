@@ -8,12 +8,17 @@
 import UIKit
 import DGSwiftUtilities
 
+
+
 enum Route: String, CaseIterable {
   
   case routeList;
   case visualEffectBlurTest;
+  case visualEffectViewExperiment01;
+  
   case blurViewBasicUsage01;
   case blurViewSwiftUIBasicUsage01;
+  
 
   var viewController: UIViewController {
     switch self {
@@ -22,6 +27,9 @@ enum Route: String, CaseIterable {
       
       case .visualEffectBlurTest:
         return VisualEffectBlurTestViewController();
+        
+      case .visualEffectViewExperiment01:
+        return VisualEffectViewExperiment01ViewController();
         
       case .blurViewBasicUsage01:
         return BlurViewBasicUsage01ViewController();
@@ -38,6 +46,9 @@ enum Route: String, CaseIterable {
         
       case .visualEffectBlurTest:
         return "VisualEffectBlurView";
+        
+      case .visualEffectViewExperiment01:
+        return "UIVisualEffectView experiment";
         
       case .blurViewBasicUsage01:
         return "VisualEffectBlurView basic usage";
@@ -87,6 +98,11 @@ enum Route: String, CaseIterable {
         return [
           .init(text: "`VisualEffectBlurView Test`"),
           .init(text: " - Change blurRadius + cycle through blur effect styles`"),
+        ];
+        
+      case .visualEffectViewExperiment01:
+        return [
+          .init(text: "TBA"),
         ];
         
       case .blurViewBasicUsage01:
