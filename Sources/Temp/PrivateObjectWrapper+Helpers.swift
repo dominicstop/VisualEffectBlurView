@@ -11,7 +11,10 @@ import DGSwiftUtilities
 public extension PrivateObjectWrapper {
 
   static var associatedClass: AnyClass? {
-    let className = EncodedString.className.encodedString;
+    guard let className = EncodedString.className.decodedString else {
+      return nil;
+    };
+    
     return NSClassFromString(className);
   };
   
