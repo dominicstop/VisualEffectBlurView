@@ -41,7 +41,7 @@ public class VisualEffectBackdropViewWrapper: PrivateObjectWrapper<
   // MARK: - Computed Wrapped Properties
   // -----------------------------------
   
-  var backdropLayerWrapper: BackdropLayerWrapper? {
+  public var backdropLayerWrapper: BackdropLayerWrapper? {
     let result = try? self.performSelector(
       usingEncodedString: .backdropLayer,
       type: CALayer.self
@@ -58,7 +58,7 @@ public class VisualEffectBackdropViewWrapper: PrivateObjectWrapper<
   // -----------------------
   
   /// `-(void)applyRequestedFilterEffects`
-  func applyRequestedFilterEffects() throws {
+  public func applyRequestedFilterEffects() throws {
     try self.performSelector(
       usingEncodedString: .applyRequestedFilterEffects
     );

@@ -63,7 +63,7 @@ public class VisualEffectViewWrapper: ObjectWrapper<
   /// `_effectDescriptorForEffects:(id)arg1 usage:(long long)arg2`
   ///
   @available(iOS 13, *)
-  func effectDescriptor(
+  public func effectDescriptor(
     forEffects effects: [UIVisualEffect],
     usage: Bool
   ) throws -> VisualEffectDescriptorWrapper? {
