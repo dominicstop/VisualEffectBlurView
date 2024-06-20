@@ -12,7 +12,7 @@ extension UIBlurEffect.Style {
 
   public typealias FilterEntry = (
     filterType: String,
-    requestedValues: Dictionary<String, NSNumber>
+    requestedValues: Dictionary<String, Any>
   );
   
   // [filterType: [inputRadius/inputAmount: Number]]
@@ -38,7 +38,7 @@ extension UIBlurEffect.Style {
          Self.defaultFilterEntriesCache[blurStyle] = filterEntriesWrapped.compactMap {
             guard let filterType = $0.filterType,
                   let requestedValuesRaw = $0.requestedValues,
-                  let requestedValue = requestedValuesRaw as? Dictionary<String, NSNumber>
+                  let requestedValue = requestedValuesRaw as? Dictionary<String, Any>
             else {
               #if DEBUG
               print(
