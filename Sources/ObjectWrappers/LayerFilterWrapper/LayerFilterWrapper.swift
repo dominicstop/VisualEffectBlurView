@@ -32,7 +32,8 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
           return "ZmlsdGVyV2l0aFR5cGU6";
           
         case .classMethodFilterTypes:
-          return "";
+          // filterTypes
+          return "ZmlsdGVyVHlwZXM=";
       };
     };
   };
@@ -40,14 +41,15 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
   // MARK: - Wrapped Properties
   // --------------------------
   
-  public static var filterTypes: Any? {
-    guard let associatedClass = Self.classType else {
+  public static var filterTypes: NSArray? {
+    guard let classType = Self.classType else {
       return nil;
     };
     
     return try? Self.performSelector(
       usingHashedString: .classMethodFilterTypes,
-      forObject: associatedClass
+      forObject: classType as AnyObject,
+      type: NSArray.self
     );
   };
   
