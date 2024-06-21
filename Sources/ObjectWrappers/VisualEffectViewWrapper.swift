@@ -37,8 +37,8 @@ public class VisualEffectViewWrapper: ObjectWrapper<
     };
   };
   
-  // MARK: - Computed Properties - Wrapped Object
-  // --------------------------------------------
+  // MARK: - Wrapped Properties
+  // --------------------------
   
   /// Selector:
   /// `-(id)_backgroundHost`
@@ -56,8 +56,8 @@ public class VisualEffectViewWrapper: ObjectWrapper<
     return .init(objectToWrap: result);
   };
 
-  // MARK: Methods - Wrapped Object
-  // ------------------------------
+  // MARK: - Wrapped Methods
+  // -----------------------
   
   /// Selector:
   /// `_effectDescriptorForEffects:(id)arg1 usage:(long long)arg2`

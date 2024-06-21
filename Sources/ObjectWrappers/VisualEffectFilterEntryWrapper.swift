@@ -47,9 +47,9 @@ public class VisualEffectFilterEntryWrapper: PrivateObjectWrapper<
       };
     };
   };
-  
-  // MARK: Computed Properties
-  // -------------------------
+
+  // MARK: - Wrapped Properties
+  // --------------------------
   
   /// Declaration:
   /// `@property (nonatomic,copy) NSString * filterType;`
@@ -83,8 +83,8 @@ public class VisualEffectFilterEntryWrapper: PrivateObjectWrapper<
     );
   };
   
-  // MARK: - Methods
-  // -------------
+  // MARK: - Wrapped Methods
+  // -----------------------
   
   /// Setter for property:
   /// `@property (nonatomic,copy) NSDictionary * requestedValues;`

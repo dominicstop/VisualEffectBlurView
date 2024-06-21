@@ -37,6 +37,9 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
     };
   };
   
+  // MARK: - Wrapped Properties
+  // --------------------------
+  
   public static var filterTypes: Any? {
     guard let associatedClass = Self.classType else {
       return nil;
@@ -66,6 +69,9 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
     
     self.init(objectToWrap: instance);
   };
+  
+  // MARK: - Wrapped Methods
+  // -----------------------
   
   public func setInputAmount(_ value: CGFloat){
     guard let wrappedObject = self.wrappedObject else { return };

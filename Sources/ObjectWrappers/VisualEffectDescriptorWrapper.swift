@@ -32,10 +32,10 @@ public class VisualEffectDescriptorWrapper: PrivateObjectWrapper<
     };
   };
   
-  // MARK: - Computed Properties
-  // ---------------------------
   
   public var filterEntriesWrapped: [VisualEffectFilterEntryWrapper]? {
+  // MARK: - Wrapped Properties
+  // --------------------------
   
     let result = try? self.performSelector(
       usingEncodedString: .filterEntries,

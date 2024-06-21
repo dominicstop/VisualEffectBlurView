@@ -26,6 +26,9 @@ public class GaussianBlurFilterWrapper: ObjectWrapper<
     };
   };
   
+  // MARK: - Wrapped Properties
+  // --------------------------
+  
   public var inputRadius: CGFloat? {
     get {
       let encodedString: EncodedString = .inputRadius;

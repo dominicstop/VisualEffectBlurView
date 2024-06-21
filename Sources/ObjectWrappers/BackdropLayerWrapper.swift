@@ -27,8 +27,8 @@ public class BackdropLayerWrapper: PrivateObjectWrapper<
     };
   };
   
-  // MARK: - Computed Properties - Helpers
-  // ------------------------------------
+  // MARK: - Wrapped Properties
+  // --------------------------
   
   // TODO: temp - replace w/ `CIFilter`
   public var gaussianBlurFilterWrapper: GaussianBlurFilterWrapper? {

@@ -38,9 +38,11 @@ public class VisualEffectBackdropViewWrapper: PrivateObjectWrapper<
     };
   };
   
-  // MARK: - Computed Wrapped Properties
-  // -----------------------------------
+  // MARK: - Wrapped Properties
+  // --------------------------
   
+  /// Selector:
+  /// `-(CABackdropLayer *)backdropLayer;`
   public var backdropLayerWrapper: BackdropLayerWrapper? {
     let result = try? self.performSelector(
       usingEncodedString: .backdropLayer,
@@ -57,6 +59,7 @@ public class VisualEffectBackdropViewWrapper: PrivateObjectWrapper<
   // MARK: - Wrapped Methods
   // -----------------------
   
+  /// Selector:
   /// `-(void)applyRequestedFilterEffects`
   public func applyRequestedFilterEffects() throws {
     try self.performSelector(
