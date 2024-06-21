@@ -38,7 +38,7 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
   };
   
   public static var filterTypes: Any? {
-    guard let associatedClass = Self.associatedClass else {
+    guard let associatedClass = Self.classType else {
       return nil;
     };
     
@@ -49,7 +49,7 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
   };
   
   public convenience init?(rawFilterType: String){
-    guard let associatedClass = Self.associatedClass else {
+    guard let associatedClass = Self.classType else {
       return nil;
     };
     
