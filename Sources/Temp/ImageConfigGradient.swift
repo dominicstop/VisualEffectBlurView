@@ -67,6 +67,24 @@ public struct ImageConfigGradient {
     self.cornerRadius = cornerRadius;
   };
   
+  public init(
+    type: CAGradientLayerType,
+    colors: [CGColor],
+    locations: [NSNumber]? = nil,
+    startPoint: CGPoint,
+    endPoint: CGPoint,
+    size: CGSize,
+    cornerRadius: CGFloat
+  ) {
+    self.type = type;
+    self.colors = colors;
+    self.locations = locations;
+    self.startPoint = startPoint;
+    self.endPoint = endPoint;
+    self.size = size;
+    self.cornerRadius = cornerRadius;
+  }
+  
   // MARK: - Functions
   // -----------------
   
@@ -97,5 +115,79 @@ public struct ImageConfigGradient {
       
       clipPath.addClip();
     };
+  };
+};
+
+// MARK: - Static Alias
+// --------------------
+
+extension ImageConfigGradient {
+
+  public func topDownGradient(
+    colors: [UIColor],
+    locations: [NSNumber]? = nil,
+    cornerRadius: CGFloat = 0,
+    size: CGSize
+  ) -> Self {
+    .init(
+      type: .axial,
+      colors: colors,
+      locations: locations,
+      startPointPreset: .top,
+      endPointPreset: .bottom,
+      cornerRadius: cornerRadius,
+      size: size
+    );
+  };
+  
+  public func bottomToTopGradient(
+    colors: [UIColor],
+    locations: [NSNumber]? = nil,
+    cornerRadius: CGFloat = 0,
+    size: CGSize
+  ) -> Self {
+    .init(
+      type: .axial,
+      colors: colors,
+      locations: locations,
+      startPointPreset: .bottom,
+      endPointPreset: .top,
+      cornerRadius: cornerRadius,
+      size: size
+    );
+  };
+  
+  public func leftToRightGradient(
+    colors: [UIColor],
+    locations: [NSNumber]? = nil,
+    cornerRadius: CGFloat = 0,
+    size: CGSize
+  ) -> Self {
+    .init(
+      type: .axial,
+      colors: colors,
+      locations: locations,
+      startPointPreset: .left,
+      endPointPreset: .right,
+      cornerRadius: cornerRadius,
+      size: size
+    );
+  };
+  
+  public func rightToLeft(
+    colors: [UIColor],
+    locations: [NSNumber]? = nil,
+    cornerRadius: CGFloat = 0,
+    size: CGSize
+  ) -> Self {
+    .init(
+      type: .axial,
+      colors: colors,
+      locations: locations,
+      startPointPreset: .right,
+      endPointPreset: .left,
+      cornerRadius: cornerRadius,
+      size: size
+    );
   };
 };
