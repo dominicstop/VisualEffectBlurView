@@ -16,10 +16,10 @@ public class VisualEffectBackdropViewWrapper: PrivateObjectWrapper<
   VisualEffectBackdropViewWrapper.EncodedString
 > {
 
-  public enum EncodedString: String, PrivateObjectWrappingEncodedString {
+  public enum EncodedString: PrivateObjectWrappingEncodedString {
     case className;
-    case backdropLayer;
-    case applyRequestedFilterEffects;
+    case getterBackdropLayer;
+    case methodApplyRequestedFilterEffects;
     
     public var encodedString: String {
       switch self {
@@ -27,11 +27,11 @@ public class VisualEffectBackdropViewWrapper: PrivateObjectWrapper<
           // _UIVisualEffectBackdropView
           return "X1VJVmlzdWFsRWZmZWN0QmFja2Ryb3BWaWV3";
           
-        case .backdropLayer:
+        case .getterBackdropLayer:
           // backdropLayer
           return "YmFja2Ryb3BMYXllcg==";
           
-        case .applyRequestedFilterEffects:
+        case .methodApplyRequestedFilterEffects:
           // applyRequestedFilterEffects
           return "YXBwbHlSZXF1ZXN0ZWRGaWx0ZXJFZmZlY3Rz";
       };
@@ -45,7 +45,7 @@ public class VisualEffectBackdropViewWrapper: PrivateObjectWrapper<
   /// `-(CABackdropLayer *)backdropLayer;`
   public var backdropLayerWrapper: BackdropLayerWrapper? {
     let result = try? self.performSelector(
-      usingEncodedString: .backdropLayer,
+      usingEncodedString: .getterBackdropLayer,
       type: CALayer.self
     );
     
@@ -63,7 +63,7 @@ public class VisualEffectBackdropViewWrapper: PrivateObjectWrapper<
   /// `-(void)applyRequestedFilterEffects`
   public func applyRequestedFilterEffects() throws {
     try self.performSelector(
-      usingEncodedString: .applyRequestedFilterEffects
+      usingEncodedString: .methodApplyRequestedFilterEffects
     );
   };
 };

@@ -15,8 +15,8 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
   NSObject,
   LayerFilterWrapper.EncodedString
 > {
-
-  public enum EncodedString: String, PrivateObjectWrappingEncodedString {
+  
+  public enum EncodedString: PrivateObjectWrappingEncodedString {
     case className;
     case constructorFilterWithType;
     case classMethodFilterTypes;

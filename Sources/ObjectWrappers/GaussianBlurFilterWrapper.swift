@@ -14,12 +14,12 @@ public class GaussianBlurFilterWrapper: ObjectWrapper<
   GaussianBlurFilterWrapper.EncodedString
 > {
   
-  public enum EncodedString: String, HashedStringDecodable {
-    case inputRadius;
+  public enum EncodedString: HashedStringDecodable {
+    case propertyInputRadius;
     
     public var encodedString: String {
       switch self {
-        case .inputRadius:
+        case .propertyInputRadius:
           // inputRadius
           return "aW5wdXRSYWRpdXM=";
       };
@@ -31,59 +31,16 @@ public class GaussianBlurFilterWrapper: ObjectWrapper<
   
   public var inputRadius: CGFloat? {
     get {
-      let encodedString: EncodedString = .inputRadius;
-      guard let decodedString = encodedString.decodedString else {
-        #if DEBUG
-        print(
-          "GaussianBlurFilterWrapper.inputRadius - get",
-          "- failed to get decodedString",
-          "- encodedString.rawValue:", encodedString.rawValue,
-          "- encodedString.encodedString:", encodedString.encodedString
-        );
-        #endif
-        return nil;
-      };
-    
-      guard let wrappedObject = self.wrappedObject,
-            let inputRadiusRaw = wrappedObject.value(forKey: decodedString),
-            let inputRadius = inputRadiusRaw as? CGFloat
-      else {
-        #if DEBUG
-        print(
-          "GaussianBlurFilterWrapper.inputRadius - get",
-          "- failed to get inputRadius"
-        );
-        #endif
-        return nil;
-      };
-      
-      return inputRadius;
+      return try? self.getValue(
+        forHashedString: .propertyInputRadius,
+        type: CGFloat.self
+      );
     }
     set {
-      let encodedString: EncodedString = .inputRadius;
-      guard let decodedString = encodedString.decodedString else {
-        #if DEBUG
-        print(
-          "GaussianBlurFilterWrapper.inputRadius - set",
-          "- failed to get decodedString",
-          "- encodedString.rawValue:", encodedString.rawValue,
-          "- encodedString.encodedString:", encodedString.encodedString
-        );
-        #endif
-        return;
-      };
-      
-      guard let wrappedObject = self.wrappedObject else {
-        #if DEBUG
-        print(
-          "GaussianBlurFilterWrapper.inputRadius - set",
-          "- failed to get wrappedObject"
-        );
-        #endif
-        return;
-      };
-      
-      wrappedObject.setValue(newValue, forKey: decodedString);
+      try? self.setValue(
+        forHashedString: .propertyInputRadius,
+        value: newValue
+      );
     }
   };
 };

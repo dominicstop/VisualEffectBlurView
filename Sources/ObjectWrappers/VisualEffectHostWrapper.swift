@@ -17,10 +17,10 @@ public class VisualEffectHostWrapper: PrivateObjectWrapper<
   VisualEffectHostWrapper.EncodedString
 > {
 
-  public enum EncodedString: String, PrivateObjectWrappingEncodedString {
+  public enum EncodedString: PrivateObjectWrappingEncodedString {
     case className;
-    case contentView;
-    case setCurrentEffectDescriptor;
+    case getterContentView;
+    case methodGetCurrentEffectDescriptor;
     
     public var encodedString: String {
       switch self {
@@ -29,17 +29,16 @@ public class VisualEffectHostWrapper: PrivateObjectWrapper<
           return "X1VJVmlzdWFsRWZmZWN0SG9zdA==";
           
                   
-        case .contentView:
+        case .getterContentView:
           // contentView
           return "Y29udGVudFZpZXc=";
           
-        case .setCurrentEffectDescriptor:
+        case .methodGetCurrentEffectDescriptor:
           // setCurrentEffectDescriptor:
           return "c2V0Q3VycmVudEVmZmVjdERlc2NyaXB0b3I6";
       };
     };
   };
-  
   
   // MARK: - Wrapped Properties
   // --------------------------
@@ -47,7 +46,7 @@ public class VisualEffectHostWrapper: PrivateObjectWrapper<
     /// `-(UIView *)contentView`
   public var contentViewWrapper: VisualEffectBackdropViewWrapper? {
     let result = try? self.performSelector(
-      usingEncodedString: .contentView,
+      usingEncodedString: .getterContentView,
       type: UIView.self
     );
     
@@ -79,9 +78,8 @@ public class VisualEffectHostWrapper: PrivateObjectWrapper<
     };
     
     try self.performSelector(
-      usingEncodedString: .setCurrentEffectDescriptor,
+      usingEncodedString: .methodGetCurrentEffectDescriptor,
       withArg1: effectDescriptor
     );
   };
 };
-

@@ -15,9 +15,10 @@ public class VisualEffectDescriptorWrapper: PrivateObjectWrapper<
   VisualEffectDescriptorWrapper.EncodedString
 > {
 
-  public enum EncodedString: String, PrivateObjectWrappingEncodedString {
+  public enum EncodedString: PrivateObjectWrappingEncodedString {
     case className;
     case filterEntries;
+    case addFilterEntry;
     
     public var encodedString: String {
       switch self {
@@ -28,26 +29,46 @@ public class VisualEffectDescriptorWrapper: PrivateObjectWrapper<
         case .filterEntries:
           // filterEntries
           return "ZmlsdGVyRW50cmllcw==";
+          
+        case .addFilterEntry:
+          // addFilterEntry:
+          return "YWRkRmlsdGVyRW50cnk6";
       };
     };
   };
   
-  
-  public var filterEntriesWrapped: [VisualEffectFilterEntryWrapper]? {
   // MARK: - Wrapped Properties
   // --------------------------
   
-    let result = try? self.performSelector(
+  public var filterEntries: NSArray? {
+    try? self.performSelector(
       usingEncodedString: .filterEntries,
       type: NSArray.self
     );
-    
-    guard let result = result else {
+  };
+  
+  // MARK: - Computed Properties
+  // ---------------------------
+  
+  public var filterEntriesWrapped: [VisualEffectFilterEntryWrapper]? {
+    guard let filterEntriesRaw = self.filterEntries else {
       return nil;
     };
     
-    return result.compactMap {
+    return filterEntriesRaw.compactMap {
       .init(objectToWrap: $0 as AnyObject);
     };
+  };
+  
+  // MARK: - Wrapped Methods
+  // -----------------------
+  
+  /// Selector:
+  /// `-(void)addFilterEntry:(id)arg1`
+  public func addFilterEntry(_ filter: Any) throws {
+    try self.performSelector(
+      usingEncodedString: .addFilterEntry,
+      withArg1: filter
+    );
   };
 };

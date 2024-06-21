@@ -16,12 +16,12 @@ public class VisualEffectFilterEntryWrapper: PrivateObjectWrapper<
   VisualEffectFilterEntryWrapper.EncodedString
 > {
 
-  public enum EncodedString: String, PrivateObjectWrappingEncodedString {
+  public enum EncodedString: PrivateObjectWrappingEncodedString {
     case className;
-    case filterType;
-    case requestedValues;
-    case setRequestedValues;
-    case identityValues;
+    case propertyFilterType;
+    case propertyValues;
+    case propertyIdentityValues;
+    case methodSetRequestedValues;
     
     public var encodedString: String {
       switch self {
@@ -29,21 +29,21 @@ public class VisualEffectFilterEntryWrapper: PrivateObjectWrapper<
           // _UIVisualEffectFilterEntry
           return "X1VJVmlzdWFsRWZmZWN0RmlsdGVyRW50cnk=";
           
-        case .filterType:
+        case .propertyFilterType:
           // filterType
           return "ZmlsdGVyVHlwZQ==";
           
-        case .requestedValues:
+        case .propertyValues:
           // requestedValues
           return "cmVxdWVzdGVkVmFsdWVz";
           
-        case .setRequestedValues:
-          // setRequestedValues:
-          return "c2V0UmVxdWVzdGVkVmFsdWVzOg==";
-          
-        case .identityValues:
+        case .propertyIdentityValues:
           // identityValues
           return "aWRlbnRpdHlWYWx1ZXM=";
+          
+        case .methodSetRequestedValues:
+          // setRequestedValues:
+          return "c2V0UmVxdWVzdGVkVmFsdWVzOg==";
       };
     };
   };
@@ -56,7 +56,7 @@ public class VisualEffectFilterEntryWrapper: PrivateObjectWrapper<
   ///
   public var filterType: String? {
     let result = try? self.performSelector(
-      usingEncodedString: .filterType,
+      usingEncodedString: .propertyFilterType,
       type: String.self
     );
     
@@ -68,7 +68,7 @@ public class VisualEffectFilterEntryWrapper: PrivateObjectWrapper<
   ///
   public var requestedValues: NSDictionary? {
     return try? self.performSelector(
-      usingEncodedString: .requestedValues,
+      usingEncodedString: .propertyValues,
       type: NSDictionary.self
     );
   };
@@ -78,7 +78,7 @@ public class VisualEffectFilterEntryWrapper: PrivateObjectWrapper<
   ///
   public var identityValues: NSDictionary? {
     return try? self.performSelector(
-      usingEncodedString: .identityValues,
+      usingEncodedString: .propertyIdentityValues,
       type: NSDictionary.self
     );
   };
@@ -89,9 +89,9 @@ public class VisualEffectFilterEntryWrapper: PrivateObjectWrapper<
   /// Setter for property:
   /// `@property (nonatomic,copy) NSDictionary * requestedValues;`
   ///
-  func setRequestedValues(_ requestedValues: NSDictionary) throws {
+  public func setRequestedValues(_ requestedValues: NSDictionary) throws {
     try self.performSelector(
-      usingEncodedString: .setRequestedValues,
+      usingEncodedString: .methodSetRequestedValues,
       withArg1: requestedValues
     );
   };

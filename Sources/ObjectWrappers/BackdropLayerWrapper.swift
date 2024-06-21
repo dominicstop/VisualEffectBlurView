@@ -15,7 +15,7 @@ public class BackdropLayerWrapper: PrivateObjectWrapper<
   BackdropLayerWrapper.EncodedString
 > {
 
-  public enum EncodedString: String, PrivateObjectWrappingEncodedString {
+  public enum EncodedString: PrivateObjectWrappingEncodedString {
     case className;
     
     public var encodedString: String {
