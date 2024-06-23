@@ -20,6 +20,7 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
     case className;
     case constructorFilterWithType;
     case classMethodFilterTypes;
+    case methodSetDefaults;
     
     public var encodedString: String {
       switch self {
@@ -34,6 +35,10 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
         case .classMethodFilterTypes:
           // filterTypes
           return "ZmlsdGVyVHlwZXM=";
+          
+        case .methodSetDefaults:
+          // setDefaults
+          return "c2V0RGVmYXVsdHM=";
       };
     };
   };
@@ -78,6 +83,12 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
   public func setInputAmount(_ value: CGFloat){
     guard let wrappedObject = self.wrappedObject else { return };
     wrappedObject.setValue(value, forKey: "inputAmount");
+  };
+  
+  /// Selector:
+  /// `-(void)setDefaults;`
+  public func setDefaults() throws {
+    try self.performSelector(usingEncodedString: .methodSetDefaults);
   };
 };
 
