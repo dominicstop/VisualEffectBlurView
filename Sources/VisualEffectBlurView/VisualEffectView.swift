@@ -43,6 +43,20 @@ public class VisualEffectView: UIVisualEffectView {
     self.contentViewWrapper?.backdropLayerWrapper
   };
   
+  @available(iOS 13, *)
+  var effectDescriptorForCurrentEffectWrapper: VisualEffectDescriptorWrapper? {
+    guard let effect = self.effect,
+          let wrapper = self.wrapper
+    else {
+      return nil;
+    };
+    
+    return try? wrapper.effectDescriptor(
+      forEffects: [effect],
+      usage: true
+    );
+  };
+  
   public init?(rawFilterType: String? = nil){
     super.init(effect: UIBlurEffect(style: .regular));
     
