@@ -19,6 +19,7 @@
 		88F123622AB2D5DD00DEB121 /* VisualEffectBlurTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F123612AB2D5DD00DEB121 /* VisualEffectBlurTestViewController.swift */; };
 		88F1237A2AB30FF600DEB121 /* BlurViewSwiftUIBasicUsage01ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F123792AB30FF600DEB121 /* BlurViewSwiftUIBasicUsage01ViewController.swift */; };
 		88F123832AB341D800DEB121 /* BlurViewBasicUsage01ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F123822AB341D800DEB121 /* BlurViewBasicUsage01ViewController.swift */; };
+		88F7286B2C286C64005B49D0 /* NSValue+NSValue_Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 88F7286A2C286C64005B49D0 /* NSValue+NSValue_Helpers.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,9 @@
 		88F123612AB2D5DD00DEB121 /* VisualEffectBlurTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectBlurTestViewController.swift; sourceTree = "<group>"; };
 		88F123792AB30FF600DEB121 /* BlurViewSwiftUIBasicUsage01ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurViewSwiftUIBasicUsage01ViewController.swift; sourceTree = "<group>"; };
 		88F123822AB341D800DEB121 /* BlurViewBasicUsage01ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlurViewBasicUsage01ViewController.swift; sourceTree = "<group>"; };
+		88F728682C286C63005B49D0 /* VisualEffectBlurViewExample-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "VisualEffectBlurViewExample-Bridging-Header.h"; sourceTree = "<group>"; };
+		88F728692C286C64005B49D0 /* NSValue+NSValue_Helpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSValue+NSValue_Helpers.h"; sourceTree = "<group>"; };
+		88F7286A2C286C64005B49D0 /* NSValue+NSValue_Helpers.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSValue+NSValue_Helpers.m"; sourceTree = "<group>"; };
 		88FD5DFF2AB0A31100E89681 /* Transform3D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transform3D.swift; sourceTree = "<group>"; };
 		88FD5E012AB0A35100E89681 /* Angle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Angle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -91,6 +95,9 @@
 				88AF8CAA2C21C9350086A6AD /* Routes.swift */,
 				88AF8CAC2C231A010086A6AD /* RouteManager.swift */,
 				88AF8CB02C2333320086A6AD /* VisualEffectViewExperiment01ViewController.swift */,
+				88F728692C286C64005B49D0 /* NSValue+NSValue_Helpers.h */,
+				88F7286A2C286C64005B49D0 /* NSValue+NSValue_Helpers.m */,
+				88F728682C286C63005B49D0 /* VisualEffectBlurViewExample-Bridging-Header.h */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -157,6 +164,7 @@
 				TargetAttributes = {
 					88625F1E2AB08D530086B4FC = {
 						CreatedOnToolsVersion = 14.2;
+						LastSwiftMigration = 1500;
 					};
 				};
 			};
@@ -204,6 +212,7 @@
 				88F123832AB341D800DEB121 /* BlurViewBasicUsage01ViewController.swift in Sources */,
 				88AF8CAD2C231A020086A6AD /* RouteManager.swift in Sources */,
 				88F1237A2AB30FF600DEB121 /* BlurViewSwiftUIBasicUsage01ViewController.swift in Sources */,
+				88F7286B2C286C64005B49D0 /* NSValue+NSValue_Helpers.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,6 +349,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ZC7A6XV8GR;
@@ -358,6 +368,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = dominicgo.BlurViewExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Sources/VisualEffectBlurViewExample-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -368,6 +380,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ZC7A6XV8GR;
@@ -386,6 +399,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = dominicgo.BlurViewExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Sources/VisualEffectBlurViewExample-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
