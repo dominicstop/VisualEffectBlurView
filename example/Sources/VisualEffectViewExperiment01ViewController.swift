@@ -24,6 +24,66 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
   };
   
   override func viewDidLoad() {
+    
+    
+    UIBlurEffect.Style.allCases.forEach { blurEffectStyle in
+      let blurEffect = UIBlurEffect(style: blurEffectStyle);
+      
+      UIVibrancyEffectStyle.allCases.forEach { vibrancyEffectStyle in
+        let effect = UIVibrancyEffect(
+          blurEffect: blurEffect,
+          style: vibrancyEffectStyle
+        );
+        
+        let effectView = UIVisualEffectView(effect: effect);
+        let effectViewWrappers = VisualEffectViewWrapper(objectToWrap: effectView)!;
+        
+        
+        let visualEffectDescriptorWrapper =
+          try? effectViewWrappers.effectDescriptor(forEffects: [effect], usage: true);
+      
+        let filterEntries = visualEffectDescriptorWrapper!.filterEntriesWrapped!;
+        
+        filterEntries.forEach {
+          print(
+            "blurEffectStyle:", blurEffectStyle.caseString,
+            "\n - vibrancyEffectStyle:", vibrancyEffectStyle.caseString,
+            "\n - filterType:", $0.filterType ?? "N/A",
+            "\n - wrappedObject:", $0.wrappedObject?.debugDescription ?? "N/A",
+            "\n - requestedValues:", $0.requestedValues?.debugDescription ?? "N/A",
+            "\n - identityValues:", $0.identityValues?.description ?? "N/A"
+          );
+          
+          guard let requestedValues = $0.requestedValues,
+                let inputColorMatrixRaw = requestedValues["inputColorMatrix"],
+                var inputColorMatrix = inputColorMatrixRaw as? NSValue
+          else {
+            print("\n");
+            return;
+          };
+          
+          let floatMembersInStructCount = 20;
+          let floatSizeBytes = MemoryLayout<UInt32>.size;
+          let structTotalSizeBytes = floatSizeBytes * floatMembersInStructCount;
+
+          var bufferArray = [UInt32](repeating: 0, count: floatMembersInStructCount);
+          inputColorMatrix.getValue(&bufferArray, size: structTotalSizeBytes);
+          
+          var floats = bufferArray.map {
+            Float(bitPattern: $0);
+          };
+          
+          print(
+            " - inputColorMatrix - objCType:", inputColorMatrix.objCType,
+            "\n - inputColorMatrix - floats:", floats,
+            "\n"
+          );
+          return;
+        };
+      };
+    };
+    
+  
   
     let bgView: UIView = {
       let rootView = UIView();
@@ -108,6 +168,30 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
       self.visualEffectView = visualEffectView;
       
       if let visualEffectView = visualEffectView {
+        let box = UIView();
+        box.backgroundColor = .red;
+        box.alpha = 0.5;
+        
+        visualEffectView.contentView.addSubview(box);
+        box.translatesAutoresizingMaskIntoConstraints = false;
+        
+        NSLayoutConstraint.activate([
+          box.heightAnchor.constraint(
+            equalToConstant: 200
+          ),
+          box.widthAnchor.constraint(
+            equalToConstant: 200
+          ),
+          
+          box.centerXAnchor.constraint(
+            equalTo: visualEffectView.centerXAnchor
+          ),
+          
+          box.centerYAnchor.constraint(
+            equalTo: visualEffectView.centerYAnchor
+          ),
+        ]);
+      
         visualEffectView.translatesAutoresizingMaskIntoConstraints = false;
         containerView.addSubview(visualEffectView);
         
@@ -409,16 +493,80 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
        let backdropLayerWrapper = contentViewWrapper.backdropLayerWrapper,
        let backdropLayer = backdropLayerWrapper.wrappedObject
     {
-      visualEffectView.shouldOnlyShowBackdropLayer = true;
+      //visualEffectView.shouldOnlyShowBackdropLayer = true;
+      break block;
+      
+      let filterTypesRaw = LayerFilterWrapper.filterTypes;
+      
+      let filterTypeName: LayerFilterTypeName = .colorMatrix;//LayerFilterTypeName.allCases[cyclicIndex: 25];
+      let filterTypeNameString = filterTypeName.decodedString!;
+      let layerFilterWrapper = LayerFilterWrapper(rawFilterType: filterTypeNameString);
 
-      let layerFilterWrapper = LayerFilterWrapper(rawFilterType: "colorSaturate");
       guard let layerFilterWrapper = layerFilterWrapper,
             let layerFilter = layerFilterWrapper.wrappedObject
       else {
         break block;
       };
       
-      layerFilterWrapper.setInputAmount(0);
+      print("filterTypeName:", filterTypeNameString);
+      try! layerFilterWrapper.setDefaults();
+      //layerFilterWrapper.setInputAmount(2);
+      
+      if filterTypeName == .colorMatrix {
+        
+        
+        let image = ImageConfigSolid(
+          size: .init(width: 100, height: 100),
+          fillColor: .red,
+          borderRadius: 0
+        );
+        
+        layerFilter.setValue(image.makeImage().cgImage, forKey: "inputImage");
+        
+        layerFilter.setValue(
+          CIVector(x: 1, y: 1, z: 1, w: 0),
+          forKey: "inputRVector"
+        );
+        
+        layerFilter.setValue(
+          CIVector(x: 0, y: 1, z: 0, w: 0),
+          forKey: "inputGVector"
+        );
+        
+        layerFilter.setValue(
+          CIVector(x: 0, y: 0, z: 1, w: 0),
+          forKey: "inputBVector"
+        );
+        
+        layerFilter.setValue(
+          CIVector(x: 0, y: 0, z: 0, w: 1),
+          forKey: "inputAVector"
+        );
+      };
+      
+      if filterTypeName == .colorHueRotate {
+        layerFilterWrapper.setInputAmount(100.0);
+        layerFilter.setValue(100.0, forKey: "inputAngle");
+      };
+      
+      if filterTypeName == .gaussianBlur {
+        layerFilter.setValue(NSNumber(value: 10), forKey: "inputRadius");
+      };
+      
+      if filterTypeName == .multiplyColor {
+        let image = ImageConfigSolid(
+          size: .init(width: 100, height: 100),
+          fillColor: .blue,
+          borderRadius: 0
+        );
+        
+        layerFilter.setValue(image.makeImage().cgImage, forKey: "inputImage");
+        layerFilter.setValue(image.makeImage().cgImage, forKey: "inputBackgroundImage");
+      };
+      
+      // layerFilter.setValue(NSNumber(value: 1), forKey: "inputMax");
+      // layerFilter.setValue(UIColor.red, forKey: "inputColor");
+      
       backdropLayer.filters = [layerFilter];
     };
   };
@@ -427,3 +575,14 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
 
   };
 };
+
+extension Data { 
+    var hex: String {
+        var hexString = ""
+        for byte in self {
+            hexString += String(format: "%02X", byte)
+        }
+
+        return hexString
+    }
+}
