@@ -25,10 +25,9 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
   
   override func viewDidLoad() {
     
-    
     UIBlurEffect.Style.allCases.forEach { blurEffectStyle in
       let blurEffect = UIBlurEffect(style: blurEffectStyle);
-      
+
       UIVibrancyEffectStyle.allCases.forEach { vibrancyEffectStyle in
         let effect = UIVibrancyEffect(
           blurEffect: blurEffect,
@@ -54,37 +53,37 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
             "\n - identityValues:", $0.identityValues?.description ?? "N/A"
           );
           
-          guard let requestedValues = $0.requestedValues,
-                let inputColorMatrixRaw = requestedValues["inputColorMatrix"],
-                var inputColorMatrix = inputColorMatrixRaw as? NSValue
-          else {
-            print("\n");
-            return;
-          };
-          
-          let floatMembersInStructCount = 20;
-          let floatSizeBytes = MemoryLayout<UInt32>.size;
-          let structTotalSizeBytes = floatSizeBytes * floatMembersInStructCount;
 
-          var bufferArray = [UInt32](repeating: 0, count: floatMembersInStructCount);
-          inputColorMatrix.getValue(&bufferArray, size: structTotalSizeBytes);
-          
-          var floats = bufferArray.map {
-            Float(bitPattern: $0);
+          if let requestedValues = $0.requestedValues,
+             let colorMatrixRaw = requestedValues["inputColorMatrix"],
+             let colorMatrixValue = colorMatrixRaw as? NSValue
+          {
+            let colorMatrix = ColorMatrixRGBA(fromValue: colorMatrixValue);
+            
+            print(
+              " - requestedValues - objCType:", colorMatrixValue.objCType,
+              "\n - requestedValues - inputColorMatrix:", colorMatrix
+            );
           };
           
-          print(
-            " - inputColorMatrix - objCType:", inputColorMatrix.objCType,
-            "\n - inputColorMatrix - floats:", floats,
-            "\n"
-          );
+          if let identityValues = $0.identityValues,
+             let colorMatrixRaw = identityValues["inputColorMatrix"],
+             let colorMatrixValue = colorMatrixRaw as? NSValue
+          {
+            let colorMatrix = ColorMatrixRGBA(fromValue: colorMatrixValue);
+            
+            print(
+              " - identityValues - objCType:", colorMatrixValue.objCType,
+              "\n - identityValues - inputColorMatrix:", colorMatrix
+            );
+          };
+          
+          print("\n");
           return;
         };
       };
     };
     
-  
-  
     let bgView: UIView = {
       let rootView = UIView();
       
