@@ -47,6 +47,22 @@ public struct ColorMatrixRGBA {
     };
   };
   
+  // MARK: - Static Helpers
+  // ----------------------
+  
+  public static func getKeyPath(
+    forRow row: Int,
+    column: Int
+  ) -> WritableKeyPath<Self, Float>? {
+    guard let rowValues = Self.kayPathsMatrix[safeIndex: row],
+          let element = rowValues[safeIndex: column]
+    else {
+      return nil;
+    };
+    
+    return element;
+  };
+  
   // MARK: - Properties
   // ------------------
 
@@ -55,6 +71,17 @@ public struct ColorMatrixRGBA {
   public var m31, m32, m33, m34, m35: Float;
   public var m41, m42, m43, m44, m45: Float;
   
+  // MARK: - Computed Properties
+  // ---------------------------
+  
+  public var matrix3x3: [[Float]] {
+    self.getMatrix(forRowSize: 3, columnSize: 3);
+  };
+  
+  public var matrix4x4: [[Float]] {
+    self.getMatrix(forRowSize: 4, columnSize: 4);
+  };
+    
   // MARK: - Init
   // ------------
   
@@ -107,5 +134,36 @@ public struct ColorMatrixRGBA {
     };
     
     self = newMatrix;
+  };
+  
+  // MARK: - Functions
+  // -----------------
+  
+  public func getValue(forRow row: Int, column: Int) -> Float? {
+    guard let keyPath = Self.getKeyPath(forRow: row, column: column) else {
+      return nil;
+    };
+    
+    return self[keyPath: keyPath];
+  };
+  
+  public func getMatrix(
+    forRowSize rowSize: Int,
+    columnSize: Int
+  ) -> [[Float]] {
+    var matrix: [[Float]]  = [];
+    
+    for i in 0..<rowSize {
+      var rowValues: [Float] = [];
+      
+      for j in 0..<columnSize {
+        let value = self.getValue(forRow: i, column: j);
+        rowValues.append(value ?? 0);
+      };
+      
+      matrix.append(rowValues);
+    };
+    
+    return matrix;
   };
 };
