@@ -19,7 +19,7 @@ public class VisualEffectFilterEntryWrapper: PrivateObjectWrapper<
   public enum EncodedString: PrivateObjectWrappingEncodedString {
     case className;
     case propertyFilterType;
-    case propertyValues;
+    case propertyRequestedValues;
     case propertyIdentityValues;
     case methodSetRequestedValues;
     
@@ -33,7 +33,7 @@ public class VisualEffectFilterEntryWrapper: PrivateObjectWrapper<
           // filterType
           return "ZmlsdGVyVHlwZQ==";
           
-        case .propertyValues:
+        case .propertyRequestedValues:
           // requestedValues
           return "cmVxdWVzdGVkVmFsdWVz";
           
@@ -68,7 +68,7 @@ public class VisualEffectFilterEntryWrapper: PrivateObjectWrapper<
   ///
   public var requestedValues: NSDictionary? {
     return try? self.performSelector(
-      usingEncodedString: .propertyValues,
+      usingEncodedString: .propertyRequestedValues,
       type: NSDictionary.self
     );
   };
