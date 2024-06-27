@@ -42,13 +42,16 @@ public struct ColorMatrixRGBA {
     [\.m41, \.m42, \.m43, \.m44, \.m45],
   ];
 
-    Self.kayPathsMatrix.reduce(into: []){
+  private static var _objcTypeRaw: UnsafePointer<CChar>?;
+  
+  // MARK: - Static Computed Properties
+  // ----------------------------------
+  
   public static var keyPathsAll: [WritableKeyPath<Self, Float>] {
+    Self.keyPathsMatrix.reduce(into: []){
       $0 += $1;
     };
   };
-  
-  private static var _objcTypeRaw: UnsafePointer<CChar>?;
   
   private static var objcTypeRaw: UnsafePointer<CChar>? {
     set {
@@ -139,6 +142,10 @@ public struct ColorMatrixRGBA {
   
   public var matrix4x4: [[Float]] {
     self.getMatrix(forRowSize: 4, columnSize: 4);
+  };
+  
+  public var matrix4x5: [[Float]] {
+    self.getMatrix(forRowSize: 4, columnSize: 5);
   };
   
   public var objcValue: NSValue? {
