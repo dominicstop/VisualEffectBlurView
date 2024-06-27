@@ -18,7 +18,7 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
   
   public enum EncodedString: PrivateObjectWrappingEncodedString {
     case className;
-    case constructorFilterWithType;
+    case classMethodFilterWithType;
     case classMethodFilterTypes;
     case methodSetDefaults;
     
@@ -28,7 +28,7 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
           // CAFilter
           return "Q0FGaWx0ZXI==";
         
-        case .constructorFilterWithType:
+        case .classMethodFilterWithType:
           // filterWithType:
           return "ZmlsdGVyV2l0aFR5cGU6";
           
@@ -64,7 +64,7 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
     };
     
     let instance = try? Self.performSelector(
-      usingHashedString: .constructorFilterWithType,
+      usingHashedString: .classMethodFilterWithType,
       forObject: associatedClass,
       withArg1: rawFilterType,
       type: NSObject.self
