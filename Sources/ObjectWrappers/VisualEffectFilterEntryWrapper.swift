@@ -21,7 +21,9 @@ public class VisualEffectFilterEntryWrapper: PrivateObjectWrapper<
     case propertyFilterType;
     case propertyRequestedValues;
     case propertyIdentityValues;
+    case propertyConfigurationValues;
     case methodSetRequestedValues;
+    case methodSetFilterType;
     
     public var encodedString: String {
       switch self {
@@ -41,9 +43,17 @@ public class VisualEffectFilterEntryWrapper: PrivateObjectWrapper<
           // identityValues
           return "aWRlbnRpdHlWYWx1ZXM=";
           
+        case .propertyConfigurationValues:
+          // configurationValues
+          return "Y29uZmlndXJhdGlvblZhbHVlcw==";
+          
         case .methodSetRequestedValues:
           // setRequestedValues:
           return "c2V0UmVxdWVzdGVkVmFsdWVzOg==";
+          
+        case .methodSetFilterType:
+         // setFilterType:
+         return "c2V0RmlsdGVyVHlwZTo=";
       };
     };
   };
@@ -65,6 +75,7 @@ public class VisualEffectFilterEntryWrapper: PrivateObjectWrapper<
   
   /// Declaration:
   /// `@property (nonatomic,copy) NSDictionary * requestedValues;`
+  /// `-(NSDictionary *)requestedValues;`
   ///
   public var requestedValues: NSDictionary? {
     return try? self.performSelector(
@@ -75,10 +86,22 @@ public class VisualEffectFilterEntryWrapper: PrivateObjectWrapper<
   
   /// Declaration:
   /// `@property (nonatomic,copy) NSDictionary * identityValues;`
+  /// `-(NSDictionary *)identityValues;`
   ///
   public var identityValues: NSDictionary? {
     return try? self.performSelector(
       usingEncodedString: .propertyIdentityValues,
+      type: NSDictionary.self
+    );
+  };
+  
+  /// Declaration:
+  /// `@property (nonatomic,copy) NSDictionary * configurationValues;`
+  /// `-(NSDictionary *)configurationValues;`
+  ///
+  public var configurationValues: NSDictionary? {
+    return try? self.performSelector(
+      usingEncodedString: .propertyConfigurationValues,
       type: NSDictionary.self
     );
   };
@@ -89,10 +112,25 @@ public class VisualEffectFilterEntryWrapper: PrivateObjectWrapper<
   /// Setter for property:
   /// `@property (nonatomic,copy) NSDictionary * requestedValues;`
   ///
+  /// Declaration:
+  /// `-(void)setRequestedValues:(NSDictionary *)arg1;`
+  ///
   public func setRequestedValues(_ requestedValues: NSDictionary) throws {
     try self.performSelector(
       usingEncodedString: .methodSetRequestedValues,
       withArg1: requestedValues
+    );
+  };
+  
+  /// Setter for property:
+  /// `@property (nonatomic,copy) NSDictionary * configurationValues;
+  ///
+  /// `-(void)setFilterType:(NSString *)arg1;`
+  ///
+  public func setFilterType(_ filterType: String) throws {
+    try self.performSelector(
+      usingEncodedString: .methodSetFilterType,
+      withArg1: filterType as NSString
     );
   };
 };
