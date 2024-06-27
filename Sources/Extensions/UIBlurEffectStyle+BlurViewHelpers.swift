@@ -23,41 +23,49 @@ extension UIBlurEffect.Style {
   fileprivate static var didSetDefaultCache = false;
   
   static func setDefaultCacheIfNeeded(){
-    guard !self.didSetDefaultCache else { return };
+    guard !self.didSetDefaultCache,
+          #available(iOS 13, *)
+    else { return };
+    
     Self.didSetDefaultCache = true;
     
     Self.allCases.forEach { blurStyle in
       let blurView = VisualEffectBlurView(blurEffectStyle: nil);
       blurView.effect = UIBlurEffect(style: blurStyle);
       
-      if #available(iOS 13, *),
-         let effectDescriptionWrapper = blurView.effectDescriptorForCurrentEffectWrapper,
-         let filterEntriesWrapped = effectDescriptionWrapper.filterEntriesWrapped,
-         filterEntriesWrapped.count > 0 {
-         
-         Self.defaultFilterEntriesCache[blurStyle] = filterEntriesWrapped.compactMap {
-            guard let filterType = $0.filterType,
-                  let requestedValuesRaw = $0.requestedValues,
-                  let requestedValue = requestedValuesRaw as? Dictionary<String, Any>
-            else {
-              #if DEBUG
-              print(
-                "UIBlurEffect.Style - setDefaultCacheIfNeeded",
-                "\n- Set defaultRequestedValuesCache",
-                "\n- could not set for item:", blurStyle,
-                "\n"
-              );
-              #endif
-              return nil;
-            };
-            
-            return (filterType, requestedValue);
-         };
+      guard let effectDescriptionWrapper = blurView.effectDescriptorForCurrentEffectWrapper,
+            let filterEntriesWrapped = effectDescriptionWrapper.filterEntriesWrapped,
+            filterEntriesWrapped.count > 0
+      else {
+        return;
       };
       
+      Self.defaultFilterEntriesCache[blurStyle] = filterEntriesWrapped.compactMap {
+        guard let filterType = $0.filterType,
+              let requestedValuesRaw = $0.requestedValues,
+              let requestedValue = requestedValuesRaw as? Dictionary<String, Any>
+        else {
+          #if DEBUG
+          print(
+            "UIBlurEffect.Style - setDefaultCacheIfNeeded",
+            "\n- Set defaultRequestedValuesCache",
+            "\n- could not set for item:", blurStyle,
+            "\n"
+          );
+          #endif
+          return nil;
+        };
+        
+        return (filterType, requestedValue);
+     };
+        
       self.defaultBlurRadiusCache[blurStyle] = blurView.blurRadius;
     };
+    return;
   };
+  
+  // MARK:  - Computed Properties
+  // ----------------------------
   
   var defaultBlurRadiusFallback: CGFloat? {
     switch self {
@@ -154,7 +162,43 @@ extension UIBlurEffect.Style {
     
     return [];
   };
+  
+  @available(iOS 13, *)
+  var blurFilterEntryWrappers: [VisualEffectFilterEntryWrapper]? {
+    let blurView = VisualEffectBlurView(blurEffectStyle: self);
+    guard let effectDescriptionWrapper = blurView.effectDescriptorForCurrentEffectWrapper,
+          let filterEntriesWrapped = effectDescriptionWrapper.filterEntriesWrapped,
+          filterEntriesWrapped.count > 0
+    else {
+      return nil;
+    };
+    
+    return filterEntriesWrapped;
+  };
+  
+  @available(iOS 13.0, *)
+  var vibrancyFilterEntryWrappers: [VisualEffectFilterEntryWrapper] {
+    let blurEffect = UIBlurEffect(style: self);
+    
+    return UIVibrancyEffectStyle.allCases.reduce(into: []) {
+      let effect = UIVibrancyEffect(
+        blurEffect: blurEffect,
+        style: $1
+      );
+      
+      let effectView = UIVisualEffectView(effect: effect);
+      guard let effectViewWrappers =
+              VisualEffectViewWrapper(objectToWrap: effectView),
+              
+            let visualEffectDescriptorWrapper =
+              try? effectViewWrappers.effectDescriptor(forEffects: [effect], usage: true),
+              
+            let filterEntries = visualEffectDescriptorWrapper.filterEntriesWrapped
+      else {
+        return;
+      };
+      
+      $0 += filterEntries;
+    };
+  };
 };
-
-
-
