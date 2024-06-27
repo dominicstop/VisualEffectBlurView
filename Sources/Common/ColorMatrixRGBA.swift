@@ -32,18 +32,18 @@ public struct ColorMatrixRGBA {
     );
   };
   
-  // MARK: - Static Variables
-  // ------------------------
+  // MARK: - Static Properties
+  // --------------------------
   
-  public static let kayPathsMatrix: [[WritableKeyPath<Self, Float>]] = [
+  public static let keyPathsMatrix: [[WritableKeyPath<Self, Float>]] = [
     [\.m11, \.m12, \.m13, \.m14, \.m15],
     [\.m21, \.m22, \.m23, \.m24, \.m25],
     [\.m31, \.m32, \.m33, \.m34, \.m35],
     [\.m41, \.m42, \.m43, \.m44, \.m45],
   ];
 
-  public static var kayPathsAll: [WritableKeyPath<Self, Float>] {
     Self.kayPathsMatrix.reduce(into: []){
+  public static var keyPathsAll: [WritableKeyPath<Self, Float>] {
       $0 += $1;
     };
   };
@@ -113,7 +113,7 @@ public struct ColorMatrixRGBA {
     forRow row: Int,
     column: Int
   ) -> WritableKeyPath<Self, Float>? {
-    guard let rowValues = Self.kayPathsMatrix[safeIndex: row],
+    guard let rowValues = Self.keyPathsMatrix[safeIndex: row],
           let element = rowValues[safeIndex: column]
     else {
       return nil;
@@ -149,7 +149,7 @@ public struct ColorMatrixRGBA {
     let floatMembersInStructCount = 20;
     var bufferArray = [UInt32](repeating: 0, count: floatMembersInStructCount);
     
-    for (index, keyPath) in Self.kayPathsAll.enumerated() {
+    for (index, keyPath) in Self.keyPathsAll.enumerated() {
       let floatValue = self[keyPath: keyPath];
       bufferArray[index] = floatValue.bitPattern;
     };
@@ -214,7 +214,7 @@ public struct ColorMatrixRGBA {
       Float(bitPattern: $0);
     };
     
-    let kayPathsAll = Self.kayPathsAll;
+    let kayPathsAll = Self.keyPathsAll;
     var newMatrix: Self = .zero;
     
     floats.enumerated().forEach {
