@@ -35,7 +35,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
   public lazy var wrapper: VisualEffectViewWrapper? = .init(objectToWrap: self);
 
   @available(iOS 13, *)
-  var effectDescriptorForCurrentEffectWrapper: VisualEffectDescriptorWrapper? {
+  public var effectDescriptorForCurrentEffectWrapper: VisualEffectDescriptorWrapper? {
     guard let effect = self.effect,
           let wrapper = self.wrapper
     else {
