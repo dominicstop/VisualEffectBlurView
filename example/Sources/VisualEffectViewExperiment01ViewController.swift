@@ -8,6 +8,7 @@
 import UIKit
 import DGSwiftUtilities
 import VisualEffectBlurView
+import CoreImage
 
 class VisualEffectViewExperiment01ViewController: UIViewController {
   
@@ -24,66 +25,6 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
   };
   
   override func viewDidLoad() {
-    
-    UIBlurEffect.Style.allCases.forEach { blurEffectStyle in
-      let blurEffect = UIBlurEffect(style: blurEffectStyle);
-
-      UIVibrancyEffectStyle.allCases.forEach { vibrancyEffectStyle in
-        let effect = UIVibrancyEffect(
-          blurEffect: blurEffect,
-          style: vibrancyEffectStyle
-        );
-        
-        let effectView = UIVisualEffectView(effect: effect);
-        let effectViewWrappers = VisualEffectViewWrapper(objectToWrap: effectView)!;
-        
-        
-        let visualEffectDescriptorWrapper =
-          try? effectViewWrappers.effectDescriptor(forEffects: [effect], usage: true);
-      
-        let filterEntries = visualEffectDescriptorWrapper!.filterEntriesWrapped!;
-        
-        filterEntries.forEach {
-          print(
-            "blurEffectStyle:", blurEffectStyle.caseString,
-            "\n - vibrancyEffectStyle:", vibrancyEffectStyle.caseString,
-            "\n - filterType:", $0.filterType ?? "N/A",
-            "\n - wrappedObject:", $0.wrappedObject?.debugDescription ?? "N/A",
-            "\n - requestedValues:", $0.requestedValues?.debugDescription ?? "N/A",
-            "\n - identityValues:", $0.identityValues?.description ?? "N/A"
-          );
-          
-
-          if let requestedValues = $0.requestedValues,
-             let colorMatrixRaw = requestedValues["inputColorMatrix"],
-             let colorMatrixValue = colorMatrixRaw as? NSValue
-          {
-            let colorMatrix = ColorMatrixRGBA(fromValue: colorMatrixValue);
-            
-            print(
-              " - requestedValues - objCType:", colorMatrixValue.objCType,
-              "\n - requestedValues - inputColorMatrix:", colorMatrix
-            );
-          };
-          
-          if let identityValues = $0.identityValues,
-             let colorMatrixRaw = identityValues["inputColorMatrix"],
-             let colorMatrixValue = colorMatrixRaw as? NSValue
-          {
-            let colorMatrix = ColorMatrixRGBA(fromValue: colorMatrixValue);
-            
-            print(
-              " - identityValues - objCType:", colorMatrixValue.objCType,
-              "\n - identityValues - inputColorMatrix:", colorMatrix
-            );
-          };
-          
-          print("\n");
-          return;
-        };
-      };
-    };
-    
     let bgView: UIView = {
       let rootView = UIView();
       
@@ -350,6 +291,8 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
       ),
     ]);
     
+    
+    
     // exp-1
     block:
     if let visualEffectView = self.visualEffectView,
@@ -565,6 +508,38 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
       
       // layerFilter.setValue(NSNumber(value: 1), forKey: "inputMax");
       // layerFilter.setValue(UIColor.red, forKey: "inputColor");
+      
+      backdropLayer.filters = [layerFilter];
+    };
+    
+    // exp-5
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+      guard let visualEffectView = self.visualEffectView,
+            let visualEffectViewWrapper = visualEffectView.wrapper,
+            let backgroundHostWrapper = visualEffectViewWrapper.backgroundHostWrapper,
+            let contentViewWrapper = backgroundHostWrapper.contentViewWrapper,
+            let backdropLayerWrapper = contentViewWrapper.backdropLayerWrapper,
+            let backdropLayer = backdropLayerWrapper.wrappedObject
+      else {
+        return;
+      };
+      
+      let filterTypeName: LayerFilterTypeName = .vibrantColorMatrix;
+      let filterTypeNameString = filterTypeName.decodedString!;
+      let layerFilterWrapper = LayerFilterWrapper(rawFilterType: filterTypeNameString);
+
+      guard let layerFilterWrapper = layerFilterWrapper,
+            let layerFilter = layerFilterWrapper.wrappedObject
+      else {
+        return;
+      };
+      
+      print("filterTypeName:", filterTypeNameString);
+      try! layerFilterWrapper.setDefaults();
+      
+      let colorMatrixObjcValue = ColorMatrixRGBAPreset.preset01.colorMatrix.objcValue;
+      layerFilter.setValue(colorMatrixObjcValue, forKey: "inputColorMatrix");
+   
       
       backdropLayer.filters = [layerFilter];
     };

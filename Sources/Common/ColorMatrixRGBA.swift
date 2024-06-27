@@ -5,7 +5,8 @@
 //  Created by Dominic Go on 6/23/24.
 //
 
-import Foundation
+import UIKit
+import DGSwiftUtilities
 
 
 public struct ColorMatrixRGBA {
@@ -47,6 +48,64 @@ public struct ColorMatrixRGBA {
     };
   };
   
+  private static var _objcTypeRaw: UnsafePointer<CChar>?;
+  
+  private static var objcTypeRaw: UnsafePointer<CChar>? {
+    set {
+      self._objcTypeRaw = newValue;
+    }
+    get {
+      if let _objcTypeRaw = Self._objcTypeRaw {
+        return _objcTypeRaw;
+      };
+      
+      guard #available(iOS 13.0, *) else {
+        return nil;
+      };
+      
+      var inputColorMatrixValue: NSValue?;
+      
+      UIBlurEffect.Style.allCases.forEach { blurEffectStyle in
+        if inputColorMatrixValue != nil {
+          return;
+        };
+      
+        let blurEffect = UIBlurEffect(style: blurEffectStyle);
+
+        UIVibrancyEffectStyle.allCases.forEach { vibrancyEffectStyle in
+          let effect = UIVibrancyEffect(
+            blurEffect: blurEffect,
+            style: vibrancyEffectStyle
+          );
+          
+          let effectView = UIVisualEffectView(effect: effect);
+          guard let effectViewWrappers = VisualEffectViewWrapper(objectToWrap: effectView),
+                let visualEffectDescriptorWrapper = try? effectViewWrappers.effectDescriptor(forEffects: [effect], usage: true),
+                let filterEntries = visualEffectDescriptorWrapper.filterEntriesWrapped
+          else {
+            return;
+          };
+          
+          let inputColorMatrixValues: [NSValue] = filterEntries.compactMap {
+            guard let requestedValues = $0.requestedValues,
+                  let colorMatrixRaw = requestedValues["inputColorMatrix"],
+                  let colorMatrixValue = colorMatrixRaw as? NSValue
+            else {
+              return nil;
+            };
+            
+            return colorMatrixValue;
+          };
+          
+          inputColorMatrixValue = inputColorMatrixValues.first;
+          return;
+        };
+      };
+      
+      return inputColorMatrixValue?.objCType;
+    }
+  };
+  
   // MARK: - Static Helpers
   // ----------------------
   
@@ -81,6 +140,23 @@ public struct ColorMatrixRGBA {
   public var matrix4x4: [[Float]] {
     self.getMatrix(forRowSize: 4, columnSize: 4);
   };
+  
+  public var objcValue: NSValue? {
+    guard let objcTypeRaw = Self.objcTypeRaw else {
+      return nil;
+    };
+    
+    let floatMembersInStructCount = 20;
+    var bufferArray = [UInt32](repeating: 0, count: floatMembersInStructCount);
+    
+    for (index, keyPath) in Self.kayPathsAll.enumerated() {
+      let floatValue = self[keyPath: keyPath];
+      bufferArray[index] = floatValue.bitPattern;
+    };
+    
+    let objcValue = NSValue(bufferArray, withObjCType: objcTypeRaw);
+    return objcValue;
+  };
     
   // MARK: - Init
   // ------------
@@ -113,7 +189,20 @@ public struct ColorMatrixRGBA {
     self.m45 = m45;
   };
   
-  public init(fromValue value: NSValue){
+  public init?(fromValue value: NSValue){
+    let objcTypeCharPointer = value.objCType as UnsafePointer<CChar>;
+    guard let objcTypeString = NSString(utf8String: objcTypeCharPointer) else {
+      return nil;
+    };
+    
+    guard objcTypeString.lowercased.contains("matrix") else {
+      return nil;
+    };
+    
+    if Self._objcTypeRaw == nil {
+      Self._objcTypeRaw = objcTypeCharPointer;
+    };
+    
     let floatMembersInStructCount = 20;
     let floatSizeBytes = MemoryLayout<UInt32>.size;
     let structTotalSizeBytes = floatSizeBytes * floatMembersInStructCount;
