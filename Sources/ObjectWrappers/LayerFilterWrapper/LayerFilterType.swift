@@ -332,20 +332,25 @@ public enum LayerFilterType {
         inputColor0,
         inputColor1
       ):
-        break;
+        layerFilterWrapper.setInputReversed(inputReversed);
+        layerFilterWrapper.setInputColor0(inputColor0);
+        layerFilterWrapper.setInputColor1(inputColor1);
         
       case let .vibrantLight(
         inputReversed,
         inputColor0,
         inputColor1
       ):
-        break;
+        layerFilterWrapper.setInputReversed(inputReversed);
+        layerFilterWrapper.setInputColor0(inputColor0);
+        layerFilterWrapper.setInputColor1(inputColor1);
         
       case let .vibrantColorMatrix(colorMatrix):
+        layerFilterWrapper.setInputColorMatrix(colorMatrix);
         break;
         
       case let .colorMatrix(colorMatrix):
-        break;
+        layerFilterWrapper.setInputColorMatrix(colorMatrix);
     };
   };
   

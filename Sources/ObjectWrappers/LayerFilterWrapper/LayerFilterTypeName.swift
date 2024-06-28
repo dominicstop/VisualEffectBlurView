@@ -112,5 +112,5 @@ public enum LayerFilterTypeName: CaseIterable, HashedStringDecodable {
         case .vibrantColorMatrix:
           return "dmlicmFudENvbG9yTWF0cml4";
       };
-    };
   };
+};

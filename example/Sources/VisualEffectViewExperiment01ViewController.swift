@@ -19,6 +19,181 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
   weak var overlayLabel: UILabel?;
   
   var counter = 0;
+  var filterPresets: [LayerFilterType] = [
+    .averageColor,
+    .luminanceToAlpha,
+    
+    .bias(inputAmount: 0.0),
+    .bias(inputAmount: 0.2),
+    .bias(inputAmount: 0.4),
+    .bias(inputAmount: 0.6),
+    .bias(inputAmount: 0.8),
+    .bias(inputAmount: 1.0),
+    
+    .colorBrightness(inputAmount: 0.0),
+    .colorBrightness(inputAmount: 0.2),
+    .colorBrightness(inputAmount: 0.4),
+    .colorBrightness(inputAmount: 0.6),
+    .colorBrightness(inputAmount: 0.8),
+    .colorBrightness(inputAmount: 1.0),
+    
+    .colorContrast(inputAmount: 0.0),
+    .colorContrast(inputAmount: 0.2),
+    .colorContrast(inputAmount: 0.4),
+    .colorContrast(inputAmount: 0.6),
+    .colorContrast(inputAmount: 0.8),
+    .colorContrast(inputAmount: 1.0),
+    
+    .colorMonochrome(inputAmount: 0.0),
+    .colorMonochrome(inputAmount: 0.2),
+    .colorMonochrome(inputAmount: 0.4),
+    .colorMonochrome(inputAmount: 0.6),
+    .colorMonochrome(inputAmount: 0.8),
+    .colorMonochrome(inputAmount: 1.0),
+    
+    .colorSaturate(inputAmount: 0.0),
+    .colorSaturate(inputAmount: 0.2),
+    .colorSaturate(inputAmount: 0.4),
+    .colorSaturate(inputAmount: 0.6),
+    .colorSaturate(inputAmount: 0.8),
+    .colorSaturate(inputAmount: 1.0),
+    
+    .compressLuminance(inputAmount: 0.0),
+    .compressLuminance(inputAmount: 0.2),
+    .compressLuminance(inputAmount: 0.4),
+    .compressLuminance(inputAmount: 0.6),
+    .compressLuminance(inputAmount: 0.8),
+    .compressLuminance(inputAmount: 1.0),
+    
+    .gaussianBlur(inputRadius: 0.0),
+    .gaussianBlur(inputRadius: 1.0),
+    .gaussianBlur(inputRadius: 2.0),
+    .gaussianBlur(inputRadius: 4.0),
+    .gaussianBlur(inputRadius: 8.0),
+    .gaussianBlur(inputRadius: 16.0),
+    
+    .vibrantDark(
+      inputReversed: true,
+      inputColor0: UIColor.red.cgColor,
+      inputColor1: UIColor.orange.cgColor
+    ),
+    .vibrantDark(
+      inputReversed: true,
+      inputColor0: UIColor.orange.cgColor,
+      inputColor1: UIColor.yellow.cgColor
+    ),
+    .vibrantDark(
+      inputReversed: true,
+      inputColor0: UIColor.yellow.cgColor,
+      inputColor1: UIColor.green.cgColor
+    ),
+    .vibrantDark(
+      inputReversed: true,
+      inputColor0: UIColor.green.cgColor,
+      inputColor1: UIColor.blue.cgColor
+    ),
+    .vibrantDark(
+      inputReversed: true,
+      inputColor0: UIColor.blue.cgColor,
+      inputColor1: UIColor.cyan.cgColor
+    ),
+    
+    .vibrantLight(
+      inputReversed: true,
+      inputColor0: UIColor.red.cgColor,
+      inputColor1: UIColor.orange.cgColor
+    ),
+    .vibrantLight(
+      inputReversed: true,
+      inputColor0: UIColor.orange.cgColor,
+      inputColor1: UIColor.yellow.cgColor
+    ),
+    .vibrantLight(
+      inputReversed: true,
+      inputColor0: UIColor.yellow.cgColor,
+      inputColor1: UIColor.green.cgColor
+    ),
+    .vibrantLight(
+      inputReversed: true,
+      inputColor0: UIColor.green.cgColor,
+      inputColor1: UIColor.blue.cgColor
+    ),
+    .vibrantLight(
+      inputReversed: true,
+      inputColor0: UIColor.blue.cgColor,
+      inputColor1: UIColor.cyan.cgColor
+    ),
+    
+    .curves(
+      inputAmount: 0.3,
+      inputValues: [0.2, 0.2, 0.1, 0.1]
+    ),
+    .curves(
+      inputAmount: 0.6,
+      inputValues: [0.2, 0.2, 0.1, 0.1]
+    ),
+    .curves(
+      inputAmount: 0.9,
+      inputValues: [0.2, 0.2, 0.1, 0.1]
+    ),
+    
+    .luminanceCurveMap(
+      inputAmount: 0.3,
+      inputValues: [0.16, 0.26, 0.10, 0.10]
+    ),
+    .luminanceCurveMap(
+      inputAmount: 0.6,
+      inputValues: [0.16, 0.26, 0.10, 0.10]
+    ),
+    .luminanceCurveMap(
+      inputAmount: 0.9,
+      inputValues: [0.16, 0.26, 0.10, 0.10]
+    ),
+
+    .colorMatrix(colorMatrix: .init(
+      m11: 1.0, m12: 0.0, m13: 0.0, m14: 0.0, m15: 0.0,
+      m21: 0.0, m22: 1.0, m23: 0.0, m24: 0.0, m25: 0.0,
+      m31: 0.0, m32: 0.0, m33: 1.0, m34: 0.0, m35: 0.0,
+      m41: 0.0, m42: 0.0, m43: 0.0, m44: 1.0, m45: 0.0
+    )),
+    .colorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset01.colorMatrix),
+    .colorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset02.colorMatrix),
+    .colorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset03.colorMatrix),
+    .colorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset04.colorMatrix),
+    .colorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset05.colorMatrix),
+    .colorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset06.colorMatrix),
+    .colorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset07.colorMatrix),
+    .colorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset08.colorMatrix),
+    .colorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset09.colorMatrix),
+    .colorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset10.colorMatrix),
+    .colorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset11.colorMatrix),
+    .colorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset12.colorMatrix),
+    .colorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset13.colorMatrix),
+    .colorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset14.colorMatrix),
+    .colorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset15.colorMatrix),
+    
+    .vibrantColorMatrix(colorMatrix: .init(
+      m11: 1.0, m12: 0.0, m13: 0.0, m14: 0.0, m15: 0.0,
+      m21: 0.0, m22: 1.0, m23: 0.0, m24: 0.0, m25: 0.0,
+      m31: 0.0, m32: 0.0, m33: 1.0, m34: 0.0, m35: 0.0,
+      m41: 0.0, m42: 0.0, m43: 0.0, m44: 1.0, m45: 0.0
+    )),
+    .vibrantColorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset01.colorMatrix),
+    .vibrantColorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset02.colorMatrix),
+    .vibrantColorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset03.colorMatrix),
+    .vibrantColorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset04.colorMatrix),
+    .vibrantColorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset05.colorMatrix),
+    .vibrantColorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset06.colorMatrix),
+    .vibrantColorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset07.colorMatrix),
+    .vibrantColorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset08.colorMatrix),
+    .vibrantColorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset09.colorMatrix),
+    .vibrantColorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset10.colorMatrix),
+    .vibrantColorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset11.colorMatrix),
+    .vibrantColorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset12.colorMatrix),
+    .vibrantColorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset13.colorMatrix),
+    .vibrantColorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset14.colorMatrix),
+    .vibrantColorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset15.colorMatrix),
+  ];
   
   override func loadView() {
     let view = UIView();
@@ -28,73 +203,6 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
   };
   
   override func viewDidLoad() {
-    
-    //let instance = ObjectWrapperHelpers.performSelector(
-    //  forObject: !,
-    //  selector: NSSele
-    //);
-
-    let wrappedInstance = VisualEffectFilterEntryWrapper();
-    let instance = wrappedInstance?.wrappedObject;
-    
-        
-    LayerFilterTypeName.allCases.forEach {
-      return;
-      let filterWrapper = LayerFilterWrapper(rawFilterType: $0.decodedString!)!;
-      try! filterWrapper.setDefaults();
-      
-      
-      
-      let _ivarDescription = filterWrapper.wrappedObject!.perform(NSSelectorFromString("_ivarDescription"));
-      let _shortMethodDescription = filterWrapper.wrappedObject!.perform(NSSelectorFromString("_shortMethodDescription"));
-      let _methodDescription = filterWrapper.wrappedObject!.perform(NSSelectorFromString("_methodDescription"));
-      
-      print(
-        "LayerFilterTypeName:", $0.decodedString! ?? "N/A",
-        "\n - description:", filterWrapper.wrappedObject?.description ?? "N/A",
-        "\n - type:", filterWrapper.wrappedObject!.perform(NSSelectorFromString("type")),
-        "\n - name:", filterWrapper.wrappedObject!.perform(NSSelectorFromString("name")),
-        "\n - CA_copyRenderValue:", filterWrapper.wrappedObject!.perform(NSSelectorFromString("valueForKey:"), with: "inputAmount"),
-        
-        //"\n - _ivarDescription:", _ivarDescription,
-        //"\n - _shortMethodDescription:", _shortMethodDescription,
-        //"\n - _methodDescription:", _methodDescription,
-        "\n"
-      );
-    };
-    
-    UIBlurEffect.Style.allCases.filterEntryWrappers.forEach {
-      return;
-      print(
-        "filterType:", $0.filterType ?? "N/A",
-        "\n - identityValues:", $0.identityValues?.description ?? "N/A",
-        "\n - identityValues:", $0.requestedValues?.description ?? "N/A",
-        "\n - configurationValues:", $0.configurationValues?.description ?? "N/A",
-        "\n"
-      );
-    };
-    
-    UIBlurEffect.Style.allCases.forEach {
-      return;
-      print(
-        "filterType:", $0.caseString,
-        "\n - defaultFilterEntries:", $0.defaultFilterEntries,
-        "\n"
-      );
-    };
-    
-    UIBlurEffect.Style.allCases.filterEntries.forEach {
-      return;
-      print(
-        "filterTypeRaw:", $0.filterTypeRaw,
-        "\n - identityValues:", $0.identityValues,
-        "\n - requestedValues:", $0.requestedValues,
-        "\n - configurationValues:", $0.configurationValues,
-        "\n - filterTypeParsed:", $0.filterTypeParsed,
-        "\n"
-      );
-    };
-  
     let bgView: UIView = {
       let rootView = UIView();
       
@@ -134,6 +242,30 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
       
       rootView.addSubview(label);
       label.translatesAutoresizingMaskIntoConstraints = false;
+      
+      let transformStart = Transform3D(
+        translateX: -200
+      );
+      
+      let transformEnd = Transform3D(
+        translateX: 200
+      );
+      
+      UIView.animateKeyframes(
+        withDuration: 4.0,
+        delay: 0.0,
+        options: [.autoreverse, .repeat],
+        animations: {
+          UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.5, animations: {
+            label.layer.transform = transformStart.transform;
+          })
+
+          UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 1, animations: {
+            label.layer.transform = transformEnd.transform;
+          })
+        },
+        completion: nil
+      );
       
       NSLayoutConstraint.activate([
         label.topAnchor.constraint(
@@ -251,13 +383,13 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
       button.configuration = .filled();
       
       button.addAction(for: .primaryActionTriggered){
-        self.counter += 1;
-    
         guard let _ = self.visualEffectView,
               let overlayLabel = self.overlayLabel
         else { return };
 
         overlayLabel.text = "Counter: \(self.counter)";
+        self.updateFilterPreset();
+        self.counter += 1;
       };
       
       return button;
@@ -360,289 +492,53 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
         equalTo: self.view.centerYAnchor
       ),
     ]);
-    
-    
-    
-    // exp-1
-    block:
-    if let visualEffectView = self.visualEffectView,
-       let visualEffectViewWrapper = visualEffectView.wrapper,
-       let backgroundHostWrapper = visualEffectViewWrapper.backgroundHostWrapper,
-       let contentViewWrapper = backgroundHostWrapper.contentViewWrapper,
-       let backdropLayerWrapper = contentViewWrapper.backdropLayerWrapper
-    {
-      break block;
-      let backdropLayer =
-        visualEffectView.subviews.first!.layer;
-        // backdropLayerWrapper.wrappedObject
-       
-      // CAFilter
-      // filterWithType:
-      
-      backdropLayer.filters = [];
-      // try? contentViewWrapper.applyRequestedFilterEffects();
-      
-      let filterClass = NSClassFromString("CAFilter") as AnyObject;
-      let selector = NSSelectorFromString("filterWithType:");
-      let filterType = "variableBlur";
-      
-      let filter = filterClass
-        .perform(selector, with: filterType)
-        .takeUnretainedValue();
-        
-      let gradientConfig = ImageConfigGradient(
-        colors: [.white, .white],
-        size: self.view.bounds.size
-      );
-      
-      let gradientImage = gradientConfig.makeImage();
-      
-      UIBlurEffect.Style.allCases.forEach {
-        print(
-          "UIBlurEffect.Style:", $0.caseString,
-          "\n - defaultFilterEntries:",
-          $0.defaultFilterEntries,
-          "\n"
-        );
-      };
-        
-      filter.setValue(1, forKey: "inputRadius")
-      filter.setValue(gradientImage, forKey: "inputMaskImage")
-      filter.setValue(true, forKey: "inputNormalizeEdges")
-      
-      if visualEffectView.subviews.indices.contains(1) {
-        let tintOverlayView = visualEffectView.subviews[1]
-        tintOverlayView.alpha = 0
-      };
-      
-      
-      backdropLayer.filters = [filter];
-      
-      
-      
-      // let blendingLayer = CALayer();
-      // blendingLayer.setValue(false, forKey: "allowsGroupBlending" )
-      // blendingLayer.compositingFilter = "screenBlendMode"
-      // blendingLayer.allowsGroupOpacity = false
-      // backdropLayer.addSublayer(blendingLayer)
-            
-      // try gaussianBlurFilterEntryWrapped.setRequestedValues(requestedValuesCopy);
-      // try backgroundHostWrapper.setCurrentEffectDescriptor(effectDescriptorWrapper);
-      try? contentViewWrapper.applyRequestedFilterEffects();
-    };
-    
-    block:
-    if let visualEffectView = self.visualEffectView,
-       let visualEffectViewWrapper = visualEffectView.wrapper,
-       let backgroundHostWrapper = visualEffectViewWrapper.backgroundHostWrapper,
-       let contentViewWrapper = backgroundHostWrapper.contentViewWrapper,
-       let backdropLayerWrapper = contentViewWrapper.backdropLayerWrapper,
-       let backdropLayer = backdropLayerWrapper.wrappedObject
-    {
-        
-      break block;
-      let blurEffect = UIBlurEffect(style: .systemThinMaterialDark);
-      let effectDescriptorWrapper = try! visualEffectViewWrapper.effectDescriptor(
-        forEffects: [blurEffect],
-        usage: true
-      );
-      
-      let gradientConfig = ImageConfigGradient(
-        colors: [.white, .white],
-        size: self.view.bounds.size
-      );
-      
-      let gradientImage = gradientConfig.makeImage();
-
-      let filter: [String: Any] = [
-        "filterType": "variableBlur",
-        "requestedValues": [
-          "inputRadius": 24,
-          "inputMaskImage": gradientImage,
-          "inputNormalizeEdges": true,
-        ],
-      ];
-      
-      let test = effectDescriptorWrapper!.wrappedObject!.value(forKey: "_filterEntries");
-      let test2 = effectDescriptorWrapper!.wrappedObject!.value(forKey: "_viewEffects");
-      //try filterEntryWrapped.setRequestedValues(requestedValuesCopy);
-      
-      // try? backgroundHostWrapper.performSelector(
-      //   usingEncodedString: .setCurrentEffectDescriptor,
-      //   withArg1: filter
-      // );
-      
-      
-      try? contentViewWrapper.applyRequestedFilterEffects();
-    };
-    
-    // exp-3
-    block:
-    if let visualEffectView = self.visualEffectView,
-       let visualEffectViewWrapper = visualEffectView.wrapper,
-       let backgroundHostWrapper = visualEffectViewWrapper.backgroundHostWrapper,
-       let contentViewWrapper = backgroundHostWrapper.contentViewWrapper,
-       let backdropLayerWrapper = contentViewWrapper.backdropLayerWrapper
-    {
-      break block;
-      let layerFilterWrapper = LayerFilterWrapper(rawFilterType: "colorSaturate");
-      guard let layerFilterWrapper = layerFilterWrapper,
-            let layerFilter = layerFilterWrapper.wrappedObject
-      else {
-        break block;
-      };
-      
-      layerFilterWrapper.setInputAmount(0);
-      self.view.layer.filters = [layerFilter];
-    };
-    
-    // exp-4
-    block:
-    if let visualEffectView = self.visualEffectView,
-       let visualEffectViewWrapper = visualEffectView.wrapper,
-       let backgroundHostWrapper = visualEffectViewWrapper.backgroundHostWrapper,
-       let contentViewWrapper = backgroundHostWrapper.contentViewWrapper,
-       let backdropLayerWrapper = contentViewWrapper.backdropLayerWrapper,
-       let backdropLayer = backdropLayerWrapper.wrappedObject
-    {
-      //visualEffectView.shouldOnlyShowBackdropLayer = true;
-      break block;
-      
-      let filterTypesRaw = LayerFilterWrapper.filterTypes;
-      
-      let filterTypeName: LayerFilterTypeName = .colorMatrix;//LayerFilterTypeName.allCases[cyclicIndex: 25];
-      let filterTypeNameString = filterTypeName.decodedString!;
-      let layerFilterWrapper = LayerFilterWrapper(rawFilterType: filterTypeNameString);
-
-      guard let layerFilterWrapper = layerFilterWrapper,
-            let layerFilter = layerFilterWrapper.wrappedObject
-      else {
-        break block;
-      };
-      
-      print("filterTypeName:", filterTypeNameString);
-      try! layerFilterWrapper.setDefaults();
-      //layerFilterWrapper.setInputAmount(2);
-      
-      if filterTypeName == .colorMatrix {
-        
-        
-        let image = ImageConfigSolid(
-          size: .init(width: 100, height: 100),
-          fillColor: .red,
-          borderRadius: 0
-        );
-        
-        layerFilter.setValue(image.makeImage().cgImage, forKey: "inputImage");
-        
-        layerFilter.setValue(
-          CIVector(x: 1, y: 1, z: 1, w: 0),
-          forKey: "inputRVector"
-        );
-        
-        layerFilter.setValue(
-          CIVector(x: 0, y: 1, z: 0, w: 0),
-          forKey: "inputGVector"
-        );
-        
-        layerFilter.setValue(
-          CIVector(x: 0, y: 0, z: 1, w: 0),
-          forKey: "inputBVector"
-        );
-        
-        layerFilter.setValue(
-          CIVector(x: 0, y: 0, z: 0, w: 1),
-          forKey: "inputAVector"
-        );
-      };
-      
-      if filterTypeName == .colorHueRotate {
-        layerFilterWrapper.setInputAmount(100.0);
-        layerFilter.setValue(100.0, forKey: "inputAngle");
-      };
-      
-      if filterTypeName == .gaussianBlur {
-        layerFilter.setValue(NSNumber(value: 10), forKey: "inputRadius");
-      };
-      
-      if filterTypeName == .multiplyColor {
-        let image = ImageConfigSolid(
-          size: .init(width: 100, height: 100),
-          fillColor: .blue,
-          borderRadius: 0
-        );
-        
-        layerFilter.setValue(image.makeImage().cgImage, forKey: "inputImage");
-        layerFilter.setValue(image.makeImage().cgImage, forKey: "inputBackgroundImage");
-      };
-      
-      // layerFilter.setValue(NSNumber(value: 1), forKey: "inputMax");
-      // layerFilter.setValue(UIColor.red, forKey: "inputColor");
-      
-      backdropLayer.filters = [layerFilter];
-    };
-    
-    // exp-5
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-      return;
-      guard let visualEffectView = self.visualEffectView,
-            let visualEffectViewWrapper = visualEffectView.wrapper,
-            let backgroundHostWrapper = visualEffectViewWrapper.backgroundHostWrapper,
-            let contentViewWrapper = backgroundHostWrapper.contentViewWrapper,
-            let backdropLayerWrapper = contentViewWrapper.backdropLayerWrapper,
-            let backdropLayer = backdropLayerWrapper.wrappedObject
-      else {
-        return;
-      };
-      
-      let filterTypeName: LayerFilterTypeName = .luminanceToAlpha;
-      let filterTypeNameString = filterTypeName.decodedString!;
-      let layerFilterWrapper = LayerFilterWrapper(rawFilterType: filterTypeNameString);
-
-      guard let layerFilterWrapper = layerFilterWrapper,
-            let layerFilter = layerFilterWrapper.wrappedObject
-      else {
-        return;
-      };
-      
-      print("filterTypeName:", filterTypeNameString);
-      try! layerFilterWrapper.setDefaults();
-      
-      let colorMatrixObjcValue = ColorMatrixRGBAPreset.preset01.colorMatrix.objcValue;
-      layerFilter.setValue(colorMatrixObjcValue, forKey: "inputColorMatrix");
-   
-      
-      backdropLayer.filters = [layerFilter];
-    };
-    
-    // exp-6
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-      // return;
-      guard let visualEffectView = self.visualEffectView,
-            let visualEffectViewWrapper = visualEffectView.wrapper,
-            let backgroundHostWrapper = visualEffectViewWrapper.backgroundHostWrapper,
-            let contentViewWrapper = backgroundHostWrapper.contentViewWrapper,
-            let backdropLayerWrapper = contentViewWrapper.backdropLayerWrapper,
-            let backdropLayer = backdropLayerWrapper.wrappedObject
-      else {
-        return;
-      };
-      
-      let filterType: LayerFilterType =
-        .colorBrightness(inputAmount: 0.5);
-        
-      guard let layerFilterWrapper = filterType.createFilterWrapper(),
-            let layerFilter = layerFilterWrapper.wrappedObject
-      else {
-        return;
-      };
-      
-      backdropLayer.filters = [layerFilter];
-    };
   };
   
   @objc func onPressLabel(_ sender: UILabel!){
-
+    // TBA
+  };
+  
+  func updateFilterPreset(){
+    guard let visualEffectView = self.visualEffectView,
+          let visualEffectViewWrapper = visualEffectView.wrapper,
+          let backgroundHostWrapper = visualEffectViewWrapper.backgroundHostWrapper,
+          let contentViewWrapper = backgroundHostWrapper.contentViewWrapper,
+          let backdropLayerWrapper = contentViewWrapper.backdropLayerWrapper,
+          let backdropLayer = backdropLayerWrapper.wrappedObject
+    else {
+      return;
+    };
+    
+    let prevFilterType =
+      self.filterPresets[cyclicIndex: max(self.counter - 1, 0)];
+      
+    let filterType =
+      self.filterPresets[cyclicIndex: self.counter];
+      
+    print(
+      "filterType:", filterType.decodedFilterName ?? "N/A",
+      "\n - counter:", self.counter,
+      "\n - filterType:", filterType,
+      "\n"
+    );
+      
+    if prevFilterType.decodedFilterName == filterType.decodedFilterName,
+       let layerFilter = backdropLayer.filters?.first as? AnyObject,
+       let layerFilterWrapper = LayerFilterWrapper(objectToWrap: layerFilter)
+    {
+      filterType.applyTo(layerFilterWrapper: layerFilterWrapper);
+      UIView.animate(withDuration: 0.5){
+        try! contentViewWrapper.applyRequestedFilterEffects();
+      };
+    
+    } else if let layerFilterWrapper = filterType.createFilterWrapper(),
+              let layerFilter = layerFilterWrapper.wrappedObject
+    {
+      UIView.animate(withDuration: 0.5){
+        backdropLayer.filters = [layerFilter];
+        try! contentViewWrapper.applyRequestedFilterEffects();
+      };
+    };
   };
 };
 

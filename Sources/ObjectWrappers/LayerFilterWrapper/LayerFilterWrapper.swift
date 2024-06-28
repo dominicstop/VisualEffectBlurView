@@ -5,7 +5,7 @@
 //  Created by Dominic Go on 6/20/24.
 //
 
-import Foundation
+import UIKit
 import DGSwiftUtilities
 
 /// Wrapper for: `CAFilter`
@@ -80,6 +80,12 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
   // MARK: - Wrapped Methods
   // -----------------------
   
+  /// Selector:
+  /// `-(void)setDefaults;`
+  public func setDefaults() throws {
+    try self.performSelector(usingEncodedString: .methodSetDefaults);
+  };
+  
   public func setInputAmount(_ value: CGFloat){
     guard let wrappedObject = self.wrappedObject else { return };
     wrappedObject.setValue(value, forKey: "inputAmount");
@@ -101,10 +107,22 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
     wrappedObject.setValue(colorMatrixObjcValue, forKey: "inputColorMatrix");
   };
   
-  /// Selector:
-  /// `-(void)setDefaults;`
-  public func setDefaults() throws {
-    try self.performSelector(usingEncodedString: .methodSetDefaults);
+  public func setInputReversed(_ value: Bool){
+    guard let wrappedObject = self.wrappedObject else { return };
+    wrappedObject.setValue(
+      value ? 1 : 0,
+      forKey: "inputReversed"
+    );
+  };
+  
+  public func setInputColor0(_ value: CGColor){
+    guard let wrappedObject = self.wrappedObject else { return };
+    wrappedObject.setValue(value, forKey: "inputColor0");
+  };
+  
+  public func setInputColor1(_ value: CGColor){
+    guard let wrappedObject = self.wrappedObject else { return };
+    wrappedObject.setValue(value, forKey: "inputColor1");
   };
 };
 
