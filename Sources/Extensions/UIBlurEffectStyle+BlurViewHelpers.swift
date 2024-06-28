@@ -9,15 +9,10 @@ import UIKit
 import DGSwiftUtilities
 
 extension UIBlurEffect.Style {
-
-  public typealias FilterEntry = (
-    filterType: String,
-    requestedValues: Dictionary<String, Any>
-  );
   
   // [filterType: [inputRadius/inputAmount: Number]]
   fileprivate static var defaultFilterEntriesCache:
-    Dictionary<Self, [FilterEntry]> = [:];
+    Dictionary<Self, [FilterEntryMetadata]> = [:];
     
   fileprivate static var defaultBlurRadiusCache: Dictionary<Self, CGFloat> = [:];
   fileprivate static var didSetDefaultCache = false;
@@ -41,24 +36,9 @@ extension UIBlurEffect.Style {
       };
       
       Self.defaultFilterEntriesCache[blurStyle] = filterEntriesWrapped.compactMap {
-        guard let filterType = $0.filterType,
-              let requestedValuesRaw = $0.requestedValues,
-              let requestedValue = requestedValuesRaw as? Dictionary<String, Any>
-        else {
-          #if DEBUG
-          print(
-            "UIBlurEffect.Style - setDefaultCacheIfNeeded",
-            "\n- Set defaultRequestedValuesCache",
-            "\n- could not set for item:", blurStyle,
-            "\n"
-          );
-          #endif
-          return nil;
-        };
-        
-        return (filterType, requestedValue);
-     };
-        
+        .init(fromWrapper: $0);
+      };
+      
       self.defaultBlurRadiusCache[blurStyle] = blurView.blurRadius;
     };
     return;
@@ -144,7 +124,7 @@ extension UIBlurEffect.Style {
     return self.defaultBlurRadiusFallback;
   };
   
-  public var defaultFilterEntries: [FilterEntry] {
+  public var defaultFilterEntries: [FilterEntryMetadata] {
     Self.setDefaultCacheIfNeeded();
     
     if let cachedFilterEntry = Self.defaultFilterEntriesCache[self] {
@@ -164,8 +144,9 @@ extension UIBlurEffect.Style {
   };
   
   @available(iOS 13, *)
-  var blurFilterEntryWrappers: [VisualEffectFilterEntryWrapper]? {
+  public var blurFilterEntryWrappers: [VisualEffectFilterEntryWrapper]? {
     let blurView = VisualEffectBlurView(blurEffectStyle: self);
+    
     guard let effectDescriptionWrapper = blurView.effectDescriptorForCurrentEffectWrapper,
           let filterEntriesWrapped = effectDescriptionWrapper.filterEntriesWrapped,
           filterEntriesWrapped.count > 0
@@ -177,7 +158,7 @@ extension UIBlurEffect.Style {
   };
   
   @available(iOS 13.0, *)
-  var vibrancyFilterEntryWrappers: [VisualEffectFilterEntryWrapper] {
+  public var vibrancyFilterEntryWrappers: [VisualEffectFilterEntryWrapper] {
     let blurEffect = UIBlurEffect(style: self);
     
     return UIVibrancyEffectStyle.allCases.reduce(into: []) {

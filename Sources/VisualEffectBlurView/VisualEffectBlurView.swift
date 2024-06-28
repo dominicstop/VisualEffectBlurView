@@ -311,7 +311,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
       };
       
       let defaultFilterEntry = blurEffectStyle.defaultFilterEntries.first {
-        $0.filterType == filterType;
+        $0.filterTypeRaw == filterType;
       };
       
       guard let defaultFilterEntry = defaultFilterEntry else { return };
@@ -341,16 +341,6 @@ public class VisualEffectBlurView: UIVisualEffectView {
         );
         
         requestedValuesCopy[key] = nextValue;
-        
-        print(
-          "filterType:", filterType,
-          "- key:", key,
-          "- prevValue:", prevValue,
-          "- defaultValue:", defaultValue,
-          "- identityValue:", identityValue,
-          "- nextValue:", nextValue,
-          "\n"
-        );
         
         try filterEntryWrapped.setRequestedValues(requestedValuesCopy);
         try backgroundHostWrapper.setCurrentEffectDescriptor(effectDescriptorWrapper);

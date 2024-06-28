@@ -29,5 +29,12 @@ public extension Array where Element == UIBlurEffect.Style {
       self.blurFilterEntryWrappers
     + self.vibrancyFilterEntryWrappers;
   };
+  
+  @available(iOS 13.0, *)
+  var filterEntries: [FilterEntryMetadata] {
+    self.filterEntryWrappers.compactMap {
+      .init(fromWrapper: $0);
+    };
+  };
 };
 
