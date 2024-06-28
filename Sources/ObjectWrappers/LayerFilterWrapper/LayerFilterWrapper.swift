@@ -85,6 +85,22 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
     wrappedObject.setValue(value, forKey: "inputAmount");
   };
   
+  public func setInputValues(_ value: [CGFloat]){
+    guard let wrappedObject = self.wrappedObject else { return };
+    wrappedObject.setValue(value, forKey: "inputValues");
+  };
+  
+  public func setInputRadius(_ value: CGFloat){
+    guard let wrappedObject = self.wrappedObject else { return };
+    wrappedObject.setValue(value, forKey: "inputRadius");
+  };
+  
+  public func setInputColorMatrix(_ value: ColorMatrixRGBA){
+    guard let wrappedObject = self.wrappedObject else { return };
+    let colorMatrixObjcValue = value.objcValue;
+    wrappedObject.setValue(colorMatrixObjcValue, forKey: "inputColorMatrix");
+  };
+  
   /// Selector:
   /// `-(void)setDefaults;`
   public func setDefaults() throws {

@@ -9,6 +9,7 @@ import UIKit
 
 
 public enum LayerFilterType {
+
   // case multiplyColor;
   // case colorAdd;
   // case colorSubtract;
@@ -60,7 +61,7 @@ public enum LayerFilterType {
   // MARK: - Computed Properties
   // ---------------------------
   
-  var associatedFilterTypeName: LayerFilterTypeName {
+  public var associatedFilterTypeName: LayerFilterTypeName {
     switch self {
       // case .multiplyColor:
       //   return .multiplyColor;
@@ -143,7 +144,8 @@ public enum LayerFilterType {
     self.associatedFilterTypeName.decodedString;
   };
   
-  // MARK:
+  // MARK: - Init
+  // ------------
   
   public init?(fromWrapper wrapper: VisualEffectFilterEntryWrapper){
     let filterTypeName: LayerFilterTypeName? = {
@@ -284,6 +286,82 @@ public enum LayerFilterType {
       default:
         return nil;
     };
+  };
+  
+  // MARK: - Functions
+  // -----------------
+  
+  public func applyTo(layerFilterWrapper: LayerFilterWrapper){
+    switch self {
+      case .luminanceToAlpha: fallthrough;
+      case .averageColor:
+        // no-op
+        break;
+        
+      case let .curves(inputAmount, inputValues):
+        layerFilterWrapper.setInputAmount(inputAmount);
+        layerFilterWrapper.setInputValues(inputValues);
+        
+      case let .luminanceCurveMap(inputAmount, inputValues):
+        layerFilterWrapper.setInputAmount(inputAmount);
+        layerFilterWrapper.setInputValues(inputValues);
+        
+      case let .colorMonochrome(inputAmount):
+        layerFilterWrapper.setInputAmount(inputAmount);
+        
+      case let .colorSaturate(inputAmount):
+        layerFilterWrapper.setInputAmount(inputAmount);
+        
+      case let .colorBrightness(inputAmount):
+        layerFilterWrapper.setInputAmount(inputAmount);
+        
+      case let .colorContrast(inputAmount):
+        layerFilterWrapper.setInputAmount(inputAmount);
+        
+      case let .compressLuminance(inputAmount):
+        layerFilterWrapper.setInputAmount(inputAmount);
+        
+      case let .bias(inputAmount):
+        layerFilterWrapper.setInputAmount(inputAmount);
+        
+      case let .gaussianBlur(inputRadius):
+        layerFilterWrapper.setInputRadius(inputRadius);
+        
+      case let .vibrantDark(
+        inputReversed,
+        inputColor0,
+        inputColor1
+      ):
+        break;
+        
+      case let .vibrantLight(
+        inputReversed,
+        inputColor0,
+        inputColor1
+      ):
+        break;
+        
+      case let .vibrantColorMatrix(colorMatrix):
+        break;
+        
+      case let .colorMatrix(colorMatrix):
+        break;
+    };
+  };
+  
+  public func createFilterWrapper() -> LayerFilterWrapper? {
+    guard let filterTypeName = self.decodedFilterName else {
+      return nil;
+    };
+  
+    guard let layerFilterWrapper = LayerFilterWrapper(rawFilterType: filterTypeName) else {
+      return nil;
+    };
+    
+    try? layerFilterWrapper.setDefaults();
+    self.applyTo(layerFilterWrapper: layerFilterWrapper);
+    
+    return layerFilterWrapper;
   };
 };
 

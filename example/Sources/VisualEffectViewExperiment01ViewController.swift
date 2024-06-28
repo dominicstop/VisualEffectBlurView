@@ -10,6 +10,9 @@ import DGSwiftUtilities
 import VisualEffectBlurView
 import CoreImage
 
+
+
+
 class VisualEffectViewExperiment01ViewController: UIViewController {
   
   var visualEffectView: VisualEffectView?;
@@ -25,6 +28,73 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
   };
   
   override func viewDidLoad() {
+    
+    //let instance = ObjectWrapperHelpers.performSelector(
+    //  forObject: !,
+    //  selector: NSSele
+    //);
+
+    let wrappedInstance = VisualEffectFilterEntryWrapper();
+    let instance = wrappedInstance?.wrappedObject;
+    
+        
+    LayerFilterTypeName.allCases.forEach {
+      return;
+      let filterWrapper = LayerFilterWrapper(rawFilterType: $0.decodedString!)!;
+      try! filterWrapper.setDefaults();
+      
+      
+      
+      let _ivarDescription = filterWrapper.wrappedObject!.perform(NSSelectorFromString("_ivarDescription"));
+      let _shortMethodDescription = filterWrapper.wrappedObject!.perform(NSSelectorFromString("_shortMethodDescription"));
+      let _methodDescription = filterWrapper.wrappedObject!.perform(NSSelectorFromString("_methodDescription"));
+      
+      print(
+        "LayerFilterTypeName:", $0.decodedString! ?? "N/A",
+        "\n - description:", filterWrapper.wrappedObject?.description ?? "N/A",
+        "\n - type:", filterWrapper.wrappedObject!.perform(NSSelectorFromString("type")),
+        "\n - name:", filterWrapper.wrappedObject!.perform(NSSelectorFromString("name")),
+        "\n - CA_copyRenderValue:", filterWrapper.wrappedObject!.perform(NSSelectorFromString("valueForKey:"), with: "inputAmount"),
+        
+        //"\n - _ivarDescription:", _ivarDescription,
+        //"\n - _shortMethodDescription:", _shortMethodDescription,
+        //"\n - _methodDescription:", _methodDescription,
+        "\n"
+      );
+    };
+    
+    UIBlurEffect.Style.allCases.filterEntryWrappers.forEach {
+      return;
+      print(
+        "filterType:", $0.filterType ?? "N/A",
+        "\n - identityValues:", $0.identityValues?.description ?? "N/A",
+        "\n - identityValues:", $0.requestedValues?.description ?? "N/A",
+        "\n - configurationValues:", $0.configurationValues?.description ?? "N/A",
+        "\n"
+      );
+    };
+    
+    UIBlurEffect.Style.allCases.forEach {
+      return;
+      print(
+        "filterType:", $0.caseString,
+        "\n - defaultFilterEntries:", $0.defaultFilterEntries,
+        "\n"
+      );
+    };
+    
+    UIBlurEffect.Style.allCases.filterEntries.forEach {
+      return;
+      print(
+        "filterTypeRaw:", $0.filterTypeRaw,
+        "\n - identityValues:", $0.identityValues,
+        "\n - requestedValues:", $0.requestedValues,
+        "\n - configurationValues:", $0.configurationValues,
+        "\n - filterTypeParsed:", $0.filterTypeParsed,
+        "\n"
+      );
+    };
+  
     let bgView: UIView = {
       let rootView = UIView();
       
@@ -514,6 +584,7 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
     
     // exp-5
     DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+      return;
       guard let visualEffectView = self.visualEffectView,
             let visualEffectViewWrapper = visualEffectView.wrapper,
             let backgroundHostWrapper = visualEffectViewWrapper.backgroundHostWrapper,
@@ -524,7 +595,7 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
         return;
       };
       
-      let filterTypeName: LayerFilterTypeName = .vibrantColorMatrix;
+      let filterTypeName: LayerFilterTypeName = .luminanceToAlpha;
       let filterTypeNameString = filterTypeName.decodedString!;
       let layerFilterWrapper = LayerFilterWrapper(rawFilterType: filterTypeNameString);
 
@@ -540,6 +611,31 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
       let colorMatrixObjcValue = ColorMatrixRGBAPreset.preset01.colorMatrix.objcValue;
       layerFilter.setValue(colorMatrixObjcValue, forKey: "inputColorMatrix");
    
+      
+      backdropLayer.filters = [layerFilter];
+    };
+    
+    // exp-6
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+      // return;
+      guard let visualEffectView = self.visualEffectView,
+            let visualEffectViewWrapper = visualEffectView.wrapper,
+            let backgroundHostWrapper = visualEffectViewWrapper.backgroundHostWrapper,
+            let contentViewWrapper = backgroundHostWrapper.contentViewWrapper,
+            let backdropLayerWrapper = contentViewWrapper.backdropLayerWrapper,
+            let backdropLayer = backdropLayerWrapper.wrappedObject
+      else {
+        return;
+      };
+      
+      let filterType: LayerFilterType =
+        .colorBrightness(inputAmount: 0.5);
+        
+      guard let layerFilterWrapper = filterType.createFilterWrapper(),
+            let layerFilter = layerFilterWrapper.wrappedObject
+      else {
+        return;
+      };
       
       backdropLayer.filters = [layerFilter];
     };
