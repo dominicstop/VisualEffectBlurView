@@ -35,6 +35,16 @@ public enum LayerFilterTypeName: CaseIterable, HashedStringDecodable {
     case vibrantLight;
     case vibrantColorMatrix;
     
+    case alphaThreshold;
+    case colorInvertDisplayAware;
+    case opacityPair;
+    case srl;
+    case edrGain;
+    case edrGainMultiply;
+    case variableBlur;
+    case limitAveragePixelLuminance;
+    case lut;
+    
     public var encodedString: String {
       switch self {
         case .multiplyColor:
@@ -111,6 +121,34 @@ public enum LayerFilterTypeName: CaseIterable, HashedStringDecodable {
           
         case .vibrantColorMatrix:
           return "dmlicmFudENvbG9yTWF0cml4";
+          
+        case .alphaThreshold:
+          return "YWxwaGFUaHJlc2hvbGQ=";
+          
+        case .colorInvertDisplayAware:
+          return "Y29sb3JJbnZlcnREaXNwbGF5QXdhcmU=";
+          
+        case .opacityPair:
+          return "b3BhY2l0eVBhaXI=";
+          
+        case .srl:
+          return "c3Js";
+          
+        case .edrGain:
+          return "ZWRyR2Fpbg==";
+          
+        case .edrGainMultiply:
+          return "ZWRyR2Fpbk11bHRpcGx5";
+          
+        case .variableBlur:
+          return "dmFyaWFibGVCbHVy";
+          
+        case .limitAveragePixelLuminance:
+          return "bGltaXRBdmVyYWdlUGl4ZWxMdW1pbmFuY2U=";
+          
+        case .lut:
+          return "bHV0";
+          
       };
   };
 };
