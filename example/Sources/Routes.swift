@@ -9,7 +9,6 @@ import UIKit
 import DGSwiftUtilities
 
 
-
 enum Route: String, CaseIterable {
   
   case routeList;
@@ -102,7 +101,8 @@ enum Route: String, CaseIterable {
         
       case .visualEffectViewExperiment01:
         return [
-          .init(text: "TBA"),
+          .init(text: "VisualEffectView + LayerFilterType preset test"),
+          .init(text: "Cycle through `LayerFilterType` test presets"),
         ];
         
       case .blurViewBasicUsage01:

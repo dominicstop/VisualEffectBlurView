@@ -18,6 +18,8 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
   var visualEffectView: VisualEffectView?;
   weak var overlayLabel: UILabel?;
   
+  var cardVC: CardContainerViewController?;
+  
   var counter = 0;
   var filterPresets: [LayerFilterType] = [
     .averageColor,
@@ -37,26 +39,22 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
     .colorBrightness(inputAmount: 0.8),
     .colorBrightness(inputAmount: 1.0),
     
-    .colorContrast(inputAmount: 0.0),
     .colorContrast(inputAmount: 0.2),
-    .colorContrast(inputAmount: 0.4),
     .colorContrast(inputAmount: 0.6),
-    .colorContrast(inputAmount: 0.8),
-    .colorContrast(inputAmount: 1.0),
+    .colorContrast(inputAmount: 1.2),
+    .colorContrast(inputAmount: 1.6),
+    .colorContrast(inputAmount: 2.0),
     
     .colorMonochrome(inputAmount: 0.0),
-    .colorMonochrome(inputAmount: 0.2),
-    .colorMonochrome(inputAmount: 0.4),
+    .colorMonochrome(inputAmount: 0.3),
     .colorMonochrome(inputAmount: 0.6),
-    .colorMonochrome(inputAmount: 0.8),
     .colorMonochrome(inputAmount: 1.0),
     
     .colorSaturate(inputAmount: 0.0),
-    .colorSaturate(inputAmount: 0.2),
-    .colorSaturate(inputAmount: 0.4),
     .colorSaturate(inputAmount: 0.6),
-    .colorSaturate(inputAmount: 0.8),
     .colorSaturate(inputAmount: 1.0),
+    .colorSaturate(inputAmount: 2.0),
+    .colorSaturate(inputAmount: 4.0),
     
     .compressLuminance(inputAmount: 0.0),
     .compressLuminance(inputAmount: 0.2),
@@ -310,29 +308,27 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
       self.visualEffectView = visualEffectView;
       
       if let visualEffectView = visualEffectView {
-        let box = UIView();
-        box.backgroundColor = .red;
-        box.alpha = 0.5;
-        
-        visualEffectView.contentView.addSubview(box);
-        box.translatesAutoresizingMaskIntoConstraints = false;
-        
-        NSLayoutConstraint.activate([
-          box.heightAnchor.constraint(
-            equalToConstant: 200
-          ),
-          box.widthAnchor.constraint(
-            equalToConstant: 200
-          ),
-          
-          box.centerXAnchor.constraint(
-            equalTo: visualEffectView.centerXAnchor
-          ),
-          
-          box.centerYAnchor.constraint(
-            equalTo: visualEffectView.centerYAnchor
-          ),
-        ]);
+//        let box = UIView();
+//        box.backgroundColor = .red;
+//        box.alpha = 0.5;
+//        
+//        visualEffectView.contentView.addSubview(box);
+//        box.translatesAutoresizingMaskIntoConstraints = false;
+//        
+//        NSLayoutConstraint.activate([
+//          box.heightAnchor.constraint(
+//            equalToConstant: 200
+//          ),
+//          box.widthAnchor.constraint(
+//            equalToConstant: 200
+//          ),
+//          box.centerXAnchor.constraint(
+//            equalTo: visualEffectView.centerXAnchor
+//          ),
+//          box.centerYAnchor.constraint(
+//            equalTo: visualEffectView.centerYAnchor
+//          ),
+//        ]);
       
         visualEffectView.translatesAutoresizingMaskIntoConstraints = false;
         containerView.addSubview(visualEffectView);
@@ -375,6 +371,32 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
         equalTo: self.view.trailingAnchor
       ),
     ]);
+  
+    let controlStack: UIStackView = {
+      let stack = UIStackView();
+      
+      stack.axis = .vertical;
+      stack.distribution = .equalSpacing;
+      stack.alignment = .fill;
+      stack.spacing = 20;
+      
+      return stack;
+    }();
+    
+    let cardVC = CardContainerViewController(
+      cardConfig: .init(
+        title: "Filter Details",
+        subtitle: "Filter information",
+        desc: [
+          .init(text: "N/A")
+        ],
+        index: self.counter,
+        content: []
+      )
+    );
+    
+    self.cardVC = cardVC;
+    controlStack.addArrangedSubview(cardVC.view);
     
     let nextButton: UIButton = {
       let button = UIButton();
@@ -395,19 +417,7 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
       return button;
     }();
     
-    let controlStack: UIStackView = {
-      let stack = UIStackView();
-      
-      stack.axis = .vertical;
-      stack.distribution = .equalSpacing;
-      stack.alignment = .fill;
-      stack.spacing = 20;
-      
-      //stack.addArrangedSubview(blurSliderControl);
-      stack.addArrangedSubview(nextButton);
-    
-      return stack;
-    }();
+    controlStack.addArrangedSubview(nextButton);
     
     controlStack.translatesAutoresizingMaskIntoConstraints = false;
     self.view.addSubview(controlStack);
@@ -463,17 +473,11 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
           equalTo: containerView.centerYAnchor
         ),
       ]);
-      
-      let tapGesture = UITapGestureRecognizer(
-        target: self,
-        action: #selector(Self.onPressLabel(_:))
-      );
-      
-      containerView.addGestureRecognizer(tapGesture);
+
 
       return containerView;
     }();
-    
+
     overlayLabel.translatesAutoresizingMaskIntoConstraints = false;
     self.view.addSubview(overlayLabel);
     
@@ -492,6 +496,8 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
         equalTo: self.view.centerYAnchor
       ),
     ]);
+    
+    overlayLabel.isHidden = true;
   };
   
   @objc func onPressLabel(_ sender: UILabel!){
@@ -521,11 +527,34 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
       "\n - filterType:", filterType,
       "\n"
     );
+    
+    self.cardVC?.cardConfig = .init(
+      title: "Filter Details",
+      subtitle: "Filter information",
+      desc: [],
+      index: self.counter,
+      content: {
+        var items: [CardContentItem] = [
+          .labelValueDisplay(items: [
+            .singleRowPlain(
+              label: "filter",
+              value: filterType.decodedFilterName ?? "N/A"
+            )
+          ])
+        ];
+        
+        items += filterType.filterDescAsAttributedConfig;
+        return items;
+      }()
+    );
+    
+    self.cardVC?.applyCardConfig();
       
     if prevFilterType.decodedFilterName == filterType.decodedFilterName,
        let layerFilter = backdropLayer.filters?.first as? AnyObject,
        let layerFilterWrapper = LayerFilterWrapper(objectToWrap: layerFilter)
     {
+      
       filterType.applyTo(layerFilterWrapper: layerFilterWrapper);
       UIView.animate(withDuration: 0.5){
         try! contentViewWrapper.applyRequestedFilterEffects();
@@ -552,3 +581,5 @@ extension Data {
         return hexString
     }
 }
+
+

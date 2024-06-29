@@ -374,6 +374,32 @@ public enum LayerFilterType {
   };
 };
 
+extension LayerFilterType {
+  static func vibrantDark(
+    inputReversed: Bool,
+    inputColor0: UIColor,
+    inputColor1: UIColor
+  ) -> Self {
+    .vibrantDark(
+      inputReversed: inputReversed,
+      inputColor0: inputColor0.cgColor,
+      inputColor1: inputColor1.cgColor
+    );
+  };
+  
+  static func vibrantLight(
+    inputReversed: Bool,
+    inputColor0: UIColor,
+    inputColor1: UIColor
+  ) -> Self {
+    .vibrantLight(
+      inputReversed: inputReversed,
+      inputColor0: inputColor0.cgColor,
+      inputColor1: inputColor1.cgColor
+    );
+  };
+};
+
 
 // TEMP
 fileprivate extension NSDictionary {
