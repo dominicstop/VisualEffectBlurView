@@ -41,7 +41,10 @@ public enum LayerFilterType {
   case compressLuminance(inputAmount: CGFloat)
   case bias(inputAmount: CGFloat);
   
-  case gaussianBlur(inputRadius: CGFloat);
+  case gaussianBlur(
+    inputRadius: CGFloat,
+    inputNormalizeEdges: Bool = true
+  );
   
   case vibrantDark(
     inputReversed: Bool,
@@ -324,8 +327,9 @@ public enum LayerFilterType {
       case let .bias(inputAmount):
         layerFilterWrapper.setInputAmount(inputAmount);
         
-      case let .gaussianBlur(inputRadius):
+      case let .gaussianBlur(inputRadius, inputNormalizeEdges):
         layerFilterWrapper.setInputRadius(inputRadius);
+        layerFilterWrapper.setInputNormalizeEdges(inputNormalizeEdges);
         
       case let .vibrantDark(
         inputReversed,

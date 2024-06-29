@@ -124,6 +124,14 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
     guard let wrappedObject = self.wrappedObject else { return };
     wrappedObject.setValue(value, forKey: "inputColor1");
   };
+  
+  public func setInputNormalizeEdges(_ value: Bool){
+    guard let wrappedObject = self.wrappedObject else { return };
+    wrappedObject.setValue(
+      value ? 1 : 0,
+      forKey: "inputNormalizeEdges"
+    );
+  };
 };
 
 
