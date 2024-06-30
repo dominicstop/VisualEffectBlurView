@@ -9,12 +9,12 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
 
-typedef struct CAmatrixRGBA {
+typedef struct CAColorMatrix {
     float m11, m12, m13, m14, m15;
     float m21, m22, m23, m24, m25;
     float m31, m32, m33, m34, m35;
     float m41, m42, m43, m44, m45;
-} CAmatrixRGBA;
+} CAColorMatrix;
 
 #define SwizzleSelector(clazz, selector, newImplementation, pPreviousImplementation) \
     (*pPreviousImplementation) = (__typeof((*pPreviousImplementation)))class_swizzleSelector((clazz), (selector), (IMP)(newImplementation))
@@ -119,11 +119,11 @@ IMP class_swizzleClassSelectorWithBlock(Class clazz, SEL selector, id newImpleme
   return;
   SwizzleSelectorWithBlock_Begin(self, @selector(description))
   ^(NSValue *self) {
-    if (strcmp(self.objCType, @encode(CAmatrixRGBA)) == 0) {
-      CAmatrixRGBA matrixRGBA;
+    if (strcmp(self.objCType, @encode(CAColorMatrix)) == 0) {
+      CAColorMatrix colorMatrix;
       
-      [self getValue:&matrixRGBA];
-      return [NSString stringWithFormat:@"CAmatrixRGBA: {{%lf, %lf, %lf, %lf, %lf}, {%lf, %lf, %lf, %lf, %lf}, {%lf, %lf, %lf, %lf, %lf}, {%lf, %lf, %lf, %lf, %lf}}", matrixRGBA.m11, matrixRGBA.m12, matrixRGBA.m13, matrixRGBA.m14, matrixRGBA.m15, matrixRGBA.m21, matrixRGBA.m22, matrixRGBA.m23, matrixRGBA.m24, matrixRGBA.m25, matrixRGBA.m31, matrixRGBA.m32, matrixRGBA.m33, matrixRGBA.m34, matrixRGBA.m35, matrixRGBA.m41, matrixRGBA.m42, matrixRGBA.m43, matrixRGBA.m44, matrixRGBA.m45];
+      [self getValue:&colorMatrix];
+      return [NSString stringWithFormat:@"CAColorMatrix: {{%lf, %lf, %lf, %lf, %lf}, {%lf, %lf, %lf, %lf, %lf}, {%lf, %lf, %lf, %lf, %lf}, {%lf, %lf, %lf, %lf, %lf}}", colorMatrix.m11, colorMatrix.m12, colorMatrix.m13, colorMatrix.m14, colorMatrix.m15, colorMatrix.m21, colorMatrix.m22, colorMatrix.m23, colorMatrix.m24, colorMatrix.m25, colorMatrix.m31, colorMatrix.m32, colorMatrix.m33, colorMatrix.m34, colorMatrix.m35, colorMatrix.m41, colorMatrix.m42, colorMatrix.m43, colorMatrix.m44, colorMatrix.m45];
     }
     return [self description];
   }

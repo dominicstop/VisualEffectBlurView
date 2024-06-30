@@ -1,5 +1,5 @@
 //
-//  matrixRGBARGBA+Helpers.swift
+//  ColorMatrixRGBA+Helpers.swift
 //  VisualEffectBlurViewExample
 //
 //  Created by Dominic Go on 6/30/24.
@@ -10,14 +10,14 @@ import VisualEffectBlurView
 import DGSwiftUtilities
 
 
-extension matrixRGBARGBA {
+extension ColorMatrixRGBA {
 
   var descAsAttributedConfig: [AttributedStringConfig] {
     self.matrix4x5.enumerated().reduce(into: []) { acc, curr in
       if curr.offset == 0 {
         acc += [
           .init(
-            text: "matrixRGBARGBA:",
+            text: "ColorMatrixRGBA:",
             fontConfig: .init(size: nil, isBold: true)
           ),
           .newLine,

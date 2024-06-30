@@ -10,35 +10,35 @@ import UIKit
 
 public enum LayerFilterType {
 
-  // case colorMultiply;
-  // case addColor;
-  // case subtractColor;
-  // case invertColors;
-  // case shiftHueColor;
+  // case multiplyColor;
+  // case colorAdd;
+  // case colorSubtract;
+  // case colorInvert;
+  // case colorHueRotate;
   // case meteor;
   // case distanceField;
-  // case luminosityMap;
-  // case lanczosResampling;
-  // case paperCurl;
+  // case luminanceMap;
+  // case lanczosResize;
+  // case pageCurl;
   
-  case alphaFromLuminance;
-  case averagedColor;
+  case luminanceToAlpha;
+  case averageColor;
   
   case curves(
     inputAmount: CGFloat,
     inputValues: [CGFloat]
   );
   
-  case luminosityCurveMap(
+  case luminanceCurveMap(
     inputAmount: CGFloat,
     inputValues: [CGFloat]
   );
 
-  case blackAndWhiteColor(inputAmount: CGFloat);
-  case saturateColor(inputAmount: CGFloat);
-  case brightness(inputAmount: CGFloat);
-  case contrast(inputAmount: CGFloat);
-  case luminanceCompression(inputAmount: CGFloat)
+  case colorMonochrome(inputAmount: CGFloat);
+  case colorSaturate(inputAmount: CGFloat);
+  case colorBrightness(inputAmount: CGFloat);
+  case colorContrast(inputAmount: CGFloat);
+  case compressLuminance(inputAmount: CGFloat)
   case bias(inputAmount: CGFloat);
   
   case gaussianBlur(
@@ -46,64 +46,64 @@ public enum LayerFilterType {
     inputNormalizeEdges: Bool = true
   );
   
-  case darkVibrant(
+  case vibrantDark(
     inputReversed: Bool,
     inputColor0: CGColor,
     inputColor1: CGColor
   );
   
-  case lightVibrant(
+  case vibrantLight(
     inputReversed: Bool,
     inputColor0: CGColor,
     inputColor1: CGColor
   );
   
-  case vibrantMatrixRGBA(matrixRGBA: matrixRGBARGBA);
-  case matrixRGBA(matrixRGBA: matrixRGBARGBA);
+  case vibrantColorMatrix(colorMatrix: ColorMatrixRGBA);
+  case colorMatrix(colorMatrix: ColorMatrixRGBA);
   
   // MARK: - Computed Properties
   // ---------------------------
   
   public var associatedFilterTypeName: LayerFilterTypeName {
     switch self {
-      // case .colorMultiply:
-      //   return .colorMultiply;
+      // case .multiplyColor:
+      //   return .multiplyColor;
       //
-      // case .addColor:
-      //   return .addColor;
+      // case .colorAdd:
+      //   return .colorAdd;
       //
-      // case .subtractColor:
-      //   return .subtractColor;
+      // case .colorSubtract:
+      //   return .colorSubtract;
         
-      case .blackAndWhiteColor:
-        return .blackAndWhiteColor;
+      case .colorMonochrome:
+        return .colorMonochrome;
         
-      case .matrixRGBA:
-        return .matrixRGBA;
+      case .colorMatrix:
+        return .colorMatrix;
         
-      // case .shiftHueColor:
-      //   return .shiftHueColor;
+      // case .colorHueRotate:
+      //   return .colorHueRotate;
         
-      case .saturateColor:
-        return .saturateColor;
+      case .colorSaturate:
+        return .colorSaturate;
         
-      case .brightness:
-        return .brightness;
+      case .colorBrightness:
+        return .colorBrightness;
         
-      case .contrast:
-        return .contrast;
+      case .colorContrast:
+        return .colorContrast;
         
-      // case .invertColors:
-      //   return .invertColors;
+      // case .colorInvert:
+      //   return .colorInvert;
         
-      case .luminanceCompression:
-        return .luminanceCompression;
+      case .compressLuminance:
+        return .compressLuminance;
         
       // case .meteor:
       //   return .meteor;
         
-      case .alphaFromLuminance:
-        return .alphaFromLuminance;
+      case .luminanceToAlpha:
+        return .luminanceToAlpha;
         
       case .bias:
         return .bias;
@@ -114,32 +114,32 @@ public enum LayerFilterType {
       case .gaussianBlur:
         return .gaussianBlur;
         
-      // case .luminosityMap:
-      //   return .luminosityMap;
+      // case .luminanceMap:
+      //   return .luminanceMap;
         
-       case .luminosityCurveMap:
-         return .luminosityCurveMap;
+       case .luminanceCurveMap:
+         return .luminanceCurveMap;
         
        case .curves:
          return .curves;
         
-      case .averagedColor:
-        return .averagedColor;
+      case .averageColor:
+        return .averageColor;
         
-      // case .lanczosResampling:
-      //   return .lanczosResampling;
+      // case .lanczosResize:
+      //   return .lanczosResize;
         
-      // case .paperCurl:
-      //   return .paperCurl;
+      // case .pageCurl:
+      //   return .pageCurl;
         
-      case .darkVibrant:
-        return .darkVibrant;
+      case .vibrantDark:
+        return .vibrantDark;
         
-      case .lightVibrant:
-        return .lightVibrant;
+      case .vibrantLight:
+        return .vibrantLight;
         
-      case .vibrantMatrixRGBA:
-        return .vibrantMatrixRGBA;
+      case .vibrantColorMatrix:
+        return .vibrantColorMatrix;
     };
   };
   
@@ -167,46 +167,46 @@ public enum LayerFilterType {
     };
     
     switch filterTypeName {
-      case .alphaFromLuminance:
-        self = .alphaFromLuminance;
+      case .luminanceToAlpha:
+        self = .luminanceToAlpha;
         
-      case .averagedColor:
-        self = .averagedColor;
+      case .averageColor:
+        self = .averageColor;
         
-      case .blackAndWhiteColor:
+      case .colorMonochrome:
         guard let inputAmount = requestedValues.inputAmount else {
           return nil;
         };
         
-        self = .blackAndWhiteColor(inputAmount: inputAmount);
+        self = .colorMonochrome(inputAmount: inputAmount);
         
-      case .saturateColor:
+      case .colorSaturate:
         guard let inputAmount = requestedValues.inputAmount else {
           return nil;
         };
         
-        self = .saturateColor(inputAmount: inputAmount);
+        self = .colorSaturate(inputAmount: inputAmount);
         
-      case .brightness:
+      case .colorBrightness:
         guard let inputAmount = requestedValues.inputAmount else {
           return nil;
         };
         
-        self = .brightness(inputAmount: inputAmount);
+        self = .colorBrightness(inputAmount: inputAmount);
         
-      case .contrast:
+      case .colorContrast:
         guard let inputAmount = requestedValues.inputAmount else {
           return nil;
         };
         
-        self = .contrast(inputAmount: inputAmount);
+        self = .colorContrast(inputAmount: inputAmount);
         
-      case .luminanceCompression:
+      case .compressLuminance:
         guard let inputAmount = requestedValues.inputAmount else {
           return nil;
         };
         
-        self = .luminanceCompression(inputAmount: inputAmount);
+        self = .compressLuminance(inputAmount: inputAmount);
         
       case .bias:
         guard let inputAmount = requestedValues.inputAmount else {
@@ -226,13 +226,13 @@ public enum LayerFilterType {
           inputValues: inputValues
         );
         
-      case .luminosityCurveMap:
+      case .luminanceCurveMap:
         guard let inputAmount = requestedValues.inputAmount,
               let inputValues = configurationValues.inputValues  else {
           return nil;
         };
         
-        self = .luminosityCurveMap(
+        self = .luminanceCurveMap(
           inputAmount: inputAmount,
           inputValues: inputValues
         );
@@ -244,7 +244,7 @@ public enum LayerFilterType {
         
         self = .gaussianBlur(inputRadius: inputRadius);
         
-      case .darkVibrant:
+      case .vibrantDark:
         guard let inputReversed = requestedValues.inputReversed,
               let inputColor0 = requestedValues.inputColor0,
               let inputColor1 = requestedValues.inputColor1
@@ -252,13 +252,13 @@ public enum LayerFilterType {
           return nil;
         };
         
-        self = .darkVibrant(
+        self = .vibrantDark(
           inputReversed: inputReversed,
           inputColor0: inputColor0,
           inputColor1: inputColor1
         );
         
-      case .lightVibrant:
+      case .vibrantLight:
         guard let inputReversed = requestedValues.inputReversed,
               let inputColor0 = requestedValues.inputColor0,
               let inputColor1 = requestedValues.inputColor1
@@ -266,25 +266,25 @@ public enum LayerFilterType {
           return nil;
         };
         
-        self = .lightVibrant(
+        self = .vibrantLight(
           inputReversed: inputReversed,
           inputColor0: inputColor0,
           inputColor1: inputColor1
         );
         
-      case .vibrantMatrixRGBA:
-        guard let inputmatrixRGBA = requestedValues.inputmatrixRGBA else {
+      case .vibrantColorMatrix:
+        guard let inputColorMatrix = requestedValues.inputColorMatrix else {
           return nil;
         };
         
-        self = .vibrantMatrixRGBA(matrixRGBA: inputmatrixRGBA);
+        self = .vibrantColorMatrix(colorMatrix: inputColorMatrix);
         
-      case .matrixRGBA:
-        guard let inputmatrixRGBA = requestedValues.inputmatrixRGBA else {
+      case .colorMatrix:
+        guard let inputColorMatrix = requestedValues.inputColorMatrix else {
           return nil;
         };
         
-        self = .matrixRGBA(matrixRGBA: inputmatrixRGBA);
+        self = .colorMatrix(colorMatrix: inputColorMatrix);
         
       default:
         return nil;
@@ -296,8 +296,8 @@ public enum LayerFilterType {
   
   public func applyTo(layerFilterWrapper: LayerFilterWrapper){
     switch self {
-      case .alphaFromLuminance: fallthrough;
-      case .averagedColor:
+      case .luminanceToAlpha: fallthrough;
+      case .averageColor:
         // no-op
         break;
         
@@ -305,23 +305,23 @@ public enum LayerFilterType {
         layerFilterWrapper.setInputAmount(inputAmount);
         layerFilterWrapper.setInputValues(inputValues);
         
-      case let .luminosityCurveMap(inputAmount, inputValues):
+      case let .luminanceCurveMap(inputAmount, inputValues):
         layerFilterWrapper.setInputAmount(inputAmount);
         layerFilterWrapper.setInputValues(inputValues);
         
-      case let .blackAndWhiteColor(inputAmount):
+      case let .colorMonochrome(inputAmount):
         layerFilterWrapper.setInputAmount(inputAmount);
         
-      case let .saturateColor(inputAmount):
+      case let .colorSaturate(inputAmount):
         layerFilterWrapper.setInputAmount(inputAmount);
         
-      case let .brightness(inputAmount):
+      case let .colorBrightness(inputAmount):
         layerFilterWrapper.setInputAmount(inputAmount);
         
-      case let .contrast(inputAmount):
+      case let .colorContrast(inputAmount):
         layerFilterWrapper.setInputAmount(inputAmount);
         
-      case let .luminanceCompression(inputAmount):
+      case let .compressLuminance(inputAmount):
         layerFilterWrapper.setInputAmount(inputAmount);
         
       case let .bias(inputAmount):
@@ -331,7 +331,7 @@ public enum LayerFilterType {
         layerFilterWrapper.setInputRadius(inputRadius);
         layerFilterWrapper.setInputNormalizeEdges(inputNormalizeEdges);
         
-      case let .darkVibrant(
+      case let .vibrantDark(
         inputReversed,
         inputColor0,
         inputColor1
@@ -340,7 +340,7 @@ public enum LayerFilterType {
         layerFilterWrapper.setInputColor0(inputColor0);
         layerFilterWrapper.setInputColor1(inputColor1);
         
-      case let .lightVibrant(
+      case let .vibrantLight(
         inputReversed,
         inputColor0,
         inputColor1
@@ -349,12 +349,12 @@ public enum LayerFilterType {
         layerFilterWrapper.setInputColor0(inputColor0);
         layerFilterWrapper.setInputColor1(inputColor1);
         
-      case let .vibrantMatrixRGBA(matrixRGBA):
-        layerFilterWrapper.setInputmatrixRGBA(matrixRGBA);
+      case let .vibrantColorMatrix(colorMatrix):
+        layerFilterWrapper.setInputColorMatrix(colorMatrix);
         break;
         
-      case let .matrixRGBA(matrixRGBA):
-        layerFilterWrapper.setInputmatrixRGBA(matrixRGBA);
+      case let .colorMatrix(colorMatrix):
+        layerFilterWrapper.setInputColorMatrix(colorMatrix);
     };
   };
   
@@ -375,24 +375,24 @@ public enum LayerFilterType {
 };
 
 extension LayerFilterType {
-  static func darkVibrant(
+  static func vibrantDark(
     inputReversed: Bool,
     inputColor0: UIColor,
     inputColor1: UIColor
   ) -> Self {
-    .darkVibrant(
+    .vibrantDark(
       inputReversed: inputReversed,
       inputColor0: inputColor0.cgColor,
       inputColor1: inputColor1.cgColor
     );
   };
   
-  static func lightVibrant(
+  static func vibrantLight(
     inputReversed: Bool,
     inputColor0: UIColor,
     inputColor1: UIColor
   ) -> Self {
-    .lightVibrant(
+    .vibrantLight(
       inputReversed: inputReversed,
       inputColor0: inputColor0.cgColor,
       inputColor1: inputColor1.cgColor
@@ -449,14 +449,14 @@ fileprivate extension NSDictionary {
     return (inputColor1Raw as! CGColor);
   };
   
-  var inputmatrixRGBA: matrixRGBARGBA? {
-    guard let inputmatrixRGBARaw = self["inputmatrixRGBA"],
-          let inputmatrixRGBA = inputmatrixRGBARaw as? NSValue
+  var inputColorMatrix: ColorMatrixRGBA? {
+    guard let inputColorMatrixRaw = self["inputColorMatrix"],
+          let inputColorMatrix = inputColorMatrixRaw as? NSValue
     else {
       return nil;
     };
     
-    return .init(fromValue: inputmatrixRGBA);
+    return .init(fromValue: inputColorMatrix);
   };
   
   var inputValues: [CGFloat]? {

@@ -23,10 +23,10 @@ extension LayerFilterType {
 
   var filterDescAsAttributedConfig: [CardContentItem] {
     switch self {
-      case .alphaFromLuminance:
+      case .luminanceToAlpha:
         return [];
 
-      case .averagedColor:
+      case .averageColor:
         return [];
         
       case let .curves(inputAmount, inputValues):
@@ -43,7 +43,7 @@ extension LayerFilterType {
           ]),
         ];
         
-      case let .luminosityCurveMap(inputAmount, inputValues):
+      case let .luminanceCurveMap(inputAmount, inputValues):
         return [
           .labelValueDisplay(items: [
             .singleRowPlain(
@@ -57,7 +57,7 @@ extension LayerFilterType {
           ]),
         ];
         
-      case let .blackAndWhiteColor(inputAmount):
+      case let .colorMonochrome(inputAmount):
         return [
           .labelValueDisplay(items: [
             .singleRowPlain(
@@ -67,7 +67,7 @@ extension LayerFilterType {
           ]),
         ];
         
-      case let .saturateColor(inputAmount):
+      case let .colorSaturate(inputAmount):
         return [
           .labelValueDisplay(items: [
             .singleRowPlain(
@@ -77,7 +77,7 @@ extension LayerFilterType {
           ]),
         ];
         
-      case let .brightness(inputAmount):
+      case let .colorBrightness(inputAmount):
         return [
           .labelValueDisplay(items: [
             .singleRowPlain(
@@ -87,7 +87,7 @@ extension LayerFilterType {
           ]),
         ];
         
-      case let .contrast(inputAmount):
+      case let .colorContrast(inputAmount):
         return [
           .labelValueDisplay(items: [
             .singleRowPlain(
@@ -97,7 +97,7 @@ extension LayerFilterType {
           ]),
         ];
         
-      case let .luminanceCompression(inputAmount):
+      case let .compressLuminance(inputAmount):
         return [
           .labelValueDisplay(items: [
             .singleRowPlain(
@@ -131,7 +131,7 @@ extension LayerFilterType {
           ]),
         ];
         
-      case let .darkVibrant(inputReversed, inputColor0, inputColor1):
+      case let .vibrantDark(inputReversed, inputColor0, inputColor1):
         return [
           .labelValueDisplay(items: [
             .singleRowPlain(
@@ -149,7 +149,7 @@ extension LayerFilterType {
           ]),
         ];
         
-      case let .lightVibrant(inputReversed, inputColor0, inputColor1):
+      case let .vibrantLight(inputReversed, inputColor0, inputColor1):
         return [
           .labelValueDisplay(items: [
             .singleRowPlain(
@@ -167,14 +167,14 @@ extension LayerFilterType {
           ]),
         ];
         
-      case let .vibrantMatrixRGBA(matrixRGBA):
+      case let .vibrantColorMatrix(colorMatrix):
         return [
-          .multiLineLabel(matrixRGBA.descAsAttributedConfig),
+          .multiLineLabel(colorMatrix.descAsAttributedConfig),
         ];
         
-      case let .matrixRGBA(matrixRGBA):
+      case let .colorMatrix(colorMatrix):
         return [
-          .multiLineLabel(matrixRGBA.descAsAttributedConfig),
+          .multiLineLabel(colorMatrix.descAsAttributedConfig),
         ];
     };
   };

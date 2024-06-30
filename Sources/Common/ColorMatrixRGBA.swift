@@ -1,5 +1,5 @@
 //
-//  matrixRGBARGBA.swift
+//  ColorMatrixRGBA.swift
 //  
 //
 //  Created by Dominic Go on 6/23/24.
@@ -9,7 +9,7 @@ import UIKit
 import DGSwiftUtilities
 
 
-public struct matrixRGBARGBA {
+public struct ColorMatrixRGBA {
 
   // MARK: - Static Alias
   // ------------------
@@ -66,10 +66,10 @@ public struct matrixRGBARGBA {
         return nil;
       };
       
-      var inputmatrixRGBAValue: NSValue?;
+      var inputColorMatrixValue: NSValue?;
       
       UIBlurEffect.Style.allCases.forEach { blurEffectStyle in
-        if inputmatrixRGBAValue != nil {
+        if inputColorMatrixValue != nil {
           return;
         };
       
@@ -89,23 +89,23 @@ public struct matrixRGBARGBA {
             return;
           };
           
-          let inputmatrixRGBAValues: [NSValue] = filterEntries.compactMap {
+          let inputColorMatrixValues: [NSValue] = filterEntries.compactMap {
             guard let requestedValues = $0.requestedValues,
-                  let matrixRGBARaw = requestedValues["inputmatrixRGBA"],
-                  let matrixRGBAValue = matrixRGBARaw as? NSValue
+                  let colorMatrixRaw = requestedValues["inputColorMatrix"],
+                  let colorMatrixValue = colorMatrixRaw as? NSValue
             else {
               return nil;
             };
             
-            return matrixRGBAValue;
+            return colorMatrixValue;
           };
           
-          inputmatrixRGBAValue = inputmatrixRGBAValues.first;
+          inputColorMatrixValue = inputColorMatrixValues.first;
           return;
         };
       };
       
-      return inputmatrixRGBAValue?.objCType;
+      return inputColorMatrixValue?.objCType;
     }
   };
   

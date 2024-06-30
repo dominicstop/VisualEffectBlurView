@@ -101,10 +101,10 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
     wrappedObject.setValue(value, forKey: "inputRadius");
   };
   
-  public func setInputmatrixRGBA(_ value: matrixRGBARGBA){
+  public func setInputColorMatrix(_ value: ColorMatrixRGBA){
     guard let wrappedObject = self.wrappedObject else { return };
-    let matrixRGBAObjcValue = value.objcValue;
-    wrappedObject.setValue(matrixRGBAObjcValue, forKey: "inputmatrixRGBA");
+    let colorMatrixObjcValue = value.objcValue;
+    wrappedObject.setValue(colorMatrixObjcValue, forKey: "inputColorMatrix");
   };
   
   public func setInputReversed(_ value: Bool){
