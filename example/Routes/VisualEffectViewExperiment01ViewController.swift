@@ -22,8 +22,8 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
   
   var counter = 0;
   var filterPresets: [LayerFilterType] = [
-    .averageColor,
-    .luminanceToAlpha,
+    .averagedColor,
+    .alphaFromLuminance,
     
     .bias(inputAmount: 0.0),
     .bias(inputAmount: 0.2),
@@ -32,36 +32,36 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
     .bias(inputAmount: 0.8),
     .bias(inputAmount: 1.0),
     
-    .colorBrightness(inputAmount: 0.0),
-    .colorBrightness(inputAmount: 0.2),
-    .colorBrightness(inputAmount: 0.4),
-    .colorBrightness(inputAmount: 0.6),
-    .colorBrightness(inputAmount: 0.8),
-    .colorBrightness(inputAmount: 1.0),
+    .brightenColors(inputAmount: 0.0),
+    .brightenColors(inputAmount: 0.2),
+    .brightenColors(inputAmount: 0.4),
+    .brightenColors(inputAmount: 0.6),
+    .brightenColors(inputAmount: 0.8),
+    .brightenColors(inputAmount: 1.0),
     
-    .colorContrast(inputAmount: 0.2),
-    .colorContrast(inputAmount: 0.6),
-    .colorContrast(inputAmount: 1.2),
-    .colorContrast(inputAmount: 1.6),
-    .colorContrast(inputAmount: 2.0),
+    .contrastColors(inputAmount: 0.2),
+    .contrastColors(inputAmount: 0.6),
+    .contrastColors(inputAmount: 1.2),
+    .contrastColors(inputAmount: 1.6),
+    .contrastColors(inputAmount: 2.0),
     
-    .colorMonochrome(inputAmount: 0.0),
-    .colorMonochrome(inputAmount: 0.3),
-    .colorMonochrome(inputAmount: 0.6),
-    .colorMonochrome(inputAmount: 1.0),
+    .colorBlackAndWhite(inputAmount: 0.0),
+    .colorBlackAndWhite(inputAmount: 0.3),
+    .colorBlackAndWhite(inputAmount: 0.6),
+    .colorBlackAndWhite(inputAmount: 1.0),
     
-    .colorSaturate(inputAmount: 0.0),
-    .colorSaturate(inputAmount: 0.6),
-    .colorSaturate(inputAmount: 1.0),
-    .colorSaturate(inputAmount: 2.0),
-    .colorSaturate(inputAmount: 4.0),
+    .saturateColors(inputAmount: 0.0),
+    .saturateColors(inputAmount: 0.6),
+    .saturateColors(inputAmount: 1.0),
+    .saturateColors(inputAmount: 2.0),
+    .saturateColors(inputAmount: 4.0),
     
-    .compressLuminance(inputAmount: 0.0),
-    .compressLuminance(inputAmount: 0.2),
-    .compressLuminance(inputAmount: 0.4),
-    .compressLuminance(inputAmount: 0.6),
-    .compressLuminance(inputAmount: 0.8),
-    .compressLuminance(inputAmount: 1.0),
+    .luminanceCompression(inputAmount: 0.0),
+    .luminanceCompression(inputAmount: 0.2),
+    .luminanceCompression(inputAmount: 0.4),
+    .luminanceCompression(inputAmount: 0.6),
+    .luminanceCompression(inputAmount: 0.8),
+    .luminanceCompression(inputAmount: 1.0),
     
     .gaussianBlur(inputRadius: 0.0),
     .gaussianBlur(inputRadius: 1.0),
@@ -70,53 +70,53 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
     .gaussianBlur(inputRadius: 8.0),
     .gaussianBlur(inputRadius: 16.0),
     
-    .vibrantDark(
+    .darkVibrant(
       inputReversed: true,
       inputColor0: UIColor.red.cgColor,
       inputColor1: UIColor.orange.cgColor
     ),
-    .vibrantDark(
+    .darkVibrant(
       inputReversed: true,
       inputColor0: UIColor.orange.cgColor,
       inputColor1: UIColor.yellow.cgColor
     ),
-    .vibrantDark(
+    .darkVibrant(
       inputReversed: true,
       inputColor0: UIColor.yellow.cgColor,
       inputColor1: UIColor.green.cgColor
     ),
-    .vibrantDark(
+    .darkVibrant(
       inputReversed: true,
       inputColor0: UIColor.green.cgColor,
       inputColor1: UIColor.blue.cgColor
     ),
-    .vibrantDark(
+    .darkVibrant(
       inputReversed: true,
       inputColor0: UIColor.blue.cgColor,
       inputColor1: UIColor.cyan.cgColor
     ),
     
-    .vibrantLight(
+    .lightVibrant(
       inputReversed: true,
       inputColor0: UIColor.red.cgColor,
       inputColor1: UIColor.orange.cgColor
     ),
-    .vibrantLight(
+    .lightVibrant(
       inputReversed: true,
       inputColor0: UIColor.orange.cgColor,
       inputColor1: UIColor.yellow.cgColor
     ),
-    .vibrantLight(
+    .lightVibrant(
       inputReversed: true,
       inputColor0: UIColor.yellow.cgColor,
       inputColor1: UIColor.green.cgColor
     ),
-    .vibrantLight(
+    .lightVibrant(
       inputReversed: true,
       inputColor0: UIColor.green.cgColor,
       inputColor1: UIColor.blue.cgColor
     ),
-    .vibrantLight(
+    .lightVibrant(
       inputReversed: true,
       inputColor0: UIColor.blue.cgColor,
       inputColor1: UIColor.cyan.cgColor
@@ -135,62 +135,66 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
       inputValues: [0.2, 0.2, 0.1, 0.1]
     ),
     
-    .luminanceCurveMap(
+    .luminosityCurveMap(
       inputAmount: 0.3,
       inputValues: [0.16, 0.26, 0.10, 0.10]
     ),
-    .luminanceCurveMap(
+    .luminosityCurveMap(
       inputAmount: 0.6,
       inputValues: [0.16, 0.26, 0.10, 0.10]
     ),
-    .luminanceCurveMap(
+    .luminosityCurveMap(
       inputAmount: 0.9,
       inputValues: [0.16, 0.26, 0.10, 0.10]
     ),
 
-    .colorMatrix(colorMatrix: .init(
-      m11: 1.0, m12: 0.0, m13: 0.0, m14: 0.0, m15: 0.0,
-      m21: 0.0, m22: 1.0, m23: 0.0, m24: 0.0, m25: 0.0,
-      m31: 0.0, m32: 0.0, m33: 1.0, m34: 0.0, m35: 0.0,
-      m41: 0.0, m42: 0.0, m43: 0.0, m44: 1.0, m45: 0.0
-    )),
-    .colorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset01.colorMatrix),
-    .colorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset02.colorMatrix),
-    .colorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset03.colorMatrix),
-    .colorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset04.colorMatrix),
-    .colorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset05.colorMatrix),
-    .colorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset06.colorMatrix),
-    .colorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset07.colorMatrix),
-    .colorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset08.colorMatrix),
-    .colorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset09.colorMatrix),
-    .colorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset10.colorMatrix),
-    .colorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset11.colorMatrix),
-    .colorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset12.colorMatrix),
-    .colorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset13.colorMatrix),
-    .colorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset14.colorMatrix),
-    .colorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset15.colorMatrix),
+    .colorMatrix(
+      .init(
+        m11: 1.0, m12: 0.0, m13: 0.0, m14: 0.0, m15: 0.0,
+        m21: 0.0, m22: 1.0, m23: 0.0, m24: 0.0, m25: 0.0,
+        m31: 0.0, m32: 0.0, m33: 1.0, m34: 0.0, m35: 0.0,
+        m41: 0.0, m42: 0.0, m43: 0.0, m44: 1.0, m45: 0.0
+      )
+    ),
+    .colorMatrix(ColorMatrixRGBAPreset.preset01.colorMatrix),
+    .colorMatrix(ColorMatrixRGBAPreset.preset02.colorMatrix),
+    .colorMatrix(ColorMatrixRGBAPreset.preset03.colorMatrix),
+    .colorMatrix(ColorMatrixRGBAPreset.preset04.colorMatrix),
+    .colorMatrix(ColorMatrixRGBAPreset.preset05.colorMatrix),
+    .colorMatrix(ColorMatrixRGBAPreset.preset06.colorMatrix),
+    .colorMatrix(ColorMatrixRGBAPreset.preset07.colorMatrix),
+    .colorMatrix(ColorMatrixRGBAPreset.preset08.colorMatrix),
+    .colorMatrix(ColorMatrixRGBAPreset.preset09.colorMatrix),
+    .colorMatrix(ColorMatrixRGBAPreset.preset10.colorMatrix),
+    .colorMatrix(ColorMatrixRGBAPreset.preset11.colorMatrix),
+    .colorMatrix(ColorMatrixRGBAPreset.preset12.colorMatrix),
+    .colorMatrix(ColorMatrixRGBAPreset.preset13.colorMatrix),
+    .colorMatrix(ColorMatrixRGBAPreset.preset14.colorMatrix),
+    .colorMatrix(ColorMatrixRGBAPreset.preset15.colorMatrix),
     
-    .vibrantColorMatrix(colorMatrix: .init(
-      m11: 1.0, m12: 0.0, m13: 0.0, m14: 0.0, m15: 0.0,
-      m21: 0.0, m22: 1.0, m23: 0.0, m24: 0.0, m25: 0.0,
-      m31: 0.0, m32: 0.0, m33: 1.0, m34: 0.0, m35: 0.0,
-      m41: 0.0, m42: 0.0, m43: 0.0, m44: 1.0, m45: 0.0
-    )),
-    .vibrantColorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset01.colorMatrix),
-    .vibrantColorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset02.colorMatrix),
-    .vibrantColorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset03.colorMatrix),
-    .vibrantColorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset04.colorMatrix),
-    .vibrantColorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset05.colorMatrix),
-    .vibrantColorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset06.colorMatrix),
-    .vibrantColorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset07.colorMatrix),
-    .vibrantColorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset08.colorMatrix),
-    .vibrantColorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset09.colorMatrix),
-    .vibrantColorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset10.colorMatrix),
-    .vibrantColorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset11.colorMatrix),
-    .vibrantColorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset12.colorMatrix),
-    .vibrantColorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset13.colorMatrix),
-    .vibrantColorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset14.colorMatrix),
-    .vibrantColorMatrix(colorMatrix: ColorMatrixRGBAPreset.preset15.colorMatrix),
+    .colorMatrixVibrant(
+      .init(
+        m11: 1.0, m12: 0.0, m13: 0.0, m14: 0.0, m15: 0.0,
+        m21: 0.0, m22: 1.0, m23: 0.0, m24: 0.0, m25: 0.0,
+        m31: 0.0, m32: 0.0, m33: 1.0, m34: 0.0, m35: 0.0,
+        m41: 0.0, m42: 0.0, m43: 0.0, m44: 1.0, m45: 0.0
+      )
+    ),
+    .colorMatrixVibrant(ColorMatrixRGBAPreset.preset01.colorMatrix),
+    .colorMatrixVibrant(ColorMatrixRGBAPreset.preset02.colorMatrix),
+    .colorMatrixVibrant(ColorMatrixRGBAPreset.preset03.colorMatrix),
+    .colorMatrixVibrant(ColorMatrixRGBAPreset.preset04.colorMatrix),
+    .colorMatrixVibrant(ColorMatrixRGBAPreset.preset05.colorMatrix),
+    .colorMatrixVibrant(ColorMatrixRGBAPreset.preset06.colorMatrix),
+    .colorMatrixVibrant(ColorMatrixRGBAPreset.preset07.colorMatrix),
+    .colorMatrixVibrant(ColorMatrixRGBAPreset.preset08.colorMatrix),
+    .colorMatrixVibrant(ColorMatrixRGBAPreset.preset09.colorMatrix),
+    .colorMatrixVibrant(ColorMatrixRGBAPreset.preset10.colorMatrix),
+    .colorMatrixVibrant(ColorMatrixRGBAPreset.preset11.colorMatrix),
+    .colorMatrixVibrant(ColorMatrixRGBAPreset.preset12.colorMatrix),
+    .colorMatrixVibrant(ColorMatrixRGBAPreset.preset13.colorMatrix),
+    .colorMatrixVibrant(ColorMatrixRGBAPreset.preset14.colorMatrix),
+    .colorMatrixVibrant(ColorMatrixRGBAPreset.preset15.colorMatrix),
   ];
   
   override func loadView() {
