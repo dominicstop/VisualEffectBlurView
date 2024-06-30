@@ -1,5 +1,5 @@
 //
-//  ColorMatrixRGBAPreset.swift
+//  matrixRGBARGBAPreset.swift
 //  
 //
 //  Created by Dominic Go on 6/25/24.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-public enum ColorMatrixRGBAPreset: String, CaseIterable {
+public enum matrixRGBARGBAPreset: String, CaseIterable {
   case preset01;
   case preset02;
   case preset03;
@@ -169,7 +169,7 @@ public enum ColorMatrixRGBAPreset: String, CaseIterable {
     };
   };
   
-  public var colorMatrix: ColorMatrixRGBA {
+  public var matrixRGBA: matrixRGBARGBA {
     switch self {
       case .preset01:
         return .init(

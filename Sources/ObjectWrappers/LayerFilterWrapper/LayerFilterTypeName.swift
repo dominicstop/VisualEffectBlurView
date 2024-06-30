@@ -9,81 +9,81 @@ import Foundation
 import DGSwiftUtilities
 
 public enum LayerFilterTypeName: CaseIterable, HashedStringDecodable {
-    case multiplyColor;
-    case colorAdd;
-    case colorSubtract;
-    case colorMonochrome;
-    case colorMatrix;
-    case colorHueRotate;
-    case colorSaturate;
-    case colorBrightness;
-    case colorContrast;
-    case colorInvert;
-    case compressLuminance;
+    case colorMultiply;
+    case addColor;
+    case subtractColor;
+    case blackAndWhiteColor;
+    case matrixRGBA;
+    case shiftHueColor;
+    case saturateColor;
+    case brightness;
+    case contrast;
+    case invertColors;
+    case luminanceCompression;
     case meteor;
-    case luminanceToAlpha;
+    case alphaFromLuminance;
     case bias;
     case distanceField;
     case gaussianBlur;
-    case luminanceMap;
-    case luminanceCurveMap;
+    case luminosityMap;
+    case luminosityCurveMap;
     case curves;
-    case averageColor;
-    case lanczosResize;
-    case pageCurl;
-    case vibrantDark;
-    case vibrantLight;
-    case vibrantColorMatrix;
+    case averagedColor;
+    case lanczosResampling;
+    case paperCurl;
+    case darkVibrant;
+    case lightVibrant;
+    case vibrantMatrixRGBA;
     
     case alphaThreshold;
-    case colorInvertDisplayAware;
-    case opacityPair;
-    case srl;
-    case edrGain;
-    case edrGainMultiply;
-    case variableBlur;
-    case limitAveragePixelLuminance;
+    case invertColorsSmart;
+    case pairedOpacity;
+    //case srl;
+    case gainUsingEDR;
+    case gainUsingEDRMultiply;
+    case variadicBlur;
+    case avgPixelLuminosityWithLimit;
     case lut;
     
     public var encodedString: String {
       switch self {
-        case .multiplyColor:
+        case .colorMultiply:
           return "bXVsdGlwbHlDb2xvcg==";
           
-        case .colorAdd:
+        case .addColor:
           return "Y29sb3JBZGQ=";
           
-        case .colorSubtract:
+        case .subtractColor:
           return "Y29sb3JTdWJ0cmFjdA==";
           
-        case .colorMonochrome:
+        case .blackAndWhiteColor:
           return "Y29sb3JNb25vY2hyb21l";
           
-        case .colorMatrix:
+        case .matrixRGBA:
           return "Y29sb3JNYXRyaXg=";
           
-        case .colorHueRotate:
+        case .shiftHueColor:
           return "Y29sb3JIdWVSb3RhdGU=";
           
-        case .colorSaturate:
+        case .saturateColor:
           return "Y29sb3JTYXR1cmF0ZQ==";
           
-        case .colorBrightness:
+        case .brightness:
           return "Y29sb3JCcmlnaHRuZXNz";
           
-        case .colorContrast:
+        case .contrast:
           return "Y29sb3JDb250cmFzdA==";
           
-        case .colorInvert:
+        case .invertColors:
           return "Y29sb3JJbnZlcnQ=";
           
-        case .compressLuminance:
+        case .luminanceCompression:
           return "Y29tcHJlc3NMdW1pbmFuY2U=";
           
         case .meteor:
           return "bWV0ZW9y";
           
-        case .luminanceToAlpha:
+        case .alphaFromLuminance:
           return "bHVtaW5hbmNlVG9BbHBoYQ==";
           
         case .bias:
@@ -95,55 +95,55 @@ public enum LayerFilterTypeName: CaseIterable, HashedStringDecodable {
         case .gaussianBlur:
           return "Z2F1c3NpYW5CbHVy";
           
-        case .luminanceMap:
+        case .luminosityMap:
           return "bHVtaW5hbmNlTWFw";
           
-        case .luminanceCurveMap:
+        case .luminosityCurveMap:
           return "bHVtaW5hbmNlQ3VydmVNYXA=";
           
         case .curves:
           return "Y3VydmVz";
           
-        case .averageColor:
+        case .averagedColor:
           return "YXZlcmFnZUNvbG9y";
           
-        case .lanczosResize:
+        case .lanczosResampling:
           return "bGFuY3pvc1Jlc2l6ZQ==";
           
-        case .pageCurl:
+        case .paperCurl:
           return "cGFnZUN1cmw=";
           
-        case .vibrantDark:
+        case .darkVibrant:
           return "dmlicmFudERhcms=";
           
-        case .vibrantLight:
+        case .lightVibrant:
           return "dmlicmFudExpZ2h0";
           
-        case .vibrantColorMatrix:
+        case .vibrantMatrixRGBA:
           return "dmlicmFudENvbG9yTWF0cml4";
           
         case .alphaThreshold:
           return "YWxwaGFUaHJlc2hvbGQ=";
           
-        case .colorInvertDisplayAware:
+        case .invertColorsSmart:
           return "Y29sb3JJbnZlcnREaXNwbGF5QXdhcmU=";
           
-        case .opacityPair:
+        case .pairedOpacity:
           return "b3BhY2l0eVBhaXI=";
           
-        case .srl:
-          return "c3Js";
+        // case .srl:
+        //  return "c3Js";
           
-        case .edrGain:
+        case .gainUsingEDR:
           return "ZWRyR2Fpbg==";
           
-        case .edrGainMultiply:
+        case .gainUsingEDRMultiply:
           return "ZWRyR2Fpbk11bHRpcGx5";
           
-        case .variableBlur:
+        case .variadicBlur:
           return "dmFyaWFibGVCbHVy";
           
-        case .limitAveragePixelLuminance:
+        case .avgPixelLuminosityWithLimit:
           return "bGltaXRBdmVyYWdlUGl4ZWxMdW1pbmFuY2U=";
           
         case .lut:
