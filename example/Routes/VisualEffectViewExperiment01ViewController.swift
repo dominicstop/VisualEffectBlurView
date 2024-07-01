@@ -596,8 +596,6 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
       "\n"
     );
     
-    
-    
     self.cardVC?.cardConfig = .init(
       title: "Filter Details",
       subtitle: "Filter information",
@@ -635,7 +633,7 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
        let layerFilterWrapper = LayerFilterWrapper(objectToWrap: layerFilter)
     {
       
-      filterType.applyTo(layerFilterWrapper: layerFilterWrapper);
+      try! filterType.applyTo(layerFilterWrapper: layerFilterWrapper);
       UIView.animate(withDuration: 0.5){
         try! contentViewWrapper.applyRequestedFilterEffects();
       };

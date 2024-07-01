@@ -169,8 +169,14 @@ public enum LayerFilterType {
     }();
     
     guard let filterTypeName = filterTypeName,
-          let requestedValues = wrapper.requestedValues,
-          let configurationValues = wrapper.configurationValues
+          let requestedValuesRaw = wrapper.requestedValues,
+          let requestedValues =
+            requestedValuesRaw  as? Dictionary<String, Any>,
+            
+          let configurationValuesRaw = wrapper.configurationValues,
+          
+          let configurationValues =
+            configurationValuesRaw as? Dictionary<String, Any>
     else {
       return nil;
     };
@@ -303,7 +309,7 @@ public enum LayerFilterType {
   // MARK: - Functions
   // -----------------
   
-  public func applyTo(layerFilterWrapper: LayerFilterWrapper){
+  public func applyTo(layerFilterWrapper: LayerFilterWrapper) throws {
     switch self {
       case .alphaFromLuminance: fallthrough;
       case .averagedColor:
@@ -311,68 +317,67 @@ public enum LayerFilterType {
         break;
         
       case let .curves(inputAmount, inputValues):
-        layerFilterWrapper.setInputAmount(inputAmount);
-        layerFilterWrapper.setInputValues(inputValues);
+        try layerFilterWrapper.setInputAmount(inputAmount);
+        try layerFilterWrapper.setInputValues(inputValues);
         
       case let .luminosityCurveMap(inputAmount, inputValues):
-        layerFilterWrapper.setInputAmount(inputAmount);
-        layerFilterWrapper.setInputValues(inputValues);
+        try layerFilterWrapper.setInputAmount(inputAmount);
+        try layerFilterWrapper.setInputValues(inputValues);
         
       case let .colorBlackAndWhite(inputAmount):
-        layerFilterWrapper.setInputAmount(inputAmount);
+        try layerFilterWrapper.setInputAmount(inputAmount);
         
       case let .saturateColors(inputAmount):
-        layerFilterWrapper.setInputAmount(inputAmount);
+        try layerFilterWrapper.setInputAmount(inputAmount);
         
       case let .brightenColors(inputAmount):
-        layerFilterWrapper.setInputAmount(inputAmount);
+        try layerFilterWrapper.setInputAmount(inputAmount);
         
       case let .contrastColors(inputAmount):
-        layerFilterWrapper.setInputAmount(inputAmount);
+        try layerFilterWrapper.setInputAmount(inputAmount);
         
       case let .luminanceCompression(inputAmount):
-        layerFilterWrapper.setInputAmount(inputAmount);
+        try layerFilterWrapper.setInputAmount(inputAmount);
         
       case let .bias(inputAmount):
-        layerFilterWrapper.setInputAmount(inputAmount);
+        try layerFilterWrapper.setInputAmount(inputAmount);
         
       case let .gaussianBlur(inputRadius, inputNormalizeEdges):
-        layerFilterWrapper.setInputRadius(inputRadius);
-        layerFilterWrapper.setInputNormalizeEdges(inputNormalizeEdges);
+        try layerFilterWrapper.setInputRadius(inputRadius);
+        try layerFilterWrapper.setInputNormalizeEdges(inputNormalizeEdges);
         
       case let .darkVibrant(
         inputReversed,
         inputColor0,
         inputColor1
       ):
-        layerFilterWrapper.setInputReversed(inputReversed);
-        layerFilterWrapper.setInputColor0(inputColor0);
-        layerFilterWrapper.setInputColor1(inputColor1);
+        try layerFilterWrapper.setInputReversed(inputReversed);
+        try layerFilterWrapper.setInputColor0(inputColor0);
+        try layerFilterWrapper.setInputColor1(inputColor1);
         
       case let .lightVibrant(
         inputReversed,
         inputColor0,
         inputColor1
       ):
-        layerFilterWrapper.setInputReversed(inputReversed);
-        layerFilterWrapper.setInputColor0(inputColor0);
-        layerFilterWrapper.setInputColor1(inputColor1);
+        try layerFilterWrapper.setInputReversed(inputReversed);
+        try layerFilterWrapper.setInputColor0(inputColor0);
+        try layerFilterWrapper.setInputColor1(inputColor1);
         
       case let .colorMatrixVibrant(colorMatrix):
-        layerFilterWrapper.setInputColorMatrix(colorMatrix);
-        break;
+        try layerFilterWrapper.setInputColorMatrix(colorMatrix);
         
       case let .colorMatrix(colorMatrix):
-        layerFilterWrapper.setInputColorMatrix(colorMatrix);
+        try layerFilterWrapper.setInputColorMatrix(colorMatrix);
         
       case let .variadicBlur(
         inputRadius,
         inputMaskImage,
         inputNormalizeEdges
       ):
-        layerFilterWrapper.setInputRadius(inputRadius);
-        layerFilterWrapper.setInputMaskImage(inputMaskImage);
-        layerFilterWrapper.setInputNormalizeEdges(inputNormalizeEdges);
+        try layerFilterWrapper.setInputRadius(inputRadius);
+        try layerFilterWrapper.setInputMaskImage(inputMaskImage);
+        try layerFilterWrapper.setInputNormalizeEdges(inputNormalizeEdges);
     };
   };
   
@@ -386,11 +391,14 @@ public enum LayerFilterType {
     };
     
     try? layerFilterWrapper.setDefaults();
-    self.applyTo(layerFilterWrapper: layerFilterWrapper);
+    try? self.applyTo(layerFilterWrapper: layerFilterWrapper);
     
     return layerFilterWrapper;
   };
 };
+
+// MARK: - LayerFilterType+StaticAlias
+// -----------------------------------
 
 extension LayerFilterType {
   static func darkVibrant(
@@ -418,9 +426,10 @@ extension LayerFilterType {
   };
 };
 
+// MARK: - Dictionary+Helpers
+// --------------------------
 
-// TEMP
-fileprivate extension NSDictionary {
+fileprivate extension Dictionary where Key == String {
   var inputAmount: CGFloat? {
     guard let inputAmountRaw = self["inputAmount"],
           let inputAmount = inputAmountRaw as? CGFloat

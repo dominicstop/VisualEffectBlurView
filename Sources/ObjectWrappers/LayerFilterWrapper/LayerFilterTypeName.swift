@@ -39,10 +39,12 @@ public enum LayerFilterTypeName: CaseIterable, HashedStringDecodable {
     case alphaThreshold;
     case invertColorsDisplayAware;
     case pairedOpacity;
+    
     // case srl;
     // case edrGain;
     // case edrGainMultiply;
     case variadicBlur;
+    
     // case limitAveragePixelLuminance;
     // case lut;
     

@@ -22,6 +22,16 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
     case classMethodFilterTypes;
     case methodSetDefaults;
     
+    case propertyFilterInputKeyAmount;
+    case propertyFilterInputKeyValues;
+    case propertyFilterInputKeyRadius;
+    case propertyFilterInputKeyColorMatrix;
+    case propertyFilterInputKeyReversed;
+    case propertyFilterInputKeyColor0;
+    case propertyFilterInputKeyColor1;
+    case propertyFilterInputKeyNormalizeEdges;
+    case propertyFilterInputKeyMaskImage;
+    
     public var encodedString: String {
       switch self {
         case .className:
@@ -39,6 +49,42 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
         case .methodSetDefaults:
           // setDefaults
           return "c2V0RGVmYXVsdHM=";
+          
+        case .propertyFilterInputKeyAmount:
+          // inputAmount
+          return "aW5wdXRBbW91bnQ=";
+          
+        case .propertyFilterInputKeyValues:
+          // inputValues
+          return "aW5wdXRWYWx1ZXM=";
+          
+        case .propertyFilterInputKeyRadius:
+          // inputRadius
+          return "aW5wdXRSYWRpdXM=";
+          
+        case .propertyFilterInputKeyColorMatrix:
+          // inputColorMatrix
+          return "aW5wdXRDb2xvck1hdHJpeA==";
+          
+        case .propertyFilterInputKeyReversed:
+          // inputReversed
+          return "aW5wdXRSZXZlcnNlZA==";
+          
+        case .propertyFilterInputKeyColor0:
+          // inputColor0
+          return "aW5wdXRDb2xvcjA=";
+          
+        case .propertyFilterInputKeyColor1:
+          // inputColor1
+          return "aW5wdXRDb2xvcjE=";
+          
+        case .propertyFilterInputKeyNormalizeEdges:
+          // inputNormalizeEdges
+          return "aW5wdXROb3JtYWxpemVFZGdlcw==";
+          
+        case .propertyFilterInputKeyMaskImage:
+          // inputMaskImage
+          return "aW5wdXRNYXNrSW1hZ2U=";
       };
     };
   };
@@ -86,56 +132,92 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
     try self.performSelector(usingEncodedString: .methodSetDefaults);
   };
   
-  public func setInputAmount(_ value: CGFloat){
-    guard let wrappedObject = self.wrappedObject else { return };
-    wrappedObject.setValue(value, forKey: "inputAmount");
+  public func setInputAmount(_ value: CGFloat) throws {
+    try self.setValue(
+      forHashedString: .propertyFilterInputKeyAmount,
+      value: value
+    );
   };
   
-  public func setInputValues(_ value: [CGFloat]){
-    guard let wrappedObject = self.wrappedObject else { return };
-    wrappedObject.setValue(value, forKey: "inputValues");
+  public func setInputValues(_ value: [CGFloat]) throws {
+    try self.setValue(
+      forHashedString: .propertyFilterInputKeyValues,
+      value: value
+    );
   };
   
-  public func setInputRadius(_ value: CGFloat){
-    guard let wrappedObject = self.wrappedObject else { return };
-    wrappedObject.setValue(value, forKey: "inputRadius");
+  public func setInputRadius(_ value: CGFloat) throws {
+    try self.setValue(
+      forHashedString: .propertyFilterInputKeyRadius,
+      value: value
+    );
   };
   
-  public func setInputColorMatrix(_ value: ColorMatrixRGBA){
-    guard let wrappedObject = self.wrappedObject else { return };
+  public func setInputColorMatrix(_ value: ColorMatrixRGBA) throws {
     let colorMatrixObjcValue = value.objcValue;
-    wrappedObject.setValue(colorMatrixObjcValue, forKey: "inputColorMatrix");
-  };
-  
-  public func setInputReversed(_ value: Bool){
-    guard let wrappedObject = self.wrappedObject else { return };
-    wrappedObject.setValue(
-      value ? 1 : 0,
-      forKey: "inputReversed"
+    try self.setValue(
+      forHashedString: .propertyFilterInputKeyColorMatrix,
+      value: colorMatrixObjcValue
     );
   };
   
-  public func setInputColor0(_ value: CGColor){
-    guard let wrappedObject = self.wrappedObject else { return };
-    wrappedObject.setValue(value, forKey: "inputColor0");
-  };
-  
-  public func setInputColor1(_ value: CGColor){
-    guard let wrappedObject = self.wrappedObject else { return };
-    wrappedObject.setValue(value, forKey: "inputColor1");
-  };
-  
-  public func setInputNormalizeEdges(_ value: Bool){
-    guard let wrappedObject = self.wrappedObject else { return };
-    wrappedObject.setValue(
-      value ? 1 : 0,
-      forKey: "inputNormalizeEdges"
+  public func setInputReversed(_ value: Bool) throws {
+    try self.setValue(
+      forHashedString: .propertyFilterInputKeyReversed,
+      value: value ? 1 : 0
     );
   };
   
-  public func setInputMaskImage(_ value: CGImage){
-    guard let wrappedObject = self.wrappedObject else { return };
-    wrappedObject.setValue(value, forKey: "inputMaskImage");
+  public func setInputColor0(_ value: CGColor) throws {
+    try self.setValue(
+      forHashedString: .propertyFilterInputKeyColor0,
+      value: value
+    );
+  };
+  
+  public func setInputColor1(_ value: CGColor) throws {
+    try self.setValue(
+      forHashedString: .propertyFilterInputKeyColor1,
+      value: value
+    );
+  };
+  
+  public func setInputNormalizeEdges(_ value: Bool) throws {
+    try self.setValue(
+      forHashedString: .propertyFilterInputKeyNormalizeEdges,
+      value: value ? 1 : 0
+    );
+  };
+  
+  public func setInputMaskImage(_ value: CGImage) throws {
+    try self.setValue(
+      forHashedString: .propertyFilterInputKeyMaskImage,
+      value: value
+    );
+  };
+  
+  // MARK: - Method Alias
+  // --------------------
+  
+  public func setInputColor0(_ value: UIColor) throws {
+    try self.setValue(
+      forHashedString: .propertyFilterInputKeyColor0,
+      value: value.cgColor
+    );
+  };
+  
+  public func setInputColor1(_ value: UIColor) throws {
+    try self.setValue(
+      forHashedString: .propertyFilterInputKeyColor1,
+      value: value.cgColor
+    );
+  };
+  
+  public func setInputMaskImage(_ value: UIImage) throws {
+    try self.setValue(
+      forHashedString: .propertyFilterInputKeyMaskImage,
+      value: value.cgImage!
+    );
   };
 };
 
