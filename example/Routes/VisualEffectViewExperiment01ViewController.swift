@@ -22,6 +22,67 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
   
   var counter = 0;
   var filterPresets: [LayerFilterType] = [
+    .variadicBlur(
+      inputRadius: 16,
+      inputMaskImage: {
+        let imageConfig: ImageConfigGradient = ImageConfigGradient(
+          colors: [.black, .clear],
+          startPointPreset: .left,
+          endPointPreset: .right,
+          size: .init(width: 200, height: 400)
+        );
+        
+        let gradientImage = imageConfig.makeImage();
+        return gradientImage.cgImage!;
+      }(),
+      inputNormalizeEdges: true
+    ),
+    .variadicBlur(
+      inputRadius: 24,
+      inputMaskImage: {
+        let imageConfig: ImageConfigGradient = ImageConfigGradient(
+          colors: [.black, .clear],
+          startPointPreset: .right,
+          endPointPreset: .right,
+          size: .init(width: 200, height: 400)
+        );
+        
+        let gradientImage = imageConfig.makeImage();
+        return gradientImage.cgImage!;
+      }(),
+      inputNormalizeEdges: true
+    ),
+    .variadicBlur(
+      inputRadius: 12,
+      inputMaskImage: {
+        let imageConfig: ImageConfigGradient = ImageConfigGradient(
+          colors: [.black, .clear],
+          startPointPreset: .bottom,
+          endPointPreset: .top,
+          size: .init(width: 200, height: 400)
+        );
+        
+        let gradientImage = imageConfig.makeImage();
+        return gradientImage.cgImage!;
+      }(),
+      inputNormalizeEdges: true
+    ),
+    .variadicBlur(
+      inputRadius: 8,
+      inputMaskImage: {
+        let imageConfig: ImageConfigGradient = ImageConfigGradient(
+          colors: [.black, .clear],
+          startPointPreset: .top,
+          endPointPreset: .bottom,
+          size: .init(width: 200, height: 400)
+        );
+        
+        let gradientImage = imageConfig.makeImage();
+        return gradientImage.cgImage!;
+      }(),
+      inputNormalizeEdges: true
+    ),
+  
     .averagedColor,
     .alphaFromLuminance,
     
@@ -509,7 +570,8 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
   };
   
   func updateFilterPreset(){
-    guard let visualEffectView = self.visualEffectView,
+    guard let window = self.view.window,
+          let visualEffectView = self.visualEffectView,
           let visualEffectViewWrapper = visualEffectView.wrapper,
           let backgroundHostWrapper = visualEffectViewWrapper.backgroundHostWrapper,
           let contentViewWrapper = backgroundHostWrapper.contentViewWrapper,
@@ -518,6 +580,8 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
     else {
       return;
     };
+    
+    backdropLayer.setValue(window.screen.scale, forKey: "scale")
     
     let prevFilterType =
       self.filterPresets[cyclicIndex: max(self.counter - 1, 0)];
@@ -531,6 +595,8 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
       "\n - filterType:", filterType,
       "\n"
     );
+    
+    
     
     self.cardVC?.cardConfig = .init(
       title: "Filter Details",
@@ -548,6 +614,16 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
         ];
         
         items += filterType.filterDescAsAttributedConfig;
+        
+        if case let .variadicBlur(_, inputMaskImage, _) = filterType {
+          items.append(
+            .imageDisplay(
+              label: "inputMaskImage",
+              image: UIImage(cgImage: inputMaskImage)
+            )
+          );
+        };
+        
         return items;
       }()
     );
@@ -567,10 +643,8 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
     } else if let layerFilterWrapper = filterType.createFilterWrapper(),
               let layerFilter = layerFilterWrapper.wrappedObject
     {
-      UIView.animate(withDuration: 0.5){
-        backdropLayer.filters = [layerFilter];
-        try! contentViewWrapper.applyRequestedFilterEffects();
-      };
+      backdropLayer.filters = [layerFilter];
+      try! contentViewWrapper.applyRequestedFilterEffects();
     };
   };
 };
@@ -587,3 +661,49 @@ extension Data {
 }
 
 
+
+extension CardContentItem {
+  static func imageDisplay(
+    label: String,
+    image: UIImage,
+    size: CGSize = .init(width: 30, height: 30),
+    contentMode: UIView.ContentMode = .scaleToFill
+  ) -> Self {
+    let rootHStack = {
+      let stack = UIStackView();
+      
+      stack.axis = .horizontal;
+      stack.distribution = .equalSpacing;
+      stack.alignment = .fill;
+                
+      return stack;
+    }();
+    
+    let labelConfig: [AttributedStringConfig] = [
+      .init(
+        text: label,
+        fontConfig: .init(size: nil, isBold: true)
+      ),
+      .init(text: ":"),
+    ];
+    
+    let labelView = UILabel();
+    labelView.attributedText = labelConfig.makeAttributedString();
+    
+    rootHStack.addArrangedSubview(labelView);
+    
+    let imageView = UIImageView(image: image);
+    imageView.contentMode = .scaleToFill;
+    imageView.layer.cornerRadius = 6;
+    imageView.clipsToBounds = true;
+    
+    NSLayoutConstraint.activate([
+      imageView.heightAnchor.constraint(equalToConstant: 30),
+      imageView.widthAnchor.constraint(equalToConstant: 30),
+    ]);
+    
+    rootHStack.addArrangedSubview(imageView);
+    
+    return .view(rootHStack);
+  };
+};

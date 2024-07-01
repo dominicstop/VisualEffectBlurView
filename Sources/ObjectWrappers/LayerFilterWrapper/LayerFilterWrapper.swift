@@ -132,6 +132,11 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
       forKey: "inputNormalizeEdges"
     );
   };
+  
+  public func setInputMaskImage(_ value: CGImage){
+    guard let wrappedObject = self.wrappedObject else { return };
+    wrappedObject.setValue(value, forKey: "inputMaskImage");
+  };
 };
 
 

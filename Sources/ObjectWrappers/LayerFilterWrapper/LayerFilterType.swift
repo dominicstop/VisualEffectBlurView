@@ -61,6 +61,12 @@ public enum LayerFilterType {
   case colorMatrixVibrant(_ colorMatrix: ColorMatrixRGBA);
   case colorMatrix(_ colorMatrix: ColorMatrixRGBA);
   
+  case variadicBlur(
+    inputRadius: CGFloat,
+    inputMaskImage: CGImage,
+    inputNormalizeEdges: Bool
+  );
+  
   // MARK: - Computed Properties
   // ---------------------------
   
@@ -140,6 +146,9 @@ public enum LayerFilterType {
         
       case .colorMatrixVibrant:
         return .colorMatrixVibrant;
+        
+      case .variadicBlur:
+        return .variadicBlur;
     };
   };
   
@@ -355,6 +364,15 @@ public enum LayerFilterType {
         
       case let .colorMatrix(colorMatrix):
         layerFilterWrapper.setInputColorMatrix(colorMatrix);
+        
+      case let .variadicBlur(
+        inputRadius,
+        inputMaskImage,
+        inputNormalizeEdges
+      ):
+        layerFilterWrapper.setInputRadius(inputRadius);
+        layerFilterWrapper.setInputMaskImage(inputMaskImage);
+        layerFilterWrapper.setInputNormalizeEdges(inputNormalizeEdges);
     };
   };
   

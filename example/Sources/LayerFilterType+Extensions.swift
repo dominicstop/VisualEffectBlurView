@@ -176,6 +176,24 @@ extension LayerFilterType {
         return [
           .multiLineLabel(colorMatrix.descAsAttributedConfig),
         ];
+        
+      case let .variadicBlur(
+        inputRadius,
+        _ /* inputMaskImage */,
+        inputNormalizeEdges
+      ):
+        return [
+          .labelValueDisplay(items: [
+            .singleRowPlain(
+              label: "inputRadius",
+              value: "\(inputRadius)"
+            ),
+            .singleRowPlain(
+              label: "inputNormalizeEdges",
+              value: inputNormalizeEdges.description
+            ),
+          ]),
+        ];
     };
   };
 };
