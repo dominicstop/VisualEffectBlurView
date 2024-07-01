@@ -18,11 +18,23 @@ public class VisualEffectFilterEntryWrapper: PrivateObjectWrapper<
 
   public enum EncodedString: PrivateObjectWrappingEncodedString {
     case className;
-    case propertyFilterType;
-    case propertyRequestedValues;
-    case propertyIdentityValues;
-    case propertyConfigurationValues;
-    case methodSetRequestedValues;
+    
+    /// `filterType`
+    case propertyFilterKind;
+    
+    /// `requestedValues`
+    case propertyFilterValuesCurrent;
+    
+    /// `identityValues`
+    case propertyFilterValuesIdentity;
+    
+    /// `configurationValues`
+    case propertyFilterValuesConfig;
+    
+    /// `setRequestedValues`
+    case methodSetFilterValuesCurrent;
+    
+    /// `setFilterType`
     case methodSetFilterType;
     
     public var encodedString: String {
@@ -31,23 +43,23 @@ public class VisualEffectFilterEntryWrapper: PrivateObjectWrapper<
           // _UIVisualEffectFilterEntry
           return "X1VJVmlzdWFsRWZmZWN0RmlsdGVyRW50cnk=";
           
-        case .propertyFilterType:
+        case .propertyFilterKind:
           // filterType
           return "ZmlsdGVyVHlwZQ==";
           
-        case .propertyRequestedValues:
+        case .propertyFilterValuesCurrent:
           // requestedValues
           return "cmVxdWVzdGVkVmFsdWVz";
           
-        case .propertyIdentityValues:
+        case .propertyFilterValuesIdentity:
           // identityValues
           return "aWRlbnRpdHlWYWx1ZXM=";
           
-        case .propertyConfigurationValues:
+        case .propertyFilterValuesConfig:
           // configurationValues
           return "Y29uZmlndXJhdGlvblZhbHVlcw==";
           
-        case .methodSetRequestedValues:
+        case .methodSetFilterValuesCurrent:
           // setRequestedValues:
           return "c2V0UmVxdWVzdGVkVmFsdWVzOg==";
           
@@ -64,9 +76,9 @@ public class VisualEffectFilterEntryWrapper: PrivateObjectWrapper<
   /// Declaration:
   /// `@property (nonatomic,copy) NSString * filterType;`
   ///
-  public var filterType: String? {
+  public var filterKind: String? {
     let result = try? self.performSelector(
-      usingEncodedString: .propertyFilterType,
+      usingEncodedString: .propertyFilterKind,
       type: String.self
     );
     
@@ -77,9 +89,9 @@ public class VisualEffectFilterEntryWrapper: PrivateObjectWrapper<
   /// `@property (nonatomic,copy) NSDictionary * requestedValues;`
   /// `-(NSDictionary *)requestedValues;`
   ///
-  public var requestedValues: NSDictionary? {
+  public var filterValuesCurrent: NSDictionary? {
     return try? self.performSelector(
-      usingEncodedString: .propertyRequestedValues,
+      usingEncodedString: .propertyFilterValuesCurrent,
       type: NSDictionary.self
     );
   };
@@ -88,9 +100,9 @@ public class VisualEffectFilterEntryWrapper: PrivateObjectWrapper<
   /// `@property (nonatomic,copy) NSDictionary * identityValues;`
   /// `-(NSDictionary *)identityValues;`
   ///
-  public var identityValues: NSDictionary? {
+  public var filterValuesIdentity: NSDictionary? {
     return try? self.performSelector(
-      usingEncodedString: .propertyIdentityValues,
+      usingEncodedString: .propertyFilterValuesIdentity,
       type: NSDictionary.self
     );
   };
@@ -99,9 +111,9 @@ public class VisualEffectFilterEntryWrapper: PrivateObjectWrapper<
   /// `@property (nonatomic,copy) NSDictionary * configurationValues;`
   /// `-(NSDictionary *)configurationValues;`
   ///
-  public var configurationValues: NSDictionary? {
+  public var filterValuesConfig: NSDictionary? {
     return try? self.performSelector(
-      usingEncodedString: .propertyConfigurationValues,
+      usingEncodedString: .propertyFilterValuesConfig,
       type: NSDictionary.self
     );
   };
@@ -115,9 +127,9 @@ public class VisualEffectFilterEntryWrapper: PrivateObjectWrapper<
   /// Declaration:
   /// `-(void)setRequestedValues:(NSDictionary *)arg1;`
   ///
-  public func setRequestedValues(_ requestedValues: NSDictionary) throws {
+  public func setFilterValuesCurrent(_ requestedValues: NSDictionary) throws {
     try self.performSelector(
-      usingEncodedString: .methodSetRequestedValues,
+      usingEncodedString: .methodSetFilterValuesCurrent,
       withArg1: requestedValues
     );
   };
@@ -127,7 +139,7 @@ public class VisualEffectFilterEntryWrapper: PrivateObjectWrapper<
   ///
   /// `-(void)setFilterType:(NSString *)arg1;`
   ///
-  public func setFilterType(_ filterType: String) throws {
+  public func setFilterKind(_ filterType: String) throws {
     try self.performSelector(
       usingEncodedString: .methodSetFilterType,
       withArg1: filterType as NSString

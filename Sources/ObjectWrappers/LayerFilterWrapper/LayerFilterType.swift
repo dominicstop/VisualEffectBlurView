@@ -161,7 +161,7 @@ public enum LayerFilterType {
   
   public init?(fromWrapper wrapper: VisualEffectFilterEntryWrapper){
     let filterTypeName: LayerFilterTypeName? = {
-      guard let filterType = wrapper.filterType else {
+      guard let filterType = wrapper.filterKind else {
         return nil;
       };
       
@@ -169,14 +169,15 @@ public enum LayerFilterType {
     }();
     
     guard let filterTypeName = filterTypeName,
-          let requestedValuesRaw = wrapper.requestedValues,
-          let requestedValues =
-            requestedValuesRaw  as? Dictionary<String, Any>,
-            
-          let configurationValuesRaw = wrapper.configurationValues,
+          let filterValuesCurrentRaw = wrapper.filterValuesCurrent,
           
-          let configurationValues =
-            configurationValuesRaw as? Dictionary<String, Any>
+          let filterValuesCurrent =
+            filterValuesCurrentRaw  as? Dictionary<String, Any>,
+            
+          let filterValuesConfigRaw = wrapper.filterValuesConfig,
+          
+          let filterValuesConfig =
+            filterValuesConfigRaw as? Dictionary<String, Any>
     else {
       return nil;
     };
@@ -189,50 +190,50 @@ public enum LayerFilterType {
         self = .averagedColor;
         
       case .colorBlackAndWhite:
-        guard let inputAmount = requestedValues.inputAmount else {
+        guard let inputAmount = filterValuesCurrent.inputAmount else {
           return nil;
         };
         
         self = .colorBlackAndWhite(inputAmount: inputAmount);
         
       case .saturateColors:
-        guard let inputAmount = requestedValues.inputAmount else {
+        guard let inputAmount = filterValuesCurrent.inputAmount else {
           return nil;
         };
         
         self = .saturateColors(inputAmount: inputAmount);
         
       case .brightenColors:
-        guard let inputAmount = requestedValues.inputAmount else {
+        guard let inputAmount = filterValuesCurrent.inputAmount else {
           return nil;
         };
         
         self = .brightenColors(inputAmount: inputAmount);
         
       case .contrastColors:
-        guard let inputAmount = requestedValues.inputAmount else {
+        guard let inputAmount = filterValuesCurrent.inputAmount else {
           return nil;
         };
         
         self = .contrastColors(inputAmount: inputAmount);
         
       case .luminanceCompression:
-        guard let inputAmount = requestedValues.inputAmount else {
+        guard let inputAmount = filterValuesCurrent.inputAmount else {
           return nil;
         };
         
         self = .luminanceCompression(inputAmount: inputAmount);
         
       case .bias:
-        guard let inputAmount = requestedValues.inputAmount else {
+        guard let inputAmount = filterValuesCurrent.inputAmount else {
           return nil;
         };
         
         self = .bias(inputAmount: inputAmount);
         
       case .curves:
-        guard let inputAmount = requestedValues.inputAmount,
-              let inputValues = configurationValues.inputValues  else {
+        guard let inputAmount = filterValuesCurrent.inputAmount,
+              let inputValues = filterValuesConfig.inputValues  else {
           return nil;
         };
         
@@ -242,8 +243,8 @@ public enum LayerFilterType {
         );
         
       case .luminosityCurveMap:
-        guard let inputAmount = requestedValues.inputAmount,
-              let inputValues = configurationValues.inputValues  else {
+        guard let inputAmount = filterValuesCurrent.inputAmount,
+              let inputValues = filterValuesConfig.inputValues  else {
           return nil;
         };
         
@@ -253,16 +254,16 @@ public enum LayerFilterType {
         );
         
       case .gaussianBlur:
-        guard let inputRadius = requestedValues.inputRadius else {
+        guard let inputRadius = filterValuesCurrent.inputRadius else {
           return nil;
         };
         
         self = .gaussianBlur(inputRadius: inputRadius);
         
       case .darkVibrant:
-        guard let inputReversed = requestedValues.inputReversed,
-              let inputColor0 = requestedValues.inputColor0,
-              let inputColor1 = requestedValues.inputColor1
+        guard let inputReversed = filterValuesCurrent.inputReversed,
+              let inputColor0 = filterValuesCurrent.inputColor0,
+              let inputColor1 = filterValuesCurrent.inputColor1
         else {
           return nil;
         };
@@ -274,9 +275,9 @@ public enum LayerFilterType {
         );
         
       case .lightVibrant:
-        guard let inputReversed = requestedValues.inputReversed,
-              let inputColor0 = requestedValues.inputColor0,
-              let inputColor1 = requestedValues.inputColor1
+        guard let inputReversed = filterValuesCurrent.inputReversed,
+              let inputColor0 = filterValuesCurrent.inputColor0,
+              let inputColor1 = filterValuesCurrent.inputColor1
         else {
           return nil;
         };
@@ -288,14 +289,14 @@ public enum LayerFilterType {
         );
         
       case .colorMatrixVibrant:
-        guard let inputColorMatrix = requestedValues.inputColorMatrix else {
+        guard let inputColorMatrix = filterValuesCurrent.inputColorMatrix else {
           return nil;
         };
         
         self = .colorMatrixVibrant(inputColorMatrix);
         
       case .colorMatrix:
-        guard let inputColorMatrix = requestedValues.inputColorMatrix else {
+        guard let inputColorMatrix = filterValuesCurrent.inputColorMatrix else {
           return nil;
         };
         

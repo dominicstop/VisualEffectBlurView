@@ -165,7 +165,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
     };
 
     let filterItemMatchWrapped = filterItemsWrapped.enumerated().first {
-      guard let filterType = $0.element.filterType else {
+      guard let filterType = $0.element.filterKind else {
         #if DEBUG
         print(
           "BlurView.setBlurRadius",
@@ -189,22 +189,22 @@ public class VisualEffectBlurView: UIVisualEffectView {
       return;
     };
     
-    guard let requestedValues = gaussianBlurFilterEntryWrapped.requestedValues,
-          requestedValues.count > 0,
+    guard let filterValuesCurrent = gaussianBlurFilterEntryWrapped.filterValuesCurrent,
+          filterValuesCurrent.count > 0,
           
-          let requestedValuesCopy =
-            requestedValues.mutableCopy() as? NSMutableDictionary
+          let filterValuesCurrentCopy =
+            filterValuesCurrent.mutableCopy() as? NSMutableDictionary
     else {
       #if DEBUG
       print(
         "BlurView.setBlurRadius",
-        "- failed to get requestedValues"
+        "- failed to get filterValuesCurrent"
       );
       #endif
       return;
     };
     
-    requestedValuesCopy["inputRadius"] = NSNumber(value: blurRadius);
+    filterValuesCurrentCopy["inputRadius"] = NSNumber(value: blurRadius);
     
     guard let wrapper = self.wrapper,
           let backgroundHostWrapper = wrapper.backgroundHostWrapper,
@@ -219,7 +219,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
       return;
     };
     
-    try gaussianBlurFilterEntryWrapped.setRequestedValues(requestedValuesCopy);
+    try gaussianBlurFilterEntryWrapped.setFilterValuesCurrent(filterValuesCurrentCopy);
     try backgroundHostWrapper.setCurrentEffectDescriptor(effectDescriptorWrapper);
     try contentViewWrapper.applyRequestedFilterEffects();
   };
@@ -270,7 +270,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
     
 
     for (offset, filterItemWrapped) in filterItemsWrapped.enumerated() {
-      guard let filterType = filterItemWrapped.filterType else {
+      guard let filterType = filterItemWrapped.filterKind else {
         #if DEBUG
         print(
           "BlurView.setEffectIntensity",
@@ -281,11 +281,11 @@ public class VisualEffectBlurView: UIVisualEffectView {
         continue;
       };
       
-      guard let requestedValues = filterItemWrapped.requestedValues,
-            requestedValues.count > 0,
+      guard let filterValuesCurrent = filterItemWrapped.filterValuesCurrent,
+            filterValuesCurrent.count > 0,
             
-            let requestedValuesCopy =
-              requestedValues.mutableCopy() as? NSMutableDictionary
+            let filterValuesCurrentCopy =
+              filterValuesCurrent.mutableCopy() as? NSMutableDictionary
       else {
         #if DEBUG
         print(
@@ -297,7 +297,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
         continue;
       };
       
-      guard let identityValues = filterItemWrapped.identityValues,
+      guard let identityValues = filterItemWrapped.filterValuesIdentity,
             identityValues.count > 0
       else {
         #if DEBUG
@@ -316,7 +316,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
       
       guard let defaultFilterEntry = defaultFilterEntry else { return };
       
-      try requestedValuesCopy.forEach {
+      try filterValuesCurrentCopy.forEach {
         guard let key = $0.key as? String,
               let prevValue = $0.value as? Double
         else { return };
@@ -340,9 +340,9 @@ public class VisualEffectBlurView: UIVisualEffectView {
           percent: nextEffectIntensity
         );
         
-        requestedValuesCopy[key] = nextValue;
+        filterValuesCurrentCopy[key] = nextValue;
         
-        try filterItemWrapped.setRequestedValues(requestedValuesCopy);
+        try filterItemWrapped.setFilterValuesCurrent(filterValuesCurrentCopy);
         try backgroundHostWrapper.setCurrentEffectDescriptor(effectDescriptorWrapper);
         try contentViewWrapper.applyRequestedFilterEffects();
       };

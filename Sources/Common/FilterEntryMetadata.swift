@@ -30,18 +30,23 @@ public struct FilterEntryMetadata {
   };
   
   init?(fromWrapper wrapper: VisualEffectFilterEntryWrapper) {
-    guard let filterTypeString = wrapper.filterType,
-          let identityValues = wrapper.identityValues as? Dictionary<String, Any>,
-          let requestedValues = wrapper.requestedValues as? Dictionary<String, Any>,
-          let configurationValues = wrapper.configurationValues as? Dictionary<String, Any>
+    guard let filterKind = wrapper.filterKind,
+          let filterValuesIdentity =
+            wrapper.filterValuesIdentity as? Dictionary<String, Any>,
+            
+          let filterValuesCurrent =
+            wrapper.filterValuesCurrent as? Dictionary<String, Any>,
+            
+          let filterValuesConfig =
+            wrapper.filterValuesConfig as? Dictionary<String, Any>
     else {
       return nil;
     };
     
-    self.filterTypeRaw = filterTypeString;
-    self.identityValues = identityValues;
-    self.requestedValues = requestedValues;
-    self.configurationValues = configurationValues;
+    self.filterTypeRaw = filterKind;
+    self.identityValues = filterValuesIdentity;
+    self.requestedValues = filterValuesCurrent;
+    self.configurationValues = filterValuesConfig;
     
     self.filterTypeParsed = .init(fromWrapper: wrapper);
   };

@@ -93,8 +93,8 @@ public struct ColorMatrixRGBA {
           };
           
           let inputColorMatrixValues: [NSValue] = filterItemsWrapped.compactMap {
-            guard let requestedValues = $0.requestedValues,
-                  let colorMatrixRaw = requestedValues["inputColorMatrix"],
+            guard let filterValuesCurrent = $0.filterValuesCurrent,
+                  let colorMatrixRaw = filterValuesCurrent["inputColorMatrix"],
                   let colorMatrixValue = colorMatrixRaw as? NSValue
             else {
               return nil;
