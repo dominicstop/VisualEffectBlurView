@@ -60,8 +60,8 @@ public class VisualEffectBlurView: UIVisualEffectView {
             let wrapper = self.wrapper,
             let backgroundHostWrapper = wrapper.backgroundHostWrapper,
             let contentViewWrapper = backgroundHostWrapper.contentViewWrapper,
-            let backdropLayerWrapper = contentViewWrapper.backdropLayerWrapper,
-            let gaussianBlurFilterWrapper = backdropLayerWrapper.gaussianBlurFilterWrapper
+            let bgLayerWrapper = contentViewWrapper.bgLayerWrapper,
+            let gaussianBlurFilterWrapper = bgLayerWrapper.gaussianBlurFilterWrapper
       else {
         return;
       };
@@ -73,8 +73,8 @@ public class VisualEffectBlurView: UIVisualEffectView {
       guard let wrapper = self.wrapper,
             let backgroundHostWrapper = wrapper.backgroundHostWrapper,
             let contentViewWrapper = backgroundHostWrapper.contentViewWrapper,
-            let backdropLayerWrapper = contentViewWrapper.backdropLayerWrapper,
-            let gaussianBlurFilterWrapper = backdropLayerWrapper.gaussianBlurFilterWrapper,
+            let bgLayerWrapper = contentViewWrapper.bgLayerWrapper,
+            let gaussianBlurFilterWrapper = bgLayerWrapper.gaussianBlurFilterWrapper,
             let inputRadius = gaussianBlurFilterWrapper.inputRadius
       else {
         #if DEBUG

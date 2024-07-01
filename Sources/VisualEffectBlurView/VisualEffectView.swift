@@ -15,8 +15,8 @@ public class VisualEffectView: UIVisualEffectView {
   
   public var shouldOnlyShowBackdropLayer: Bool = false {
     willSet {
-      guard let backdropLayerWrapper = self.backdropLayerWrapper,
-            let backdropLayer = backdropLayerWrapper.wrappedObject
+      guard let bgLayerWrapper = self.bgLayerWrapper,
+            let backdropLayer = bgLayerWrapper.wrappedObject
       else {
         return;
       };
@@ -39,8 +39,8 @@ public class VisualEffectView: UIVisualEffectView {
     self.backgroundHostWrapper?.contentViewWrapper;
   };
   
-  var backdropLayerWrapper: BackdropLayerWrapper? {
-    self.contentViewWrapper?.backdropLayerWrapper
+  var bgLayerWrapper: BackdropLayerWrapper? {
+    self.contentViewWrapper?.bgLayerWrapper
   };
   
   @available(iOS 13, *)
@@ -66,8 +66,8 @@ public class VisualEffectView: UIVisualEffectView {
     
     self.wrapper = wrapper;
     
-    guard let backdropLayerWrapper = self.backdropLayerWrapper,
-          let backdropLayer = backdropLayerWrapper.wrappedObject
+    guard let bgLayerWrapper = self.bgLayerWrapper,
+          let backdropLayer = bgLayerWrapper.wrappedObject
     else {
       return nil;
     };

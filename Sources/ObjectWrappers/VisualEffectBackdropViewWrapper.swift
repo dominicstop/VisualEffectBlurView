@@ -18,9 +18,15 @@ public class VisualEffectBackdropViewWrapper: PrivateObjectWrapper<
 
   public enum EncodedString: PrivateObjectWrappingEncodedString {
     case className;
-    case getterBackdropLayer;
-    case methodApplyRequestedFilterEffects;
-    case methodApplyIdentityFilterEffects;
+    
+    /// `backdropLayer`
+    case getterBgLayer;
+    
+    /// `applyRequestedFilterEffects`
+    case methodApplyCurrentFilterEffects;
+    
+    /// `applyIdentityFilterEffects`
+    case methodApplyDefaultFilterEffects;
     
     public var encodedString: String {
       switch self {
@@ -28,15 +34,15 @@ public class VisualEffectBackdropViewWrapper: PrivateObjectWrapper<
           // _UIVisualEffectBackdropView
           return "X1VJVmlzdWFsRWZmZWN0QmFja2Ryb3BWaWV3";
           
-        case .getterBackdropLayer:
+        case .getterBgLayer:
           // backdropLayer
           return "YmFja2Ryb3BMYXllcg==";
           
-        case .methodApplyRequestedFilterEffects:
+        case .methodApplyCurrentFilterEffects:
           // applyRequestedFilterEffects
           return "YXBwbHlSZXF1ZXN0ZWRGaWx0ZXJFZmZlY3Rz";
           
-        case .methodApplyIdentityFilterEffects:
+        case .methodApplyDefaultFilterEffects:
           // applyIdentityFilterEffects
           return "YXBwbHlJZGVudGl0eUZpbHRlckVmZmVjdHM=";
       };
@@ -48,9 +54,9 @@ public class VisualEffectBackdropViewWrapper: PrivateObjectWrapper<
   
   /// Selector:
   /// `-(CABackdropLayer *)backdropLayer;`
-  public var backdropLayerWrapper: BackdropLayerWrapper? {
+  public var bgLayerWrapper: BackdropLayerWrapper? {
     let result = try? self.performSelector(
-      usingEncodedString: .getterBackdropLayer,
+      usingEncodedString: .getterBgLayer,
       type: CALayer.self
     );
     
@@ -68,7 +74,7 @@ public class VisualEffectBackdropViewWrapper: PrivateObjectWrapper<
   /// `-(void)applyRequestedFilterEffects`
   public func applyRequestedFilterEffects() throws {
     try self.performSelector(
-      usingEncodedString: .methodApplyRequestedFilterEffects
+      usingEncodedString: .methodApplyCurrentFilterEffects
     );
   };
   
@@ -76,7 +82,7 @@ public class VisualEffectBackdropViewWrapper: PrivateObjectWrapper<
   /// `-(void)applyIdentityFilterEffects`
   public func applyIdentityFilterEffects() throws {
     try self.performSelector(
-      usingEncodedString: .methodApplyIdentityFilterEffects
+      usingEncodedString: .methodApplyDefaultFilterEffects
     );
   };
 };
