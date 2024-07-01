@@ -83,13 +83,16 @@ public struct ColorMatrixRGBA {
           
           let effectView = UIVisualEffectView(effect: effect);
           guard let effectViewWrappers = VisualEffectViewWrapper(objectToWrap: effectView),
-                let visualEffectDescriptorWrapper = try? effectViewWrappers.effectDescriptor(forEffects: [effect], usage: true),
-                let filterEntries = visualEffectDescriptorWrapper.filterEntriesWrapped
+                let visualEffectDescriptorWrapper = try? effectViewWrappers.effectDescriptor(
+                  forEffects: [effect],
+                  usage: true
+                ),
+                let filterItemsWrapped = visualEffectDescriptorWrapper.filterItemsWrapped
           else {
             return;
           };
           
-          let inputColorMatrixValues: [NSValue] = filterEntries.compactMap {
+          let inputColorMatrixValues: [NSValue] = filterItemsWrapped.compactMap {
             guard let requestedValues = $0.requestedValues,
                   let colorMatrixRaw = requestedValues["inputColorMatrix"],
                   let colorMatrixValue = colorMatrixRaw as? NSValue

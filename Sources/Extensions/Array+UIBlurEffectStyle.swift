@@ -31,7 +31,7 @@ public extension Array where Element == UIBlurEffect.Style {
   };
   
   @available(iOS 13.0, *)
-  var filterEntries: [FilterEntryMetadata] {
+  var filterItems: [FilterEntryMetadata] {
     self.filterEntryWrappers.compactMap {
       .init(fromWrapper: $0);
     };

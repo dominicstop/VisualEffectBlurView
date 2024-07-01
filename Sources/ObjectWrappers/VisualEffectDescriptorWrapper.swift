@@ -17,20 +17,30 @@ public class VisualEffectDescriptorWrapper: PrivateObjectWrapper<
 
   public enum EncodedString: PrivateObjectWrappingEncodedString {
     case className;
-    case filterEntries;
-    case addFilterEntry;
+    
+    /// `filterEntries`
+    case getterFilterItems;
+    
+    /// `addFilterEntry`
+    case insertFilterItem;
+    
+    // TODO:
+    // `setFilterEntries`, `filterEntries`
+    // `setViewEffects`, `viewEffects`
+    // `setUnderlays`, `underlays`
+    // `setOverlays`, `overlays`
     
     public var encodedString: String {
       switch self {
         case .className:
           // _UIVisualEffectDescriptor
           return "X1VJVmlzdWFsRWZmZWN0RGVzY3JpcHRvcg==";
-          
-        case .filterEntries:
+        
+        case .getterFilterItems:
           // filterEntries
           return "ZmlsdGVyRW50cmllcw==";
           
-        case .addFilterEntry:
+        case .insertFilterItem:
           // addFilterEntry:
           return "YWRkRmlsdGVyRW50cnk6";
       };
@@ -40,9 +50,9 @@ public class VisualEffectDescriptorWrapper: PrivateObjectWrapper<
   // MARK: - Wrapped Properties
   // --------------------------
   
-  public var filterEntries: NSArray? {
+  public var filterItems: NSArray? {
     try? self.performSelector(
-      usingEncodedString: .filterEntries,
+      usingEncodedString: .getterFilterItems,
       type: NSArray.self
     );
   };
@@ -50,8 +60,8 @@ public class VisualEffectDescriptorWrapper: PrivateObjectWrapper<
   // MARK: - Computed Properties
   // ---------------------------
   
-  public var filterEntriesWrapped: [VisualEffectFilterEntryWrapper]? {
-    guard let filterEntriesRaw = self.filterEntries else {
+  public var filterItemsWrapped: [VisualEffectFilterEntryWrapper]? {
+    guard let filterEntriesRaw = self.filterItems else {
       return nil;
     };
     
@@ -65,9 +75,9 @@ public class VisualEffectDescriptorWrapper: PrivateObjectWrapper<
   
   /// Selector:
   /// `-(void)addFilterEntry:(id)arg1`
-  public func addFilterEntry(_ filter: Any) throws {
+  public func insertFilterItem(_ filter: Any) throws {
     try self.performSelector(
-      usingEncodedString: .addFilterEntry,
+      usingEncodedString: .insertFilterItem,
       withArg1: filter
     );
   };

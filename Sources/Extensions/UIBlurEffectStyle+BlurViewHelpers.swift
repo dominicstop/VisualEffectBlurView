@@ -29,13 +29,13 @@ extension UIBlurEffect.Style {
       blurView.effect = UIBlurEffect(style: blurStyle);
       
       guard let effectDescriptionWrapper = blurView.effectDescriptorForCurrentEffectWrapper,
-            let filterEntriesWrapped = effectDescriptionWrapper.filterEntriesWrapped,
-            filterEntriesWrapped.count > 0
+            let filterItemsWrapped = effectDescriptionWrapper.filterItemsWrapped,
+            filterItemsWrapped.count > 0
       else {
         return;
       };
       
-      Self.defaultFilterEntriesCache[blurStyle] = filterEntriesWrapped.compactMap {
+      Self.defaultFilterEntriesCache[blurStyle] = filterItemsWrapped.compactMap {
         .init(fromWrapper: $0);
       };
       
@@ -148,13 +148,13 @@ extension UIBlurEffect.Style {
     let blurView = VisualEffectBlurView(blurEffectStyle: self);
     
     guard let effectDescriptionWrapper = blurView.effectDescriptorForCurrentEffectWrapper,
-          let filterEntriesWrapped = effectDescriptionWrapper.filterEntriesWrapped,
-          filterEntriesWrapped.count > 0
+          let filterItemsWrapped = effectDescriptionWrapper.filterItemsWrapped,
+          filterItemsWrapped.count > 0
     else {
       return nil;
     };
     
-    return filterEntriesWrapped;
+    return filterItemsWrapped;
   };
   
   @available(iOS 13.0, *)
@@ -174,12 +174,12 @@ extension UIBlurEffect.Style {
             let visualEffectDescriptorWrapper =
               try? effectViewWrappers.effectDescriptor(forEffects: [effect], usage: true),
               
-            let filterEntries = visualEffectDescriptorWrapper.filterEntriesWrapped
+            let filterItemsWrapped = visualEffectDescriptorWrapper.filterItemsWrapped
       else {
         return;
       };
       
-      $0 += filterEntries;
+      $0 += filterItemsWrapped;
     };
   };
 };

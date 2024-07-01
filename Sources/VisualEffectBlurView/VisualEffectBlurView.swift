@@ -152,19 +152,19 @@ public class VisualEffectBlurView: UIVisualEffectView {
       return;
     };
     
-    guard let filterEntriesWrapped = effectDescriptorWrapper.filterEntriesWrapped,
-          filterEntriesWrapped.count > 0
+    guard let filterItemsWrapped = effectDescriptorWrapper.filterItemsWrapped,
+          filterItemsWrapped.count > 0
     else {
       #if DEBUG
       print(
         "BlurView.setBlurRadius",
-        "- selector failed to get value for: filterEntries"
+        "- selector failed to get value for: filterItemsWrapped"
       );
       #endif
       return;
     };
 
-    let filterEntryMatchWrapped = filterEntriesWrapped.enumerated().first {
+    let filterItemMatchWrapped = filterItemsWrapped.enumerated().first {
       guard let filterType = $0.element.filterType else {
         #if DEBUG
         print(
@@ -179,11 +179,11 @@ public class VisualEffectBlurView: UIVisualEffectView {
       return filterType.lowercased().contains("blur");
     };
 
-    guard let gaussianBlurFilterEntryWrapped = filterEntryMatchWrapped?.element else {
+    guard let gaussianBlurFilterEntryWrapped = filterItemMatchWrapped?.element else {
       #if DEBUG
       print(
         "BlurView.setBlurRadius",
-        "- unable to get matching filter from: filterEntries"
+        "- unable to get matching filter from: filterItems"
       );
       #endif
       return;
@@ -243,13 +243,13 @@ public class VisualEffectBlurView: UIVisualEffectView {
       return;
     };
     
-    guard let filterEntriesWrapped = effectDescriptorWrapper.filterEntriesWrapped,
-          filterEntriesWrapped.count > 0
+    guard let filterItemsWrapped = effectDescriptorWrapper.filterItemsWrapped,
+          filterItemsWrapped.count > 0
     else {
       #if DEBUG
       print(
         "BlurView.setEffectIntensity",
-        "- selector failed to get value for: filterEntries"
+        "- selector failed to get value for: filterItemsWrapped"
       );
       #endif
       return;
@@ -269,8 +269,8 @@ public class VisualEffectBlurView: UIVisualEffectView {
     };
     
 
-    for (offset, filterEntryWrapped) in filterEntriesWrapped.enumerated() {
-      guard let filterType = filterEntryWrapped.filterType else {
+    for (offset, filterItemWrapped) in filterItemsWrapped.enumerated() {
+      guard let filterType = filterItemWrapped.filterType else {
         #if DEBUG
         print(
           "BlurView.setEffectIntensity",
@@ -281,7 +281,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
         continue;
       };
       
-      guard let requestedValues = filterEntryWrapped.requestedValues,
+      guard let requestedValues = filterItemWrapped.requestedValues,
             requestedValues.count > 0,
             
             let requestedValuesCopy =
@@ -297,7 +297,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
         continue;
       };
       
-      guard let identityValues = filterEntryWrapped.identityValues,
+      guard let identityValues = filterItemWrapped.identityValues,
             identityValues.count > 0
       else {
         #if DEBUG
@@ -342,7 +342,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
         
         requestedValuesCopy[key] = nextValue;
         
-        try filterEntryWrapped.setRequestedValues(requestedValuesCopy);
+        try filterItemWrapped.setRequestedValues(requestedValuesCopy);
         try backgroundHostWrapper.setCurrentEffectDescriptor(effectDescriptorWrapper);
         try contentViewWrapper.applyRequestedFilterEffects();
       };
