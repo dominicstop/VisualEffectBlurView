@@ -20,6 +20,7 @@ public class VisualEffectBackdropViewWrapper: PrivateObjectWrapper<
     case className;
     case getterBackdropLayer;
     case methodApplyRequestedFilterEffects;
+    case methodApplyIdentityFilterEffects;
     
     public var encodedString: String {
       switch self {
@@ -34,6 +35,10 @@ public class VisualEffectBackdropViewWrapper: PrivateObjectWrapper<
         case .methodApplyRequestedFilterEffects:
           // applyRequestedFilterEffects
           return "YXBwbHlSZXF1ZXN0ZWRGaWx0ZXJFZmZlY3Rz";
+          
+        case .methodApplyIdentityFilterEffects:
+          // applyIdentityFilterEffects
+          return "YXBwbHlJZGVudGl0eUZpbHRlckVmZmVjdHM=";
       };
     };
   };
@@ -64,6 +69,14 @@ public class VisualEffectBackdropViewWrapper: PrivateObjectWrapper<
   public func applyRequestedFilterEffects() throws {
     try self.performSelector(
       usingEncodedString: .methodApplyRequestedFilterEffects
+    );
+  };
+  
+  /// Selector:
+  /// `-(void)applyIdentityFilterEffects`
+  public func applyIdentityFilterEffects() throws {
+    try self.performSelector(
+      usingEncodedString: .methodApplyIdentityFilterEffects
     );
   };
 };
