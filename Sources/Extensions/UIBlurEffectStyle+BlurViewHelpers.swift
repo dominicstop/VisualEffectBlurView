@@ -172,7 +172,7 @@ extension UIBlurEffect.Style {
               VisualEffectViewWrapper(objectToWrap: effectView),
               
             let visualEffectDescriptorWrapper =
-              try? effectViewWrappers.effectDescriptor(forEffects: [effect], usage: true),
+              try? effectViewWrappers.getEffectMetadata(forEffects: [effect], usage: true),
               
             let filterItemsWrapped = visualEffectDescriptorWrapper.filterItemsWrapped
       else {

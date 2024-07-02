@@ -71,7 +71,7 @@ public class VisualEffectHostWrapper: PrivateObjectWrapper<
       #if DEBUG
       print(
         "VisualEffectBackgroundHostViewWrapper.setCurrentEffectDescriptor",
-        "- failed to get effectDescriptor"
+        "- failed to get getEffectMetadata"
       );
       #endif
       return;

@@ -16,21 +16,21 @@ public class VisualEffectViewWrapper: ObjectWrapper<
 > {
   
   public enum EncodedString: String, HashedStringDecodable {
-    case backgroundHost;
-    case setCurrentEffectDescriptor;
-    case effectDescriptorForEffects;
+    case getterBgHost;
+    case methodSetCurrentEffectMetadata;
+    case methodGetEffectMetadata;
     
     public var encodedString: String {
       switch self {
-        case .backgroundHost:
+        case .getterBgHost:
           // _backgroundHost
           return "X2JhY2tncm91bmRIb3N0";
           
-        case .setCurrentEffectDescriptor:
+        case .methodSetCurrentEffectMetadata:
           // setCurrentEffectDescriptor:
           return "c2V0Q3VycmVudEVmZmVjdERlc2NyaXB0b3I6";
           
-        case .effectDescriptorForEffects:
+        case .methodGetEffectMetadata:
           // _effectDescriptorForEffects:usage:
           return "X2VmZmVjdERlc2NyaXB0b3JGb3JFZmZlY3RzOnVzYWdlOg==";
       };
@@ -42,10 +42,11 @@ public class VisualEffectViewWrapper: ObjectWrapper<
   
   /// Selector:
   /// `-(id)_backgroundHost`
+  ///
   @available(iOS 12, *)
-  public var backgroundHostWrapper: VisualEffectHostWrapper? {
+  public var bgHostWrapped: VisualEffectHostWrapper? {
     let result = try? self.performSelector(
-      usingEncodedString: .backgroundHost,
+      usingEncodedString: .getterBgHost,
       type: NSObject.self
     );
     
@@ -63,13 +64,13 @@ public class VisualEffectViewWrapper: ObjectWrapper<
   /// `_effectDescriptorForEffects:(id)arg1 usage:(long long)arg2`
   ///
   @available(iOS 13, *)
-  public func effectDescriptor(
+  public func getEffectMetadata(
     forEffects effects: [UIVisualEffect],
     usage: Bool
   ) throws -> VisualEffectDescriptorWrapper? {
   
     let result = try self.performSelector(
-      usingEncodedString: .effectDescriptorForEffects,
+      usingEncodedString: .methodGetEffectMetadata,
       withArg1: effects,
       withArg2: usage ? 1 : 0,
       type: AnyObject.self

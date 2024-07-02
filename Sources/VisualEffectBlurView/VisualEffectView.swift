@@ -32,7 +32,7 @@ public class VisualEffectView: UIVisualEffectView {
   };
   
   var backgroundHostWrapper: VisualEffectHostWrapper? {
-    self.wrapper.backgroundHostWrapper;
+    self.wrapper.bgHostWrapped;
   };
   
   var contentViewWrapper: VisualEffectBackdropViewWrapper? {
@@ -51,7 +51,7 @@ public class VisualEffectView: UIVisualEffectView {
       return nil;
     };
     
-    return try? wrapper.effectDescriptor(
+    return try? wrapper.getEffectMetadata(
       forEffects: [effect],
       usage: true
     );
