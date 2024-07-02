@@ -243,6 +243,26 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
     .colorMatrixVibrant(ColorMatrixRGBAPreset.preset15.colorMatrix),
   ];
   
+  var themeConfig: ColorThemeConfig = {
+    var base = ColorThemeConfig.presetPurple;
+    base.colorBgLight = ColorPreset.lightGreen100.color;
+    base.colorBgDark = ColorPreset.lightGreen600.color;
+    base.colorBgAccent = ColorPreset.greenA700.color; //.init(hexString: "#8ace00")!;
+    base.colorTextLight = .init(white: 1, alpha: 0.9);
+    
+    base.colorTextDark = {
+      let rgba = ColorPreset.green900.color.rgba;
+      return .init(
+        red: rgba.r,
+        green: rgba.g,
+        blue: rgba.b,
+        alpha: 0.8
+      );
+    }();
+    
+    return base;
+  }();
+  
   override func loadView() {
     let view = UIView();
     view.backgroundColor = .white;
@@ -255,7 +275,10 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
       let rootView = UIView();
       
       let gradientConfig = ImageConfigGradient(
-        colors: [.black, .white],
+        colors: [
+          ColorPreset.green900.color,
+          .white
+        ],
         size: .init(width: 100, height: 100)
       );
       
@@ -281,7 +304,7 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
       ]);
       
       let label = UILabel();
-      label.text = "🖼️\n🌆\n🌄";
+      label.text = "💚\n🖼️\n🌆\n🌄";
       label.font = .systemFont(ofSize: 128);
       
       label.numberOfLines = 0
@@ -291,26 +314,27 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
       rootView.addSubview(label);
       label.translatesAutoresizingMaskIntoConstraints = false;
       
+      let extraOffsetX: CGFloat = 30;
+      let extraOffsetY: CGFloat = -75;
+      
       let transformStart = Transform3D(
-        translateX: -200
+        translateX: -extraOffsetX,
+        translateY: extraOffsetY
       );
       
       let transformEnd = Transform3D(
-        translateX: 200
+        translateX: UIScreen.main.bounds.width + extraOffsetX,
+        translateY: extraOffsetY
       );
       
+      label.layer.transform = transformStart.transform;
+      
       UIView.animateKeyframes(
-        withDuration: 4.0,
+        withDuration: 3.0,
         delay: 0.0,
         options: [.autoreverse, .repeat],
         animations: {
-          UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.5, animations: {
-            label.layer.transform = transformStart.transform;
-          })
-
-          UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 1, animations: {
-            label.layer.transform = transformEnd.transform;
-          })
+          label.layer.transform = transformEnd.transform;
         },
         completion: nil
       );
@@ -323,7 +347,7 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
           equalTo: rootView.bottomAnchor
         ),
         label.centerXAnchor.constraint(
-          equalTo: rootView.centerXAnchor
+          equalTo: rootView.leadingAnchor
         ),
         label.centerYAnchor.constraint(
           equalTo: rootView.centerYAnchor
@@ -356,6 +380,8 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
       
       let visualEffectView = VisualEffectView();
       self.visualEffectView = visualEffectView;
+      
+      visualEffectView?.shouldOnlyShowBgLayer = true;
       
       if let visualEffectView = visualEffectView {
 //        let box = UIView();
@@ -441,6 +467,7 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
           .init(text: "N/A")
         ],
         index: self.counter,
+        colorThemeConfig: self.themeConfig,
         content: []
       )
     );
@@ -453,6 +480,8 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
       
       button.setTitle("Next Effect", for: .normal);
       button.configuration = .filled();
+      
+      button.configuration?.baseBackgroundColor = .init(hexString: "#8ace00")!;
       
       button.addAction(for: .primaryActionTriggered){
         guard let _ = self.visualEffectView,
@@ -586,6 +615,7 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
       subtitle: "Filter information",
       desc: [],
       index: self.counter,
+      colorThemeConfig: self.themeConfig,
       content: {
         var items: [CardContentItem] = [
           .labelValueDisplay(items: [
