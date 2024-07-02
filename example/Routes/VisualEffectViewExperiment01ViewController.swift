@@ -11,8 +11,6 @@ import VisualEffectBlurView
 import CoreImage
 
 
-
-
 class VisualEffectViewExperiment01ViewController: UIViewController {
   
   var visualEffectView: VisualEffectView?;
@@ -23,8 +21,8 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
   var counter = 0;
   var filterPresets: [LayerFilterType] = [
     .variadicBlur(
-      inputRadius: 16,
-      inputMaskImage: {
+      radius: 16,
+      maskImage: {
         let imageConfig: ImageConfigGradient = ImageConfigGradient(
           colors: [.black, .clear],
           startPointPreset: .left,
@@ -35,11 +33,11 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
         let gradientImage = imageConfig.makeImage();
         return gradientImage.cgImage!;
       }(),
-      inputNormalizeEdges: true
+      shouldNormalizeEdges: true
     ),
     .variadicBlur(
-      inputRadius: 24,
-      inputMaskImage: {
+      radius: 24,
+      maskImage: {
         let imageConfig: ImageConfigGradient = ImageConfigGradient(
           colors: [.black, .clear],
           startPointPreset: .right,
@@ -50,11 +48,11 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
         let gradientImage = imageConfig.makeImage();
         return gradientImage.cgImage!;
       }(),
-      inputNormalizeEdges: true
+      shouldNormalizeEdges: true
     ),
     .variadicBlur(
-      inputRadius: 12,
-      inputMaskImage: {
+      radius: 12,
+      maskImage: {
         let imageConfig: ImageConfigGradient = ImageConfigGradient(
           colors: [.black, .clear],
           startPointPreset: .bottom,
@@ -65,11 +63,11 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
         let gradientImage = imageConfig.makeImage();
         return gradientImage.cgImage!;
       }(),
-      inputNormalizeEdges: true
+      shouldNormalizeEdges: true
     ),
     .variadicBlur(
-      inputRadius: 8,
-      inputMaskImage: {
+      radius: 8,
+      maskImage: {
         let imageConfig: ImageConfigGradient = ImageConfigGradient(
           colors: [.black, .clear],
           startPointPreset: .top,
@@ -80,120 +78,120 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
         let gradientImage = imageConfig.makeImage();
         return gradientImage.cgImage!;
       }(),
-      inputNormalizeEdges: true
+      shouldNormalizeEdges: true
     ),
   
     .averagedColor,
     .alphaFromLuminance,
     
-    .bias(inputAmount: 0.0),
-    .bias(inputAmount: 0.2),
-    .bias(inputAmount: 0.4),
-    .bias(inputAmount: 0.6),
-    .bias(inputAmount: 0.8),
-    .bias(inputAmount: 1.0),
+    .bias(amount: 0.0),
+    .bias(amount: 0.2),
+    .bias(amount: 0.4),
+    .bias(amount: 0.6),
+    .bias(amount: 0.8),
+    .bias(amount: 1.0),
     
-    .brightenColors(inputAmount: 0.0),
-    .brightenColors(inputAmount: 0.2),
-    .brightenColors(inputAmount: 0.4),
-    .brightenColors(inputAmount: 0.6),
-    .brightenColors(inputAmount: 0.8),
-    .brightenColors(inputAmount: 1.0),
+    .brightenColors(amount: 0.0),
+    .brightenColors(amount: 0.2),
+    .brightenColors(amount: 0.4),
+    .brightenColors(amount: 0.6),
+    .brightenColors(amount: 0.8),
+    .brightenColors(amount: 1.0),
     
-    .contrastColors(inputAmount: 0.2),
-    .contrastColors(inputAmount: 0.6),
-    .contrastColors(inputAmount: 1.2),
-    .contrastColors(inputAmount: 1.6),
-    .contrastColors(inputAmount: 2.0),
+    .contrastColors(amount: 0.2),
+    .contrastColors(amount: 0.6),
+    .contrastColors(amount: 1.2),
+    .contrastColors(amount: 1.6),
+    .contrastColors(amount: 2.0),
     
-    .colorBlackAndWhite(inputAmount: 0.0),
-    .colorBlackAndWhite(inputAmount: 0.3),
-    .colorBlackAndWhite(inputAmount: 0.6),
-    .colorBlackAndWhite(inputAmount: 1.0),
+    .colorBlackAndWhite(amount: 0.0),
+    .colorBlackAndWhite(amount: 0.3),
+    .colorBlackAndWhite(amount: 0.6),
+    .colorBlackAndWhite(amount: 1.0),
     
-    .saturateColors(inputAmount: 0.0),
-    .saturateColors(inputAmount: 0.6),
-    .saturateColors(inputAmount: 1.0),
-    .saturateColors(inputAmount: 2.0),
-    .saturateColors(inputAmount: 4.0),
+    .saturateColors(amount: 0.0),
+    .saturateColors(amount: 0.6),
+    .saturateColors(amount: 1.0),
+    .saturateColors(amount: 2.0),
+    .saturateColors(amount: 4.0),
     
-    .luminanceCompression(inputAmount: 0.0),
-    .luminanceCompression(inputAmount: 0.2),
-    .luminanceCompression(inputAmount: 0.4),
-    .luminanceCompression(inputAmount: 0.6),
-    .luminanceCompression(inputAmount: 0.8),
-    .luminanceCompression(inputAmount: 1.0),
+    .luminanceCompression(amount: 0.0),
+    .luminanceCompression(amount: 0.2),
+    .luminanceCompression(amount: 0.4),
+    .luminanceCompression(amount: 0.6),
+    .luminanceCompression(amount: 0.8),
+    .luminanceCompression(amount: 1.0),
     
-    .gaussianBlur(inputRadius: 0.0),
-    .gaussianBlur(inputRadius: 1.0),
-    .gaussianBlur(inputRadius: 2.0),
-    .gaussianBlur(inputRadius: 4.0),
-    .gaussianBlur(inputRadius: 8.0),
-    .gaussianBlur(inputRadius: 16.0),
+    .gaussianBlur(radius: 0.0),
+    .gaussianBlur(radius: 1.0),
+    .gaussianBlur(radius: 2.0),
+    .gaussianBlur(radius: 4.0),
+    .gaussianBlur(radius: 8.0),
+    .gaussianBlur(radius: 16.0),
     
     .darkVibrant(
-      inputReversed: true,
-      inputColor0: UIColor.red.cgColor,
-      inputColor1: UIColor.orange.cgColor
+      isReversed: true,
+      color0: UIColor.red.cgColor,
+      color1: UIColor.orange.cgColor
     ),
     .darkVibrant(
-      inputReversed: true,
-      inputColor0: UIColor.orange.cgColor,
-      inputColor1: UIColor.yellow.cgColor
+      isReversed: true,
+      color0: UIColor.orange.cgColor,
+      color1: UIColor.yellow.cgColor
     ),
     .darkVibrant(
-      inputReversed: true,
-      inputColor0: UIColor.yellow.cgColor,
-      inputColor1: UIColor.green.cgColor
+      isReversed: true,
+      color0: UIColor.yellow.cgColor,
+      color1: UIColor.green.cgColor
     ),
     .darkVibrant(
-      inputReversed: true,
-      inputColor0: UIColor.green.cgColor,
-      inputColor1: UIColor.blue.cgColor
+      isReversed: true,
+      color0: UIColor.green.cgColor,
+      color1: UIColor.blue.cgColor
     ),
     .darkVibrant(
-      inputReversed: true,
-      inputColor0: UIColor.blue.cgColor,
-      inputColor1: UIColor.cyan.cgColor
+      isReversed: true,
+      color0: UIColor.blue.cgColor,
+      color1: UIColor.cyan.cgColor
     ),
     
     .lightVibrant(
-      inputReversed: true,
-      inputColor0: UIColor.red.cgColor,
-      inputColor1: UIColor.orange.cgColor
+      isReversed: true,
+      color0: UIColor.red.cgColor,
+      color1: UIColor.orange.cgColor
     ),
     .lightVibrant(
-      inputReversed: true,
-      inputColor0: UIColor.orange.cgColor,
-      inputColor1: UIColor.yellow.cgColor
+      isReversed: true,
+      color0: UIColor.orange.cgColor,
+      color1: UIColor.yellow.cgColor
     ),
     .lightVibrant(
-      inputReversed: true,
-      inputColor0: UIColor.yellow.cgColor,
-      inputColor1: UIColor.green.cgColor
+      isReversed: true,
+      color0: UIColor.yellow.cgColor,
+      color1: UIColor.green.cgColor
     ),
     .lightVibrant(
-      inputReversed: true,
-      inputColor0: UIColor.green.cgColor,
-      inputColor1: UIColor.blue.cgColor
+      isReversed: true,
+      color0: UIColor.green.cgColor,
+      color1: UIColor.blue.cgColor
     ),
     .lightVibrant(
-      inputReversed: true,
-      inputColor0: UIColor.blue.cgColor,
-      inputColor1: UIColor.cyan.cgColor
+      isReversed: true,
+      color0: UIColor.blue.cgColor,
+      color1: UIColor.cyan.cgColor
     ),
     
     .luminosityCurveMap(
-      inputAmount: 0.3,
-      inputValues: [0.16, 0.26, 0.10, 0.10]
+      amount: 0.3,
+      values: [0.16, 0.26, 0.10, 0.10]
     ),
     .luminosityCurveMap(
-      inputAmount: 0.6,
-      inputValues: [0.16, 0.26, 0.10, 0.10]
+      amount: 0.6,
+      values: [0.16, 0.26, 0.10, 0.10]
     ),
     .luminosityCurveMap(
-      inputAmount: 0.9,
-      inputValues: [0.16, 0.26, 0.10, 0.10]
+      amount: 0.9,
+      values: [0.16, 0.26, 0.10, 0.10]
     ),
 
     .colorMatrix(
