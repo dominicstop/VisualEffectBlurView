@@ -1,5 +1,5 @@
 //
-//  VisualEffectFilterEntryWrapper.swift
+//  UVEFilterEntryWrapper.swift
 //  
 //
 //  Created by Dominic Go on 6/19/24.
@@ -9,11 +9,12 @@ import Foundation
 import DGSwiftUtilities
 
 /// Wrapper for: `_UIVisualEffectFilterEntry`
-/// 
+/// Old name: `VisualEffectFilterEntryWrapper`
+///
 @available(iOS 12, *)
-public class VisualEffectFilterEntryWrapper: PrivateObjectWrapper<
+public class UVEFilterEntryWrapper: PrivateObjectWrapper<
   NSObject,
-  VisualEffectFilterEntryWrapper.EncodedString
+  UVEFilterEntryWrapper.EncodedString
 > {
 
   public enum EncodedString: PrivateObjectWrappingEncodedString {

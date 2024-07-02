@@ -144,7 +144,7 @@ extension UIBlurEffect.Style {
   };
   
   @available(iOS 13, *)
-  public var blurFilterEntryWrappers: [VisualEffectFilterEntryWrapper]? {
+  public var blurFilterEntryWrappers: [UVEFilterEntryWrapper]? {
     let blurView = VisualEffectBlurView(blurEffectStyle: self);
     
     guard let effectDescriptionWrapper = blurView.effectDescriptorForCurrentEffectWrapper,
@@ -158,7 +158,7 @@ extension UIBlurEffect.Style {
   };
   
   @available(iOS 13.0, *)
-  public var vibrancyFilterEntryWrappers: [VisualEffectFilterEntryWrapper] {
+  public var vibrancyFilterEntryWrappers: [UVEFilterEntryWrapper] {
     let blurEffect = UIBlurEffect(style: self);
     
     return UIVibrancyEffectStyle.allCases.reduce(into: []) {
@@ -169,7 +169,7 @@ extension UIBlurEffect.Style {
       
       let effectView = UIVisualEffectView(effect: effect);
       guard let effectViewWrappers =
-              VisualEffectViewWrapper(objectToWrap: effectView),
+              UVEViewWrapper(objectToWrap: effectView),
               
             let visualEffectDescriptorWrapper =
               try? effectViewWrappers.getEffectMetadata(forEffects: [effect], usage: true),

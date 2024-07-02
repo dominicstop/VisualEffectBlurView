@@ -1,5 +1,5 @@
 //
-//  VisualEffectDescriptorWrapper.swift
+//  UVEDescriptorWrapper.swift
 //  
 //
 //  Created by Dominic Go on 6/19/24.
@@ -8,11 +8,12 @@ import Foundation
 import DGSwiftUtilities
 
 /// Wrapper for: `_UIVisualEffectDescriptor`
+/// Old name: `VisualEffectDescriptorWrapper`
 ///
 @available(iOS 13, *)
-public class VisualEffectDescriptorWrapper: PrivateObjectWrapper<
+public class UVEDescriptorWrapper: PrivateObjectWrapper<
   NSObject,
-  VisualEffectDescriptorWrapper.EncodedString
+  UVEDescriptorWrapper.EncodedString
 > {
 
   public enum EncodedString: PrivateObjectWrappingEncodedString {
@@ -60,7 +61,7 @@ public class VisualEffectDescriptorWrapper: PrivateObjectWrapper<
   // MARK: - Computed Properties
   // ---------------------------
   
-  public var filterItemsWrapped: [VisualEffectFilterEntryWrapper]? {
+  public var filterItemsWrapped: [UVEFilterEntryWrapper]? {
     guard let filterEntriesRaw = self.filterItems else {
       return nil;
     };

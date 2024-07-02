@@ -32,10 +32,10 @@ public class VisualEffectBlurView: UIVisualEffectView {
   // MARK: - Properties - Private API
   // --------------------------------
   
-  public lazy var wrapper: VisualEffectViewWrapper? = .init(objectToWrap: self);
+  public lazy var wrapper: UVEViewWrapper? = .init(objectToWrap: self);
 
   @available(iOS 13, *)
-  public var effectDescriptorForCurrentEffectWrapper: VisualEffectDescriptorWrapper? {
+  public var effectDescriptorForCurrentEffectWrapper: UVEDescriptorWrapper? {
     guard let effect = self.effect,
           let wrapper = self.wrapper
     else {

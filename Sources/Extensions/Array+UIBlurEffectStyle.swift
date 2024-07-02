@@ -11,21 +11,21 @@ import UIKit
 public extension Array where Element == UIBlurEffect.Style {
   
   @available(iOS 13.0, *)
-  var blurFilterEntryWrappers: [VisualEffectFilterEntryWrapper] {
+  var blurFilterEntryWrappers: [UVEFilterEntryWrapper] {
     self.reduce(into: []) {
       $0 += $1.blurFilterEntryWrappers ?? [];
     };
   };
   
   @available(iOS 13.0, *)
-  var vibrancyFilterEntryWrappers: [VisualEffectFilterEntryWrapper] {
+  var vibrancyFilterEntryWrappers: [UVEFilterEntryWrapper] {
     self.reduce(into: []) {
       $0 += $1.vibrancyFilterEntryWrappers;
     };
   };
   
   @available(iOS 13.0, *)
-  var filterEntryWrappers: [VisualEffectFilterEntryWrapper] {
+  var filterEntryWrappers: [UVEFilterEntryWrapper] {
       self.blurFilterEntryWrappers
     + self.vibrancyFilterEntryWrappers;
   };

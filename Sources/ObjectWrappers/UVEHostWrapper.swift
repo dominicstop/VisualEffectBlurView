@@ -1,5 +1,5 @@
 //
-//  VisualEffectHostWrapper.swift
+//  UVEHostWrapper.swift
 //  
 //
 //  Created by Dominic Go on 6/19/24.
@@ -10,11 +10,12 @@ import DGSwiftUtilities
 
 
 /// Wrapper for: `_UIVisualEffectHost`
-/// 
+/// Old name: `VisualEffectHostWrapper`
+///
 @available(iOS 12, *)
-public class VisualEffectHostWrapper: PrivateObjectWrapper<
+public class UVEHostWrapper: PrivateObjectWrapper<
   NSObject,
-  VisualEffectHostWrapper.EncodedString
+  UVEHostWrapper.EncodedString
 > {
 
   public enum EncodedString: PrivateObjectWrappingEncodedString {
@@ -47,7 +48,7 @@ public class VisualEffectHostWrapper: PrivateObjectWrapper<
   // --------------------------
   
     /// `-(UIView *)contentView`
-  public var viewContentWrapped: VisualEffectBackdropViewWrapper? {
+  public var viewContentWrapped: UVEBackdropViewWrapper? {
     let result = try? self.performSelector(
       usingEncodedString: .getterViewContent,
       type: UIView.self
@@ -68,7 +69,7 @@ public class VisualEffectHostWrapper: PrivateObjectWrapper<
   ///
   @available(iOS 13, *)
   public func setCurrentEffectMetadata(
-    _ effectDescriptorWrapper: VisualEffectDescriptorWrapper
+    _ effectDescriptorWrapper: UVEDescriptorWrapper
   ) throws {
     guard let effectDescriptor = effectDescriptorWrapper.wrappedObject else {
       #if DEBUG

@@ -11,7 +11,7 @@ import DGSwiftUtilities
 
 public class VisualEffectView: UIVisualEffectView {
   
-  public var wrapper: VisualEffectViewWrapper!;
+  public var wrapper: UVEViewWrapper!;
   
   public var shouldOnlyShowBackdropLayer: Bool = false {
     willSet {
@@ -31,20 +31,20 @@ public class VisualEffectView: UIVisualEffectView {
     }
   };
   
-  var bgHostWrapper: VisualEffectHostWrapper? {
+  var bgHostWrapper: UVEHostWrapper? {
     self.wrapper.bgHostWrapped;
   };
   
-  var viewContentWrapper: VisualEffectBackdropViewWrapper? {
+  var viewContentWrapper: UVEBackdropViewWrapper? {
     self.bgHostWrapper?.viewContentWrapped;
   };
   
-  var bgLayerWrapper: BackdropLayerWrapper? {
+  var bgLayerWrapper: BackgroundLayerWrapper? {
     self.viewContentWrapper?.bgLayerWrapper
   };
   
   @available(iOS 13, *)
-  var effectDescriptorForCurrentEffectWrapper: VisualEffectDescriptorWrapper? {
+  var effectDescriptorForCurrentEffectWrapper: UVEDescriptorWrapper? {
     guard let effect = self.effect,
           let wrapper = self.wrapper
     else {
@@ -60,7 +60,7 @@ public class VisualEffectView: UIVisualEffectView {
   public init?(rawFilterType: String? = nil){
     super.init(effect: UIBlurEffect(style: .regular));
     
-    guard let wrapper = VisualEffectViewWrapper(objectToWrap: self) else {
+    guard let wrapper = UVEViewWrapper(objectToWrap: self) else {
       return nil;
     };
     

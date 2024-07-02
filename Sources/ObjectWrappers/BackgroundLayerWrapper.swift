@@ -1,5 +1,5 @@
 //
-//  BackdropLayerWrapper.swift
+//  BackgroundLayerWrapper.swift
 //  
 //
 //  Created by Dominic Go on 6/19/24.
@@ -9,10 +9,12 @@ import UIKit
 import DGSwiftUtilities
 
 /// Wrapper for:`UICABackdropLayer`
+/// Old name: `BackdropLayerWrapper`
+///
 @available(iOS 12, *)
-public class BackdropLayerWrapper: PrivateObjectWrapper<
+public class BackgroundLayerWrapper: PrivateObjectWrapper<
   CALayer,
-  BackdropLayerWrapper.EncodedString
+  BackgroundLayerWrapper.EncodedString
 > {
 
   public enum EncodedString: PrivateObjectWrappingEncodedString {

@@ -82,7 +82,7 @@ public struct ColorMatrixRGBA {
           );
           
           let effectView = UIVisualEffectView(effect: effect);
-          guard let effectViewWrappers = VisualEffectViewWrapper(objectToWrap: effectView),
+          guard let effectViewWrappers = UVEViewWrapper(objectToWrap: effectView),
                 let visualEffectDescriptorWrapper = try? effectViewWrappers.getEffectMetadata(
                   forEffects: [effect],
                   usage: true

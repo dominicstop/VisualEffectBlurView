@@ -159,7 +159,7 @@ public enum LayerFilterType {
   // MARK: - Init
   // ------------
   
-  public init?(fromWrapper wrapper: VisualEffectFilterEntryWrapper){
+  public init?(fromWrapper wrapper: UVEFilterEntryWrapper){
     let filterTypeName: LayerFilterTypeName? = {
       guard let filterType = wrapper.filterKind else {
         return nil;

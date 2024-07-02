@@ -29,7 +29,7 @@ public struct FilterEntryMetadata {
     self.filterTypeParsed = filterTypeParsed;
   };
   
-  init?(fromWrapper wrapper: VisualEffectFilterEntryWrapper) {
+  init?(fromWrapper wrapper: UVEFilterEntryWrapper) {
     guard let filterKind = wrapper.filterKind,
           let filterValuesIdentity =
             wrapper.filterValuesIdentity as? Dictionary<String, Any>,

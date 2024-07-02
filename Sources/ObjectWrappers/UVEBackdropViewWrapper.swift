@@ -10,10 +10,12 @@ import DGSwiftUtilities
 
 
 /// Wrapper for:`_UIVisualEffectBackdropView`
+/// Old name: `VisualEffectBackdropViewWrapper`
+///
 @available(iOS 12, *)
-public class VisualEffectBackdropViewWrapper: PrivateObjectWrapper<
+public class UVEBackdropViewWrapper: PrivateObjectWrapper<
   UIView,
-  VisualEffectBackdropViewWrapper.EncodedString
+  UVEBackdropViewWrapper.EncodedString
 > {
 
   public enum EncodedString: PrivateObjectWrappingEncodedString {
@@ -54,7 +56,7 @@ public class VisualEffectBackdropViewWrapper: PrivateObjectWrapper<
   
   /// Selector:
   /// `-(CABackdropLayer *)backdropLayer;`
-  public var bgLayerWrapper: BackdropLayerWrapper? {
+  public var bgLayerWrapper: BackgroundLayerWrapper? {
     let result = try? self.performSelector(
       usingEncodedString: .getterBgLayer,
       type: CALayer.self
