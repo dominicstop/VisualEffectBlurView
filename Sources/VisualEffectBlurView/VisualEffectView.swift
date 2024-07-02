@@ -13,7 +13,8 @@ public class VisualEffectView: UIVisualEffectView {
   
   public var wrapper: UVEViewWrapper!;
   
-  public var shouldOnlyShowBackdropLayer: Bool = false {
+  /// Old name: `shouldOnlyShowBackdropLayer`
+  public var shouldOnlyShowBgLayer: Bool = false {
     willSet {
       guard let bgLayerWrapper = self.bgLayerWrapper,
             let backdropLayer = bgLayerWrapper.wrappedObject
@@ -31,20 +32,24 @@ public class VisualEffectView: UIVisualEffectView {
     }
   };
   
+  /// Old name: `backgroundHostWrapper`
   var bgHostWrapper: UVEHostWrapper? {
     self.wrapper.bgHostWrapped;
   };
   
+  /// Old name: `contentViewWrapper`
   var viewContentWrapper: UVEBackdropViewWrapper? {
     self.bgHostWrapper?.viewContentWrapped;
   };
   
+  /// Old name: `backdropLayerWrapper`
   var bgLayerWrapper: BackgroundLayerWrapper? {
     self.viewContentWrapper?.bgLayerWrapper
   };
   
+  /// Old name: `effectDescriptorForCurrentEffectWrapper`
   @available(iOS 13, *)
-  var effectDescriptorForCurrentEffectWrapper: UVEDescriptorWrapper? {
+  var currentEffectMetadata: UVEDescriptorWrapper? {
     guard let effect = self.effect,
           let wrapper = self.wrapper
     else {
