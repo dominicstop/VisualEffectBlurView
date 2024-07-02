@@ -183,19 +183,6 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
       inputColor1: UIColor.cyan.cgColor
     ),
     
-    .curves(
-      inputAmount: 0.3,
-      inputValues: [0.2, 0.2, 0.1, 0.1]
-    ),
-    .curves(
-      inputAmount: 0.6,
-      inputValues: [0.2, 0.2, 0.1, 0.1]
-    ),
-    .curves(
-      inputAmount: 0.9,
-      inputValues: [0.2, 0.2, 0.1, 0.1]
-    ),
-    
     .luminosityCurveMap(
       inputAmount: 0.3,
       inputValues: [0.16, 0.26, 0.10, 0.10]

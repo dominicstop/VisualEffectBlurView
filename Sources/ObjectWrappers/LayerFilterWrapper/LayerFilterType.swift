@@ -24,10 +24,10 @@ public enum LayerFilterType {
   case alphaFromLuminance;
   case averagedColor;
   
-  case curves(
-    inputAmount: CGFloat,
-    inputValues: [CGFloat]
-  );
+  // case curves(
+  //   inputAmount: CGFloat,
+  //   inputValues: [CGFloat]
+  // );
   
   case luminosityCurveMap(
     inputAmount: CGFloat,
@@ -126,8 +126,8 @@ public enum LayerFilterType {
        case .luminosityCurveMap:
          return .luminosityCurveMap;
         
-       case .curves:
-         return .curves;
+      // case .curves:
+      //   return .curves;
         
       case .averagedColor:
         return .averagedColor;
@@ -231,17 +231,6 @@ public enum LayerFilterType {
         
         self = .bias(inputAmount: inputAmount);
         
-      case .curves:
-        guard let inputAmount = filterValuesCurrent.inputAmount,
-              let inputValues = filterValuesConfig.inputValues  else {
-          return nil;
-        };
-        
-        self = .curves(
-          inputAmount: inputAmount,
-          inputValues: inputValues
-        );
-        
       case .luminosityCurveMap:
         guard let inputAmount = filterValuesCurrent.inputAmount,
               let inputValues = filterValuesConfig.inputValues  else {
@@ -317,9 +306,9 @@ public enum LayerFilterType {
         // no-op
         break;
         
-      case let .curves(inputAmount, inputValues):
-        try layerFilterWrapper.setFilterValue(amount: inputAmount);
-        try layerFilterWrapper.setFilterValue(values: inputValues);
+      // case let .curves(inputAmount, inputValues):
+      //   try layerFilterWrapper.setFilterValue(amount: inputAmount);
+      //   try layerFilterWrapper.setFilterValue(values: inputValues);
         
       case let .luminosityCurveMap(inputAmount, inputValues):
         try layerFilterWrapper.setFilterValue(amount: inputAmount);

@@ -29,20 +29,6 @@ extension LayerFilterType {
       case .averagedColor:
         return [];
         
-      case let .curves(inputAmount, inputValues):
-        return [
-          .labelValueDisplay(items: [
-            .singleRowPlain(
-              label: "inputAmount",
-              value: "\(inputAmount)"
-            ),
-            .singleRowPlain(
-              label: "inputValues",
-              value: inputValues.description
-            ),
-          ]),
-        ];
-        
       case let .luminosityCurveMap(inputAmount, inputValues):
         return [
           .labelValueDisplay(items: [
@@ -139,11 +125,11 @@ extension LayerFilterType {
               value: "\(inputReversed)"
             ),
             .singleRowPlain(
-              label: "inputReversed",
+              label: "inputColor0",
               value: "\(inputColor0.components?.description ?? "N/A")"
             ),
             .singleRowPlain(
-              label: "inputReversed",
+              label: "inputColor1",
               value: "\(inputColor1.components?.description ?? "N/A")"
             ),
           ]),
@@ -157,11 +143,11 @@ extension LayerFilterType {
               value: "\(inputReversed)"
             ),
             .singleRowPlain(
-              label: "inputReversed",
+              label: "inputColor0",
               value: "\(inputColor0.components?.description ?? "N/A")"
             ),
             .singleRowPlain(
-              label: "inputReversed",
+              label: "inputColor1",
               value: "\(inputColor1.components?.description ?? "N/A")"
             ),
           ]),

@@ -28,23 +28,22 @@ public enum LayerFilterTypeName: CaseIterable, HashedStringDecodable {
     case gaussianBlur;
     case luminanceMap;
     case luminosityCurveMap;
-    case curves;
     case averagedColor;
     case lanczosResampling;
     case pageCurl;
     case darkVibrant;
     case lightVibrant;
     case colorMatrixVibrant;
+    case variadicBlur;
     
     case alphaThreshold;
     case invertColorsDisplayAware;
     case pairedOpacity;
     
+    // case curves;
     // case srl;
     // case edrGain;
     // case edrGainMultiply;
-    case variadicBlur;
-    
     // case limitAveragePixelLuminance;
     // case lut;
     
@@ -104,8 +103,8 @@ public enum LayerFilterTypeName: CaseIterable, HashedStringDecodable {
         case .luminosityCurveMap:
           return "bHVtaW5hbmNlQ3VydmVNYXA=";
           
-        case .curves:
-          return "Y3VydmVz";
+        // case .curves:
+        //   return "Y3VydmVz";
           
         case .averagedColor:
           return "YXZlcmFnZUNvbG9y";
