@@ -574,7 +574,7 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
           let visualEffectView = self.visualEffectView,
           let visualEffectViewWrapper = visualEffectView.wrapper,
           let backgroundHostWrapper = visualEffectViewWrapper.bgHostWrapped,
-          let contentViewWrapper = backgroundHostWrapper.contentViewWrapper,
+          let contentViewWrapper = backgroundHostWrapper.viewContentWrapped,
           let bgLayerWrapper = contentViewWrapper.bgLayerWrapper,
           let backdropLayer = bgLayerWrapper.wrappedObject
     else {

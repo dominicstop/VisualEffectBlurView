@@ -19,21 +19,24 @@ public class VisualEffectHostWrapper: PrivateObjectWrapper<
 
   public enum EncodedString: PrivateObjectWrappingEncodedString {
     case className;
-    case getterContentView;
-    case methodGetCurrentEffectDescriptor;
+    
+    /// `contentView`
+    case getterViewContent;
+    
+    /// `setCurrentEffectDescriptor`
+    case methodSetCurrentEffectMetadata;
     
     public var encodedString: String {
       switch self {
         case .className:
           // _UIVisualEffectHost
           return "X1VJVmlzdWFsRWZmZWN0SG9zdA==";
-          
-                  
-        case .getterContentView:
+        
+        case .getterViewContent:
           // contentView
           return "Y29udGVudFZpZXc=";
           
-        case .methodGetCurrentEffectDescriptor:
+        case .methodSetCurrentEffectMetadata:
           // setCurrentEffectDescriptor:
           return "c2V0Q3VycmVudEVmZmVjdERlc2NyaXB0b3I6";
       };
@@ -44,9 +47,9 @@ public class VisualEffectHostWrapper: PrivateObjectWrapper<
   // --------------------------
   
     /// `-(UIView *)contentView`
-  public var contentViewWrapper: VisualEffectBackdropViewWrapper? {
+  public var viewContentWrapped: VisualEffectBackdropViewWrapper? {
     let result = try? self.performSelector(
-      usingEncodedString: .getterContentView,
+      usingEncodedString: .getterViewContent,
       type: UIView.self
     );
     
@@ -64,13 +67,13 @@ public class VisualEffectHostWrapper: PrivateObjectWrapper<
   /// `-(void)setCurrentEffectDescriptor:(_UIVisualEffectDescriptor *)arg1`
   ///
   @available(iOS 13, *)
-  public func setCurrentEffectDescriptor(
+  public func setCurrentEffectMetadata(
     _ effectDescriptorWrapper: VisualEffectDescriptorWrapper
   ) throws {
     guard let effectDescriptor = effectDescriptorWrapper.wrappedObject else {
       #if DEBUG
       print(
-        "VisualEffectBackgroundHostViewWrapper.setCurrentEffectDescriptor",
+        "VisualEffectBackgroundHostViewWrapper.setCurrentEffectMetadata",
         "- failed to get getEffectMetadata"
       );
       #endif
@@ -78,7 +81,7 @@ public class VisualEffectHostWrapper: PrivateObjectWrapper<
     };
     
     try self.performSelector(
-      usingEncodedString: .methodGetCurrentEffectDescriptor,
+      usingEncodedString: .methodSetCurrentEffectMetadata,
       withArg1: effectDescriptor
     );
   };

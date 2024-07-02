@@ -59,7 +59,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
       guard #available(iOS 13, *),
             let wrapper = self.wrapper,
             let backgroundHostWrapper = wrapper.bgHostWrapped,
-            let contentViewWrapper = backgroundHostWrapper.contentViewWrapper,
+            let contentViewWrapper = backgroundHostWrapper.viewContentWrapped,
             let bgLayerWrapper = contentViewWrapper.bgLayerWrapper,
             let gaussianBlurFilterWrapper = bgLayerWrapper.gaussianBlurFilterWrapper
       else {
@@ -72,7 +72,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
     get {
       guard let wrapper = self.wrapper,
             let backgroundHostWrapper = wrapper.bgHostWrapped,
-            let contentViewWrapper = backgroundHostWrapper.contentViewWrapper,
+            let contentViewWrapper = backgroundHostWrapper.viewContentWrapped,
             let bgLayerWrapper = contentViewWrapper.bgLayerWrapper,
             let gaussianBlurFilterWrapper = bgLayerWrapper.gaussianBlurFilterWrapper,
             let inputRadius = gaussianBlurFilterWrapper.inputRadius
@@ -208,19 +208,19 @@ public class VisualEffectBlurView: UIVisualEffectView {
     
     guard let wrapper = self.wrapper,
           let backgroundHostWrapper = wrapper.bgHostWrapped,
-          let contentViewWrapper = backgroundHostWrapper.contentViewWrapper
+          let contentViewWrapper = backgroundHostWrapper.viewContentWrapped
     else {
       #if DEBUG
       print(
         "BlurView.setBlurRadius",
-        "- unable to get backgroundHostWrapper and/or contentViewWrapper"
+        "- unable to get backgroundHostWrapper and/or viewContentWrapper"
       );
       #endif
       return;
     };
     
     try gaussianBlurFilterEntryWrapped.setFilterValuesCurrent(filterValuesCurrentCopy);
-    try backgroundHostWrapper.setCurrentEffectDescriptor(effectDescriptorWrapper);
+    try backgroundHostWrapper.setCurrentEffectMetadata(effectDescriptorWrapper);
     try contentViewWrapper.applyRequestedFilterEffects();
   };
   
@@ -257,12 +257,12 @@ public class VisualEffectBlurView: UIVisualEffectView {
     
     guard let wrapper = self.wrapper,
           let bgdHostWrapper = wrapper.bgHostWrapped,
-          let contentViewWrapper = bgdHostWrapper.contentViewWrapper
+          let contentViewWrapper = bgdHostWrapper.viewContentWrapped
     else {
       #if DEBUG
       print(
         "BlurView.setEffectIntensity",
-        "- unable to get backgroundHostWrapper and/or contentViewWrapper"
+        "- unable to get backgroundHostWrapper and/or viewContentWrapper"
       );
       #endif
       return;
@@ -343,7 +343,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
         filterValuesCurrentCopy[key] = nextValue;
         
         try filterItemWrapped.setFilterValuesCurrent(filterValuesCurrentCopy);
-        try bgdHostWrapper.setCurrentEffectDescriptor(effectDescriptorWrapper);
+        try bgdHostWrapper.setCurrentEffectMetadata(effectDescriptorWrapper);
         try contentViewWrapper.applyRequestedFilterEffects();
       };
     };

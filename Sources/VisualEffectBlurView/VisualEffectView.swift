@@ -31,16 +31,16 @@ public class VisualEffectView: UIVisualEffectView {
     }
   };
   
-  var backgroundHostWrapper: VisualEffectHostWrapper? {
+  var bgHostWrapper: VisualEffectHostWrapper? {
     self.wrapper.bgHostWrapped;
   };
   
-  var contentViewWrapper: VisualEffectBackdropViewWrapper? {
-    self.backgroundHostWrapper?.contentViewWrapper;
+  var viewContentWrapper: VisualEffectBackdropViewWrapper? {
+    self.bgHostWrapper?.viewContentWrapped;
   };
   
   var bgLayerWrapper: BackdropLayerWrapper? {
-    self.contentViewWrapper?.bgLayerWrapper
+    self.viewContentWrapper?.bgLayerWrapper
   };
   
   @available(iOS 13, *)
