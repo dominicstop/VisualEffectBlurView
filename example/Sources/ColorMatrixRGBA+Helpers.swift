@@ -13,17 +13,7 @@ import DGSwiftUtilities
 extension ColorMatrixRGBA {
 
   var descAsAttributedConfig: [AttributedStringConfig] {
-    self.matrix4x5.enumerated().reduce(into: []) { acc, curr in
-      if curr.offset == 0 {
-        acc += [
-          .init(
-            text: "ColorMatrixRGBA:",
-            fontConfig: .init(size: nil, isBold: true)
-          ),
-          .newLine,
-        ];
-      };
-      
+    self.matrix4x5.enumerated().reduce(into: []) { acc, curr in      
       acc += curr.element.map {
         .init(
           text: $0 < 0

@@ -155,12 +155,26 @@ extension LayerFilterType {
         
       case let .colorMatrixVibrant(colorMatrix):
         return [
-          .multiLineLabel(colorMatrix.descAsAttributedConfig),
+          .labelValueDisplay(items: [
+            .multiLineRow(
+              label: [
+                .init(text: "inputColorMatrix")
+              ],
+              value: colorMatrix.descAsAttributedConfig
+            ),
+          ]),
         ];
         
       case let .colorMatrix(colorMatrix):
         return [
-          .multiLineLabel(colorMatrix.descAsAttributedConfig),
+          .labelValueDisplay(items: [
+            .multiLineRow(
+              label: [
+                .init(text: "inputColorMatrix")
+              ],
+              value: colorMatrix.descAsAttributedConfig
+            ),
+          ]),
         ];
         
       case let .variadicBlur(

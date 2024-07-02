@@ -16,7 +16,7 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
   var visualEffectView: VisualEffectView?;
   weak var overlayLabel: UILabel?;
   
-  var cardVC: CardContainerViewController?;
+  var cardVC: CardViewController?;
   
   var counter = 0;
   var filterPresets: [LayerFilterType] = [
@@ -459,7 +459,7 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
       return stack;
     }();
     
-    let cardVC = CardContainerViewController(
+    let cardVC = CardViewController(
       cardConfig: .init(
         title: "Filter Details",
         subtitle: "Filter information",
@@ -630,10 +630,14 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
         
         if case let .variadicBlur(_, inputMaskImage, _) = filterType {
           items.append(
-            .imageDisplay(
-              label: "inputMaskImage",
-              image: UIImage(cgImage: inputMaskImage)
-            )
+            .labelValueDisplay(items: [
+              .singeRowWithImageValue(
+                label: [
+                  .init(text: "inputMaskImage"),
+                ],
+                image: UIImage(cgImage: inputMaskImage)
+              ),
+            ])
           );
         };
         
@@ -672,51 +676,3 @@ extension Data {
         return hexString
     }
 }
-
-
-
-extension CardContentItem {
-  static func imageDisplay(
-    label: String,
-    image: UIImage,
-    size: CGSize = .init(width: 30, height: 30),
-    contentMode: UIView.ContentMode = .scaleToFill
-  ) -> Self {
-    let rootHStack = {
-      let stack = UIStackView();
-      
-      stack.axis = .horizontal;
-      stack.distribution = .equalSpacing;
-      stack.alignment = .fill;
-                
-      return stack;
-    }();
-    
-    let labelConfig: [AttributedStringConfig] = [
-      .init(
-        text: label,
-        fontConfig: .init(size: nil, isBold: true)
-      ),
-      .init(text: ":"),
-    ];
-    
-    let labelView = UILabel();
-    labelView.attributedText = labelConfig.makeAttributedString();
-    
-    rootHStack.addArrangedSubview(labelView);
-    
-    let imageView = UIImageView(image: image);
-    imageView.contentMode = .scaleToFill;
-    imageView.layer.cornerRadius = 6;
-    imageView.clipsToBounds = true;
-    
-    NSLayoutConstraint.activate([
-      imageView.heightAnchor.constraint(equalToConstant: 30),
-      imageView.widthAnchor.constraint(equalToConstant: 30),
-    ]);
-    
-    rootHStack.addArrangedSubview(imageView);
-    
-    return .view(rootHStack);
-  };
-};

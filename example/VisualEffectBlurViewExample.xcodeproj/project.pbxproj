@@ -21,7 +21,6 @@
 		88F123832AB341D800DEB121 /* BlurViewBasicUsage01ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F123822AB341D800DEB121 /* BlurViewBasicUsage01ViewController.swift */; };
 		88F7286B2C286C64005B49D0 /* NSValue+NSValue_Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 88F7286A2C286C64005B49D0 /* NSValue+NSValue_Helpers.m */; };
 		88F7286D2C308AB5005B49D0 /* LayerFilterType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F7286C2C308AB5005B49D0 /* LayerFilterType+Extensions.swift */; };
-		88F7286F2C308B0D005B49D0 /* CardContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F7286E2C308B0D005B49D0 /* CardContainerViewController.swift */; };
 		88F728712C30975D005B49D0 /* ColorMatrixRGBA+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F728702C30975D005B49D0 /* ColorMatrixRGBA+Helpers.swift */; };
 /* End PBXBuildFile section */
 
@@ -44,7 +43,6 @@
 		88F728692C286C64005B49D0 /* NSValue+NSValue_Helpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSValue+NSValue_Helpers.h"; sourceTree = "<group>"; };
 		88F7286A2C286C64005B49D0 /* NSValue+NSValue_Helpers.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSValue+NSValue_Helpers.m"; sourceTree = "<group>"; };
 		88F7286C2C308AB5005B49D0 /* LayerFilterType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LayerFilterType+Extensions.swift"; sourceTree = "<group>"; };
-		88F7286E2C308B0D005B49D0 /* CardContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardContainerViewController.swift; sourceTree = "<group>"; };
 		88F728702C30975D005B49D0 /* ColorMatrixRGBA+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ColorMatrixRGBA+Helpers.swift"; sourceTree = "<group>"; };
 		88FD5DFF2AB0A31100E89681 /* Transform3D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transform3D.swift; sourceTree = "<group>"; };
 		88FD5E012AB0A35100E89681 /* Angle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Angle.swift; sourceTree = "<group>"; };
@@ -104,7 +102,6 @@
 				88F7286A2C286C64005B49D0 /* NSValue+NSValue_Helpers.m */,
 				88F728682C286C63005B49D0 /* VisualEffectBlurViewExample-Bridging-Header.h */,
 				88F7286C2C308AB5005B49D0 /* LayerFilterType+Extensions.swift */,
-				88F7286E2C308B0D005B49D0 /* CardContainerViewController.swift */,
 				88F728702C30975D005B49D0 /* ColorMatrixRGBA+Helpers.swift */,
 			);
 			path = Sources;
@@ -212,7 +209,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				88F7286F2C308B0D005B49D0 /* CardContainerViewController.swift in Sources */,
 				88F7286D2C308AB5005B49D0 /* LayerFilterType+Extensions.swift in Sources */,
 				88F123622AB2D5DD00DEB121 /* VisualEffectBlurTestViewController.swift in Sources */,
 				88625F232AB08D530086B4FC /* AppDelegate.swift in Sources */,
