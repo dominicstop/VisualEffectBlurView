@@ -318,67 +318,67 @@ public enum LayerFilterType {
         break;
         
       case let .curves(inputAmount, inputValues):
-        try layerFilterWrapper.setInputAmount(inputAmount);
-        try layerFilterWrapper.setInputValues(inputValues);
+        try layerFilterWrapper.setFilterValue(amount: inputAmount);
+        try layerFilterWrapper.setFilterValue(values: inputValues);
         
       case let .luminosityCurveMap(inputAmount, inputValues):
-        try layerFilterWrapper.setInputAmount(inputAmount);
-        try layerFilterWrapper.setInputValues(inputValues);
+        try layerFilterWrapper.setFilterValue(amount: inputAmount);
+        try layerFilterWrapper.setFilterValue(values: inputValues);
         
       case let .colorBlackAndWhite(inputAmount):
-        try layerFilterWrapper.setInputAmount(inputAmount);
+        try layerFilterWrapper.setFilterValue(amount: inputAmount);
         
       case let .saturateColors(inputAmount):
-        try layerFilterWrapper.setInputAmount(inputAmount);
+        try layerFilterWrapper.setFilterValue(amount: inputAmount);
         
       case let .brightenColors(inputAmount):
-        try layerFilterWrapper.setInputAmount(inputAmount);
+        try layerFilterWrapper.setFilterValue(amount: inputAmount);
         
       case let .contrastColors(inputAmount):
-        try layerFilterWrapper.setInputAmount(inputAmount);
+        try layerFilterWrapper.setFilterValue(amount: inputAmount);
         
       case let .luminanceCompression(inputAmount):
-        try layerFilterWrapper.setInputAmount(inputAmount);
+        try layerFilterWrapper.setFilterValue(amount: inputAmount);
         
       case let .bias(inputAmount):
-        try layerFilterWrapper.setInputAmount(inputAmount);
+        try layerFilterWrapper.setFilterValue(amount: inputAmount);
         
       case let .gaussianBlur(inputRadius, inputNormalizeEdges):
-        try layerFilterWrapper.setInputRadius(inputRadius);
-        try layerFilterWrapper.setInputNormalizeEdges(inputNormalizeEdges);
+        try layerFilterWrapper.setFilterValue(radius: inputRadius);
+        try layerFilterWrapper.setFilterValue(shouldNormalizeEdges: inputNormalizeEdges);
         
       case let .darkVibrant(
         inputReversed,
         inputColor0,
         inputColor1
       ):
-        try layerFilterWrapper.setInputReversed(inputReversed);
-        try layerFilterWrapper.setInputColor0(inputColor0);
-        try layerFilterWrapper.setInputColor1(inputColor1);
+        try layerFilterWrapper.setFilterValue(isReversed: inputReversed);
+        try layerFilterWrapper.setFilterValue(color0: inputColor0);
+        try layerFilterWrapper.setFilterValue(color1: inputColor1);
         
       case let .lightVibrant(
         inputReversed,
         inputColor0,
         inputColor1
       ):
-        try layerFilterWrapper.setInputReversed(inputReversed);
-        try layerFilterWrapper.setInputColor0(inputColor0);
-        try layerFilterWrapper.setInputColor1(inputColor1);
+        try layerFilterWrapper.setFilterValue(isReversed: inputReversed);
+        try layerFilterWrapper.setFilterValue(color0: inputColor0);
+        try layerFilterWrapper.setFilterValue(color1: inputColor1);
         
       case let .colorMatrixVibrant(colorMatrix):
-        try layerFilterWrapper.setInputColorMatrix(colorMatrix);
+        try layerFilterWrapper.setFilterValue(colorMatrix: colorMatrix);
         
       case let .colorMatrix(colorMatrix):
-        try layerFilterWrapper.setInputColorMatrix(colorMatrix);
+        try layerFilterWrapper.setFilterValue(colorMatrix: colorMatrix);
         
       case let .variadicBlur(
         inputRadius,
         inputMaskImage,
         inputNormalizeEdges
       ):
-        try layerFilterWrapper.setInputRadius(inputRadius);
-        try layerFilterWrapper.setInputMaskImage(inputMaskImage);
-        try layerFilterWrapper.setInputNormalizeEdges(inputNormalizeEdges);
+        try layerFilterWrapper.setFilterValue(radius: inputRadius);
+        try layerFilterWrapper.setFilterValue(maskImage: inputMaskImage);
+        try layerFilterWrapper.setFilterValue(shouldNormalizeEdges: inputNormalizeEdges);
     };
   };
   

@@ -132,28 +132,32 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
     try self.performSelector(usingEncodedString: .methodSetDefaults);
   };
   
-  public func setInputAmount(_ value: CGFloat) throws {
+  /// Set `inputAmount`
+  public func setFilterValue(amount value: CGFloat) throws {
     try self.setValue(
       forHashedString: .propertyFilterInputKeyAmount,
       value: value
     );
   };
   
-  public func setInputValues(_ value: [CGFloat]) throws {
+  /// Set `inputValues`
+  public func setFilterValue(values value: [CGFloat]) throws {
     try self.setValue(
       forHashedString: .propertyFilterInputKeyValues,
       value: value
     );
   };
   
-  public func setInputRadius(_ value: CGFloat) throws {
+  /// Set `inputRadius`
+  public func setFilterValue(radius value: CGFloat) throws {
     try self.setValue(
       forHashedString: .propertyFilterInputKeyRadius,
       value: value
     );
   };
   
-  public func setInputColorMatrix(_ value: ColorMatrixRGBA) throws {
+  /// Set `inputColorMatrix`
+  public func setFilterValue(colorMatrix value: ColorMatrixRGBA) throws {
     let colorMatrixObjcValue = value.objcValue;
     try self.setValue(
       forHashedString: .propertyFilterInputKeyColorMatrix,
@@ -161,35 +165,40 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
     );
   };
   
-  public func setInputReversed(_ value: Bool) throws {
+  /// Set `inputReversed`
+  public func setFilterValue(isReversed value: Bool) throws {
     try self.setValue(
       forHashedString: .propertyFilterInputKeyReversed,
       value: value ? 1 : 0
     );
   };
   
-  public func setInputColor0(_ value: CGColor) throws {
+  /// Set `inputColor0`
+  public func setFilterValue(color0 value: CGColor) throws {
     try self.setValue(
       forHashedString: .propertyFilterInputKeyColor0,
       value: value
     );
   };
   
-  public func setInputColor1(_ value: CGColor) throws {
+  /// Set `inputColor1`
+  public func setFilterValue(color1 value: CGColor) throws {
     try self.setValue(
       forHashedString: .propertyFilterInputKeyColor1,
       value: value
     );
   };
   
-  public func setInputNormalizeEdges(_ value: Bool) throws {
+  /// Set `inputNormalizeEdges`
+  public func setFilterValue(shouldNormalizeEdges value: Bool) throws {
     try self.setValue(
       forHashedString: .propertyFilterInputKeyNormalizeEdges,
       value: value ? 1 : 0
     );
   };
   
-  public func setInputMaskImage(_ value: CGImage) throws {
+  /// Set `inputMaskImage`
+  public func setFilterValue(maskImage value: CGImage) throws {
     try self.setValue(
       forHashedString: .propertyFilterInputKeyMaskImage,
       value: value
@@ -199,21 +208,24 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
   // MARK: - Method Alias
   // --------------------
   
-  public func setInputColor0(_ value: UIColor) throws {
+  /// Set `inputColor0`
+  public func setFilterValue(color0 value: UIColor) throws {
     try self.setValue(
       forHashedString: .propertyFilterInputKeyColor0,
       value: value.cgColor
     );
   };
   
-  public func setInputColor1(_ value: UIColor) throws {
+  /// Set `inputColor1`
+  public func setFilterValue(color1 value: UIColor) throws {
     try self.setValue(
       forHashedString: .propertyFilterInputKeyColor1,
       value: value.cgColor
     );
   };
   
-  public func setInputMaskImage(_ value: UIImage) throws {
+  /// Set `inputMaskImage`
+  public func setFilterValue(maskImage value: UIImage) throws {
     try self.setValue(
       forHashedString: .propertyFilterInputKeyMaskImage,
       value: value.cgImage!
