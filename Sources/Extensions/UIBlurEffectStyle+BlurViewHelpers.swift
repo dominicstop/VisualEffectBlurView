@@ -12,7 +12,7 @@ extension UIBlurEffect.Style {
   
   // [filterType: [inputRadius/inputAmount: Number]]
   fileprivate static var defaultFilterEntriesCache:
-    Dictionary<Self, [FilterEntryMetadata]> = [:];
+    Dictionary<Self, [FilterMetadata]> = [:];
     
   fileprivate static var defaultBlurRadiusCache: Dictionary<Self, CGFloat> = [:];
   fileprivate static var didSetDefaultCache = false;
@@ -124,7 +124,7 @@ extension UIBlurEffect.Style {
     return self.defaultBlurRadiusFallback;
   };
   
-  public var defaultFilterEntries: [FilterEntryMetadata] {
+  public var defaultFilterEntries: [FilterMetadata] {
     Self.setDefaultCacheIfNeeded();
     
     if let cachedFilterEntry = Self.defaultFilterEntriesCache[self] {

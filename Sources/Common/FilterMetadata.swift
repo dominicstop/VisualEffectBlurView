@@ -7,13 +7,22 @@
 
 import Foundation
 
-public struct FilterEntryMetadata {
+public struct FilterMetadata {
 
   public var filterTypeRaw: String;
-  public var identityValues: Dictionary<String, Any>;
-  public var requestedValues: Dictionary<String, Any>;
-  public var configurationValues: Dictionary<String, Any>;
   public var filterTypeParsed: LayerFilterType?;
+  
+  /// Old name: `identityValues`
+  public var filterValuesIdentity: Dictionary<String, Any>;
+  
+   /// Old name: `requestedValues`
+  public var filterValuesRequested: Dictionary<String, Any>;
+  
+   /// Old name: `configurationValues`
+  public var filterValuesConfig: Dictionary<String, Any>;
+  
+  // MARK: - Init
+  // ------------
   
   init(
     filterTypeRaw: String,
@@ -23,9 +32,9 @@ public struct FilterEntryMetadata {
     filterTypeParsed: LayerFilterType?
   ) {
     self.filterTypeRaw = filterTypeRaw;
-    self.identityValues = identityValues;
-    self.requestedValues = requestedValues;
-    self.configurationValues = configurationValues;
+    self.filterValuesIdentity = identityValues;
+    self.filterValuesRequested = requestedValues;
+    self.filterValuesConfig = configurationValues;
     self.filterTypeParsed = filterTypeParsed;
   };
   
@@ -44,9 +53,9 @@ public struct FilterEntryMetadata {
     };
     
     self.filterTypeRaw = filterKind;
-    self.identityValues = filterValuesIdentity;
-    self.requestedValues = filterValuesCurrent;
-    self.configurationValues = filterValuesConfig;
+    self.filterValuesIdentity = filterValuesIdentity;
+    self.filterValuesRequested = filterValuesCurrent;
+    self.filterValuesConfig = filterValuesConfig;
     
     self.filterTypeParsed = .init(fromWrapper: wrapper);
   };

@@ -325,7 +325,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
           identityValues[key] as? Double ?? 0;
         
         let defaultValue = {
-          guard let match = defaultFilterEntry.requestedValues[key],
+          guard let match = defaultFilterEntry.filterValuesRequested[key],
                 let value = match as? NSNumber
           else {
             return prevValue;
