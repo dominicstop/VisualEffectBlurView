@@ -96,8 +96,8 @@ public struct ColorMatrixRGBA {
             let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyColorMatrix;
           
             guard let keyValue = key.decodedString,
-                  let filterValuesCurrent = $0.filterValuesCurrent,
-                  let colorMatrixRaw = filterValuesCurrent[keyValue],
+                  let filterValuesRequested = $0.filterValuesRequested,
+                  let colorMatrixRaw = filterValuesRequested[keyValue],
                   let colorMatrixValue = colorMatrixRaw as? NSValue
             else {
               return nil;

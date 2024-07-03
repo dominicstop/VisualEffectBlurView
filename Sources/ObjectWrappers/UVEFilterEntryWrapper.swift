@@ -90,7 +90,7 @@ public class UVEFilterEntryWrapper: PrivateObjectWrapper<
   /// `@property (nonatomic,copy) NSDictionary * requestedValues;`
   /// `-(NSDictionary *)requestedValues;`
   ///
-  public var filterValuesCurrent: NSDictionary? {
+  public var filterValuesRequested: NSDictionary? {
     return try? self.performSelector(
       usingEncodedString: .propertyFilterValuesCurrent,
       type: NSDictionary.self

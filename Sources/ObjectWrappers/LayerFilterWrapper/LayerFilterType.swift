@@ -169,10 +169,10 @@ public enum LayerFilterType {
     }();
     
     guard let filterTypeName = filterTypeName,
-          let filterValuesCurrentRaw = wrapper.filterValuesCurrent,
+          let filterValuesRequestedRaw = wrapper.filterValuesRequested,
           
           let filterValuesCurrent =
-            filterValuesCurrentRaw  as? Dictionary<String, Any>,
+            filterValuesRequestedRaw  as? Dictionary<String, Any>,
             
           let filterValuesConfigRaw = wrapper.filterValuesConfig,
           

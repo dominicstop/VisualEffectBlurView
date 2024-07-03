@@ -189,11 +189,11 @@ public class VisualEffectBlurView: UIVisualEffectView {
       return;
     };
     
-    guard let filterValuesCurrent = gaussianBlurFilterEntryWrapped.filterValuesCurrent,
-          filterValuesCurrent.count > 0,
+    guard let filterValuesRequested = gaussianBlurFilterEntryWrapped.filterValuesRequested,
+          filterValuesRequested.count > 0,
           
           let filterValuesCurrentCopy =
-            filterValuesCurrent.mutableCopy() as? NSMutableDictionary
+            filterValuesRequested.mutableCopy() as? NSMutableDictionary
     else {
       #if DEBUG
       print(
@@ -256,8 +256,8 @@ public class VisualEffectBlurView: UIVisualEffectView {
     };
     
     guard let wrapper = self.wrapper,
-          let bgdHostWrapper = wrapper.bgHostWrapped,
-          let contentViewWrapper = bgdHostWrapper.viewContentWrapped
+          let bgHostWrapper = wrapper.bgHostWrapped,
+          let contentViewWrapper = bgHostWrapper.viewContentWrapped
     else {
       #if DEBUG
       print(
@@ -281,11 +281,11 @@ public class VisualEffectBlurView: UIVisualEffectView {
         continue;
       };
       
-      guard let filterValuesCurrent = filterItemWrapped.filterValuesCurrent,
-            filterValuesCurrent.count > 0,
+      guard let filterValuesRequested = filterItemWrapped.filterValuesRequested,
+            filterValuesRequested.count > 0,
             
-            let filterValuesCurrentCopy =
-              filterValuesCurrent.mutableCopy() as? NSMutableDictionary
+            let filterValuesRequestedCopy =
+              filterValuesRequested.mutableCopy() as? NSMutableDictionary
       else {
         #if DEBUG
         print(
@@ -316,7 +316,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
       
       guard let defaultFilterEntry = defaultFilterEntry else { return };
       
-      try filterValuesCurrentCopy.forEach {
+      try filterValuesRequestedCopy.forEach {
         guard let key = $0.key as? String,
               let prevValue = $0.value as? Double
         else { return };
@@ -340,10 +340,10 @@ public class VisualEffectBlurView: UIVisualEffectView {
           percent: nextEffectIntensity
         );
         
-        filterValuesCurrentCopy[key] = nextValue;
+        filterValuesRequestedCopy[key] = nextValue;
         
-        try filterItemWrapped.setFilterValuesCurrent(filterValuesCurrentCopy);
-        try bgdHostWrapper.setCurrentEffectMetadata(effectDescriptorWrapper);
+        try filterItemWrapped.setFilterValuesCurrent(filterValuesRequestedCopy);
+        try bgHostWrapper.setCurrentEffectMetadata(effectDescriptorWrapper);
         try contentViewWrapper.applyRequestedFilterEffects();
       };
     };

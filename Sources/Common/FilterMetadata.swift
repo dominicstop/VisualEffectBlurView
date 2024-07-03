@@ -43,8 +43,8 @@ public struct FilterMetadata {
           let filterValuesIdentity =
             wrapper.filterValuesIdentity as? Dictionary<String, Any>,
             
-          let filterValuesCurrent =
-            wrapper.filterValuesCurrent as? Dictionary<String, Any>,
+          let filterValuesRequested =
+            wrapper.filterValuesRequested as? Dictionary<String, Any>,
             
           let filterValuesConfig =
             wrapper.filterValuesConfig as? Dictionary<String, Any>
@@ -54,7 +54,7 @@ public struct FilterMetadata {
     
     self.filterTypeRaw = filterKind;
     self.filterValuesIdentity = filterValuesIdentity;
-    self.filterValuesRequested = filterValuesCurrent;
+    self.filterValuesRequested = filterValuesRequested;
     self.filterValuesConfig = filterValuesConfig;
     
     self.filterTypeParsed = .init(fromWrapper: wrapper);
