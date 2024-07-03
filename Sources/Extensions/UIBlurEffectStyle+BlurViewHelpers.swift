@@ -28,7 +28,7 @@ extension UIBlurEffect.Style {
       let blurView = VisualEffectBlurView(blurEffectStyle: nil);
       blurView.effect = UIBlurEffect(style: blurStyle);
       
-      guard let effectDescriptionWrapper = blurView.effectDescriptorForCurrentEffectWrapper,
+      guard let effectDescriptionWrapper = blurView.currentEffectMetadata,
             let filterItemsWrapped = effectDescriptionWrapper.filterItemsWrapped,
             filterItemsWrapped.count > 0
       else {
@@ -147,7 +147,7 @@ extension UIBlurEffect.Style {
   public var blurFilterEntryWrappers: [UVEFilterEntryWrapper]? {
     let blurView = VisualEffectBlurView(blurEffectStyle: self);
     
-    guard let effectDescriptionWrapper = blurView.effectDescriptorForCurrentEffectWrapper,
+    guard let effectDescriptionWrapper = blurView.currentEffectMetadata,
           let filterItemsWrapped = effectDescriptionWrapper.filterItemsWrapped,
           filterItemsWrapped.count > 0
     else {

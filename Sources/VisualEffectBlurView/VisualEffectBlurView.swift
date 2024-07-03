@@ -33,9 +33,10 @@ public class VisualEffectBlurView: UIVisualEffectView {
   // --------------------------------
   
   public lazy var wrapper: UVEViewWrapper? = .init(objectToWrap: self);
-
+  
+  /// Old name: `effectDescriptorForCurrentEffectWrapper`
   @available(iOS 13, *)
-  public var effectDescriptorForCurrentEffectWrapper: UVEDescriptorWrapper? {
+  public var currentEffectMetadata: UVEDescriptorWrapper? {
     guard let effect = self.effect,
           let wrapper = self.wrapper
     else {
@@ -141,7 +142,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
   
   @available(iOS 13, *)
   func setBlurRadius(_ blurRadius: CGFloat) throws {
-    guard let effectDescriptorWrapper = self.effectDescriptorForCurrentEffectWrapper
+    guard let effectDescriptorWrapper = self.currentEffectMetadata
     else {
       #if DEBUG
       print(
@@ -231,7 +232,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
     shouldSetBlurRadiusIntensity: Bool = false
   ) throws {
     guard let blurEffectStyle = self.blurEffectStyle,
-          let effectDescriptorWrapper = self.effectDescriptorForCurrentEffectWrapper
+          let effectDescriptorWrapper = self.currentEffectMetadata
     else {
       #if DEBUG
       print(
