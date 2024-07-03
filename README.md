@@ -1,14 +1,20 @@
 # VisualEffectBlurView
 
-A subclass of `UIVisualEffectView` that lets you set a custom blur radius + intensity.
+A subclass of `UIVisualEffectView` that lets you set a custom blur radius + intensity, or create use `CALayer.filter` using `CAFilter` (which is obfuscated since it's private API).
 
 <br><br>
 
 ## Demo Gifs
 
-[`VisualEffectBlurTestViewController.swift`](./example/Examples/VisualEffectBlurTestViewController.swift)
+[`VisualEffectBlurTestViewController.swift`](./example/Routes/VisualEffectBlurTestViewController.swift)
 
 ![VisualEffectBlurTestViewController](./assets/VisualEffectBlurTestViewController.gif)
+
+<br><br>
+
+[`VisualEffectViewExperiment01ViewController.swift`](./example/Routes/VisualEffectViewExperiment01ViewController.swift)
+
+![Render-03 - 2024-07-03-05-26-13 - 1080p Web - Gif-03](./assets/Demo-VisualEffectBlurTestViewController.gif)
 
 <br><br>
 
