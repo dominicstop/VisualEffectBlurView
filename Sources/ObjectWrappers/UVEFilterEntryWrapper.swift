@@ -128,22 +128,23 @@ public class UVEFilterEntryWrapper: PrivateObjectWrapper<
   /// Declaration:
   /// `-(void)setRequestedValues:(NSDictionary *)arg1;`
   ///
-  public func setFilterValuesCurrent(_ requestedValues: NSDictionary) throws {
+  public func setFilterValuesRequested(_ values: NSDictionary) throws {
     try self.performSelector(
       usingEncodedString: .methodSetFilterValuesCurrent,
-      withArg1: requestedValues
+      withArg1: values
     );
   };
   
   /// Setter for property:
-  /// `@property (nonatomic,copy) NSDictionary * configurationValues;
+  /// `@property (nonatomic,copy) NSString * filterType;    `
   ///
+  /// Declaration:
   /// `-(void)setFilterType:(NSString *)arg1;`
   ///
-  public func setFilterKind(_ filterType: String) throws {
+  public func setFilterKind(_ value: String) throws {
     try self.performSelector(
       usingEncodedString: .methodSetFilterType,
-      withArg1: filterType as NSString
+      withArg1: value as NSString
     );
   };
 };
