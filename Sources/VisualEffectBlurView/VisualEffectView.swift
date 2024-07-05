@@ -74,14 +74,20 @@ public class VisualEffectView: UIVisualEffectView {
     
     self.wrapper = wrapper;
     
-    guard let rawFilterTypes = rawFilterTypes,
-          let bgLayerWrapper = self.bgLayerWrapper,
+    guard let bgLayerWrapper = self.bgLayerWrapper,
           let backdropLayer = bgLayerWrapper.wrappedObject
     else {
       return;
     };
     
-    backdropLayer.filters = [];
+    try? self.setFiltersViaLayers([]);
+    if #available(iOS 13, *) {
+      try? self.setFiltersUsingEffectDesc([])
+    };
+    
+    guard let rawFilterTypes = rawFilterTypes else {
+      return;
+    };
     
     let filterWrappers: [LayerFilterWrapper] = rawFilterTypes.compactMap {
       .init(rawFilterType: $0);

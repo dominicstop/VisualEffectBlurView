@@ -650,7 +650,8 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
       
     if prevFilterType.decodedFilterName == filterType.decodedFilterName,
        let effectDescWrapped = try? backgroundHostWrapper.getEffectDescriptorCurrent(),
-       let filterItemsWrapped = effectDescWrapped.filterItemsWrapped
+       let filterItemsWrapped = effectDescWrapped.filterItemsWrapped,
+       filterItemsWrapped.count > 0
     {
       
       filterItemsWrapped.forEach {
@@ -661,8 +662,9 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
         try! contentViewWrapper.applyRequestedFilterEffects();
       };
     
-    } else if let layerFilterWrapper = filterType.createFilterWrapper() {
+    } else {
       try? visualEffectView.setFiltersUsingEffectDesc([filterType]);
+      try? contentViewWrapper.applyRequestedFilterEffects();
     };
   };
 };
