@@ -95,4 +95,39 @@ public class VisualEffectView: UIVisualEffectView {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented");
   }
+  public func setFiltersViaLayers(_ filterTypes: [LayerFilterType]) throws {
+    guard let bgHostWrapper = self.bgHostWrapper else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to get `self.bgHostWrapper`"
+      );
+    };
+    
+    guard let contentViewWrapper = bgHostWrapper.viewContentWrapped else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to get `UVEHostWrapper.viewContentWrapped`"
+      );
+    };
+    
+    guard let bgLayerWrapper = contentViewWrapper.bgLayerWrapper,
+          let bgLayer = bgLayerWrapper.wrappedObject
+    else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to get `self.bgLayerWrapper`"
+      );
+    };
+    
+    let filterWrappers = filterTypes.compactMap {
+      $0.createFilterWrapper();
+    };
+    
+    let filters = filterWrappers.compactMap {
+      $0.wrappedObject;
+    };
+    
+    bgLayer.filters = filters;
+    try contentViewWrapper.applyRequestedFilterEffects();
+  };
 };
