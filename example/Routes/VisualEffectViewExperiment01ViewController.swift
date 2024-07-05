@@ -271,6 +271,14 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
   };
   
   override func viewDidLoad() {
+    
+    let instance = try? UVEFilterEntryWrapper(
+      filterKind: .gaussianBlur,
+      filterValuesConfig: [:],
+      filterValuesRequested: [:],
+      filterValuesIdentity: [:]
+    );
+  
     let bgView: UIView = {
       let rootView = UIView();
       

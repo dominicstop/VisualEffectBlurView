@@ -20,6 +20,9 @@ public class UVEFilterEntryWrapper: PrivateObjectWrapper<
   public enum EncodedString: PrivateObjectWrappingEncodedString {
     case className;
     
+    /// `-(id)initWithFilterType:(id)arg1 configurationValues:(id)arg2 requestedValues:(id)arg3 identityValues:(id)arg4 ;`
+    case initializer1;
+    
     /// `filterType`
     case propertyFilterKind;
     
@@ -67,6 +70,10 @@ public class UVEFilterEntryWrapper: PrivateObjectWrapper<
         case .methodSetFilterType:
          // setFilterType:
          return "c2V0RmlsdGVyVHlwZTo=";
+         
+        case .initializer1:
+          // initWithFilterType:configurationValues:requestedValues:identityValues:
+          return "aW5pdFdpdGhGaWx0ZXJUeXBlOmNvbmZpZ3VyYXRpb25WYWx1ZXM6cmVxdWVzdGVkVmFsdWVzOmlkZW50aXR5VmFsdWVzOg==";
       };
     };
   };
@@ -145,6 +152,126 @@ public class UVEFilterEntryWrapper: PrivateObjectWrapper<
     try self.performSelector(
       usingEncodedString: .methodSetFilterType,
       withArg1: value as NSString
+    );
+  };
+  
+  // MARK: - Init
+  // ------------
+  
+  public convenience init?(
+    /// `filterType`
+    filterKindRaw: String,
+    
+    /// `configurationValues`
+    filterValuesConfig: Dictionary<String, Any>,
+    
+    /// `requestedValues`
+    filterValuesRequested: Dictionary<String, Any>,
+    
+    /// `identityValues`
+    filterValuesIdentity: Dictionary<String, Any>
+  ) throws {
+  
+    guard let instance = Self.createInstance() else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to create instance from class",
+        extraDebugValues: [
+          "className": EncodedString.className.decodedString ?? "N/A",
+        ]
+      );
+    };
+    
+    guard let selectorString = Self.EncodedString.initializer1.decodedString else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to decode initializer selector string",
+        extraDebugValues: [
+          "className": EncodedString.className.decodedString ?? "N/A",
+          "encodedString": Self.EncodedString.initializer1.encodedString
+        ]
+      );
+    };
+    
+    let selectorInit = Selector(selectorString);
+    guard instance.responds(to: selectorInit) else {
+      throw VisualEffectBlurViewError(
+        errorCode: .guardCheckFailed,
+        description: "instance does not respond to selector",
+        extraDebugValues: [
+          "className": EncodedString.className.decodedString ?? "N/A",
+          "selectorString": selectorString,
+        ]
+      );
+    };
+    
+    typealias MethodSignature = @convention(c)(
+      /* _self              : */ Any?,
+      /* _cmd               : */ Selector,
+      /* filterType         : */ NSString,
+      /* configurationValues: */ NSDictionary,
+      /* requestedValues    : */ NSDictionary,
+      /* identityValues     : */ NSDictionary
+    ) -> AnyObject;
+    
+    
+    guard let methodInitIMP = instance.method(for: selectorInit) else {
+      throw VisualEffectBlurViewError(
+        errorCode: .guardCheckFailed,
+        description: "Unable to get method IMP",
+        extraDebugValues: [
+          "className": EncodedString.className.decodedString ?? "N/A",
+          "selectorString": selectorString,
+        ]
+      );
+    };
+    
+    let methodInit = unsafeBitCast(methodInitIMP, to: MethodSignature.self);
+    
+    let result = methodInit(
+      /* _self              : */ instance,
+      /* _cmd               : */ selectorInit,
+      /* filterType         : */ filterKindRaw         as NSString,
+      /* configurationValues: */ filterValuesConfig    as NSDictionary,
+      /* requestedValues    : */ filterValuesRequested as NSDictionary,
+      /* identityValues     : */ filterValuesIdentity  as NSDictionary
+    );
+    
+    self.init(
+      objectToWrap: result,
+      shouldRetainObject: true
+    );
+  };
+  
+  public convenience init?(
+    /// `filterType`
+    filterKind: LayerFilterTypeName,
+    
+    /// `configurationValues`
+    filterValuesConfig: Dictionary<String, Any>,
+    
+    /// `requestedValues`
+    filterValuesRequested: Dictionary<String, Any>,
+    
+    /// `identityValues`
+    filterValuesIdentity: Dictionary<String, Any>
+  ) throws {
+  
+    guard let filterKind = filterKind.decodedString else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to decode filterKind",
+        extraDebugValues: [
+          "encodedString": filterKind.encodedString
+        ]
+      );
+    };
+    
+    try self.init(
+      filterKindRaw: filterKind,
+      filterValuesConfig: filterValuesConfig,
+      filterValuesRequested: filterValuesRequested,
+      filterValuesIdentity: filterValuesIdentity
     );
   };
 };
