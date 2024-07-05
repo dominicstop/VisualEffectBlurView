@@ -221,7 +221,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
     };
     
     try gaussianBlurFilterEntryWrapped.setFilterValuesRequested(filterValuesCurrentCopy);
-    try backgroundHostWrapper.setCurrentEffectMetadata(effectDescriptorWrapper);
+    try backgroundHostWrapper.setEffectDescriptor(effectDescriptorWrapper);
     try contentViewWrapper.applyRequestedFilterEffects();
   };
   
@@ -344,7 +344,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
         filterValuesRequestedCopy[key] = nextValue;
         
         try filterItemWrapped.setFilterValuesRequested(filterValuesRequestedCopy);
-        try bgHostWrapper.setCurrentEffectMetadata(effectDescriptorWrapper);
+        try bgHostWrapper.setEffectDescriptor(effectDescriptorWrapper);
         try contentViewWrapper.applyRequestedFilterEffects();
       };
     };

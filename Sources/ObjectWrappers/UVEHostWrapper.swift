@@ -25,7 +25,7 @@ public class UVEHostWrapper: PrivateObjectWrapper<
     case getterViewContent;
     
     /// `setCurrentEffectDescriptor`
-    case methodSetCurrentEffectMetadata;
+    case methodSettEffectDescriptor;
     
     public var encodedString: String {
       switch self {
@@ -37,7 +37,7 @@ public class UVEHostWrapper: PrivateObjectWrapper<
           // contentView
           return "Y29udGVudFZpZXc=";
           
-        case .methodSetCurrentEffectMetadata:
+        case .methodSettEffectDescriptor:
           // setCurrentEffectDescriptor:
           return "c2V0Q3VycmVudEVmZmVjdERlc2NyaXB0b3I6";
       };
@@ -68,13 +68,13 @@ public class UVEHostWrapper: PrivateObjectWrapper<
   /// `-(void)setCurrentEffectDescriptor:(_UIVisualEffectDescriptor *)arg1`
   ///
   @available(iOS 13, *)
-  public func setCurrentEffectMetadata(
+  public func setEffectDescriptor(
     _ effectDescriptorWrapper: UVEDescriptorWrapper
   ) throws {
     guard let effectDescriptor = effectDescriptorWrapper.wrappedObject else {
       #if DEBUG
       print(
-        "VisualEffectBackgroundHostViewWrapper.setCurrentEffectMetadata",
+        "VisualEffectBackgroundHostViewWrapper.setEffectDescriptor",
         "- failed to get getEffectMetadata"
       );
       #endif
@@ -82,7 +82,7 @@ public class UVEHostWrapper: PrivateObjectWrapper<
     };
     
     try self.performSelector(
-      usingEncodedString: .methodSetCurrentEffectMetadata,
+      usingEncodedString: .methodSettEffectDescriptor,
       withArg1: effectDescriptor
     );
   };
