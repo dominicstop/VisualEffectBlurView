@@ -94,7 +94,50 @@ public class VisualEffectView: UIVisualEffectView {
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented");
-  }
+  };
+  
+  // MARK: - Methods
+  // ---------------
+  
+  @available(iOS 13, *)
+  public func setFiltersUsingEffectDesc(_ filterTypes: [LayerFilterType]) throws {
+    guard let bgHostWrapper = self.bgHostWrapper else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to get `self.bgHostWrapper`"
+      );
+    };
+    
+    guard let viewContentWrapper = self.viewContentWrapper else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to get `self.viewContentWrapper`"
+      );
+    };
+    
+    guard let effectDescWrapper = UVEDescriptorWrapper(),
+          effectDescWrapper.wrappedObject != nil
+    else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to create `UVEDescriptorWrapper` instance"
+      );
+    };
+    
+    let filterEntriesWrapped: [UVEFilterEntryWrapper] = filterTypes.compactMap {
+      try? .init(
+        filterKind: $0.associatedFilterTypeName,
+        filterValuesConfig: $0.filterValuesConfig,
+        filterValuesRequested: $0.filterValuesRequested,
+        filterValuesIdentity: $0.filterValuesIdentity
+      );
+    };
+    
+    try effectDescWrapper.setFilterItems(filterEntriesWrapped);
+    try bgHostWrapper.setEffectDescriptor(effectDescWrapper);
+    try viewContentWrapper.applyRequestedFilterEffects();
+  };
+  
   public func setFiltersViaLayers(_ filterTypes: [LayerFilterType]) throws {
     guard let bgHostWrapper = self.bgHostWrapper else {
       throw VisualEffectBlurViewError(

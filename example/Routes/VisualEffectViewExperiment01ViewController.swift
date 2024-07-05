@@ -272,17 +272,6 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
   
   override func viewDidLoad() {
     
-    let filterEntryWrapper = try? UVEFilterEntryWrapper(
-      filterKind: .gaussianBlur,
-      filterValuesConfig: [:],
-      filterValuesRequested: [
-        LayerFilterWrapper.EncodedString.propertyFilterInputKeyRadius.decodedString!: CGFloat(0)
-      ],
-      filterValuesIdentity: [
-        LayerFilterWrapper.EncodedString.propertyFilterInputKeyRadius.decodedString!: CGFloat(0)
-      ]
-    );
-  
     let bgView: UIView = {
       let rootView = UIView();
       
@@ -672,8 +661,7 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
     } else if let layerFilterWrapper = filterType.createFilterWrapper(),
               let layerFilter = layerFilterWrapper.wrappedObject
     {
-      backdropLayer.filters = [layerFilter];
-      try! contentViewWrapper.applyRequestedFilterEffects();
+      try? visualEffectView.setFiltersUsingEffectDesc([filterType]);
     };
   };
 };
