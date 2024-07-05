@@ -156,6 +156,140 @@ public enum LayerFilterType {
     self.associatedFilterTypeName.decodedString;
   };
   
+  public var filterValuesIdentity: Dictionary<String, Any> {
+    var identityValues: Dictionary<String, Any> = [:];
+    
+    switch self {
+      case .alphaFromLuminance:
+        break;
+        
+      case .averagedColor:
+        break;
+        
+      case .luminosityCurveMap:
+        identityValues.filterInputValueAmount = 0;
+        
+      case .colorBlackAndWhite:
+        identityValues.filterInputValueAmount = 0;
+        
+      case .saturateColors:
+        identityValues.filterInputValueAmount = 1;
+        
+      case .brightenColors:
+        identityValues.filterInputValueAmount = 0;
+        
+      case .contrastColors:
+        identityValues.filterInputValueAmount = 1;
+        
+      case .luminanceCompression:
+        identityValues.filterInputValueAmount = 1;
+        
+      case .bias:
+        identityValues.filterInputValueAmount = 0.5;
+        
+      case .gaussianBlur:
+        identityValues.filterInputValueRadius = 0;
+        identityValues.filterInputValueShouldNormalizeEdgesObjc = 1;
+        
+      case .darkVibrant:
+        identityValues.filterInputValueIsReversed = true;
+        identityValues.filterInputValueColor0 = UIColor.white.cgColor;
+        identityValues.filterInputValueColor1 = UIColor.white.cgColor;
+        
+      case .lightVibrant:
+        identityValues.filterInputValueIsReversed = true;
+        identityValues.filterInputValueColor0 = UIColor.white.cgColor;
+        identityValues.filterInputValueColor1 = UIColor.white.cgColor;
+        
+      case .colorMatrixVibrant:
+        identityValues.filterInputValueColorMatrixObjc = ColorMatrixRGBA.identity.objcValue;
+        
+      case .colorMatrix:
+        identityValues.filterInputValueColorMatrixObjc = ColorMatrixRGBA.identity.objcValue;
+        
+      case .variadicBlur:
+        identityValues.filterInputValueRadius = 0;
+        identityValues.filterInputValueShouldNormalizeEdgesObjc = 1;
+        identityValues.filterInputMaskImage = nil;
+    };
+    
+    return identityValues;
+  };
+  
+  public var filterValuesRequested: Dictionary<String, Any> {
+    var valuesRequested: Dictionary<String, Any> = [:];
+    
+    switch self {
+      case .alphaFromLuminance:
+        break;
+        
+      case .averagedColor:
+        break;
+        
+      case let .luminosityCurveMap(amount, _):
+        valuesRequested.filterInputValueAmount = amount;
+        
+      case let .colorBlackAndWhite(amount):
+        valuesRequested.filterInputValueAmount = amount;
+        
+      case let .saturateColors(amount):
+        valuesRequested.filterInputValueAmount = amount;
+        
+      case let .brightenColors(amount):
+        valuesRequested.filterInputValueAmount = amount;
+        
+      case let .contrastColors(amount):
+        valuesRequested.filterInputValueAmount = amount;
+        
+      case let .luminanceCompression(amount):
+        valuesRequested.filterInputValueAmount = amount;
+        
+      case let .bias(amount):
+        valuesRequested.filterInputValueAmount = amount;
+        
+      case let .gaussianBlur(radius, shouldNormalizeEdges):
+        valuesRequested.filterInputValueRadius = radius;
+        valuesRequested.filterInputValueShouldNormalizeEdgesObjc = shouldNormalizeEdges ? 1 : 0;
+        
+      case let .darkVibrant(isReversed, color0, color1):
+        valuesRequested.filterInputValueIsReversed = isReversed;
+        valuesRequested.filterInputValueColor0 = color0;
+        valuesRequested.filterInputValueColor1 = color1;
+        
+      case let .lightVibrant(isReversed, color0, color1):
+        valuesRequested.filterInputValueIsReversed = isReversed;
+        valuesRequested.filterInputValueColor0 = color0;
+        valuesRequested.filterInputValueColor1 = color1;
+        
+      case let .colorMatrixVibrant(matrix):
+        valuesRequested.filterInputValueColorMatrixObjc = matrix.objcValue;
+        
+      case let .colorMatrix(matrix):
+        valuesRequested.filterInputValueColorMatrixObjc = matrix.objcValue;
+        
+      case let .variadicBlur(radius, maskImage, shouldNormalizeEdges):
+        valuesRequested.filterInputValueRadius = radius;
+        valuesRequested.filterInputMaskImage = maskImage;
+        valuesRequested.filterInputValueShouldNormalizeEdgesObjc = shouldNormalizeEdges ? 1 : 0;
+    };
+    
+    return valuesRequested;
+  };
+  
+  public var filterValuesConfig: Dictionary<String, Any> {
+    var valuesConfig: Dictionary<String, Any> = [:];
+    
+    switch self {
+      case let .luminosityCurveMap(_, values):
+        valuesConfig.filterInputValues = values;
+        
+      default:
+        break;
+    };
+    
+    return valuesConfig;
+  };
+  
   // MARK: - Init
   // ------------
   
@@ -171,7 +305,7 @@ public enum LayerFilterType {
     guard let filterTypeName = filterTypeName,
           let filterValuesRequestedRaw = wrapper.filterValuesRequested,
           
-          let filterValuesCurrent =
+          let filterValuesRequested =
             filterValuesRequestedRaw  as? Dictionary<String, Any>,
             
           let filterValuesConfigRaw = wrapper.filterValuesConfig,
@@ -190,49 +324,49 @@ public enum LayerFilterType {
         self = .averagedColor;
         
       case .colorBlackAndWhite:
-        guard let inputAmount = filterValuesCurrent.filterInputValueAmount else {
+        guard let inputAmount = filterValuesRequested.filterInputValueAmount else {
           return nil;
         };
         
         self = .colorBlackAndWhite(amount: inputAmount);
         
       case .saturateColors:
-        guard let inputAmount = filterValuesCurrent.filterInputValueAmount else {
+        guard let inputAmount = filterValuesRequested.filterInputValueAmount else {
           return nil;
         };
         
         self = .saturateColors(amount: inputAmount);
         
       case .brightenColors:
-        guard let inputAmount = filterValuesCurrent.filterInputValueAmount else {
+        guard let inputAmount = filterValuesRequested.filterInputValueAmount else {
           return nil;
         };
         
         self = .brightenColors(amount: inputAmount);
         
       case .contrastColors:
-        guard let inputAmount = filterValuesCurrent.filterInputValueAmount else {
+        guard let inputAmount = filterValuesRequested.filterInputValueAmount else {
           return nil;
         };
         
         self = .contrastColors(amount: inputAmount);
         
       case .luminanceCompression:
-        guard let inputAmount = filterValuesCurrent.filterInputValueAmount else {
+        guard let inputAmount = filterValuesRequested.filterInputValueAmount else {
           return nil;
         };
         
         self = .luminanceCompression(amount: inputAmount);
         
       case .bias:
-        guard let inputAmount = filterValuesCurrent.filterInputValueAmount else {
+        guard let inputAmount = filterValuesRequested.filterInputValueAmount else {
           return nil;
         };
         
         self = .bias(amount: inputAmount);
         
       case .luminosityCurveMap:
-        guard let inputAmount = filterValuesCurrent.filterInputValueAmount,
+        guard let inputAmount = filterValuesRequested.filterInputValueAmount,
               let inputValues = filterValuesConfig.filterInputValues  else {
           return nil;
         };
@@ -243,8 +377,8 @@ public enum LayerFilterType {
         );
         
       case .gaussianBlur:
-        guard let inputRadius = filterValuesCurrent.filterInputValueRadius,
-              let inputNormalizeEdges = filterValuesCurrent.filterInputValueShouldNormalizeEdges  else {
+        guard let inputRadius = filterValuesRequested.filterInputValueRadius,
+              let inputNormalizeEdges = filterValuesRequested.filterInputValueShouldNormalizeEdges  else {
           return nil;
         };
         
@@ -254,9 +388,9 @@ public enum LayerFilterType {
         );
         
       case .darkVibrant:
-        guard let inputReversed = filterValuesCurrent.filterInputValueIsReversed,
-              let inputColor0 = filterValuesCurrent.filterInputValueColor0,
-              let inputColor1 = filterValuesCurrent.filterInputValueColor1
+        guard let inputReversed = filterValuesRequested.filterInputValueIsReversed,
+              let inputColor0 = filterValuesRequested.filterInputValueColor0,
+              let inputColor1 = filterValuesRequested.filterInputValueColor1
         else {
           return nil;
         };
@@ -268,9 +402,9 @@ public enum LayerFilterType {
         );
         
       case .lightVibrant:
-        guard let inputReversed = filterValuesCurrent.filterInputValueIsReversed,
-              let inputColor0 = filterValuesCurrent.filterInputValueColor0,
-              let inputColor1 = filterValuesCurrent.filterInputValueColor1
+        guard let inputReversed = filterValuesRequested.filterInputValueIsReversed,
+              let inputColor0 = filterValuesRequested.filterInputValueColor0,
+              let inputColor1 = filterValuesRequested.filterInputValueColor1
         else {
           return nil;
         };
@@ -282,23 +416,23 @@ public enum LayerFilterType {
         );
         
       case .colorMatrixVibrant:
-        guard let inputColorMatrix = filterValuesCurrent.filterInputValueColorMatrix else {
+        guard let inputColorMatrix = filterValuesRequested.filterInputValueColorMatrix else {
           return nil;
         };
         
         self = .colorMatrixVibrant(inputColorMatrix);
         
       case .colorMatrix:
-        guard let inputColorMatrix = filterValuesCurrent.filterInputValueColorMatrix else {
+        guard let inputColorMatrix = filterValuesRequested.filterInputValueColorMatrix else {
           return nil;
         };
         
         self = .colorMatrix(inputColorMatrix);
         
       case .variadicBlur:
-        guard let inputRadius = filterValuesCurrent.filterInputValueRadius,
-              let maskImage = filterValuesCurrent.filterInputMaskImage,
-              let inputNormalizeEdges = filterValuesCurrent.filterInputValueShouldNormalizeEdges
+        guard let inputRadius = filterValuesRequested.filterInputValueRadius,
+              let maskImage = filterValuesRequested.filterInputMaskImage,
+              let inputNormalizeEdges = filterValuesRequested.filterInputValueShouldNormalizeEdges
         else {
           return nil;
         };
@@ -437,122 +571,247 @@ extension LayerFilterType {
 // MARK: - Dictionary+Helpers
 // --------------------------
 
-fileprivate extension Dictionary where Key == String {
+fileprivate extension Dictionary where Key == String, Value == Any {
 
   var filterInputValueAmount: CGFloat? {
-    let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyAmount;
-  
-    guard let keyValue = key.decodedString,
-          let inputAmountRaw = self[keyValue],
-          let inputAmount = inputAmountRaw as? CGFloat
-    else {
-      return nil;
-    };
-    
-    return inputAmount;
+    get {
+      let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyAmount;
+      guard let keyValue = key.decodedString,
+            let inputAmountRaw = self[keyValue],
+            let inputAmount = inputAmountRaw as? CGFloat
+      else {
+        return nil;
+      };
+      
+      return inputAmount;
+    }
+    mutating set {
+      let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyAmount;
+      guard let keyValue = key.decodedString else {
+        return;
+      };
+      
+      self[keyValue] = newValue;
+    }
   };
   
   var filterInputValueRadius: CGFloat? {
-    let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyRadius;
-    
-    guard let keyValue = key.decodedString,
-          let inputRadiusRaw = self[keyValue],
-          let inputRadius = inputRadiusRaw as? CGFloat
-    else {
-      return nil;
-    };
-    
-    return inputRadius;
+    get {
+      let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyRadius;
+      guard let keyValue = key.decodedString,
+            let inputRadiusRaw = self[keyValue],
+            let inputRadius = inputRadiusRaw as? CGFloat
+      else {
+        return nil;
+      };
+      
+      return inputRadius;
+    }
+    set {
+      let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyRadius;
+      guard let keyValue = key.decodedString else {
+        return;
+      };
+      
+      self[keyValue] = newValue;
+    }
   };
   
   var filterInputValueIsReversed: Bool? {
-    let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyReversed;
-    
-    guard let keyValue = key.decodedString,
-          let inputReversedRaw = self[keyValue],
-          let inputReversed = inputReversedRaw as? NSNumber
-    else {
-      return nil;
-    };
-    
-    return inputReversed.boolValue;
+    get {
+      let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyReversed;
+      guard let keyValue = key.decodedString,
+            let inputReversedRaw = self[keyValue],
+            let inputReversed = inputReversedRaw as? NSNumber
+      else {
+        return nil;
+      };
+      
+      return inputReversed.boolValue;
+    }
+    set {
+      let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyReversed;
+      guard let keyValue = key.decodedString else {
+        return;
+      };
+      
+      self[keyValue] = newValue;
+    }
   };
   
   var filterInputValueColor0: CGColor? {
-    let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyColor0;
-    
-    guard let keyValue = key.decodedString,
-          let inputColor0Raw = self[keyValue]
-    else {
-      return nil;
-    };
-    
-    return (inputColor0Raw as! CGColor);
+    get {
+      let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyColor0;
+      guard let keyValue = key.decodedString,
+            let inputColor0Raw = self[keyValue]
+      else {
+        return nil;
+      };
+      
+      return (inputColor0Raw as! CGColor);
+    }
+    set {
+      let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyColor0;
+      guard let keyValue = key.decodedString else {
+        return;
+      };
+      
+      self[keyValue] = newValue;
+    }
   };
   
   var filterInputValueColor1: CGColor? {
-    let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyColor1;
-    
-    guard let keyValue = key.decodedString,
-          let inputColor1Raw = self[keyValue]
-    else {
-      return nil;
-    };
-    
-    return (inputColor1Raw as! CGColor);
+    get {
+      let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyColor1;
+      guard let keyValue = key.decodedString,
+            let inputColor1Raw = self[keyValue]
+      else {
+        return nil;
+      };
+      
+      return (inputColor1Raw as! CGColor);
+    }
+    set {
+      let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyColor1;
+      guard let keyValue = key.decodedString else {
+        return;
+      };
+      
+      self[keyValue] = newValue;
+    }
   };
   
   var filterInputValueColorMatrix: ColorMatrixRGBA? {
-    let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyColorMatrix;
-    
-    guard let keyValue = key.decodedString,
-          let inputColorMatrixRaw = self[keyValue],
-          let inputColorMatrix = inputColorMatrixRaw as? NSValue
-    else {
-      return nil;
-    };
-    
-    return .init(fromValue: inputColorMatrix);
+    get {
+      let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyColorMatrix;
+      guard let keyValue = key.decodedString,
+            let inputColorMatrixRaw = self[keyValue],
+            let inputColorMatrix = inputColorMatrixRaw as? NSValue
+      else {
+        return nil;
+      };
+      
+      return .init(fromValue: inputColorMatrix);
+    }
+    set {
+      let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyColorMatrix;
+      guard let keyValue = key.decodedString else {
+        return;
+      };
+      
+      self[keyValue] = newValue;
+    }
+  };
+  
+  var filterInputValueColorMatrixObjc: NSValue? {
+    get {
+      let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyColorMatrix;
+      guard let keyValue = key.decodedString,
+            let inputColorMatrixRaw = self[keyValue],
+            let inputColorMatrix = inputColorMatrixRaw as? NSValue
+      else {
+        return nil;
+      };
+      
+      return inputColorMatrix;
+    }
+    set {
+      let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyColorMatrix;
+      guard let keyValue = key.decodedString else {
+        return;
+      };
+      
+      self[keyValue] = newValue;
+    }
   };
   
   var filterInputValues: [CGFloat]? {
-    let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyValues;
-    
-    guard let keyValue = key.decodedString,
-          let inputValuesRaw = self[keyValue],
-          let inputValues = inputValuesRaw as? NSArray
-    else {
-      return nil;
-    };
-    
-    return inputValues.compactMap {
-      $0 as? CGFloat;
-    };
+    get {
+      let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyValues;
+      guard let keyValue = key.decodedString,
+            let inputValuesRaw = self[keyValue],
+            let inputValues = inputValuesRaw as? NSArray
+      else {
+        return nil;
+      };
+      
+      return inputValues.compactMap {
+        $0 as? CGFloat;
+      };
+    }
+    set {
+      let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyValues;
+      guard let keyValue = key.decodedString else {
+        return;
+      };
+      
+      self[keyValue] = newValue;
+    }
   };
   
   var filterInputValueShouldNormalizeEdges: Bool? {
-    let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyNormalizeEdges;
-    
-    guard let keyValue = key.decodedString,
-          let inputValuesRaw = self[keyValue],
-          let inputValue = inputValuesRaw as? NSNumber
-    else {
-      return nil;
-    };
-    
-    return inputValue.boolValue;
+    get {
+      let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyNormalizeEdges;
+      guard let keyValue = key.decodedString,
+            let inputValuesRaw = self[keyValue],
+            let inputValue = inputValuesRaw as? NSNumber
+      else {
+        return nil;
+      };
+      
+      return inputValue.boolValue;
+    }
+    set {
+      let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyNormalizeEdges;
+      guard let keyValue = key.decodedString else {
+        return;
+      };
+      
+      self[keyValue] = newValue;
+    }
+  };
+  
+  var filterInputValueShouldNormalizeEdgesObjc: Int? {
+    get {
+      let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyNormalizeEdges;
+      guard let keyValue = key.decodedString,
+            let inputValuesRaw = self[keyValue],
+            let inputValue = inputValuesRaw as? Int
+      else {
+        return nil;
+      };
+      
+      return inputValue;
+    }
+    set {
+      let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyNormalizeEdges;
+      guard let keyValue = key.decodedString else {
+        return;
+      };
+      
+      self[keyValue] = newValue;
+    }
   };
   
   var filterInputMaskImage: CGImage? {
-    let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyMaskImage;
-    
-    guard let keyValue = key.decodedString,
-          let inputValue = self[keyValue] as? AnyObject,
-          CFGetTypeID(inputValue) == CGImage.typeID
-    else {
-      return nil;
-    };
-    
-    return (inputValue as! CGImage);
+    get {
+      let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyMaskImage;
+      guard let keyValue = key.decodedString,
+            let inputValue = self[keyValue] as? AnyObject,
+            CFGetTypeID(inputValue) == CGImage.typeID
+      else {
+        return nil;
+      };
+      
+      return (inputValue as! CGImage);
+    }
+    set {
+      let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyMaskImage;
+      guard let keyValue = key.decodedString else {
+        return;
+      };
+      
+      self[keyValue] = newValue;
+    }
   };
 };
