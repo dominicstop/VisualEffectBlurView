@@ -129,7 +129,11 @@ public class VisualEffectView: UIVisualEffectView {
   // ---------------
   
   @available(iOS 13, *)
-  public func setFiltersUsingEffectDesc(_ filterTypes: [LayerFilterType]) throws {
+  public func setFiltersUsingEffectDesc(
+    _ filterTypes: [LayerFilterType],
+    shouldImmediatelyApplyFilter: Bool = true
+  ) throws {
+  
     guard let bgHostWrapper = self.bgHostWrapper else {
       throw VisualEffectBlurViewError(
         errorCode: .unexpectedNilValue,
@@ -164,10 +168,16 @@ public class VisualEffectView: UIVisualEffectView {
     
     try effectDescWrapper.setFilterItems(filterEntriesWrapped);
     try bgHostWrapper.setEffectDescriptor(effectDescWrapper);
-    try viewContentWrapper.applyRequestedFilterEffects();
+    
+    if shouldImmediatelyApplyFilter {
+      try viewContentWrapper.applyRequestedFilterEffects();
+    };
   };
   
-  public func setFiltersViaLayers(_ filterTypes: [LayerFilterType]) throws {
+  public func setFiltersViaLayers(
+    _ filterTypes: [LayerFilterType],
+    shouldImmediatelyApplyFilter: Bool = true
+  ) throws {
     guard let bgHostWrapper = self.bgHostWrapper else {
       throw VisualEffectBlurViewError(
         errorCode: .unexpectedNilValue,
@@ -200,6 +210,8 @@ public class VisualEffectView: UIVisualEffectView {
     };
     
     bgLayer.filters = filters;
-    try contentViewWrapper.applyRequestedFilterEffects();
+    if shouldImmediatelyApplyFilter {
+      try contentViewWrapper.applyRequestedFilterEffects();
+    };
   };
 };
