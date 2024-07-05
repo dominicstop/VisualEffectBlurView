@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/dominicstop/DGSwiftUtilities",
       "state" : {
-        "revision" : "af7e7ab8ea38393625040f01b676ef9fa1a16e9a",
-        "version" : "0.24.1"
+        "revision" : "27922e9b8078e840617226491e8c73b5e91bac91",
+        "version" : "0.24.2"
       }
     }
   ],
