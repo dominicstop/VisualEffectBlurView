@@ -62,7 +62,10 @@ public class VisualEffectView: UIVisualEffectView {
     );
   };
   
-  public init?(rawFilterType: String? = nil){
+  // MARK: - Init
+  // ------------
+  
+  public init?(rawFilterTypes: [String]? = nil){
     super.init(effect: UIBlurEffect(style: .regular));
     
     guard let wrapper = UVEViewWrapper(objectToWrap: self) else {
@@ -71,25 +74,45 @@ public class VisualEffectView: UIVisualEffectView {
     
     self.wrapper = wrapper;
     
-    guard let bgLayerWrapper = self.bgLayerWrapper,
+    guard let rawFilterTypes = rawFilterTypes,
+          let bgLayerWrapper = self.bgLayerWrapper,
           let backdropLayer = bgLayerWrapper.wrappedObject
     else {
-      return nil;
+      return;
     };
     
     backdropLayer.filters = [];
     
-    guard let rawFilterType = rawFilterType else {
-      return;
+    let filterWrappers: [LayerFilterWrapper] = rawFilterTypes.compactMap {
+      .init(rawFilterType: $0);
     };
     
-    guard let filterWrapper = LayerFilterWrapper(rawFilterType: rawFilterType),
-          let filter = filterWrapper.wrappedObject
-    else {
-      return;
+    let filters = filterWrappers.compactMap {
+      $0.wrappedObject;
     };
     
-    backdropLayer.filters = [filter];
+    backdropLayer.filters = filters;
+  };
+  
+  public init?(
+    filterTypes: [LayerFilterType],
+    shouldSetFiltersUsingEffectDesc: Bool = true
+  ) throws {
+    super.init(effect: UIBlurEffect(style: .regular));
+    guard let wrapper = UVEViewWrapper(objectToWrap: self) else {
+      return nil;
+    };
+    
+    self.wrapper = wrapper;
+    
+    if #available(iOS 13, *),
+       shouldSetFiltersUsingEffectDesc
+    {
+      try self.setFiltersUsingEffectDesc(filterTypes);
+      
+    } else {
+      try self.setFiltersViaLayers(filterTypes);
+    };
   };
   
   required init?(coder: NSCoder) {
