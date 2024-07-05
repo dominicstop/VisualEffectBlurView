@@ -18,9 +18,15 @@ public class UVEFilterEntryWrapper: PrivateObjectWrapper<
 > {
 
   public enum EncodedString: PrivateObjectWrappingEncodedString {
+    /// `_UIVisualEffectFilterEntry`
     case className;
     
-    /// `-(id)initWithFilterType:(id)arg1 configurationValues:(id)arg2 requestedValues:(id)arg3 identityValues:(id)arg4 ;`
+    /// ```
+    /// -(id)initWithFilterType:(id)arg1
+    ///     configurationValues:(id)arg2
+    ///         requestedValues:(id)arg3
+    ///          identityValues:(id)arg4;
+    /// ```
     case initializer1;
     
     /// `filterType`
@@ -38,8 +44,14 @@ public class UVEFilterEntryWrapper: PrivateObjectWrapper<
     /// `setRequestedValues`
     case methodSetFilterValuesCurrent;
     
-    /// `setFilterType`
+    /// `setFilterType:`
     case methodSetFilterType;
+    
+    /// `setIdentityValues:`
+    case methodSetFilterValuesIdentity;
+    
+    /// `setConfigurationValues:`
+    case methodFilterValuesConfig;
     
     public var encodedString: String {
       switch self {
@@ -74,6 +86,14 @@ public class UVEFilterEntryWrapper: PrivateObjectWrapper<
         case .initializer1:
           // initWithFilterType:configurationValues:requestedValues:identityValues:
           return "aW5pdFdpdGhGaWx0ZXJUeXBlOmNvbmZpZ3VyYXRpb25WYWx1ZXM6cmVxdWVzdGVkVmFsdWVzOmlkZW50aXR5VmFsdWVzOg==";
+          
+        case .methodSetFilterValuesIdentity:
+          // setIdentityValues:
+          return "c2V0SWRlbnRpdHlWYWx1ZXM6";
+          
+        case .methodFilterValuesConfig:
+          // setConfigurationValues:
+          return "c2V0Q29uZmlndXJhdGlvblZhbHVlcw==";
       };
     };
   };
@@ -130,19 +150,6 @@ public class UVEFilterEntryWrapper: PrivateObjectWrapper<
   // -----------------------
   
   /// Setter for property:
-  /// `@property (nonatomic,copy) NSDictionary * requestedValues;`
-  ///
-  /// Declaration:
-  /// `-(void)setRequestedValues:(NSDictionary *)arg1;`
-  ///
-  public func setFilterValuesRequested(_ values: NSDictionary) throws {
-    try self.performSelector(
-      usingEncodedString: .methodSetFilterValuesCurrent,
-      withArg1: values
-    );
-  };
-  
-  /// Setter for property:
   /// `@property (nonatomic,copy) NSString * filterType;    `
   ///
   /// Declaration:
@@ -155,6 +162,45 @@ public class UVEFilterEntryWrapper: PrivateObjectWrapper<
     );
   };
   
+  /// Setter for property:
+  /// `@property (nonatomic,copy) NSDictionary * requestedValues;`
+  ///
+  /// Declaration:
+  /// `-(void)setRequestedValues:(NSDictionary *)arg1;`
+  ///
+  public func setFilterValuesRequested(_ values: NSDictionary) throws {
+    try self.performSelector(
+      usingEncodedString: .methodSetFilterValuesCurrent,
+      withArg1: values
+    );
+  };
+
+  /// Setter for property:
+  /// `@property (nonatomic,copy) NSDictionary * identityValues;`
+  ///
+  /// Declaration:
+  /// `-(void)setIdentityValues:(NSDictionary *)arg1 ;`
+  ///
+  public func setFilterValuesIdentity(_ values: NSDictionary) throws {
+    try self.performSelector(
+      usingEncodedString: .methodSetFilterValuesIdentity,
+      withArg1: values
+    );
+  };
+  
+  /// Setter for property:
+  /// `@property (nonatomic,copy) NSDictionary * configurationValues;`
+  ///
+  /// Declaration:
+  /// `-(void)setConfigurationValues:(NSDictionary *)arg1;`
+  ///
+  public func setFilterValuesConfig(_ values: NSDictionary) throws {
+    try self.performSelector(
+      usingEncodedString: .methodFilterValuesConfig,
+      withArg1: values
+    );
+  };
+
   // MARK: - Init
   // ------------
   
