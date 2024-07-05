@@ -451,6 +451,21 @@ public enum LayerFilterType {
   // MARK: - Functions
   // -----------------
   
+  public func createFilterWrapper() -> LayerFilterWrapper? {
+    guard let filterTypeName = self.decodedFilterName else {
+      return nil;
+    };
+  
+    guard let layerFilterWrapper = LayerFilterWrapper(rawFilterType: filterTypeName) else {
+      return nil;
+    };
+    
+    try? layerFilterWrapper.setDefaults();
+    try? self.applyTo(layerFilterWrapper: layerFilterWrapper);
+    
+    return layerFilterWrapper;
+  };
+  
   public func applyTo(layerFilterWrapper: LayerFilterWrapper) throws {
     switch self {
       case .alphaFromLuminance: fallthrough;
@@ -523,20 +538,76 @@ public enum LayerFilterType {
     };
   };
   
-  public func createFilterWrapper() -> LayerFilterWrapper? {
-    guard let filterTypeName = self.decodedFilterName else {
-      return nil;
-    };
+  public func applyTo(
+    filterEntryWrapper: UVEFilterEntryWrapper,
+    shouldSetValuesIdentity: Bool = true,
+    shouldSetValuesRequested: Bool = true,
+    shouldSetValuesConfig: Bool = true
+  ) throws {
   
-    guard let layerFilterWrapper = LayerFilterWrapper(rawFilterType: filterTypeName) else {
-      return nil;
+    let filterTypePrev = filterEntryWrapper.filterKind;
+    guard let filterTypeNext = self.decodedFilterName else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to decode `filterTypeNext`"
+      );
     };
     
-    try? layerFilterWrapper.setDefaults();
-    try? self.applyTo(layerFilterWrapper: layerFilterWrapper);
+    let didFilterTypeChange =
+      filterTypePrev != filterTypeNext;
+      
+    if didFilterTypeChange {
+      try filterEntryWrapper.setFilterKind(filterTypeNext);
+    };
     
-    return layerFilterWrapper;
+    let identityValuesPrev =
+      filterEntryWrapper.filterValuesIdentity as? Dictionary<String, Any> ?? [:];
+      
+    let identityValuesNext = self.filterValuesIdentity;
+    
+    let didIdentityValuesChange =
+      identityValuesPrev != identityValuesNext;
+    
+    if shouldSetValuesIdentity,
+       didFilterTypeChange || didIdentityValuesChange
+    {
+      try filterEntryWrapper.setFilterValuesIdentity(
+        identityValuesNext as NSDictionary
+      );
+    };
+    
+    let requestedValuesPrev =
+      filterEntryWrapper.filterValuesRequested as? Dictionary<String, Any> ?? [:];
+      
+    let requestedValuesNext = self.filterValuesRequested;
+    
+    let didRequestedValuesChange =
+      requestedValuesPrev != requestedValuesNext;
+      
+    if shouldSetValuesRequested,
+       didFilterTypeChange || didRequestedValuesChange
+    {
+      try filterEntryWrapper.setFilterValuesRequested(
+        requestedValuesNext as NSDictionary
+      );
+    };
+    
+    let configValuesPrev =
+      filterEntryWrapper.filterValuesConfig as? Dictionary<String, Any> ?? [:];
+      
+    let configValuesNext = self.filterValuesConfig;
+    
+    let didConfigValuesChange = configValuesPrev != configValuesNext;
+    
+    if shouldSetValuesConfig,
+       didFilterTypeChange || didConfigValuesChange
+    {
+      try filterEntryWrapper.setFilterValuesConfig(
+        configValuesNext as NSDictionary
+      );
+    };
   };
+  
 };
 
 // MARK: - LayerFilterType+StaticAlias

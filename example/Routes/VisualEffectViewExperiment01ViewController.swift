@@ -649,18 +649,19 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
     self.cardVC?.applyCardConfig();
       
     if prevFilterType.decodedFilterName == filterType.decodedFilterName,
-       let layerFilter = backdropLayer.filters?.first as? AnyObject,
-       let layerFilterWrapper = LayerFilterWrapper(objectToWrap: layerFilter)
+       let effectDescWrapped = try? backgroundHostWrapper.getEffectDescriptorCurrent(),
+       let filterItemsWrapped = effectDescWrapped.filterItemsWrapped
     {
       
-      try! filterType.applyTo(layerFilterWrapper: layerFilterWrapper);
-      UIView.animate(withDuration: 0.5){
+      filterItemsWrapped.forEach {
+        try? filterType.applyTo(filterEntryWrapper: $0);
+      };
+      
+      UIView.animate(withDuration: 0.3){
         try! contentViewWrapper.applyRequestedFilterEffects();
       };
     
-    } else if let layerFilterWrapper = filterType.createFilterWrapper(),
-              let layerFilter = layerFilterWrapper.wrappedObject
-    {
+    } else if let layerFilterWrapper = filterType.createFilterWrapper() {
       try? visualEffectView.setFiltersUsingEffectDesc([filterType]);
     };
   };
