@@ -23,10 +23,12 @@ public class UVEDescriptorWrapper: PrivateObjectWrapper<
     case getterFilterItems;
     
     /// `addFilterEntry`
-    case insertFilterItem;
+    case methodInsertFilterItem;
+    
+    /// `setFilterEntries`
+    case methodUpdateFilterItems;
     
     // TODO:
-    // `setFilterEntries`, `filterEntries`
     // `setViewEffects`, `viewEffects`
     // `setUnderlays`, `underlays`
     // `setOverlays`, `overlays`
@@ -41,9 +43,13 @@ public class UVEDescriptorWrapper: PrivateObjectWrapper<
           // filterEntries
           return "ZmlsdGVyRW50cmllcw==";
           
-        case .insertFilterItem:
+        case .methodInsertFilterItem:
           // addFilterEntry:
           return "YWRkRmlsdGVyRW50cnk6";
+          
+        case .methodUpdateFilterItems:
+          // setFilterEntries:
+          return "c2V0RmlsdGVyRW50cmllczo=";
       };
     };
   };
@@ -78,8 +84,27 @@ public class UVEDescriptorWrapper: PrivateObjectWrapper<
   /// `-(void)addFilterEntry:(id)arg1`
   public func insertFilterItem(_ filter: Any) throws {
     try self.performSelector(
-      usingEncodedString: .insertFilterItem,
+      usingEncodedString: .methodInsertFilterItem,
       withArg1: filter
     );
+  };
+  
+  /// Selector:
+  /// `-(void)setFilterEntries:(NSArray *)arg1:`
+  public func updateFilterItems(_ items: [AnyObject]) throws {
+    try self.performSelector(
+      usingEncodedString: .methodUpdateFilterItems,
+      withArg1: items as NSArray
+    );
+  };
+  
+  /// Selector:
+  /// `-(void)setFilterEntries:(NSArray *)arg1:`
+  public func updateFilterItems(_ wrappedItems: [UVEFilterEntryWrapper]) throws {
+    let items = wrappedItems.compactMap {
+      $0.wrappedObject;
+    };
+    
+    try self.updateFilterItems(items);
   };
 };

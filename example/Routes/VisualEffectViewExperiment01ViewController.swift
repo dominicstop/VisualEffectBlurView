@@ -272,11 +272,15 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
   
   override func viewDidLoad() {
     
-    let instance = try? UVEFilterEntryWrapper(
+    let filterEntryWrapper = try? UVEFilterEntryWrapper(
       filterKind: .gaussianBlur,
       filterValuesConfig: [:],
-      filterValuesRequested: [:],
-      filterValuesIdentity: [:]
+      filterValuesRequested: [
+        LayerFilterWrapper.EncodedString.propertyFilterInputKeyRadius.decodedString!: CGFloat(0)
+      ],
+      filterValuesIdentity: [
+        LayerFilterWrapper.EncodedString.propertyFilterInputKeyRadius.decodedString!: CGFloat(0)
+      ]
     );
   
     let bgView: UIView = {
