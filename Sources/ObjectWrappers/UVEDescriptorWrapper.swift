@@ -26,7 +26,7 @@ public class UVEDescriptorWrapper: PrivateObjectWrapper<
     case methodInsertFilterItem;
     
     /// `setFilterEntries`
-    case methodUpdateFilterItems;
+    case methodSetFilterItems;
     
     // TODO:
     // `setViewEffects`, `viewEffects`
@@ -47,7 +47,7 @@ public class UVEDescriptorWrapper: PrivateObjectWrapper<
           // addFilterEntry:
           return "YWRkRmlsdGVyRW50cnk6";
           
-        case .methodUpdateFilterItems:
+        case .methodSetFilterItems:
           // setFilterEntries:
           return "c2V0RmlsdGVyRW50cmllczo=";
       };
@@ -82,6 +82,7 @@ public class UVEDescriptorWrapper: PrivateObjectWrapper<
   
   /// Selector:
   /// `-(void)addFilterEntry:(id)arg1`
+  ///
   public func insertFilterItem(_ filter: Any) throws {
     try self.performSelector(
       usingEncodedString: .methodInsertFilterItem,
@@ -91,20 +92,22 @@ public class UVEDescriptorWrapper: PrivateObjectWrapper<
   
   /// Selector:
   /// `-(void)setFilterEntries:(NSArray *)arg1:`
-  public func updateFilterItems(_ items: [AnyObject]) throws {
+  ///
+  public func setFilterItems(_ items: [AnyObject]) throws {
     try self.performSelector(
-      usingEncodedString: .methodUpdateFilterItems,
+      usingEncodedString: .methodSetFilterItems,
       withArg1: items as NSArray
     );
   };
   
   /// Selector:
   /// `-(void)setFilterEntries:(NSArray *)arg1:`
-  public func updateFilterItems(_ wrappedItems: [UVEFilterEntryWrapper]) throws {
+  ///
+  public func setFilterItems(_ wrappedItems: [UVEFilterEntryWrapper]) throws {
     let items = wrappedItems.compactMap {
       $0.wrappedObject;
     };
     
-    try self.updateFilterItems(items);
+    try self.setFilterItems(items);
   };
 };
