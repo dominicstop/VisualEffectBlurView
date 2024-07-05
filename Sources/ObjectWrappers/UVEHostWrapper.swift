@@ -22,10 +22,13 @@ public class UVEHostWrapper: PrivateObjectWrapper<
     case className;
     
     /// `contentView`
-    case getterViewContent;
+    case methodGetViewContent;
     
     /// `setCurrentEffectDescriptor`
-    case methodSettEffectDescriptor;
+    case methodSetEffectDescriptor;
+    
+    /// `currentEffectDescriptor`
+    case methodGetEffectDescriptorCurrent;
     
     public var encodedString: String {
       switch self {
@@ -33,13 +36,17 @@ public class UVEHostWrapper: PrivateObjectWrapper<
           // _UIVisualEffectHost
           return "X1VJVmlzdWFsRWZmZWN0SG9zdA==";
         
-        case .getterViewContent:
+        case .methodGetViewContent:
           // contentView
           return "Y29udGVudFZpZXc=";
           
-        case .methodSettEffectDescriptor:
+        case .methodSetEffectDescriptor:
           // setCurrentEffectDescriptor:
           return "c2V0Q3VycmVudEVmZmVjdERlc2NyaXB0b3I6";
+          
+        case .methodGetEffectDescriptorCurrent:
+          // `currentEffectDescriptor`
+          return "Y3VycmVudEVmZmVjdERlc2NyaXB0b3I=";
       };
     };
   };
@@ -50,7 +57,7 @@ public class UVEHostWrapper: PrivateObjectWrapper<
     /// `-(UIView *)contentView`
   public var viewContentWrapped: UVEBackdropViewWrapper? {
     let result = try? self.performSelector(
-      usingEncodedString: .getterViewContent,
+      usingEncodedString: .methodGetViewContent,
       type: UIView.self
     );
     
@@ -72,18 +79,35 @@ public class UVEHostWrapper: PrivateObjectWrapper<
     _ effectDescriptorWrapper: UVEDescriptorWrapper
   ) throws {
     guard let effectDescriptor = effectDescriptorWrapper.wrappedObject else {
-      #if DEBUG
-      print(
-        "VisualEffectBackgroundHostViewWrapper.setEffectDescriptor",
-        "- failed to get getEffectMetadata"
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Could not get `effectDescriptorWrapper`"
       );
-      #endif
-      return;
     };
     
     try self.performSelector(
-      usingEncodedString: .methodSettEffectDescriptor,
+      usingEncodedString: .methodSetEffectDescriptor,
       withArg1: effectDescriptor
     );
+  };
+  
+  /// Selector:
+  /// `-(_UIVisualEffectDescriptor *)currentEffectDescriptor;`
+  ///
+  @available(iOS 13, *)
+  public func getEffectDescriptorCurrent() throws -> UVEDescriptorWrapper? {
+    let result = try self.performSelector(
+      usingEncodedString: .methodGetEffectDescriptorCurrent,
+      type: NSObject.self
+    );
+    
+    guard let result = result else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Result of invoked selector is nil"
+      );
+    };
+    
+    return .init(objectToWrap: result);
   };
 };
