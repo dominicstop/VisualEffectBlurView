@@ -214,4 +214,22 @@ public class VisualEffectView: UIVisualEffectView {
       try contentViewWrapper.applyRequestedFilterEffects();
     };
   };
+  
+  public func applyRequestedFilterEffects() throws {
+    guard let bgHostWrapper = self.bgHostWrapper else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to get `self.bgHostWrapper`"
+      );
+    };
+    
+    guard let viewContentWrapper = self.viewContentWrapper else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to get `self.viewContentWrapper`"
+      );
+    };
+    
+    try viewContentWrapper.applyRequestedFilterEffects();
+  };
 };
