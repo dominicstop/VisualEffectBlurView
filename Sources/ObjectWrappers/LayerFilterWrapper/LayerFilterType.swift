@@ -378,13 +378,14 @@ public enum LayerFilterType {
         
       case .gaussianBlur:
         guard let inputRadius = filterValuesRequested.filterInputValueRadius,
-              let inputNormalizeEdges = filterValuesRequested.filterInputValueShouldNormalizeEdges  else {
+              let shouldNormalizeEdges = filterValuesConfig.filterInputValueShouldNormalizeEdges
+        else {
           return nil;
         };
         
         self = .gaussianBlur(
           radius: inputRadius,
-          shouldNormalizeEdges: inputNormalizeEdges
+          shouldNormalizeEdges: shouldNormalizeEdges
         );
         
       case .darkVibrant:
