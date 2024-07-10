@@ -596,7 +596,7 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
       return;
     };
     
-    backdropLayer.setValue(window.screen.scale, forKey: "scale")
+    //backdropLayer.setValue(window.screen.scale, forKey: "scale")
     
     let prevFilterType =
       self.filterPresets[cyclicIndex: max(self.counter - 1, 0)];

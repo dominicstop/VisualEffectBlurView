@@ -22,159 +22,152 @@ extension LayerFilterType {
   };
 
   var filterDescAsAttributedConfig: [CardContentItem] {
+    self.getFilterDescAsAttributedConfig(shouldIncludeFilterName: false);
+  };
+  
+  func getFilterDescAsAttributedConfig(
+    shouldIncludeFilterName: Bool
+  ) -> [CardContentItem] {
+  
+    var debugDisplayItems: [CardLabelValueDisplayItemConfig] = [];
+    
+    if shouldIncludeFilterName,
+       let filterName = self.decodedFilterName
+    {
+      debugDisplayItems.append(
+        .singleRowPlain(label: "filterName", value: filterName)
+      );
+    };
+      
     switch self {
       case .alphaFromLuminance:
-        return [];
+        break;
 
       case .averagedColor:
-        return [];
+        break;
         
       case let .luminosityCurveMap(inputAmount, inputValues):
-        return [
-          .labelValueDisplay(items: [
-            .singleRowPlain(
-              label: "inputAmount",
-              value: "\(inputAmount)"
-            ),
-            .singleRowPlain(
-              label: "inputValues",
-              value: inputValues.description
-            ),
-          ]),
+        debugDisplayItems += [
+          .singleRowPlain(
+            label: "inputAmount",
+            value: "\(inputAmount)"
+          ),
+          .singleRowPlain(
+            label: "inputValues",
+            value: inputValues.description
+          ),
         ];
         
       case let .colorBlackAndWhite(inputAmount):
-        return [
-          .labelValueDisplay(items: [
-            .singleRowPlain(
-              label: "inputAmount",
-              value: "\(inputAmount)"
-            ),
-          ]),
+        debugDisplayItems += [
+          .singleRowPlain(
+            label: "inputAmount",
+            value: "\(inputAmount)"
+          ),
         ];
         
       case let .saturateColors(inputAmount):
-        return [
-          .labelValueDisplay(items: [
-            .singleRowPlain(
-              label: "inputAmount",
-              value: "\(inputAmount)"
-            ),
-          ]),
+        debugDisplayItems += [
+          .singleRowPlain(
+            label: "inputAmount",
+            value: "\(inputAmount)"
+          ),
         ];
         
       case let .brightenColors(inputAmount):
-        return [
-          .labelValueDisplay(items: [
-            .singleRowPlain(
-              label: "inputAmount",
-              value: "\(inputAmount)"
-            ),
-          ]),
+        debugDisplayItems += [
+          .singleRowPlain(
+            label: "inputAmount",
+            value: "\(inputAmount)"
+          ),
         ];
         
       case let .contrastColors(inputAmount):
-        return [
-          .labelValueDisplay(items: [
-            .singleRowPlain(
-              label: "inputAmount",
-              value: "\(inputAmount)"
-            ),
-          ]),
+        debugDisplayItems += [
+          .singleRowPlain(
+            label: "inputAmount",
+            value: "\(inputAmount)"
+          ),
         ];
         
       case let .luminanceCompression(inputAmount):
-        return [
-          .labelValueDisplay(items: [
-            .singleRowPlain(
-              label: "inputAmount",
-              value: "\(inputAmount)"
-            ),
-          ]),
+        debugDisplayItems += [
+          .singleRowPlain(
+            label: "inputAmount",
+            value: "\(inputAmount)"
+          ),
         ];
         
       case let .bias(inputAmount):
-        return [
-          .labelValueDisplay(items: [
-            .singleRowPlain(
-              label: "inputAmount",
-              value: "\(inputAmount)"
-            ),
-          ]),
+        debugDisplayItems += [
+          .singleRowPlain(
+            label: "inputAmount",
+            value: "\(inputAmount)"
+          ),
         ];
-        
+          
       case let .gaussianBlur(inputRadius, inputNormalizeEdges):
-        return [
-          .labelValueDisplay(items: [
-            .singleRowPlain(
-              label: "inputRadius",
-              value: "\(inputRadius)"
-            ),
-            .singleRowPlain(
-              label: "inputNormalizeEdges",
-              value: "\(inputNormalizeEdges)"
-            ),
-          ]),
+        debugDisplayItems += [
+          .singleRowPlain(
+            label: "inputRadius",
+            value: "\(inputRadius)"
+          ),
+          .singleRowPlain(
+            label: "inputNormalizeEdges",
+            value: "\(inputNormalizeEdges)"
+          ),
         ];
         
       case let .darkVibrant(inputReversed, inputColor0, inputColor1):
-        return [
-          .labelValueDisplay(items: [
-            .singleRowPlain(
-              label: "inputReversed",
-              value: "\(inputReversed)"
-            ),
-            .singleRowPlain(
-              label: "inputColor0",
-              value: "\(inputColor0.components?.description ?? "N/A")"
-            ),
-            .singleRowPlain(
-              label: "inputColor1",
-              value: "\(inputColor1.components?.description ?? "N/A")"
-            ),
-          ]),
+        debugDisplayItems += [
+          .singleRowPlain(
+            label: "inputReversed",
+            value: "\(inputReversed)"
+          ),
+          .singleRowPlain(
+            label: "inputColor0",
+            value: "\(inputColor0.components?.description ?? "N/A")"
+          ),
+          .singleRowPlain(
+            label: "inputColor1",
+            value: "\(inputColor1.components?.description ?? "N/A")"
+          ),
         ];
         
       case let .lightVibrant(inputReversed, inputColor0, inputColor1):
-        return [
-          .labelValueDisplay(items: [
-            .singleRowPlain(
-              label: "inputReversed",
-              value: "\(inputReversed)"
-            ),
-            .singleRowPlain(
-              label: "inputColor0",
-              value: "\(inputColor0.components?.description ?? "N/A")"
-            ),
-            .singleRowPlain(
-              label: "inputColor1",
-              value: "\(inputColor1.components?.description ?? "N/A")"
-            ),
-          ]),
+        debugDisplayItems += [
+          .singleRowPlain(
+            label: "inputReversed",
+            value: "\(inputReversed)"
+          ),
+          .singleRowPlain(
+            label: "inputColor0",
+            value: "\(inputColor0.components?.description ?? "N/A")"
+          ),
+          .singleRowPlain(
+            label: "inputColor1",
+            value: "\(inputColor1.components?.description ?? "N/A")"
+          ),
         ];
         
       case let .colorMatrixVibrant(colorMatrix):
-        return [
-          .labelValueDisplay(items: [
-            .multiLineRow(
-              label: [
-                .init(text: "inputColorMatrix")
-              ],
-              value: colorMatrix.descAsAttributedConfig
-            ),
-          ]),
+        debugDisplayItems += [
+          .multiLineRow(
+            label: [
+              .init(text: "inputColorMatrix")
+            ],
+            value: colorMatrix.descAsAttributedConfig
+          ),
         ];
         
       case let .colorMatrix(colorMatrix):
-        return [
-          .labelValueDisplay(items: [
-            .multiLineRow(
-              label: [
-                .init(text: "inputColorMatrix")
-              ],
-              value: colorMatrix.descAsAttributedConfig
-            ),
-          ]),
+        debugDisplayItems +=  [
+          .multiLineRow(
+            label: [
+              .init(text: "inputColorMatrix")
+            ],
+            value: colorMatrix.descAsAttributedConfig
+          ),
         ];
         
       case let .variadicBlur(
@@ -182,18 +175,20 @@ extension LayerFilterType {
         _ /* inputMaskImage */,
         inputNormalizeEdges
       ):
-        return [
-          .labelValueDisplay(items: [
-            .singleRowPlain(
-              label: "inputRadius",
-              value: "\(inputRadius)"
-            ),
-            .singleRowPlain(
-              label: "inputNormalizeEdges",
-              value: inputNormalizeEdges.description
-            ),
-          ]),
+        debugDisplayItems += [
+          .singleRowPlain(
+            label: "inputRadius",
+            value: "\(inputRadius)"
+          ),
+          .singleRowPlain(
+            label: "inputNormalizeEdges",
+            value: inputNormalizeEdges.description
+          ),
         ];
     };
+    
+    return [
+      .labelValueDisplay(items: debugDisplayItems),
+    ];
   };
 };

@@ -100,10 +100,21 @@ public class VisualEffectView: UIVisualEffectView {
     backdropLayer.filters = filters;
   };
   
+  public init?(withEffect effect: UIVisualEffect?){
+    super.init(effect: UIBlurEffect(style: .regular));
+    
+    guard let wrapper = UVEViewWrapper(objectToWrap: self) else {
+      return nil;
+    };
+    
+    self.wrapper = wrapper;
+  };
+
   public init?(
     filterTypes: [LayerFilterType],
     shouldSetFiltersUsingEffectDesc: Bool = true
   ) throws {
+  
     super.init(effect: UIBlurEffect(style: .regular));
     guard let wrapper = UVEViewWrapper(objectToWrap: self) else {
       return nil;
@@ -216,13 +227,6 @@ public class VisualEffectView: UIVisualEffectView {
   };
   
   public func applyRequestedFilterEffects() throws {
-    guard let bgHostWrapper = self.bgHostWrapper else {
-      throw VisualEffectBlurViewError(
-        errorCode: .unexpectedNilValue,
-        description: "Unable to get `self.bgHostWrapper`"
-      );
-    };
-    
     guard let viewContentWrapper = self.viewContentWrapper else {
       throw VisualEffectBlurViewError(
         errorCode: .unexpectedNilValue,

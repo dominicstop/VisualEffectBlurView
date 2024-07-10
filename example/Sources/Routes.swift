@@ -14,11 +14,11 @@ enum Route: String, CaseIterable {
   case routeList;
   case visualEffectBlurTest;
   case visualEffectViewExperiment01;
+  case visualEffectViewExperiment02;
   
   case blurViewBasicUsage01;
   case blurViewSwiftUIBasicUsage01;
   
-
   var viewController: UIViewController {
     switch self {
       case .routeList:
@@ -29,6 +29,9 @@ enum Route: String, CaseIterable {
         
       case .visualEffectViewExperiment01:
         return VisualEffectViewExperiment01ViewController();
+        
+      case .visualEffectViewExperiment02:
+        return VisualEffectViewExperiment02ViewController();
         
       case .blurViewBasicUsage01:
         return BlurViewBasicUsage01ViewController();
@@ -48,6 +51,9 @@ enum Route: String, CaseIterable {
         
       case .visualEffectViewExperiment01:
         return "UIVisualEffectView experiment";
+        
+      case .visualEffectViewExperiment02:
+        return "UIVisualEffectView + Blur Filters Data";
         
       case .blurViewBasicUsage01:
         return "VisualEffectBlurView basic usage";
@@ -103,6 +109,11 @@ enum Route: String, CaseIterable {
         return [
           .init(text: "VisualEffectView + LayerFilterType preset test"),
           .init(text: "Cycle through `LayerFilterType` test presets"),
+        ];
+        
+      case .visualEffectViewExperiment02:
+        return [
+          .init(text: "Cycle through the diff. blur effect styles and show filter info ")
         ];
         
       case .blurViewBasicUsage01:
