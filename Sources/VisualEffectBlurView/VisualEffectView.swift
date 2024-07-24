@@ -236,4 +236,32 @@ public class VisualEffectView: UIVisualEffectView {
     
     try viewContentWrapper.applyRequestedFilterEffects();
   };
+  
+  @available(iOS 13, *)
+  public func getCurrentFilterEntriesFromCurrentEffectDescriptor() throws -> [UVEFilterEntryWrapper] {
+  
+    guard let bgHostWrapper = self.bgHostWrapper else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to get `self.bgHostWrapper`"
+      );
+    };
+    
+    let effectDescWrapped = try bgHostWrapper.getEffectDescriptorCurrent();
+     guard let effectDescWrapped = effectDescWrapped else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to get effect desc for current effect"
+      );
+    };
+    
+    guard let filterItemsWrapped = effectDescWrapped.filterItemsWrapped else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to get filter items"
+      );
+    };
+    
+    return filterItemsWrapped;
+  };
 };
