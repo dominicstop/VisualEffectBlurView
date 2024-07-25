@@ -51,7 +51,7 @@ public class UVEFilterEntryWrapper: PrivateObjectWrapper<
     case methodSetFilterValuesIdentity;
     
     /// `setConfigurationValues:`
-    case methodFilterValuesConfig;
+    case methodSetFilterValuesConfig;
     
     public var encodedString: String {
       switch self {
@@ -91,9 +91,9 @@ public class UVEFilterEntryWrapper: PrivateObjectWrapper<
           // setIdentityValues:
           return "c2V0SWRlbnRpdHlWYWx1ZXM6";
           
-        case .methodFilterValuesConfig:
+        case .methodSetFilterValuesConfig:
           // setConfigurationValues:
-          return "c2V0Q29uZmlndXJhdGlvblZhbHVlcw==";
+          return "c2V0Q29uZmlndXJhdGlvblZhbHVlczo=";
       };
     };
   };
@@ -196,7 +196,7 @@ public class UVEFilterEntryWrapper: PrivateObjectWrapper<
   ///
   public func setFilterValuesConfig(_ values: NSDictionary) throws {
     try self.performSelector(
-      usingEncodedString: .methodFilterValuesConfig,
+      usingEncodedString: .methodSetFilterValuesConfig,
       withArg1: values
     );
   };
