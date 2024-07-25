@@ -156,6 +156,68 @@ public enum LayerFilterType {
     self.associatedFilterTypeName.decodedString;
   };
   
+  public var identity: Self {
+    switch self {
+      case .alphaFromLuminance:
+        return .alphaFromLuminance;
+        
+      case .averagedColor:
+        return .averagedColor;
+        
+      case .luminosityCurveMap:
+        return .luminosityCurveMap(amount: 0, values: [0, 0, 0]);
+        
+      case .colorBlackAndWhite:
+        return .colorBlackAndWhite(amount: 0);
+        
+      case .saturateColors:
+        return .saturateColors(amount: 1);
+        
+      case .brightenColors:
+        return .brightenColors(amount: 0);
+        
+      case .contrastColors:
+        return .contrastColors(amount: 1);
+        
+      case .luminanceCompression:
+        return .luminanceCompression(amount: 1);
+        
+      case .bias:
+        return .bias(amount: 0.5);
+        
+      case .gaussianBlur:
+        return .gaussianBlur(radius: 0, shouldNormalizeEdges: true);
+        
+      case .darkVibrant:
+        return .darkVibrant(
+          isReversed: true,
+          color0: UIColor.white.cgColor,
+          color1: UIColor.white.cgColor
+        );
+        
+      case .lightVibrant:
+        return .lightVibrant(
+          isReversed: true,
+          color0: UIColor.white.cgColor,
+          color1: UIColor.white.cgColor
+        );
+        
+      case .colorMatrixVibrant:
+        return .colorMatrixVibrant(ColorMatrixRGBA.identity);
+        
+      case .colorMatrix:
+        return .colorMatrix(ColorMatrixRGBA.identity);
+        
+      case .variadicBlur:
+        return .variadicBlur(
+          radius: 0,
+          maskImage: nil,
+          shouldNormalizeEdges: true
+        );
+    };
+  };
+  
+  
   public var filterValuesIdentity: Dictionary<String, Any> {
     var identityValues: Dictionary<String, Any> = [:];
     
