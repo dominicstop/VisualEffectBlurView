@@ -38,7 +38,7 @@ public struct FilterMetadata {
     self.filterTypeParsed = filterTypeParsed;
   };
   
-  init?(fromWrapper wrapper: UVEFilterEntryWrapper) {
+  public init?(fromWrapper wrapper: UVEFilterEntryWrapper) {
     guard let filterKind = wrapper.filterKind,
           let filterValuesIdentity =
             wrapper.filterValuesIdentity as? Dictionary<String, Any>,
