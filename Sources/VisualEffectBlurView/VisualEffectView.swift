@@ -83,7 +83,7 @@ public class VisualEffectView: UIVisualEffectView {
     
     if #available(iOS 13, *) {
       try? self.setFiltersUsingEffectDesc(
-        [],
+        usingFilterTypes: [],
         shouldImmediatelyApplyFilter: false
       );
       
@@ -134,7 +134,7 @@ public class VisualEffectView: UIVisualEffectView {
     if #available(iOS 13, *),
        shouldSetFiltersUsingEffectDesc
     {
-      try self.setFiltersUsingEffectDesc(filterTypes);
+      try self.setFiltersUsingEffectDesc(usingFilterTypes: filterTypes);
       
     } else {
       try self.setFiltersViaLayers(
@@ -153,7 +153,7 @@ public class VisualEffectView: UIVisualEffectView {
   
   @available(iOS 13, *)
   public func setFiltersUsingEffectDesc(
-    _ filterTypes: [LayerFilterType],
+    usingFilterTypes filterTypes: [LayerFilterType],
     shouldImmediatelyApplyFilter: Bool = true
   ) throws {
   
@@ -240,7 +240,6 @@ public class VisualEffectView: UIVisualEffectView {
     usingFilterTypes filterTypes: [LayerFilterType],
     shouldImmediatelyApplyFilter: Bool = true
   ) throws {
-    
     
     let filterWrappers = filterTypes.compactMap {
       $0.createFilterWrapper();
