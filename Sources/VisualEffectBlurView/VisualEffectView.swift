@@ -84,14 +84,14 @@ public class VisualEffectView: UIVisualEffectView {
     
     
     if #available(iOS 13, *) {
-      try? self.setFiltersUsingEffectDesc(
-        usingFilterTypes: [],
+      try? self.setFiltersViaEffectDesc(
+        withFilterTypes: [],
         shouldImmediatelyApplyFilter: false
       );
       
     } else {
       try? self.setFiltersViaLayers(
-        usingFilterTypes: [],
+        withFilterTypes: [],
         shouldImmediatelyApplyFilter: false
       );
     };
@@ -136,14 +136,14 @@ public class VisualEffectView: UIVisualEffectView {
     if #available(iOS 13, *),
        shouldSetFiltersUsingEffectDesc
     {
-      try self.setFiltersUsingEffectDesc(
-        usingFilterTypes: filterTypes,
+      try self.setFiltersViaEffectDesc(
+        withFilterTypes: filterTypes,
         shouldImmediatelyApplyFilter: true
       );
       
     } else {
       try self.setFiltersViaLayers(
-        usingFilterTypes: filterTypes,
+        withFilterTypes: filterTypes,
         shouldImmediatelyApplyFilter: true
       );
     };
@@ -157,8 +157,8 @@ public class VisualEffectView: UIVisualEffectView {
   // ---------------
   
   @available(iOS 13, *)
-  public func setFiltersUsingEffectDesc(
-    usingFilterEntryWrappers filterEntryWrappers: [UVEFilterEntryWrapper],
+  public func setFiltersViaEffectDesc(
+    withFilterEntryWrappers filterEntryWrappers: [UVEFilterEntryWrapper],
     shouldImmediatelyApplyFilter: Bool = true
   ) throws {
   
@@ -194,8 +194,8 @@ public class VisualEffectView: UIVisualEffectView {
   };
   
   @available(iOS 13, *)
-  public func setFiltersUsingEffectDesc(
-    usingFilterTypes filterTypes: [LayerFilterType],
+  public func setFiltersViaEffectDesc(
+    withFilterTypes filterTypes: [LayerFilterType],
     shouldImmediatelyApplyFilter: Bool = true
   ) throws {
       
@@ -210,8 +210,8 @@ public class VisualEffectView: UIVisualEffectView {
       );
     };
     
-    try self.setFiltersUsingEffectDesc(
-      usingFilterEntryWrappers: filterEntriesWrapped,
+    try self.setFiltersViaEffectDesc(
+      withFilterEntryWrappers: filterEntriesWrapped,
       shouldImmediatelyApplyFilter: shouldImmediatelyApplyFilter
     );
     
@@ -219,7 +219,7 @@ public class VisualEffectView: UIVisualEffectView {
   };
   
   public func setFiltersViaLayers(
-    usingLayerFilterWrappers layerFilterWrappers: [LayerFilterWrapper],
+    withLayerFilterWrappers layerFilterWrappers: [LayerFilterWrapper],
     shouldImmediatelyApplyFilter: Bool = true
   ) throws {
   
@@ -258,7 +258,7 @@ public class VisualEffectView: UIVisualEffectView {
   };
   
   public func setFiltersViaLayers(
-    usingFilterTypes filterTypes: [LayerFilterType],
+    withFilterTypes filterTypes: [LayerFilterType],
     shouldImmediatelyApplyFilter: Bool = true
   ) throws {
   
@@ -267,7 +267,7 @@ public class VisualEffectView: UIVisualEffectView {
     };
     
     try self.setFiltersViaLayers(
-      usingLayerFilterWrappers: filterWrappers,
+      withLayerFilterWrappers: filterWrappers,
       shouldImmediatelyApplyFilter: shouldImmediatelyApplyFilter
     );
     

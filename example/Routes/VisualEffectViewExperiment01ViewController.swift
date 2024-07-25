@@ -665,7 +665,7 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
       };
     
     } else {
-      try? visualEffectView.setFiltersUsingEffectDesc(usingFilterTypes: [filterType]);
+      try? visualEffectView.setFiltersViaEffectDesc(withFilterTypes: [filterType]);
     };
   };
 };
