@@ -158,7 +158,7 @@ public class VisualEffectView: UIVisualEffectView {
   
   @available(iOS 13, *)
   public func setFiltersUsingEffectDesc(
-    usingFilterTypes filterTypes: [LayerFilterType],
+    usingFilterEntryWrappers filterEntryWrappers: [UVEFilterEntryWrapper],
     shouldImmediatelyApplyFilter: Bool = true
   ) throws {
   
@@ -185,8 +185,20 @@ public class VisualEffectView: UIVisualEffectView {
       );
     };
     
-    self.currentFilterTypes = filterTypes;
+    try effectDescWrapper.setFilterItems(filterEntryWrappers);
+    try bgHostWrapper.setEffectDescriptor(effectDescWrapper);
     
+    if shouldImmediatelyApplyFilter {
+      try viewContentWrapper.applyRequestedFilterEffects();
+    };
+  };
+  
+  @available(iOS 13, *)
+  public func setFiltersUsingEffectDesc(
+    usingFilterTypes filterTypes: [LayerFilterType],
+    shouldImmediatelyApplyFilter: Bool = true
+  ) throws {
+      
     var filterEntriesWrapped: [UVEFilterEntryWrapper] = [];
     
     filterEntriesWrapped += filterTypes.compactMap {
@@ -198,12 +210,12 @@ public class VisualEffectView: UIVisualEffectView {
       );
     };
     
-    try effectDescWrapper.setFilterItems(filterEntriesWrapped);
-    try bgHostWrapper.setEffectDescriptor(effectDescWrapper);
+    try self.setFiltersUsingEffectDesc(
+      usingFilterEntryWrappers: filterEntriesWrapped,
+      shouldImmediatelyApplyFilter: shouldImmediatelyApplyFilter
+    );
     
-    if shouldImmediatelyApplyFilter {
-      try viewContentWrapper.applyRequestedFilterEffects();
-    };
+    self.currentFilterTypes = filterTypes;
   };
   
   public func setFiltersViaLayers(
