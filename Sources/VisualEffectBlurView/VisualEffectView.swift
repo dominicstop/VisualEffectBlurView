@@ -80,9 +80,18 @@ public class VisualEffectView: UIVisualEffectView {
       return;
     };
     
-    try? self.setFiltersViaLayers([]);
+    
     if #available(iOS 13, *) {
-      try? self.setFiltersUsingEffectDesc([])
+      try? self.setFiltersUsingEffectDesc(
+        [],
+        shouldImmediatelyApplyFilter: false
+      );
+      
+    } else {
+      try? self.setFiltersViaLayers(
+        usingFilterTypes: [],
+        shouldImmediatelyApplyFilter: false
+      );
     };
     
     guard let rawFilterTypes = rawFilterTypes else {
@@ -128,7 +137,10 @@ public class VisualEffectView: UIVisualEffectView {
       try self.setFiltersUsingEffectDesc(filterTypes);
       
     } else {
-      try self.setFiltersViaLayers(filterTypes);
+      try self.setFiltersViaLayers(
+        usingFilterTypes: filterTypes,
+        shouldImmediatelyApplyFilter: true
+      );
     };
   };
   
@@ -186,9 +198,10 @@ public class VisualEffectView: UIVisualEffectView {
   };
   
   public func setFiltersViaLayers(
-    _ filterTypes: [LayerFilterType],
+    usingLayerFilterWrappers layerFilterWrappers: [LayerFilterWrapper],
     shouldImmediatelyApplyFilter: Bool = true
   ) throws {
+  
     guard let bgHostWrapper = self.bgHostWrapper else {
       throw VisualEffectBlurViewError(
         errorCode: .unexpectedNilValue,
@@ -212,18 +225,31 @@ public class VisualEffectView: UIVisualEffectView {
       );
     };
     
-    let filterWrappers = filterTypes.compactMap {
-      $0.createFilterWrapper();
-    };
-    
-    let filters = filterWrappers.compactMap {
+    let filters = layerFilterWrappers.compactMap {
       $0.wrappedObject;
     };
     
     bgLayer.filters = filters;
+    
     if shouldImmediatelyApplyFilter {
       try contentViewWrapper.applyRequestedFilterEffects();
     };
+  };
+  
+  public func setFiltersViaLayers(
+    usingFilterTypes filterTypes: [LayerFilterType],
+    shouldImmediatelyApplyFilter: Bool = true
+  ) throws {
+    
+    
+    let filterWrappers = filterTypes.compactMap {
+      $0.createFilterWrapper();
+    };
+    
+    try self.setFiltersViaLayers(
+      usingLayerFilterWrappers: filterWrappers,
+      shouldImmediatelyApplyFilter: shouldImmediatelyApplyFilter
+    );
   };
   
   public func applyRequestedFilterEffects() throws {
