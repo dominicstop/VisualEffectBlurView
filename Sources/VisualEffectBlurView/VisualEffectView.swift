@@ -75,40 +75,16 @@ public class VisualEffectView: UIVisualEffectView {
     };
     
     self.wrapper = wrapper;
-    
-    guard let bgLayerWrapper = self.bgLayerWrapper,
-          let backdropLayer = bgLayerWrapper.wrappedObject
-    else {
-      return;
-    };
-    
-    
-    if #available(iOS 13, *) {
-      try? self.setFiltersViaEffectDesc(
-        withFilterTypes: [],
-        shouldImmediatelyApplyFilter: false
-      );
-      
-    } else {
-      try? self.setFiltersViaLayers(
-        withFilterTypes: [],
-        shouldImmediatelyApplyFilter: false
-      );
-    };
-    
-    guard let rawFilterTypes = rawFilterTypes else {
-      return;
-    };
+    let rawFilterTypes = rawFilterTypes ?? [];
     
     let filterWrappers: [LayerFilterWrapper] = rawFilterTypes.compactMap {
       .init(rawFilterType: $0);
     };
     
-    let filters = filterWrappers.compactMap {
-      $0.wrappedObject;
-    };
-    
-    backdropLayer.filters = filters;
+    try? self.setFiltersViaLayers(
+      withLayerFilterWrappers: filterWrappers,
+      shouldImmediatelyApplyFilter: true
+    );
   };
   
   public init?(withEffect effect: UIVisualEffect?){
