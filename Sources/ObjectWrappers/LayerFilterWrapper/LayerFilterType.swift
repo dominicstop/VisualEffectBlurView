@@ -63,7 +63,7 @@ public enum LayerFilterType {
   
   case variadicBlur(
     radius: CGFloat,
-    maskImage: CGImage,
+    maskImage: CGImage?,
     shouldNormalizeEdges: Bool
   );
   

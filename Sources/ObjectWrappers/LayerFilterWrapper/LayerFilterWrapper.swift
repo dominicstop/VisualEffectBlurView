@@ -198,7 +198,7 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
   };
   
   /// Set `inputMaskImage`
-  public func setFilterValue(maskImage value: CGImage) throws {
+  public func setFilterValue(maskImage value: CGImage?) throws {
     try self.setValue(
       forHashedString: .propertyFilterInputKeyMaskImage,
       value: value

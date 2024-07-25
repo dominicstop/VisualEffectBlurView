@@ -629,7 +629,9 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
         
         items += filterType.filterDescAsAttributedConfig;
         
-        if case let .variadicBlur(_, inputMaskImage, _) = filterType {
+        if case let .variadicBlur(_, inputMaskImage, _) = filterType,
+           let inputMaskImage = inputMaskImage
+        {
           items.append(
             .labelValueDisplay(items: [
               .singeRowWithImageValue(
