@@ -19,7 +19,8 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
   var cardVC: CardViewController?;
   
   var counter = 0;
-  var filterPresets: [LayerFilterType] = [
+  var filterPresets: [LayerFilterType?] = [
+    nil,
     .variadicBlur(
       radius: 16,
       maskImage: {
@@ -602,9 +603,9 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
       self.filterPresets[cyclicIndex: self.counter];
       
     print(
-      "filterType:", nextFilterType.decodedFilterName ?? "N/A",
+      "filterType:", nextFilterType?.decodedFilterName ?? "N/A",
       "\n - counter:", self.counter,
-      "\n - filterType:", nextFilterType,
+      "\n - filterType:", nextFilterType == nil ? "N/A" : nextFilterType.debugDescription,
       "\n"
     );
     
@@ -619,12 +620,12 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
           .labelValueDisplay(items: [
             .singleRowPlain(
               label: "filter",
-              value: nextFilterType.decodedFilterName ?? "N/A"
+              value: nextFilterType?.decodedFilterName ?? "N/A"
             )
           ])
         ];
         
-        items += nextFilterType.filterDescAsAttributedConfig;
+        items += nextFilterType?.filterDescAsAttributedConfig ?? [];
         
         if case let .variadicBlur(_, inputMaskImage, _) = nextFilterType,
            let inputMaskImage = inputMaskImage
@@ -646,24 +647,27 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
     );
     
     self.cardVC?.applyCardConfig();
-    let nextFilterTypes = [nextFilterType];
+    let nextFilterTypes = nextFilterType == nil
+      ? []
+      : [nextFilterType!];
     
     let shouldSetFilter =
-      prevFilterType.decodedFilterName != nextFilterType.decodedFilterName;
+      prevFilterType?.decodedFilterName != nextFilterType?.decodedFilterName;
       
     if shouldSetFilter {
       try! visualEffectView.setFiltersViaEffectDesc(
         withFilterTypes: nextFilterTypes,
-        shouldImmediatelyApplyFilter: false
+        shouldImmediatelyApplyFilter: true
       );
-    };
-    
-    try! visualEffectView.updateCurrentFiltersViaEffectDesc(
-      withFilterTypes: nextFilterTypes
-    );
-    
-    UIView.animate(withDuration: 0.3){
-      try! visualEffectView.applyRequestedFilterEffects();
+      
+    } else {
+      try! visualEffectView.updateCurrentFiltersViaEffectDesc(
+        withFilterTypes: nextFilterTypes
+      );
+      
+      UIView.animate(withDuration: 0.3){
+        try! visualEffectView.applyRequestedFilterEffects();
+      };
     };
   };
 };

@@ -165,8 +165,6 @@ class VisualEffectViewExperiment02ViewController: UIViewController {
       let visualEffectView = try? VisualEffectView(withEffect: self.currentBlurEffect);
       self.visualEffectView = visualEffectView;
       
-      //visualEffectView?.shouldOnlyShowBgLayer = true;
-      
       if let visualEffectView = visualEffectView {
         visualEffectView.translatesAutoresizingMaskIntoConstraints = false;
         containerView.addSubview(visualEffectView);
