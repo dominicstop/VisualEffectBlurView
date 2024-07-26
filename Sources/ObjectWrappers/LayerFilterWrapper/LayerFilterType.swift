@@ -152,6 +152,10 @@ public enum LayerFilterType {
     };
   };
   
+  public var encodedFilterName: String {
+    self.associatedFilterTypeName.encodedString;
+  };
+  
   public var decodedFilterName: String? {
     self.associatedFilterTypeName.decodedString;
   };
