@@ -162,7 +162,7 @@ class VisualEffectViewExperiment02ViewController: UIViewController {
     let overlayContainerView: UIView = {
       let containerView = UIView();
       
-      let visualEffectView = VisualEffectView(withEffect: self.currentBlurEffect);
+      let visualEffectView = try? VisualEffectView(withEffect: self.currentBlurEffect);
       self.visualEffectView = visualEffectView;
       
       //visualEffectView?.shouldOnlyShowBgLayer = true;

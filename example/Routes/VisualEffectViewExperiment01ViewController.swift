@@ -379,7 +379,7 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
     let overlayContainerView: UIView = {
       let containerView = UIView();
       
-      let visualEffectView = VisualEffectView();
+      let visualEffectView = try? VisualEffectView(rawFilterTypes: []);
       self.visualEffectView = visualEffectView;
       
       visualEffectView?.shouldOnlyShowBgLayer = true;

@@ -67,47 +67,40 @@ public class VisualEffectView: UIVisualEffectView {
   // MARK: - Init
   // ------------
   
-  public init?(rawFilterTypes: [String]? = nil){
-    super.init(effect: UIBlurEffect(style: .regular));
+  public init(withEffect effect: UIVisualEffect) throws {
+    super.init(effect: effect);
     
     guard let wrapper = UVEViewWrapper(objectToWrap: self) else {
-      return nil;
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to create `UVEViewWrapper` instance"
+      );
     };
     
     self.wrapper = wrapper;
+  };
+  
+  public convenience init(rawFilterTypes: [String]?) throws {
+    try self.init(withEffect: UIBlurEffect(style: .regular));
+    
     let rawFilterTypes = rawFilterTypes ?? [];
     
     let filterWrappers: [LayerFilterWrapper] = rawFilterTypes.compactMap {
       .init(rawFilterType: $0);
     };
     
-    try? self.setFiltersViaLayers(
+    try self.setFiltersViaLayers(
       withLayerFilterWrappers: filterWrappers,
       shouldImmediatelyApplyFilter: true
     );
   };
   
-  public init?(withEffect effect: UIVisualEffect?){
-    super.init(effect: UIBlurEffect(style: .regular));
-    
-    guard let wrapper = UVEViewWrapper(objectToWrap: self) else {
-      return nil;
-    };
-    
-    self.wrapper = wrapper;
-  };
-
-  public init?(
+  public convenience init(
     filterTypes: [LayerFilterType],
     shouldSetFiltersUsingEffectDesc: Bool = true
   ) throws {
   
-    super.init(effect: UIBlurEffect(style: .regular));
-    guard let wrapper = UVEViewWrapper(objectToWrap: self) else {
-      return nil;
-    };
-    
-    self.wrapper = wrapper;
+    try self.init(withEffect: UIBlurEffect(style: .regular));
     
     if #available(iOS 13, *),
        shouldSetFiltersUsingEffectDesc
