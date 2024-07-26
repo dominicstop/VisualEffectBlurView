@@ -16,9 +16,9 @@ extension ColorMatrixRGBA {
     self.matrix4x5.enumerated().reduce(into: []) { acc, curr in      
       acc += curr.element.map {
         .init(
-          text: $0 < 0
-            ? String(format: "%.2f,", $0)
-            : String(format: " %.2f,", $0),
+          text: CGFloat($0) > 0
+            ? String(format: " %.2f, ", $0)
+            : String(format: "-%.2f, ", abs($0)),
           fontConfig: .init(
             size: nil,
             weight: nil,

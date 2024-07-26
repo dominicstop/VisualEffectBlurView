@@ -585,13 +585,10 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
   };
   
   func updateFilterPreset(){
-    guard let window = self.view.window,
-          let visualEffectView = self.visualEffectView,
+    guard let visualEffectView = self.visualEffectView,
           let visualEffectViewWrapper = visualEffectView.wrapper,
           let backgroundHostWrapper = visualEffectViewWrapper.bgHostWrapped,
-          let contentViewWrapper = backgroundHostWrapper.viewContentWrapped,
-          let bgLayerWrapper = contentViewWrapper.bgLayerWrapper,
-          let backdropLayer = bgLayerWrapper.wrappedObject
+          let _ = backgroundHostWrapper.viewContentWrapped
     else {
       return;
     };
@@ -601,13 +598,13 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
     let prevFilterType =
       self.filterPresets[cyclicIndex: max(self.counter - 1, 0)];
       
-    let filterType =
+    let nextFilterType =
       self.filterPresets[cyclicIndex: self.counter];
       
     print(
-      "filterType:", filterType.decodedFilterName ?? "N/A",
+      "filterType:", nextFilterType.decodedFilterName ?? "N/A",
       "\n - counter:", self.counter,
-      "\n - filterType:", filterType,
+      "\n - filterType:", nextFilterType,
       "\n"
     );
     
@@ -622,14 +619,14 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
           .labelValueDisplay(items: [
             .singleRowPlain(
               label: "filter",
-              value: filterType.decodedFilterName ?? "N/A"
+              value: nextFilterType.decodedFilterName ?? "N/A"
             )
           ])
         ];
         
-        items += filterType.filterDescAsAttributedConfig;
+        items += nextFilterType.filterDescAsAttributedConfig;
         
-        if case let .variadicBlur(_, inputMaskImage, _) = filterType,
+        if case let .variadicBlur(_, inputMaskImage, _) = nextFilterType,
            let inputMaskImage = inputMaskImage
         {
           items.append(
@@ -649,23 +646,24 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
     );
     
     self.cardVC?.applyCardConfig();
-      
-    if prevFilterType.decodedFilterName == filterType.decodedFilterName,
-       let effectDescWrapped = try? backgroundHostWrapper.getEffectDescriptorCurrent(),
-       let filterItemsWrapped = effectDescWrapped.filterItemsWrapped,
-       filterItemsWrapped.count > 0
-    {
-      
-      filterItemsWrapped.forEach {
-        try? filterType.applyTo(filterEntryWrapper: $0);
-      };
-      
-      UIView.animate(withDuration: 0.3){
-        try! contentViewWrapper.applyRequestedFilterEffects();
-      };
+    let nextFilterTypes = [nextFilterType];
     
-    } else {
-      try? visualEffectView.setFiltersViaEffectDesc(withFilterTypes: [filterType]);
+    let shouldSetFilter =
+      prevFilterType.decodedFilterName != nextFilterType.decodedFilterName;
+      
+    if shouldSetFilter {
+      try! visualEffectView.setFiltersViaEffectDesc(
+        withFilterTypes: nextFilterTypes,
+        shouldImmediatelyApplyFilter: false
+      );
+    };
+    
+    try! visualEffectView.updateCurrentFiltersViaEffectDesc(
+      withFilterTypes: nextFilterTypes
+    );
+    
+    UIView.animate(withDuration: 0.3){
+      try! visualEffectView.applyRequestedFilterEffects();
     };
   };
 };

@@ -250,6 +250,51 @@ public class VisualEffectView: UIVisualEffectView {
     self.currentFilterTypes = filterTypes;
   };
   
+  @available(iOS 13, *)
+  public func updateCurrentFiltersViaEffectDesc(
+    withFilterTypes updatedFilterTypes: [LayerFilterType]
+  ) throws {
+  
+    guard let bgHostWrapper = self.bgHostWrapper else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to get `self.bgHostWrapper`"
+      );
+    };
+    
+    guard let effectDescWrapper = UVEDescriptorWrapper(),
+          effectDescWrapper.wrappedObject != nil
+    else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to create `UVEDescriptorWrapper` instance"
+      );
+    }
+    
+    guard let effectDescWrapper = try? bgHostWrapper.getEffectDescriptorCurrent() else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to create `effectDescWrapper` instance"
+      );
+    };
+    
+    guard let filterItemsWrapped = effectDescWrapper.filterItemsWrapped else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to create `filterItemsWrapped` instance"
+      );
+    };
+    
+    filterItemsWrapped.forEach { wrappedFilterItem in
+      let match = updatedFilterTypes.first {
+        $0.decodedFilterName == $0.decodedFilterName;
+      };
+      
+      guard let match = match else { return };
+      try? match.applyTo(filterEntryWrapper: wrappedFilterItem);
+    };
+  };
+  
   public func applyRequestedFilterEffects() throws {
     guard let viewContentWrapper = self.viewContentWrapper else {
       throw VisualEffectBlurViewError(
