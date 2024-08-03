@@ -393,8 +393,15 @@ General Purpose Registers:
   * `[UIVisualEffectView _contentHost]`
   * **Observation**:  Returns nil for `VisualEffectViewExperiment01ViewController`, and `VisualEffectViewExperiment02ViewController`.
 
+<br>
+
+* `-(id)_debug;`
+  * **Observation**: 
+    * Returns desc. for the current instance (e.g. `backgroundEffects`, `backgroundHost`, `transitionEffect`, `filters`, `overlays`, `contentEffects`, `contentHost`).
+    * The `overlays` entry might be related to the white overcast overlay.
+    * The `transitionEffect` entry might help with stacked/multiple custom effect animations.
+
 
 
 * `-(void)_resetEffect`
-* `-(id)_debug;`
 * `-(id)_whatsWrongWithThisEffect;`
