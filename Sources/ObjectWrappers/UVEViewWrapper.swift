@@ -25,6 +25,10 @@ public class UVEViewWrapper: ObjectWrapper<
     case getterEffectsForContent;
     
     case getterBgHost;
+    
+    /// `_contentHost`
+    case getterHostForContent;
+    
     case methodSetCurrentEffectMetadata;
     case methodGetEffectMetadata;
     
@@ -47,6 +51,10 @@ public class UVEViewWrapper: ObjectWrapper<
         case .getterBgHost:
           // _backgroundHost
           return "X2JhY2tncm91bmRIb3N0";
+          
+        case .getterHostForContent:
+          // _contentHost
+          return "X2NvbnRlbnRIb3N0";
           
         case .methodSetCurrentEffectMetadata:
           // setCurrentEffectDescriptor:
@@ -85,6 +93,18 @@ public class UVEViewWrapper: ObjectWrapper<
     };
     
     return .init(objectToWrap: result);
+  };
+  
+  
+  /// Selector:
+  /// `-(id)_contentHost`
+  ///
+  @available(iOS 12, *)
+  public var hostForContent: NSObject? {
+    return try? self.performSelector(
+      usingEncodedString: .getterHostForContent,
+      type: NSObject.self
+    );
   };
   
   /// Selector:

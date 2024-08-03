@@ -691,11 +691,16 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
     // <UIBlurEffect: 0x600000024310> style=UIBlurEffectStyleRegular
     //
     let bgEffects = visualEffectViewWrapper.effectsForBg;
-    print("effectsForBg", bgEffects);
+    print("effectsForBg", bgEffects!);
     
     // empty
     let effectsForContent = visualEffectViewWrapper.effectsForContent;
-    print("effectsForContent", effectsForContent);
+    print("effectsForContent", effectsForContent!);
+    
+    // nil
+    let hostForContent = visualEffectViewWrapper.hostForContent;
+    print("hostForContent", hostForContent);
+    
   };
 };
 
