@@ -373,19 +373,25 @@ General Purpose Registers:
 
 
 * `-(void)_setBackdropViewBackgroundColorAlpha:(double)arg1`
+  * **Getter**: `-(double)_backdropViewBackgroundColorAlpha;`
   * `[UIVisualEffectView _setBackdropViewBackgroundColorAlpha:]`
   * **Status**: Implemented
   * **Observations**:
     * There is a transparent white overlay in the effect (e.g. `_UIVisualEffectSubview`)
-    * Tried invoking this to get rid of the whitecast (i.e. as a replacement for `shouldOnlyShowBgLayer`), but doesn't do anything when invoked in `VisualEffectViewExperiment01ViewController`.
+    * Tried invoking this to get rid of the white cast (i.e. as a replacement for `shouldOnlyShowBgLayer`), but doesn't do anything when invoked in `VisualEffectViewExperiment01ViewController`.
+
+
+
+* `-(void)_setTintOpacity:(double)arg1`
+  * `[UIVisualEffectView _setTintOpacity:]`
+  * **Observations**:
+    * Attempt to get rid of the white overcast, but similar to  `_setBackdropViewBackgroundColorAlpha`, it didn't work.
 
 
 
 * `-(void)_resetEffect`
 * `-(id)_debug;`
 * `-(id)_whatsWrongWithThisEffect;`
-* `-(double)_backdropViewBackgroundColorAlpha;`
-* `-(void)_setTintOpacity:(double)arg1`
 * `-(id)_contentHost`
 
 
