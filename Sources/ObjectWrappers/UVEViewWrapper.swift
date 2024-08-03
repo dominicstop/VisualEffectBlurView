@@ -18,12 +18,19 @@ public class UVEViewWrapper: ObjectWrapper<
 > {
   
   public enum EncodedString: String, HashedStringDecodable {
+    /// `backgroundEffects`
+    case propertyBgEffects;
+    
     case getterBgHost;
     case methodSetCurrentEffectMetadata;
     case methodGetEffectMetadata;
     
     public var encodedString: String {
       switch self {
+        case .propertyBgEffects:
+          // backgroundEffects
+          return "YmFja2dyb3VuZEVmZmVjdHM=";
+      
         case .getterBgHost:
           // _backgroundHost
           return "X2JhY2tncm91bmRIb3N0";
@@ -57,6 +64,16 @@ public class UVEViewWrapper: ObjectWrapper<
     };
     
     return .init(objectToWrap: result);
+  };
+  
+  /// Selector:
+  /// `@property (nonatomic,copy) NSArray * backgroundEffects`
+  ///
+  public var bgEffects: NSArray? {
+    return try? self.performSelector(
+      usingEncodedString: .propertyBgEffects,
+      type: NSArray.self
+    );
   };
 
   // MARK: - Wrapped Methods

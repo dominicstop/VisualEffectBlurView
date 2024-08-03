@@ -660,6 +660,8 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
         shouldImmediatelyApplyFilter: true
       );
       
+      self._didUpdateFilter();
+      
     } else {
       try! visualEffectView.updateCurrentFiltersViaEffectDesc(
         withFilterTypes: nextFilterTypes
@@ -667,8 +669,24 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
       
       UIView.animate(withDuration: 0.3){
         try! visualEffectView.applyRequestedFilterEffects();
+      } completion: { _ in
+        self._didUpdateFilter();
       };
     };
+  };
+  
+  func _didUpdateFilter(){
+    guard let visualEffectView = self.visualEffectView,
+          let visualEffectViewWrapper = visualEffectView.wrapper,
+          let backgroundHostWrapper = visualEffectViewWrapper.bgHostWrapped,
+          let _ = backgroundHostWrapper.viewContentWrapped
+    else {
+      return;
+    };
+    
+    
+    let bgEffects = visualEffectViewWrapper.bgEffects;
+    print("bgEffects", bgEffects);
   };
 };
 
