@@ -9,7 +9,7 @@
   * `(_UIVisualEffectBackdropView *)0x107054c10)_`
   * `(_UIVisualEffectSubview *)0x107054dd0)`
 
-
+<br>
 
 * `@property (nonatomic,copy) NSArray * backgroundEffects`
   * **Setter**: `-(void)setBackgroundEffects:(NSArray *)arg`
@@ -17,20 +17,20 @@
   * **Status**: Implemented
   * **Observation**: The current effect.
 
-
+<br>
 
 * `@property (nonatomic,copy) NSArray * contentEffects`
-
   * **Setter**: `-(void)setContentEffects:(NSArray *)arg1`
   * **Status**: Implemented
 
-  
+
+<br>
 
 * `-(void)_generateWorkaroundKeyframeAnimationsForEffects:(id)arg1`
   * `[UIVisualEffectView _generateWorkaroundKeyframeAnimationsForEffects:]`
   * **Note**: No longer available on iOS 14+.
 
-
+<br>
 
 * `-(void)_generateDeferredAnimations:(id)arg1`
   * `[UIVisualEffectView _generateDeferredAnimations:]`
@@ -155,7 +155,7 @@ General Purpose Registers:
 }
 ```
 
-
+<br>
 
 * `-(void)_generateEffectAnimations:(id)arg1`
   * `[UIVisualEffectView _generateEffectAnimations:]`
@@ -254,7 +254,7 @@ General Purpose Registers:
 )
 ```
 
-
+<br>
 
 * `-(void)_generateBackgroundEffects:(id)arg1 contentEffects:(id)arg2`
   * `[UIVisualEffectView _generateBackgroundEffects:contentEffects:]`
@@ -370,7 +370,7 @@ General Purpose Registers:
 <nil>
 ```
 
-
+<br>
 
 * `-(void)_setBackdropViewBackgroundColorAlpha:(double)arg1`
   * **Getter**: `-(double)_backdropViewBackgroundColorAlpha;`
@@ -380,28 +380,21 @@ General Purpose Registers:
     * There is a transparent white overlay in the effect (e.g. `_UIVisualEffectSubview`)
     * Tried invoking this to get rid of the white cast (i.e. as a replacement for `shouldOnlyShowBgLayer`), but doesn't do anything when invoked in `VisualEffectViewExperiment01ViewController`.
 
-
+<br>
 
 * `-(void)_setTintOpacity:(double)arg1`
   * `[UIVisualEffectView _setTintOpacity:]`
   * **Observations**:
     * Attempt to get rid of the white overcast, but similar to  `_setBackdropViewBackgroundColorAlpha`, it didn't work.
 
+<br>
+
+* `-(id)_contentHost`
+  * `[UIVisualEffectView _contentHost]`
+  * **Observation**:  Returns nil for `VisualEffectViewExperiment01ViewController`, and `VisualEffectViewExperiment02ViewController`.
+
 
 
 * `-(void)_resetEffect`
 * `-(id)_debug;`
 * `-(id)_whatsWrongWithThisEffect;`
-* `-(id)_contentHost`
-
-
-
-```
-
-
-
-
--(id)_backgroundHost;
--(NSArray *)backgroundEffects;
--(NSArray *)contentEffects;
-```
