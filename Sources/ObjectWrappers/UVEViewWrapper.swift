@@ -42,6 +42,9 @@ public class UVEViewWrapper: ObjectWrapper<
     #if DEBUG
     /// `_debug`
     case methodDebug;
+    
+    /// `_whatsWrongWithThisEffect`
+    case methodWhatsWrongWithThisEffect;
     #endif
     
     public var encodedString: String {
@@ -82,6 +85,10 @@ public class UVEViewWrapper: ObjectWrapper<
         case .methodDebug:
           // _debug
           return "X2RlYnVn";
+          
+        case .methodWhatsWrongWithThisEffect:
+          // _whatsWrongWithThisEffect
+          return "X3doYXRzV3JvbmdXaXRoVGhpc0VmZmVjdA==";
         #endif
       };
     };
@@ -188,6 +195,24 @@ public class UVEViewWrapper: ObjectWrapper<
   public func debug() throws -> String {
     let result = try self.performSelector(
       usingEncodedString: .methodDebug,
+      type: NSString.self
+    );
+    
+    guard let result = result else {
+      throw GenericError(
+        errorCode: .unexpectedNilValue
+      );
+    };
+    
+    return result as String;
+  };
+  
+  /// Selector:
+  /// `-(id)_whatsWrongWithThisEffect`
+  ///
+  public func whatsWrongWithThisEffect() throws -> String {
+    let result = try self.performSelector(
+      usingEncodedString: .methodWhatsWrongWithThisEffect,
       type: NSString.self
     );
     

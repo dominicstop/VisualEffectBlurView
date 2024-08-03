@@ -415,6 +415,9 @@ class VisualEffectViewExperiment02ViewController: UIViewController {
     #if DEBUG
     let debugMessage = try! visualEffectViewWrapper.debug();
     print("debugMessage", debugMessage);
+    
+    let whatsWrongWithThisEffectMessage = try! visualEffectViewWrapper.whatsWrongWithThisEffect();
+    print("debugMessage", whatsWrongWithThisEffectMessage);
     #endif
   };
 };
