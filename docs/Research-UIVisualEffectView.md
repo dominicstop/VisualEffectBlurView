@@ -5,10 +5,16 @@
 ## Spelunking - `UIVisualEffectView`
 
 * Link: [Header list](https://developer.limneos.net/?ios=13.1.3&framework=UIKitCore.framework&header=UIVisualEffectView.h)
+* View Hierarchy - `(UIVisualEffectView *)0x107049780)`
+  * `(_UIVisualEffectBackdropView *)0x107054c10)_`
+  * `(_UIVisualEffectSubview *)0x107054dd0)`
+
+
 
 * `@property (nonatomic,copy) NSArray * backgroundEffects`
   * **Setter**: `-(void)setBackgroundEffects:(NSArray *)arg`
   * **Type**: `Array<UIVisualEffect>` (e.g. `UIBlurEffect`)
+  * **Status**: Implemented
   * **Observation**: The current effect.
 
 
@@ -16,6 +22,7 @@
 * `@property (nonatomic,copy) NSArray * contentEffects`
 
   * **Setter**: `-(void)setContentEffects:(NSArray *)arg1`
+  * **Status**: Implemented
 
   
 
@@ -365,12 +372,18 @@ General Purpose Registers:
 
 
 
+* `-(void)_setBackdropViewBackgroundColorAlpha:(double)arg1`
+  * `[UIVisualEffectView _setBackdropViewBackgroundColorAlpha:]`
+  * **Status**: Implemented
+  * **Observations**:
+    * There is a transparent white overlay in the effect (e.g. `_UIVisualEffectSubview`)
+    * Tried invoking this to get rid of the whitecast (i.e. as a replacement for `shouldOnlyShowBgLayer`), but doesn't do anything when invoked in `VisualEffectViewExperiment01ViewController`.
+
 
 
 * `-(void)_resetEffect`
 * `-(id)_debug;`
 * `-(id)_whatsWrongWithThisEffect;`
-* `-(void)_setBackdropViewBackgroundColorAlpha:(double)arg1`
 * `-(double)_backdropViewBackgroundColorAlpha;`
 * `-(void)_setTintOpacity:(double)arg1`
 * `-(id)_contentHost`
