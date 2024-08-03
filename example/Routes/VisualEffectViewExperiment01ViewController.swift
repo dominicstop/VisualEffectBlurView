@@ -701,6 +701,10 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
     let hostForContent = visualEffectViewWrapper.hostForContent;
     print("hostForContent", hostForContent);
     
+    #if DEBUG
+    let debugMessage = try! visualEffectViewWrapper.debug();
+    print("debugMessage", debugMessage);
+    #endif
   };
 };
 

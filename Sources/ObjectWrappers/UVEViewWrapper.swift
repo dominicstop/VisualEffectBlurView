@@ -39,6 +39,11 @@ public class UVEViewWrapper: ObjectWrapper<
     /// `_setTintOpacity:`
     case methodSetOpacityForTint;
     
+    #if DEBUG
+    /// `_debug`
+    case methodDebug;
+    #endif
+    
     public var encodedString: String {
       switch self {
         case .propertyEffectsForBg:
@@ -72,6 +77,12 @@ public class UVEViewWrapper: ObjectWrapper<
         case .methodSetOpacityForTint:
           // _setTintOpacity:
           return "X3NldFRpbnRPcGFjaXR5Og==";
+          
+        #if DEBUG
+        case .methodDebug:
+          // _debug
+          return "X2RlYnVn";
+        #endif
       };
     };
   };
@@ -152,7 +163,6 @@ public class UVEViewWrapper: ObjectWrapper<
     );
   };
   
-  
   /// Selector:
   /// `-(void)_setBackdropViewBackgroundColorAlpha:(double)arg1`
   ///
@@ -170,4 +180,24 @@ public class UVEViewWrapper: ObjectWrapper<
       withArg1: opacity
     );
   };
+  
+  #if DEBUG
+  /// Selector:
+  /// `-(id)_debug`
+  ///
+  public func debug() throws -> String {
+    let result = try self.performSelector(
+      usingEncodedString: .methodDebug,
+      type: NSString.self
+    );
+    
+    guard let result = result else {
+      throw GenericError(
+        errorCode: .unexpectedNilValue
+      );
+    };
+    
+    return result as String;
+  };
+  #endif
 };
