@@ -376,11 +376,37 @@ class VisualEffectViewExperiment02ViewController: UIViewController {
     };
     
     let blurEffect = self.currentBlurEffect;
-    visualEffectView.effect = blurEffect;
-    self.updateDebugCard();
+    
+    UIView.animate(withDuration: 0.3){
+      visualEffectView.effect = blurEffect;
+      
+    } completion: { _ in
+      self.updateDebugCard();
+      self._didUpdateFilter();
+    };
   };
   
   @objc func onPressLabel(_ sender: UILabel!){
     // TBA
+  };
+  
+  func _didUpdateFilter(){
+    guard let visualEffectView = self.visualEffectView,
+          let visualEffectViewWrapper = visualEffectView.wrapper,
+          let backgroundHostWrapper = visualEffectViewWrapper.bgHostWrapped,
+          let _ = backgroundHostWrapper.viewContentWrapped
+    else {
+      return;
+    };
+    
+    // bgEffects Optional(<__NSSingleObjectArrayI 0x600000024250>(
+    // <UIBlurEffect: 0x600000024310> style=UIBlurEffectStyleRegular
+    //
+    let bgEffects = visualEffectViewWrapper.effectsForBg;
+    print("effectsForBg", bgEffects);
+    
+    // empty
+    let effectsForContent = visualEffectViewWrapper.effectsForContent;
+    print("effectsForContent", effectsForContent);
   };
 };
