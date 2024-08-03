@@ -59,7 +59,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
       
       guard #available(iOS 13, *),
             let wrapper = self.wrapper,
-            let backgroundHostWrapper = wrapper.bgHostWrapped,
+            let backgroundHostWrapper = wrapper.hostForBgWrapped,
             let contentViewWrapper = backgroundHostWrapper.viewContentWrapped,
             let bgLayerWrapper = contentViewWrapper.bgLayerWrapper,
             let gaussianBlurFilterWrapper = bgLayerWrapper.gaussianBlurFilterWrapper
@@ -72,7 +72,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
     }
     get {
       guard let wrapper = self.wrapper,
-            let backgroundHostWrapper = wrapper.bgHostWrapped,
+            let backgroundHostWrapper = wrapper.hostForBgWrapped,
             let contentViewWrapper = backgroundHostWrapper.viewContentWrapped,
             let bgLayerWrapper = contentViewWrapper.bgLayerWrapper,
             let gaussianBlurFilterWrapper = bgLayerWrapper.gaussianBlurFilterWrapper,
@@ -208,7 +208,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
     filterValuesCurrentCopy["inputRadius"] = NSNumber(value: blurRadius);
     
     guard let wrapper = self.wrapper,
-          let backgroundHostWrapper = wrapper.bgHostWrapped,
+          let backgroundHostWrapper = wrapper.hostForBgWrapped,
           let contentViewWrapper = backgroundHostWrapper.viewContentWrapped
     else {
       #if DEBUG
@@ -257,7 +257,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
     };
     
     guard let wrapper = self.wrapper,
-          let bgHostWrapper = wrapper.bgHostWrapped,
+          let bgHostWrapper = wrapper.hostForBgWrapped,
           let contentViewWrapper = bgHostWrapper.viewContentWrapped
     else {
       #if DEBUG

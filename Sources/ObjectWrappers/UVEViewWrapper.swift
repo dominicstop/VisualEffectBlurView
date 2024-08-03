@@ -24,7 +24,8 @@ public class UVEViewWrapper: ObjectWrapper<
     /// `contentEffects`
     case getterEffectsForContent;
     
-    case getterBgHost;
+    /// `_backgroundHost`
+    case getterHostForBg;
     
     /// `_contentHost`
     case getterHostForContent;
@@ -48,7 +49,7 @@ public class UVEViewWrapper: ObjectWrapper<
           // contentEffects
           return "Y29udGVudEVmZmVjdHM=";
       
-        case .getterBgHost:
+        case .getterHostForBg:
           // _backgroundHost
           return "X2JhY2tncm91bmRIb3N0";
           
@@ -82,9 +83,9 @@ public class UVEViewWrapper: ObjectWrapper<
   /// `-(id)_backgroundHost`
   ///
   @available(iOS 12, *)
-  public var bgHostWrapped: UVEHostWrapper? {
+  public var hostForBgWrapped: UVEHostWrapper? {
     let result = try? self.performSelector(
-      usingEncodedString: .getterBgHost,
+      usingEncodedString: .getterHostForBg,
       type: NSObject.self
     );
     

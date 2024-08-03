@@ -591,7 +591,7 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
   func updateFilterPreset(){
     guard let visualEffectView = self.visualEffectView,
           let visualEffectViewWrapper = visualEffectView.wrapper,
-          let backgroundHostWrapper = visualEffectViewWrapper.bgHostWrapped,
+          let backgroundHostWrapper = visualEffectViewWrapper.hostForBgWrapped,
           let _ = backgroundHostWrapper.viewContentWrapped
     else {
       return;
@@ -681,7 +681,7 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
   func _didUpdateFilter(){
     guard let visualEffectView = self.visualEffectView,
           let visualEffectViewWrapper = visualEffectView.wrapper,
-          let backgroundHostWrapper = visualEffectViewWrapper.bgHostWrapped,
+          let backgroundHostWrapper = visualEffectViewWrapper.hostForBgWrapped,
           let _ = backgroundHostWrapper.viewContentWrapped
     else {
       return;

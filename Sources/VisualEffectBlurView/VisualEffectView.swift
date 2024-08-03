@@ -36,7 +36,7 @@ public class VisualEffectView: UIVisualEffectView {
   
   /// Old name: `backgroundHostWrapper`
   var bgHostWrapper: UVEHostWrapper? {
-    self.wrapper.bgHostWrapped;
+    self.wrapper.hostForBgWrapped;
   };
   
   /// Old name: `contentViewWrapper`
