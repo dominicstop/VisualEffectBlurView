@@ -687,8 +687,8 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
     // bgEffects Optional(<__NSSingleObjectArrayI 0x600000024250>(
     // <UIBlurEffect: 0x600000024310> style=UIBlurEffectStyleRegular
     //
-    let bgEffects = visualEffectViewWrapper.bgEffects;
-    print("bgEffects", bgEffects);
+    let bgEffects = visualEffectViewWrapper.effectsForBg;
+    print("effectsForBg", bgEffects);
     
     // empty
     let effectsForContent = visualEffectViewWrapper.effectsForContent;

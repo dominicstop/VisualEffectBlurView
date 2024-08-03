@@ -19,7 +19,7 @@ public class UVEViewWrapper: ObjectWrapper<
   
   public enum EncodedString: String, HashedStringDecodable {
     /// `backgroundEffects`
-    case propertyBgEffects;
+    case propertyEffectsForBg;
     
     /// `contentEffects`
     case getterEffectsForContent;
@@ -30,7 +30,7 @@ public class UVEViewWrapper: ObjectWrapper<
     
     public var encodedString: String {
       switch self {
-        case .propertyBgEffects:
+        case .propertyEffectsForBg:
           // backgroundEffects
           return "YmFja2dyb3VuZEVmZmVjdHM=";
           
@@ -76,9 +76,9 @@ public class UVEViewWrapper: ObjectWrapper<
   /// Selector:
   /// `@property (nonatomic,copy) NSArray * backgroundEffects`
   ///
-  public var bgEffects: NSArray? {
+  public var effectsForBg: NSArray? {
     return try? self.performSelector(
-      usingEncodedString: .propertyBgEffects,
+      usingEncodedString: .propertyEffectsForBg,
       type: NSArray.self
     );
   };
