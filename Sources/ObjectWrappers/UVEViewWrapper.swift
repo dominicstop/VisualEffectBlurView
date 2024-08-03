@@ -21,6 +21,9 @@ public class UVEViewWrapper: ObjectWrapper<
     /// `backgroundEffects`
     case propertyBgEffects;
     
+    /// `contentEffects`
+    case getterEffectsForContent;
+    
     case getterBgHost;
     case methodSetCurrentEffectMetadata;
     case methodGetEffectMetadata;
@@ -30,6 +33,10 @@ public class UVEViewWrapper: ObjectWrapper<
         case .propertyBgEffects:
           // backgroundEffects
           return "YmFja2dyb3VuZEVmZmVjdHM=";
+          
+        case .getterEffectsForContent:
+          // contentEffects
+          return "Y29udGVudEVmZmVjdHM=";
       
         case .getterBgHost:
           // _backgroundHost
@@ -72,6 +79,16 @@ public class UVEViewWrapper: ObjectWrapper<
   public var bgEffects: NSArray? {
     return try? self.performSelector(
       usingEncodedString: .propertyBgEffects,
+      type: NSArray.self
+    );
+  };
+  
+  /// Selector:
+  /// `@property (nonatomic,copy) NSArray * contentEffects`
+  ///
+  public var effectsForContent: NSArray? {
+    return try? self.performSelector(
+      usingEncodedString: .getterEffectsForContent,
       type: NSArray.self
     );
   };
