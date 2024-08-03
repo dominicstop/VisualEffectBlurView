@@ -31,6 +31,9 @@ public class UVEViewWrapper: ObjectWrapper<
     /// `_setBackdropViewBackgroundColorAlpha:`
     case methodSetBGColorAlphaForBDView;
     
+    /// `_setTintOpacity:`
+    case methodSetOpacityForTint;
+    
     public var encodedString: String {
       switch self {
         case .propertyEffectsForBg:
@@ -56,6 +59,10 @@ public class UVEViewWrapper: ObjectWrapper<
         case .methodSetBGColorAlphaForBDView:
           // _setBackdropViewBackgroundColorAlpha:
           return "X3NldEJhY2tkcm9wVmlld0JhY2tncm91bmRDb2xvckFscGhhOg==";
+          
+        case .methodSetOpacityForTint:
+          // _setTintOpacity:
+          return "X3NldFRpbnRPcGFjaXR5Og==";
       };
     };
   };
@@ -133,6 +140,13 @@ public class UVEViewWrapper: ObjectWrapper<
     try self.performSelector(
       usingEncodedString: .methodSetBGColorAlphaForBDView,
       withArg1: colorAlpha
+    );
+  };
+  
+  public func setOpacityForTint(_ opacity: CGFloat) throws {
+    try self.performSelector(
+      usingEncodedString: .methodSetOpacityForTint,
+      withArg1: opacity
     );
   };
 };

@@ -384,7 +384,8 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
       self.visualEffectView = visualEffectView;
       
       visualEffectView?.shouldOnlyShowBgLayer = true;
-      // try? visualEffectView?.wrapper?.setBGColorAlphaForBDView(0);
+      // try! visualEffectView?.wrapper?.setBGColorAlphaForBDView(0);
+      // try! visualEffectView?.wrapper?.setOpacityForTint(0);
       // try? visualEffectView?.applyRequestedFilterEffects();
       
       if let visualEffectView = visualEffectView {
