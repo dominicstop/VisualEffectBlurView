@@ -28,6 +28,9 @@ public class UVEViewWrapper: ObjectWrapper<
     case methodSetCurrentEffectMetadata;
     case methodGetEffectMetadata;
     
+    /// `_setBackdropViewBackgroundColorAlpha:`
+    case methodSetBGColorAlphaForBDView;
+    
     public var encodedString: String {
       switch self {
         case .propertyEffectsForBg:
@@ -49,6 +52,10 @@ public class UVEViewWrapper: ObjectWrapper<
         case .methodGetEffectMetadata:
           // _effectDescriptorForEffects:usage:
           return "X2VmZmVjdERlc2NyaXB0b3JGb3JFZmZlY3RzOnVzYWdlOg==";
+          
+        case .methodSetBGColorAlphaForBDView:
+          // _setBackdropViewBackgroundColorAlpha:
+          return "X3NldEJhY2tkcm9wVmlld0JhY2tncm91bmRDb2xvckFscGhhOg==";
       };
     };
   };
@@ -114,6 +121,18 @@ public class UVEViewWrapper: ObjectWrapper<
     
     return .init(
       objectToWrap: result as AnyObject
+    );
+  };
+  
+  
+  /// Selector:
+  /// `-(void)_setBackdropViewBackgroundColorAlpha:(double)arg1`
+  ///
+  @available(iOS 13, *)
+  public func setBGColorAlphaForBDView(_ colorAlpha: CGFloat) throws {
+    try self.performSelector(
+      usingEncodedString: .methodSetBGColorAlphaForBDView,
+      withArg1: colorAlpha
     );
   };
 };
