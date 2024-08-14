@@ -335,7 +335,7 @@ public class VisualEffectBlurView: UIVisualEffectView {
           return value.doubleValue;
         }();
         
-        let nextValue = InterpolationHelpers.lerp(
+        let nextValue = InterpolatorHelpers.lerp(
           valueStart: identityValue,
           valueEnd: defaultValue,
           percent: nextEffectIntensity
