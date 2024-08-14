@@ -25,10 +25,8 @@ extension UIBlurEffect.Style {
     Self.didSetDefaultCache = true;
     
     Self.allCases.forEach { blurStyle in
-      let blurView = VisualEffectBlurView(blurEffectStyle: nil);
-      blurView.effect = UIBlurEffect(style: blurStyle);
-      
-      guard let effectDescriptionWrapper = blurView.currentEffectMetadata,
+      guard let blurView = try? VisualEffectBlurView(blurEffectStyle: blurStyle),
+            let effectDescriptionWrapper = blurView.currentEffectMetadata,
             let filterItemsWrapped = effectDescriptionWrapper.filterItemsWrapped,
             filterItemsWrapped.count > 0
       else {
@@ -145,9 +143,8 @@ extension UIBlurEffect.Style {
   
   @available(iOS 13, *)
   public var blurFilterEntryWrappers: [UVEFilterEntryWrapper]? {
-    let blurView = VisualEffectBlurView(blurEffectStyle: self);
-    
-    guard let effectDescriptionWrapper = blurView.currentEffectMetadata,
+    guard let blurView = try? VisualEffectBlurView(blurEffectStyle: self),
+          let effectDescriptionWrapper = blurView.currentEffectMetadata,
           let filterItemsWrapped = effectDescriptionWrapper.filterItemsWrapped,
           filterItemsWrapped.count > 0
     else {

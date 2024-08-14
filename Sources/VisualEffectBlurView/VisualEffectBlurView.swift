@@ -9,7 +9,7 @@ import UIKit
 import DGSwiftUtilities
 
 
-public class VisualEffectBlurView: UIVisualEffectView {
+public class VisualEffectBlurView: VisualEffectView {
 
   // MARK: - Properties
   // ------------------
@@ -27,26 +27,6 @@ public class VisualEffectBlurView: UIVisualEffectView {
       self.effect = UIBlurEffect(style: newValue);
       self.initialBlurRadius = self.blurRadius;
     }
-  };
-  
-  // MARK: - Properties - Private API
-  // --------------------------------
-  
-  public lazy var wrapper: UVEViewWrapper? = .init(objectToWrap: self);
-  
-  /// Old name: `effectDescriptorForCurrentEffectWrapper`
-  @available(iOS 13, *)
-  public var currentEffectMetadata: UVEDescriptorWrapper? {
-    guard let effect = self.effect,
-          let wrapper = self.wrapper
-    else {
-      return nil;
-    };
-    
-    return try? wrapper.getEffectMetadata(
-      forEffects: [effect],
-      usage: true
-    );
   };
   
   // MARK: Computed Properties
@@ -123,14 +103,11 @@ public class VisualEffectBlurView: UIVisualEffectView {
   // MARK: - Init
   // ------------
   
-  public init(blurEffectStyle: UIBlurEffect.Style?) {
-    let blurEffect: UIVisualEffect? = {
-      guard let blurEffectStyle = blurEffectStyle else { return nil };
-      return UIBlurEffect(style: blurEffectStyle);
-    }();
-    
-    super.init(effect: blurEffect);
+  public init(blurEffectStyle: UIBlurEffect.Style) throws {
+    let blurEffect = UIBlurEffect(style: blurEffectStyle);
     self.blurEffectStyle = blurEffectStyle;
+    
+    try super.init(withEffect: blurEffect);
   };
   
   public required init?(coder: NSCoder) {

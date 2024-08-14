@@ -51,7 +51,7 @@ class BlurViewBasicUsage01ViewController: UIViewController {
       ),
     ]);
     
-    let blurView = VisualEffectBlurView(blurEffectStyle: .dark);
+    let blurView = try! VisualEffectBlurView(blurEffectStyle: .dark);
     blurView.blurRadius = 15;
 
     blurView.translatesAutoresizingMaskIntoConstraints = false;

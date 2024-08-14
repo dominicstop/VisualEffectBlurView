@@ -9,7 +9,7 @@ import UIKit
 import DGSwiftUtilities
 
 
-public class VisualEffectView: UIVisualEffectView {
+open class VisualEffectView: UIVisualEffectView {
   
   public var wrapper: UVEViewWrapper!;
   
@@ -118,7 +118,7 @@ public class VisualEffectView: UIVisualEffectView {
     };
   };
   
-  required init?(coder: NSCoder) {
+  required public init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented");
   };
   

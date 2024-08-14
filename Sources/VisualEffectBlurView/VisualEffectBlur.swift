@@ -23,7 +23,7 @@ public struct VisualEffectBlur: UIViewRepresentable {
   };
 
   public func makeUIView(context: Context) -> VisualEffectBlurView {
-    VisualEffectBlurView(blurEffectStyle: self.blurEffectStyle);
+    try! VisualEffectBlurView(blurEffectStyle: self.blurEffectStyle);
   };
 
   public func updateUIView(
