@@ -46,8 +46,6 @@
 		88F7286A2C286C64005B49D0 /* NSValue+NSValue_Helpers.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSValue+NSValue_Helpers.m"; sourceTree = "<group>"; };
 		88F7286C2C308AB5005B49D0 /* LayerFilterType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LayerFilterType+Extensions.swift"; sourceTree = "<group>"; };
 		88F728702C30975D005B49D0 /* ColorMatrixRGBA+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ColorMatrixRGBA+Helpers.swift"; sourceTree = "<group>"; };
-		88FD5DFF2AB0A31100E89681 /* Transform3D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transform3D.swift; sourceTree = "<group>"; };
-		88FD5E012AB0A35100E89681 /* Angle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Angle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,7 +67,6 @@
 				88F123752AB2FD5E00DEB121 /* Routes */,
 				88AF8CA92C21C9350086A6AD /* Sources */,
 				88625F212AB08D530086B4FC /* VisualEffectBlurViewExample */,
-				88F123762AB2FD7500DEB121 /* Misc */,
 				88625F202AB08D530086B4FC /* Products */,
 				88FD5DFC2AB0A27A00E89681 /* Frameworks */,
 			);
@@ -120,15 +117,6 @@
 				88D6B5A82C3EFD8C005E900B /* VisualEffectViewExperiment02ViewController.swift */,
 			);
 			path = Routes;
-			sourceTree = "<group>";
-		};
-		88F123762AB2FD7500DEB121 /* Misc */ = {
-			isa = PBXGroup;
-			children = (
-				88FD5DFF2AB0A31100E89681 /* Transform3D.swift */,
-				88FD5E012AB0A35100E89681 /* Angle.swift */,
-			);
-			path = Misc;
 			sourceTree = "<group>";
 		};
 		88FD5DFC2AB0A27A00E89681 /* Frameworks */ = {
