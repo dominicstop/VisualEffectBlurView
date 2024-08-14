@@ -413,3 +413,54 @@ General Purpose Registers:
 
 * Pending:
   * `-(void)_resetEffect`
+
+
+
+
+
+
+
+```
+Thread 1 Queue : com.apple.main-thread (serial)
+#0	0x00000001046d96ac in -[_UIVisualEffectDescriptor init] ()
+#1	0x00000001046ddcd4 in -[UIVisualEffectView _effectDescriptorForEffects:usage:] ()
+#2	0x00000001046dd008 in -[UIVisualEffectView _generateBackgroundEffects:contentEffects:] ()
+#3	0x00000001046dd568 in -[UIVisualEffectView _generateDeferredAnimations:] ()
+#4	0x0000000105617ce0 in -[UIViewAnimationState _finalizeDeferredAnimations] ()
+#5	0x0000000105617d8c in -[UIViewAnimationState pop] ()
+#6	0x0000000105615e78 in +[UIViewAnimationState popAnimationState] ()
+#7	0x0000000105641188 in +[UIView _setupAnimationWithDuration:delay:view:options:factory:animations:start:animationStateGenerator:completion:] ()
+#8	0x0000000102bbb7d8 in VisualEffectViewExperiment02ViewController.updateBlurEffect() at /Users/dominicgo/Documents/Programming/VisualEffectBlurView/example/Routes/VisualEffectViewExperiment02ViewController.swift:380
+#9	0x0000000102bbaaa8 in closure #1 in closure #4 in VisualEffectViewExperiment02ViewController.viewDidLoad() at /Users/dominicgo/Documents/Programming/VisualEffectBlurView/example/Routes/VisualEffectViewExperiment02ViewController.swift:252
+#10	0x0000000102c17d34 in ClosureInjector.invoke() at /Users/dominicgo/Library/Developer/Xcode/DerivedData/VisualEffectBlurViewExample-fnwcamkgjdtfdjglnemnpctwikua/SourcePackages/checkouts/DGSwiftUtilities/Sources/Common/ClosureInjector/ClosureInjector.swift:28
+#11	0x0000000102c17d70 in @objc ClosureInjector.invoke() ()
+#12	0x000000010513ce90 in -[UIApplication sendAction:to:from:forEvent:] ()
+#13	0x0000000104a629d4 in -[UIControl sendAction:to:forEvent:] ()
+#14	0x0000000104a62d18 in -[UIControl _sendActionsForEvents:withEvent:] ()
+#15	0x0000000104a5f858 in -[UIButton _sendActionsForEvents:withEvent:] ()
+#16	0x0000000104a62d54 in -[UIControl _sendActionsForEvents:withEvent:] ()
+#17	0x0000000104a5f858 in -[UIButton _sendActionsForEvents:withEvent:] ()
+#18	0x0000000104a61a54 in -[UIControl touchesEnded:withEvent:] ()
+#19	0x000000010517052c in -[UIWindow _sendTouchesForEvent:] ()
+#20	0x0000000105171a10 in -[UIWindow sendEvent:] ()
+#21	0x000000010515168c in -[UIApplication sendEvent:] ()
+#22	0x00000001051d1014 in __dispatchPreprocessedEventFromEventQueue ()
+#23	0x00000001051d3ec4 in __processEventQueue ()
+#24	0x00000001051ccf58 in __eventFetcherSourceCallback ()
+#25	0x00000001803c669c in __CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE0_PERFORM_FUNCTION__ ()
+#26	0x00000001803c65e4 in __CFRunLoopDoSource0 ()
+#27	0x00000001803c5d54 in __CFRunLoopDoSources0 ()
+#28	0x00000001803c043c in __CFRunLoopRun ()
+#29	0x00000001803bfd28 in CFRunLoopRunSpecific ()
+#30	0x000000018986ebc0 in GSEventRunModal ()
+#31	0x0000000105137fdc in -[UIApplication _run] ()
+#32	0x000000010513bc54 in UIApplicationMain ()
+#33	0x00000001045fdab8 in UIApplicationMain(_:_:_:_:) ()
+#34	0x0000000102bb2974 in static UIApplicationDelegate.main() ()
+#35	0x0000000102bb28ec in static AppDelegate.$main() ()
+#36	0x0000000102bb29f0 in main at /Users/dominicgo/Documents/Programming/VisualEffectBlurView/example/VisualEffectBlurViewExample/AppDelegate.swift:11
+#37	0x0000000103009558 in start_sim ()
+#38	0x00000001031fa0e0 in start ()
+
+```
+
