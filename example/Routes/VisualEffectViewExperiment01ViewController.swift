@@ -31,7 +31,7 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
           size: .init(width: 200, height: 400)
         );
         
-        let gradientImage = imageConfig.makeImage();
+        let gradientImage = try! imageConfig.makeImage();
         return gradientImage.cgImage!;
       }(),
       shouldNormalizeEdges: true
@@ -46,7 +46,7 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
           size: .init(width: 200, height: 400)
         );
         
-        let gradientImage = imageConfig.makeImage();
+        let gradientImage = try! imageConfig.makeImage();
         return gradientImage.cgImage!;
       }(),
       shouldNormalizeEdges: true
@@ -61,7 +61,7 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
           size: .init(width: 200, height: 400)
         );
         
-        let gradientImage = imageConfig.makeImage();
+        let gradientImage = try! imageConfig.makeImage();
         return gradientImage.cgImage!;
       }(),
       shouldNormalizeEdges: true
@@ -76,7 +76,7 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
           size: .init(width: 200, height: 400)
         );
         
-        let gradientImage = imageConfig.makeImage();
+        let gradientImage = try! imageConfig.makeImage();
         return gradientImage.cgImage!;
       }(),
       shouldNormalizeEdges: true
@@ -284,7 +284,7 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
         size: .init(width: 100, height: 100)
       );
       
-      let gradientImage = gradientConfig.makeImage();
+      let gradientImage = try! gradientConfig.makeImage();
       let bgGradient = UIImageView(image: gradientImage);
       
       rootView.addSubview(bgGradient);

@@ -66,7 +66,7 @@ class VisualEffectViewExperiment02ViewController: UIViewController {
         size: .init(width: 100, height: 100)
       );
       
-      let gradientImage = gradientConfig.makeImage();
+      let gradientImage = try! gradientConfig.makeImage();
       let bgGradient = UIImageView(image: gradientImage);
       
       rootView.addSubview(bgGradient);
