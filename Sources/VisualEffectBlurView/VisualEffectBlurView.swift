@@ -18,6 +18,8 @@ public class VisualEffectBlurView: VisualEffectView {
   
   public var blurEffectStyle: UIBlurEffect.Style? {
     willSet {
+      self.clearAnimator();
+      
       guard let newValue = newValue else {
         self.effect = nil;
         self.initialBlurRadius = nil;

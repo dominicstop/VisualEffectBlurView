@@ -1,20 +1,22 @@
 //
-//  ViewController.swift
-//  VisualEffectBlurView
+//  VisualEffectBlurTest02ViewController.swift
+//  
 //
-//  Created by Dominic on 09/14/2023.
-//  Copyright (c) 2023 Dominic All rights reserved.
+//  Created by Dominic Go on 8/14/24.
 //
 
 import UIKit
+import DGSwiftUtilities
 import VisualEffectBlurView
 
 
-class ViewController: UIViewController {
+class VisualEffectBlurTest02ViewController: UIViewController {
 
   weak var visualEffectBlurView: VisualEffectBlurView?;
-  weak var blurRadiusSlider: UISlider?;
+  weak var effectIntensitySlider: UISlider?;
+  
   weak var blurRadiusLabel: UILabel?;
+  weak var intensityLabel: UILabel?;
   
   var blurEffectStyleCounter = 0;
   
@@ -69,11 +71,9 @@ class ViewController: UIViewController {
     let blurContainerView: UIView = {
       let containerView = UIView();
       
-      let bgBlurView = VisualEffectBlurView(blurEffectStyle: .dark);
+      let bgBlurView = try! VisualEffectBlurView(blurEffectStyle: .dark);
       self.visualEffectBlurView = bgBlurView;
       
-      bgBlurView.blurRadius = 0;
-    
       bgBlurView.translatesAutoresizingMaskIntoConstraints = false;
       containerView.addSubview(bgBlurView);
       
@@ -115,12 +115,13 @@ class ViewController: UIViewController {
       ),
     ]);
     
-    let blurSliderControl: UISlider = {
+    let effectIntensitySlider: UISlider = {
       let slider = UISlider();
-      self.blurRadiusSlider = slider;
+      self.effectIntensitySlider = slider;
       
       slider.minimumValue = 0;
-      slider.maximumValue = 50;
+      slider.maximumValue = 1;
+      slider.value = 1;
       slider.isContinuous = true;
       
       slider.addTarget(
@@ -155,7 +156,7 @@ class ViewController: UIViewController {
       stack.alignment = .fill;
       stack.spacing = 20;
       
-      stack.addArrangedSubview(blurSliderControl);
+      stack.addArrangedSubview(effectIntensitySlider);
       stack.addArrangedSubview(nextBlurEffectButton);
     
       return stack;
@@ -180,16 +181,6 @@ class ViewController: UIViewController {
     ]);
     
     let blurRadiusLabel: UIView = {
-      let containerView = UIView();
-      containerView.backgroundColor = UIColor(
-        red: 0/255,
-        green: 0/255,
-        blue: 0/255,
-        alpha: 0.4
-      );
-      
-      containerView.layer.cornerRadius = 15;
-      
       let initialBlurRadius = self.visualEffectBlurView?.blurRadius ?? 0;
     
       let label = UILabel();
@@ -205,62 +196,113 @@ class ViewController: UIViewController {
         alpha: 0.8
       );
       
-      label.translatesAutoresizingMaskIntoConstraints = false;
-      containerView.addSubview(label);
-      
-      NSLayoutConstraint.activate([
-        label.centerXAnchor.constraint(
-          equalTo: containerView.centerXAnchor
-        ),
-        label.centerYAnchor.constraint(
-          equalTo: containerView.centerYAnchor
-        ),
-      ]);
-      
-      let tapGesture = UITapGestureRecognizer(
-        target: self,
-        action: #selector(Self.onPressBlurRadiusLabel(_:))
-      );
-      
-      containerView.addGestureRecognizer(tapGesture);
-
-      return containerView;
+      return label;
     }();
     
-    blurRadiusLabel.translatesAutoresizingMaskIntoConstraints = false;
-    self.view.addSubview(blurRadiusLabel);
+    let intensityLabel: UIView = {
+      let initialBlurRadius = self.visualEffectBlurView?.blurRadius ?? 0;
+    
+      let label = UILabel();
+      self.intensityLabel = label;
+      
+      label.text = "\(initialBlurRadius)";
+      label.font = .boldSystemFont(ofSize: 32);
+      
+      label.textColor = UIColor(
+        red: 255/255,
+        green: 255/255,
+        blue: 255/255,
+        alpha: 0.8
+      );
+      
+      return label;
+    }();
+    
+    let overlayStack: UIStackView = {
+      let stack = UIStackView();
+      
+      stack.backgroundColor = UIColor(
+        red: 0/255,
+        green: 0/255,
+        blue: 0/255,
+        alpha: 0.4
+      );
+      
+      stack.axis = .vertical;
+      stack.distribution = .fillEqually;
+      stack.alignment = .center;
+      stack.spacing = 10;
+      
+      stack.layer.cornerRadius = 15;
+      
+      stack.addArrangedSubview(blurRadiusLabel);
+      stack.addArrangedSubview(intensityLabel);
+      
+      return stack;
+    }();
+    
+    overlayStack.translatesAutoresizingMaskIntoConstraints = false;
+    self.view.addSubview(overlayStack);
     
     NSLayoutConstraint.activate([
-      blurRadiusLabel.heightAnchor.constraint(
-        equalToConstant: 125
+      overlayStack.heightAnchor.constraint(
+        equalToConstant: 200
       ),
-      blurRadiusLabel.widthAnchor.constraint(
-        equalToConstant: 125
+      overlayStack.widthAnchor.constraint(
+        equalToConstant: 150
       ),
-      blurRadiusLabel.centerXAnchor.constraint(
+      overlayStack.centerXAnchor.constraint(
         equalTo: self.view.centerXAnchor
       ),
       
-      blurRadiusLabel.centerYAnchor.constraint(
+      overlayStack.centerYAnchor.constraint(
         equalTo: self.view.centerYAnchor
       ),
     ]);
   };
-  
     
   @objc func onPressBlurRadiusLabel(_ sender: UILabel!){
-    // no-op
+    guard let visualEffectBlurView = self.visualEffectBlurView else { return };
+    
+    self.isBlurViewTransformed.toggle();
+    
+    let nextTransform: Transform3D = {
+      if isBlurViewTransformed {
+        return .default;
+      };
+      
+      return Transform3D(
+        translateX: 0,
+        translateY: 0,
+        translateZ: 0,
+        scaleX: 0.75,
+        scaleY: 0.75,
+        rotateX: .degrees(15),
+        rotateY: .degrees(30),
+        rotateZ: .degrees(7),
+        perspective: 1/1000,
+        skewX: 0,
+        skewY: 0
+      );
+    }();
+    
+    UIView.animate(withDuration: 3) {
+      visualEffectBlurView.layer.transform = nextTransform.transform;
+    };
   };
   
-  @objc func onBlurSliderValueChanged(_ sender: UISlider!){
+  @objc func onIntensitySliderValueChanged(_ sender: UISlider!){
     guard let visualEffectBlurView = self.visualEffectBlurView,
+          let intensityLabel = self.intensityLabel,
           let blurRadiusLabel = self.blurRadiusLabel
     else { return };
     
-    let sliderValue = CGFloat(floor(sender.value));
+    let sliderValue = CGFloat(sender.value);
     
-    visualEffectBlurView.blurRadius = sliderValue;
-    blurRadiusLabel.text = "\(sliderValue)";
+    intensityLabel.text = String(format: "%.3f", sender.value) + "%";
+    blurRadiusLabel.text = String(format: "%.3f", visualEffectBlurView.blurRadius);
+    
+    visualEffectBlurView.setEffectIntensity(sliderValue);
   };
   
   @objc func onPressButtonNextEffect(_ sender: UIButton){
@@ -268,14 +310,19 @@ class ViewController: UIViewController {
     
     guard let visualEffectBlurView = self.visualEffectBlurView,
           let blurRadiusLabel = self.blurRadiusLabel,
-          let blurRadiusSlider = self.blurRadiusSlider
+          let intensityLabel = self.intensityLabel,
+          let effectIntensitySlider = self.effectIntensitySlider
     else { return };
     
-    let blurEffect = UIBlurEffect(style: self.currentBlurEffectStyle);
-    visualEffectBlurView.effect = blurEffect;
+    visualEffectBlurView.blurEffectStyle = self.currentBlurEffectStyle;    visualEffectBlurView.clearAnimator();
+    
+    let effectIntensity =
+      visualEffectBlurView.animatorWrapper?.animator.fractionComplete ?? 1;
     
     let currentBlurRadius = floor(visualEffectBlurView.blurRadius);
     blurRadiusLabel.text = "\(currentBlurRadius)";
-    blurRadiusSlider.value = Float(currentBlurRadius);
+    intensityLabel.text = String(format: "%.3f", effectIntensity) + "%";
+    
+    effectIntensitySlider.value = 1;
   };
 };

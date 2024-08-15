@@ -64,6 +64,8 @@ open class VisualEffectView: UIVisualEffectView {
     );
   };
   
+  public var animatorWrapper: ViewPropertyAnimatorWrapper?;
+  
   // MARK: - Init
   // ------------
   
@@ -325,5 +327,31 @@ open class VisualEffectView: UIVisualEffectView {
     };
     
     return filterItemsWrapped;
+  };
+  
+  public func setEffectIntensity(_ percent: CGFloat){
+    let animatorWrapper: ViewPropertyAnimatorWrapper = {
+      if let animatorWrapper = self.animatorWrapper {
+        return animatorWrapper;
+      };
+      
+      let currentEffect = self.effect;
+      let animatorWrapper: ViewPropertyAnimatorWrapper = .init(forView: self) {
+        $0.effect = currentEffect;
+      };
+      
+      self.effect = nil;
+      
+      self.animatorWrapper = animatorWrapper;
+      return animatorWrapper;
+    }();
+    
+    animatorWrapper.setFractionComplete(forPercent: percent);
+  };
+  
+  public func clearAnimator(){
+    guard let animatorWrapper = self.animatorWrapper else { return };
+    animatorWrapper.clear();
+    self.animatorWrapper = nil;
   };
 };
