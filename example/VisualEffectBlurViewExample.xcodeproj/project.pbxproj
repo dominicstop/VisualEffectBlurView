@@ -28,13 +28,6 @@
 
 /* Begin PBXFileReference section */
 		8823BF3E2C21C1BC00C7238A /* VisualEffectBlurView */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = VisualEffectBlurView; path = ..; sourceTree = "<group>"; };
-		8853DBE52C6CF868000E229D /* VisualEffectBlurTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectBlurTestViewController.swift; sourceTree = "<group>"; };
-		8853DBE62C6CF868000E229D /* RouteListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteListViewController.swift; sourceTree = "<group>"; };
-		8853DBE72C6CF868000E229D /* VisualEffectBlurTest02ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectBlurTest02ViewController.swift; sourceTree = "<group>"; };
-		8853DBE82C6CF868000E229D /* VisualEffectViewExperiment02ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectViewExperiment02ViewController.swift; sourceTree = "<group>"; };
-		8853DBE92C6CF868000E229D /* VisualEffectViewExperiment01ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectViewExperiment01ViewController.swift; sourceTree = "<group>"; };
-		8853DBEA2C6CF868000E229D /* BlurViewSwiftUIBasicUsage01ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurViewSwiftUIBasicUsage01ViewController.swift; sourceTree = "<group>"; };
-		8853DBEB2C6CF868000E229D /* BlurViewBasicUsage01ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurViewBasicUsage01ViewController.swift; sourceTree = "<group>"; };
 		8853DBEC2C6CF8D6000E229D /* VisualEffectBlurTest02ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualEffectBlurTest02ViewController.swift; sourceTree = "<group>"; };
 		88625F1F2AB08D530086B4FC /* VisualEffectBlurViewExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VisualEffectBlurViewExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		88625F222AB08D530086B4FC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -69,24 +62,9 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		8853DBE42C6CF868000E229D /* Routes */ = {
-			isa = PBXGroup;
-			children = (
-				8853DBE52C6CF868000E229D /* VisualEffectBlurTestViewController.swift */,
-				8853DBE62C6CF868000E229D /* RouteListViewController.swift */,
-				8853DBE72C6CF868000E229D /* VisualEffectBlurTest02ViewController.swift */,
-				8853DBE82C6CF868000E229D /* VisualEffectViewExperiment02ViewController.swift */,
-				8853DBE92C6CF868000E229D /* VisualEffectViewExperiment01ViewController.swift */,
-				8853DBEA2C6CF868000E229D /* BlurViewSwiftUIBasicUsage01ViewController.swift */,
-				8853DBEB2C6CF868000E229D /* BlurViewBasicUsage01ViewController.swift */,
-			);
-			path = Routes;
-			sourceTree = "<group>";
-		};
 		88625F162AB08D530086B4FC = {
 			isa = PBXGroup;
 			children = (
-				8853DBE42C6CF868000E229D /* Routes */,
 				8823BF3E2C21C1BC00C7238A /* VisualEffectBlurView */,
 				88F123752AB2FD5E00DEB121 /* Routes */,
 				88AF8CA92C21C9350086A6AD /* Sources */,

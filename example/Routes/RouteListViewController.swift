@@ -119,5 +119,11 @@ class RouteListViewController: UIViewController {
         equalTo: self.view.safeAreaLayoutGuide.trailingAnchor
       ),
     ]);
+    
+    let logo = UIImage(named: "TamaguiBanner");
+    let imageView = UIImageView(image: logo);
+    imageView.contentMode = .scaleAspectFit;
+    
+    self.navigationItem.titleView = imageView
   };
 };
