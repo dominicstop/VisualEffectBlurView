@@ -137,7 +137,13 @@ class VisualEffectBlurTest02ViewController: UIViewController {
       let button = UIButton();
       
       button.setTitle("Next Effect", for: .normal);
-      button.configuration = .filled();
+      
+      if #available(iOS 15.0, *) {
+        button.configuration = .filled();
+        
+      } else {
+        button.backgroundColor = .blue;
+      };
       
       button.addTarget(
         self,

@@ -239,9 +239,13 @@ class VisualEffectViewExperiment02ViewController: UIViewController {
       let button = UIButton();
       
       button.setTitle("Next Effect", for: .normal);
-      button.configuration = .filled();
-      
-      button.configuration?.baseBackgroundColor = .init(hexString: "#8ace00")!;
+      if #available(iOS 15.0, *) {
+        button.configuration = .filled();
+        button.configuration?.baseBackgroundColor = .init(hexString: "#8ace00")!;
+        
+      } else {
+        button.backgroundColor = .init(hexString: "#8ace00")!;
+      };
       
       button.addAction(for: .primaryActionTriggered){
         guard let _ = self.visualEffectView,
