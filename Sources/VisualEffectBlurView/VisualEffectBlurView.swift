@@ -105,8 +105,15 @@ public class VisualEffectBlurView: VisualEffectView {
   // MARK: - Init
   // ------------
   
-  public init(blurEffectStyle: UIBlurEffect.Style) throws {
-    let blurEffect = UIBlurEffect(style: blurEffectStyle);
+  public init(blurEffectStyle: UIBlurEffect.Style?) throws {
+    let blurEffect: UIBlurEffect? = {
+      guard let blurEffectStyle = blurEffectStyle else {
+        return nil;
+      };
+      
+      return .init(style: blurEffectStyle);
+    }();
+    
     self.blurEffectStyle = blurEffectStyle;
     
     try super.init(withEffect: blurEffect);
