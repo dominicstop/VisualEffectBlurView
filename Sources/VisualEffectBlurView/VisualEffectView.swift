@@ -69,7 +69,7 @@ open class VisualEffectView: UIVisualEffectView {
   // MARK: - Init
   // ------------
   
-  public init(withEffect effect: UIVisualEffect) throws {
+  public init(withEffect effect: UIVisualEffect?) throws {
     super.init(effect: effect);
     
     guard let wrapper = UVEViewWrapper(objectToWrap: self) else {
