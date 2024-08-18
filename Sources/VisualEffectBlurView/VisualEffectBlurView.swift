@@ -70,6 +70,11 @@ public class VisualEffectBlurView: VisualEffectView {
       };
       
       self._blurRadius = inputRadius;
+      
+      if let animatorWrapper = self.animatorWrapper {
+        return inputRadius * animatorWrapper.animator.fractionComplete;
+      };
+      
       return inputRadius;
     }
   };
