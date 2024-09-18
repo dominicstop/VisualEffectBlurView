@@ -290,6 +290,18 @@ open class VisualEffectView: UIVisualEffectView {
     };
   };
   
+  @available(iOS 13, *)
+  public func updateMatchingFilter(
+    with newFilter: LayerFilterType,
+    shouldImmediatelyApply: Bool = true
+  ) throws {
+    
+    let filterDescs: [UVEFilterEntryWrapper] =
+      try self.getCurrentFilterEntriesFromCurrentEffectDescriptor();
+
+    try! filterDescs.updateFilterValuesRequested(with: newFilter);
+  };
+  
   public func applyRequestedFilterEffects() throws {
     guard let viewContentWrapper = self.viewContentWrapper else {
       throw VisualEffectBlurViewError(
