@@ -1,6 +1,8 @@
 # VisualEffectBlurView
 
-A subclass of `UIVisualEffectView` that lets you set a custom blur radius + intensity, or create use `CALayer.filter` using `CAFilter` (which is obfuscated since it's private API).
+A subclass of `UIVisualEffectView` that lets you set a custom blur radius + intensity, or create use `CALayer.filter` using `CAFilter` (which is obfuscated since it's private API). 
+
+This library powers [`react-native-ios-visual-effect-view`](https://github.com/dominicstop/react-native-ios-visual-effect-view) under the hood.
 
 <br><br>
 
@@ -17,6 +19,16 @@ A subclass of `UIVisualEffectView` that lets you set a custom blur radius + inte
 ![Render-03 - 2024-07-03-05-26-13 - 1080p Web - Gif-03](./assets/Demo-VisualEffectBlurTestViewController-01.gif)
 
 ![Render-02 - 2024-07-06-06-39-51 Gif-01](./assets/Demo-VisualEffectBlurTestViewController-02.gif)
+
+<br><br>
+
+## Acknowledgements
+
+Version `3.x` of this library was made possible through a generous `$3,250` sponsorship by [natew](https://github.com/natew) + [tamagui](https://github.com/tamagui/tamagui) over the course of ≈ 3.5 months (from: `05/27/24` to `09/24`) 🐦✨
+
+<br>
+
+Very special thanks to: [junzhengca](https://github.com/junzhengca), [brentvatne](https://github.com/brentvatne), and [expo](https://github.com/expo) for sponsoring my work 🥺
 
 <br><br>
 
@@ -55,7 +67,9 @@ dependencies: [
 
 <br><br>
 
-## Basic Usage - UIKit
+## Basic Usage
+
+### UIKit
 
 [🔗 Full Example](./example/Examples/BasicUsage01.swift)
 
@@ -96,7 +110,7 @@ class BasicUsage01: UIViewController {
 
 <br><br>
 
-## Basic Usage - SwiftUI
+### SwiftUI
 
 [🔗 Full Example](./example/Examples/VisualEffectBlurTestViewController.swift)
 
@@ -129,7 +143,7 @@ struct SwiftUIBasicUsage01: View {
 
 ## Documentation
 
-TBA
+The documentation for this library is currently not available. In the meantime, please browse through the [examples](./VisualEffectBlurView/example/Routes) (or look through the [impl. of RN wrapper](https://github.com/dominicstop/react-native-ios-visual-effect-view/blob/main/ios/RNIBlurView/RNIBlurViewDelegate.swift) for this library).
 
 <br><br>
 
