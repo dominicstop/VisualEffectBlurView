@@ -183,6 +183,28 @@ open class VisualEffectView: UIVisualEffectView {
     return filterMetadataMap;
   };
   
+  public func setOpacityForOtherSubviews(newOpacity: CGFloat){
+    let otherSubviews: [UIView] = {
+      guard let bgLayerWrapper = self.bgLayerWrapper,
+            let backdropLayer = bgLayerWrapper.wrappedObject
+      else {
+        return [];
+      };
+      
+      return self.subviews.filter {
+        guard $0.layer !== backdropLayer else {
+          return false;
+        };
+        
+        return true;
+      };
+    }();
+    
+    otherSubviews.forEach {
+      $0.alpha = newOpacity;
+    };
+  };
+  
   @available(iOS 13, *)
   public func setFiltersViaEffectDesc(
     withFilterEntryWrappers filterEntryWrappers: [UVEFilterEntryWrapper],
@@ -355,7 +377,7 @@ open class VisualEffectView: UIVisualEffectView {
     let filterDescs: [UVEFilterEntryWrapper] =
       try self.getCurrentFilterEntriesFromCurrentEffectDescriptor();
 
-    try! filterDescs.updateFilterValuesRequested(with: newFilter);
+    try? filterDescs.updateFilterValuesRequested(with: newFilter);
   };
   
   public func applyRequestedFilterEffects() throws {
@@ -397,7 +419,111 @@ open class VisualEffectView: UIVisualEffectView {
     return filterItemsWrapped;
   };
   
-  public func setEffectIntensity(_ percent: CGFloat){
+  @available(iOS 13, *)
+  public func setEffectIntensityViaEffectDescriptor(
+    intensityPercent: CGFloat,
+    shouldImmediatelyApply: Bool = true,
+    shouldAdjustOpacityForOtherSubviews: Bool = true
+  ) throws {
+    
+    let filterItemsWrapped =
+      try self.getCurrentFilterEntriesFromCurrentEffectDescriptor();
+      
+    self._debugRecursivelyPrintSubviews();
+    
+    guard let filterMetadataMap = self.filterMetadataMapForCurrentEffect else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to get filterMetadataMap"
+      );
+    };
+    
+    for (offset, currentFilterItemWrapped) in filterItemsWrapped.enumerated() {
+      guard let currentFilterType: LayerFilterType =
+              .init(fromWrapper: currentFilterItemWrapped),
+              
+            let currentFilterName = currentFilterType.decodedFilterName,
+            let associatedFilterMetadata = filterMetadataMap[currentFilterName],
+            let filterTypeEnd = associatedFilterMetadata.filterTypeParsed
+      else {
+        continue;
+      };
+      
+      
+      let filterTypeInterpolated = try? LayerFilterType.lerp(
+        valueStart: currentFilterType.identity,
+        valueEnd: filterTypeEnd,
+        percent: intensityPercent,
+        easing: .linear
+      );
+      
+      guard let filterTypeInterpolated = filterTypeInterpolated else {
+        continue;
+      };
+      
+      print(
+        "offset: \(offset) of \(filterItemsWrapped.count - 1)",
+        "\n - intensityPercent:", intensityPercent,
+        "\n - currentFilterType.decodedFilterName:", currentFilterType.decodedFilterName ?? "N/A",
+        "\n - currentFilterType.filterValuesRequested:", currentFilterType.filterValuesRequested,
+        "\n - filterItemWrapped.filterValuesConfig", currentFilterItemWrapped.filterValuesConfig?.debugDescription ?? "N/A",
+        "\n - filterItemWrapped.filterValuesIdentity", currentFilterItemWrapped.filterValuesIdentity?.debugDescription ?? "N/A",
+        "\n - filterItemWrapped.filterValuesRequested", currentFilterItemWrapped.filterValuesRequested?.debugDescription ?? "N/A",
+        "\n - filterTypeInterpolated.filterValuesRequested", filterTypeInterpolated.filterValuesRequested,
+        "\n"
+      );
+      
+      let filterValuesRequested =
+        NSDictionary(dictionary: filterTypeInterpolated.filterValuesRequested);
+      
+      try? currentFilterItemWrapped.setFilterValuesRequested(filterValuesRequested);
+    };
+    
+    if shouldAdjustOpacityForOtherSubviews {
+      self.setOpacityForOtherSubviews(
+        newOpacity: intensityPercent.clamped(min: 0, max: 1)
+      );
+    };
+    
+    if shouldImmediatelyApply {
+      try self.applyRequestedFilterEffects();
+    };
+  };
+  
+  @available(iOS 13, *)
+  public func createSetEffectIntensityAnimationBlock(
+    nextEffectIntensity: CGFloat,
+    prevEffectIntensity: CGFloat?
+  ) throws -> (
+    start: () -> Void,
+    end: () -> Void
+  ) {
+  
+    try self.setEffectIntensityViaEffectDescriptor(
+      intensityPercent: nextEffectIntensity,
+      shouldImmediatelyApply: false,
+      shouldAdjustOpacityForOtherSubviews: false
+    );
+    
+    return (
+      start: {
+        try? self.setEffectIntensityViaEffectDescriptor(
+          intensityPercent: prevEffectIntensity ?? 1,
+          shouldImmediatelyApply: true,
+          shouldAdjustOpacityForOtherSubviews: true
+        );
+      },
+      end: {
+        try? self.applyRequestedFilterEffects();
+        self.setOpacityForOtherSubviews(
+          newOpacity: nextEffectIntensity.clamped(min: 0, max: 1)
+        );
+      }
+    );
+  };
+  
+  // does not support animations
+  public func setEffectIntensityViaAnimator(_ percent: CGFloat){
     let animatorWrapper: ViewPropertyAnimatorWrapper = {
       if let animatorWrapper = self.animatorWrapper {
         return animatorWrapper;
@@ -422,4 +548,22 @@ open class VisualEffectView: UIVisualEffectView {
     animatorWrapper.clear();
     self.animatorWrapper = nil;
   };
+  
+  #if DEBUG
+  public func _debugRecursivelyPrintSubviews(){
+    let subviews = self.recursivelyGetAllSubviews;
+    
+    subviews.enumerated().forEach {
+      print(
+        "\(#function)",
+        "\n - Subview: \($0.offset) of \(subviews.count - 1)",
+        "\n - className:", $0.element.className,
+        "\n - parentName:", $0.element.superview?.className ?? "N/A",
+        "\n - subviews.count:", $0.element.subviews.count,
+        "\n - layer:", $0.element.layer.debugDescription,
+        "\n"
+      );
+    };
+  };
+  #endif
 };
