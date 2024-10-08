@@ -66,6 +66,40 @@ open class VisualEffectView: UIVisualEffectView {
   
   public var animatorWrapper: ViewPropertyAnimatorWrapper?;
   
+  private var _filterMetadataMapForCurrentEffect: Dictionary<String, FilterMetadata>?;
+  public var filterMetadataMapForCurrentEffect: Dictionary<String, FilterMetadata>? {
+    if let cached = self._filterMetadataMapForCurrentEffect {
+      return cached;
+    };
+    
+    guard #available(iOS 13, *),
+          let filterMetadataMap = try? self.createFilterMetadataMapForCurrentEffect()
+    else {
+      return nil;
+    };
+    
+    self._filterMetadataMapForCurrentEffect = filterMetadataMap;
+    return filterMetadataMap;
+  };
+  
+  open override var effect: UIVisualEffect? {
+    get {
+      super.effect;
+    }
+    set {
+      super.effect = newValue;
+      
+      guard #available(iOS 13, *),
+            let filterMetadataMap = try? self.createFilterMetadataMapForCurrentEffect()
+      else {
+        self._filterMetadataMapForCurrentEffect = nil;
+        return;
+      };
+      
+      self._filterMetadataMapForCurrentEffect = filterMetadataMap;
+    }
+  };
+  
   // MARK: - Init
   // ------------
   
@@ -126,6 +160,28 @@ open class VisualEffectView: UIVisualEffectView {
   
   // MARK: - Methods
   // ---------------
+  
+  @available(iOS 13, *)
+  public func createFilterMetadataMapForCurrentEffect() throws -> [String: FilterMetadata] {
+    let filterEntries =
+      try self.getCurrentFilterEntriesFromCurrentEffectDescriptor();
+      
+    var filterMetadataMap: [String: FilterMetadata] = [:];
+    
+    filterEntries.forEach {
+      guard let filterName = $0.filterKind else {
+        return;
+      };
+      
+      guard let filterMetadata: FilterMetadata = .init(fromWrapper: $0) else {
+        return;
+      };
+      
+      filterMetadataMap[filterName] = filterMetadata;
+    };
+      
+    return filterMetadataMap;
+  };
   
   @available(iOS 13, *)
   public func setFiltersViaEffectDesc(
