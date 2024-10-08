@@ -35,23 +35,23 @@ open class VisualEffectView: UIVisualEffectView {
   public var currentFilterTypes: [LayerFilterType] = [];
   
   /// Old name: `backgroundHostWrapper`
-  var bgHostWrapper: UVEHostWrapper? {
+  public var bgHostWrapper: UVEHostWrapper? {
     self.wrapper.hostForBgWrapped;
   };
   
   /// Old name: `contentViewWrapper`
-  var viewContentWrapper: UVEBackdropViewWrapper? {
+  public var viewContentWrapper: UVEBackdropViewWrapper? {
     self.bgHostWrapper?.viewContentWrapped;
   };
   
   /// Old name: `backdropLayerWrapper`
-  var bgLayerWrapper: BackgroundLayerWrapper? {
+  public var bgLayerWrapper: BackgroundLayerWrapper? {
     self.viewContentWrapper?.bgLayerWrapper
   };
   
   /// Old name: `effectDescriptorForCurrentEffectWrapper`
   @available(iOS 13, *)
-  var currentEffectMetadata: UVEDescriptorWrapper? {
+  public var currentEffectMetadata: UVEDescriptorWrapper? {
     guard let effect = self.effect,
           let wrapper = self.wrapper
     else {
