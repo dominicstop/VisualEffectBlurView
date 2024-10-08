@@ -9,7 +9,7 @@ import UIKit
 import DGSwiftUtilities
 
 
-public struct ColorMatrixRGBA {
+public struct ColorMatrixRGBA: Equatable {
 
   // MARK: - Static Alias
   // ------------------
@@ -41,6 +41,12 @@ public struct ColorMatrixRGBA {
     [\.m31, \.m32, \.m33, \.m34, \.m35],
     [\.m41, \.m42, \.m43, \.m44, \.m45],
   ];
+  
+  public static var keyPathsMatrixAll: [WritableKeyPath<Self, Float>] {
+    Self.keyPathsMatrix.reduce([]) {
+      $0 + $1;
+    };
+  };
 
   private static var _objcTypeRaw: UnsafePointer<CChar>?;
   
@@ -173,6 +179,10 @@ public struct ColorMatrixRGBA {
     
   // MARK: - Init
   // ------------
+  
+  public init() {
+    self = .identity;
+  }
   
   public init(
     m11: Float, m12: Float, m13: Float, m14: Float, m15: Float,
