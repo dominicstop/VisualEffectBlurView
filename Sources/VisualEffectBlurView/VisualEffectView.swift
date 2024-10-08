@@ -428,8 +428,6 @@ open class VisualEffectView: UIVisualEffectView {
     
     let filterItemsWrapped =
       try self.getCurrentFilterEntriesFromCurrentEffectDescriptor();
-      
-    self._debugRecursivelyPrintSubviews();
     
     guard let filterMetadataMap = self.filterMetadataMapForCurrentEffect else {
       throw VisualEffectBlurViewError(
@@ -438,15 +436,15 @@ open class VisualEffectView: UIVisualEffectView {
       );
     };
     
-    for (offset, currentFilterItemWrapped) in filterItemsWrapped.enumerated() {
+    filterItemsWrapped.enumerated().forEach {
       guard let currentFilterType: LayerFilterType =
-              .init(fromWrapper: currentFilterItemWrapped),
+              .init(fromWrapper: $0.element),
               
             let currentFilterName = currentFilterType.decodedFilterName,
             let associatedFilterMetadata = filterMetadataMap[currentFilterName],
             let filterTypeEnd = associatedFilterMetadata.filterTypeParsed
       else {
-        continue;
+        return;
       };
       
       
@@ -458,25 +456,13 @@ open class VisualEffectView: UIVisualEffectView {
       );
       
       guard let filterTypeInterpolated = filterTypeInterpolated else {
-        continue;
+        return;
       };
-      
-      print(
-        "offset: \(offset) of \(filterItemsWrapped.count - 1)",
-        "\n - intensityPercent:", intensityPercent,
-        "\n - currentFilterType.decodedFilterName:", currentFilterType.decodedFilterName ?? "N/A",
-        "\n - currentFilterType.filterValuesRequested:", currentFilterType.filterValuesRequested,
-        "\n - filterItemWrapped.filterValuesConfig", currentFilterItemWrapped.filterValuesConfig?.debugDescription ?? "N/A",
-        "\n - filterItemWrapped.filterValuesIdentity", currentFilterItemWrapped.filterValuesIdentity?.debugDescription ?? "N/A",
-        "\n - filterItemWrapped.filterValuesRequested", currentFilterItemWrapped.filterValuesRequested?.debugDescription ?? "N/A",
-        "\n - filterTypeInterpolated.filterValuesRequested", filterTypeInterpolated.filterValuesRequested,
-        "\n"
-      );
       
       let filterValuesRequested =
         NSDictionary(dictionary: filterTypeInterpolated.filterValuesRequested);
       
-      try? currentFilterItemWrapped.setFilterValuesRequested(filterValuesRequested);
+      try? $0.element.setFilterValuesRequested(filterValuesRequested);
     };
     
     if shouldAdjustOpacityForOtherSubviews {
@@ -549,7 +535,6 @@ open class VisualEffectView: UIVisualEffectView {
     self.animatorWrapper = nil;
   };
   
-  #if DEBUG
   public func _debugRecursivelyPrintSubviews(){
     let subviews = self.recursivelyGetAllSubviews;
     
@@ -565,5 +550,4 @@ open class VisualEffectView: UIVisualEffectView {
       );
     };
   };
-  #endif
 };
