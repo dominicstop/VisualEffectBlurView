@@ -126,39 +126,25 @@ public class VisualEffectBlurView: VisualEffectView {
   // -----------------
   
   @available(iOS 13, *)
-  func setBlurRadius(_ blurRadius: CGFloat) throws {
-    guard let effectDescriptorWrapper = self.currentEffectMetadata
-    else {
-      #if DEBUG
-      print(
-        "BlurView.setBlurRadius",
-        "- failed to get: effectDescriptorForCurrentEffect"
+  public func setBlurRadius(_ blurRadius: CGFloat) throws {
+    guard let effectDescriptorWrapper = self.currentEffectMetadata else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "failed to get: effectDescriptorForCurrentEffect"
       );
-      #endif
-      return;
     };
     
     guard let filterItemsWrapped = effectDescriptorWrapper.filterItemsWrapped,
           filterItemsWrapped.count > 0
     else {
-      #if DEBUG
-      print(
-        "BlurView.setBlurRadius",
-        "- selector failed to get value for: filterItemsWrapped"
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "failed to get: effectDescriptorForCurrentEffect"
       );
-      #endif
-      return;
     };
 
     let filterItemMatchWrapped = filterItemsWrapped.enumerated().first {
       guard let filterType = $0.element.filterKind else {
-        #if DEBUG
-        print(
-          "BlurView.setBlurRadius",
-          "- unable to get: filterType",
-          "- at index: \($0.offset)"
-        );
-        #endif
         return false;
       };
     
@@ -166,13 +152,10 @@ public class VisualEffectBlurView: VisualEffectView {
     };
 
     guard let gaussianBlurFilterEntryWrapped = filterItemMatchWrapped?.element else {
-      #if DEBUG
-      print(
-        "BlurView.setBlurRadius",
-        "- unable to get matching filter from: filterItems"
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "unable to get matching filter from: filterItems"
       );
-      #endif
-      return;
     };
     
     guard let filterValuesRequested = gaussianBlurFilterEntryWrapped.filterValuesRequested,
@@ -181,13 +164,10 @@ public class VisualEffectBlurView: VisualEffectView {
           let filterValuesCurrentCopy =
             filterValuesRequested.mutableCopy() as? NSMutableDictionary
     else {
-      #if DEBUG
-      print(
-        "BlurView.setBlurRadius",
-        "- failed to get filterValuesCurrent"
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "failed to get filterValuesCurrent"
       );
-      #endif
-      return;
     };
     
     filterValuesCurrentCopy["inputRadius"] = NSNumber(value: blurRadius);
@@ -196,13 +176,10 @@ public class VisualEffectBlurView: VisualEffectView {
           let backgroundHostWrapper = wrapper.hostForBgWrapped,
           let contentViewWrapper = backgroundHostWrapper.viewContentWrapped
     else {
-      #if DEBUG
-      print(
-        "BlurView.setBlurRadius",
-        "- unable to get backgroundHostWrapper and/or viewContentWrapper"
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "failed to get filterValuesCurrent"
       );
-      #endif
-      return;
     };
     
     try gaussianBlurFilterEntryWrapped.setFilterValuesRequested(filterValuesCurrentCopy);
