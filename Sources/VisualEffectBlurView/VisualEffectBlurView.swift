@@ -40,10 +40,7 @@ public class VisualEffectBlurView: VisualEffectView {
       self._blurRadius = newValue;
       
       guard #available(iOS 13, *),
-            let wrapper = self.wrapper,
-            let backgroundHostWrapper = wrapper.hostForBgWrapped,
-            let contentViewWrapper = backgroundHostWrapper.viewContentWrapped,
-            let bgLayerWrapper = contentViewWrapper.bgLayerWrapper,
+            let bgLayerWrapper = self.bgLayerWrapper,
             let gaussianBlurFilterWrapper = bgLayerWrapper.gaussianBlurFilterWrapper
       else {
         return;
@@ -53,10 +50,7 @@ public class VisualEffectBlurView: VisualEffectView {
       try? self.setBlurRadius(newValue);
     }
     get {
-      guard let wrapper = self.wrapper,
-            let backgroundHostWrapper = wrapper.hostForBgWrapped,
-            let contentViewWrapper = backgroundHostWrapper.viewContentWrapped,
-            let bgLayerWrapper = contentViewWrapper.bgLayerWrapper,
+      guard let bgLayerWrapper = self.bgLayerWrapper,
             let gaussianBlurFilterWrapper = bgLayerWrapper.gaussianBlurFilterWrapper,
             let inputRadius = gaussianBlurFilterWrapper.inputRadius
       else {
