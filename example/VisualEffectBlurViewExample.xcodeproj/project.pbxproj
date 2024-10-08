@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8815150E2CB4DBD800710B9B /* VisualEffectBlurTest03ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8815150D2CB4DBD800710B9B /* VisualEffectBlurTest03ViewController.swift */; };
 		8823BF402C21C1CD00C7238A /* VisualEffectBlurView in Frameworks */ = {isa = PBXBuildFile; productRef = 8823BF3F2C21C1CD00C7238A /* VisualEffectBlurView */; };
 		8853DBED2C6CF8D6000E229D /* VisualEffectBlurTest02ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8853DBEC2C6CF8D6000E229D /* VisualEffectBlurTest02ViewController.swift */; };
 		88625F232AB08D530086B4FC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88625F222AB08D530086B4FC /* AppDelegate.swift */; };
@@ -27,6 +28,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8815150D2CB4DBD800710B9B /* VisualEffectBlurTest03ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectBlurTest03ViewController.swift; sourceTree = "<group>"; };
 		8823BF3E2C21C1BC00C7238A /* VisualEffectBlurView */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = VisualEffectBlurView; path = ..; sourceTree = "<group>"; };
 		8853DBEC2C6CF8D6000E229D /* VisualEffectBlurTest02ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualEffectBlurTest02ViewController.swift; sourceTree = "<group>"; };
 		88625F1F2AB08D530086B4FC /* VisualEffectBlurViewExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VisualEffectBlurViewExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -111,8 +113,9 @@
 		88F123752AB2FD5E00DEB121 /* Routes */ = {
 			isa = PBXGroup;
 			children = (
-				88F123612AB2D5DD00DEB121 /* VisualEffectBlurTestViewController.swift */,
+				8815150D2CB4DBD800710B9B /* VisualEffectBlurTest03ViewController.swift */,
 				8853DBEC2C6CF8D6000E229D /* VisualEffectBlurTest02ViewController.swift */,
+				88F123612AB2D5DD00DEB121 /* VisualEffectBlurTestViewController.swift */,
 				88F123822AB341D800DEB121 /* BlurViewBasicUsage01ViewController.swift */,
 				88AF8CB02C2333320086A6AD /* VisualEffectViewExperiment01ViewController.swift */,
 				88F123792AB30FF600DEB121 /* BlurViewSwiftUIBasicUsage01ViewController.swift */,
@@ -203,6 +206,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8815150E2CB4DBD800710B9B /* VisualEffectBlurTest03ViewController.swift in Sources */,
 				88F7286D2C308AB5005B49D0 /* LayerFilterType+Extensions.swift in Sources */,
 				88F123622AB2D5DD00DEB121 /* VisualEffectBlurTestViewController.swift in Sources */,
 				8853DBED2C6CF8D6000E229D /* VisualEffectBlurTest02ViewController.swift in Sources */,

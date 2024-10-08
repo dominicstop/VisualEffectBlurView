@@ -1,7 +1,7 @@
 PODS:
-  - DGSwiftUtilities (0.26.0)
-  - VisualEffectBlurView (3.0.0):
-    - DGSwiftUtilities (~> 0.26)
+  - DGSwiftUtilities (0.29.0)
+  - VisualEffectBlurView (3.3.0):
+    - DGSwiftUtilities (~> 0.29)
 
 DEPENDENCIES:
   - VisualEffectBlurView (from `../`)
@@ -15,8 +15,8 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  DGSwiftUtilities: e47f69c753a86d0b3c264b78c39544dd94d51d73
-  VisualEffectBlurView: b25bb8736bef48f4a1976a4f8cf4dd0d02294e2a
+  DGSwiftUtilities: 626565e1ee90ddacebd8520ea1ce730110ad13e4
+  VisualEffectBlurView: 7c5bce3629ca0ec8d9ce3d962c6d9832cc745b57
 
 PODFILE CHECKSUM: 4e320d5e8aaf6844720ffe95aac99d04762cc67b
 
