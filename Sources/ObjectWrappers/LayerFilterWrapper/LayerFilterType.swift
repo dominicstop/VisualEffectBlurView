@@ -674,7 +674,6 @@ public enum LayerFilterType {
       );
     };
   };
-  
 };
 
 // MARK: - LayerFilterType+StaticAlias
@@ -951,5 +950,237 @@ fileprivate extension Dictionary where Key == String, Value == Any {
       
       self[keyValue] = newValue;
     }
+  };
+};
+
+// MARK: - LayerFilterType+LerpHelpers
+// -----------------------------------
+
+extension LayerFilterType {
+  
+  public static func lerp(
+    valueStart: Self,
+    valueEnd: Self,
+    percent: CGFloat,
+    easing: InterpolationEasing
+  ) throws -> Self {
+  
+    switch (valueStart, valueEnd) {
+      case (
+        let .luminosityCurveMap(amountStart, valuesStart),
+        let .luminosityCurveMap(amountEnd, valuesEnd)
+      ) where valuesStart.count == valuesEnd.count:
+    
+        let amountInterpolated = CGFloat.lerp(
+          valueStart: amountStart,
+          valueEnd: amountEnd,
+          percent: percent,
+          easing: easing
+        );
+        
+        let valuesInterpolated: [CGFloat] = valuesStart.enumerated().map {
+          let valueStart = $0.element;
+          let valueEnd = valuesEnd[$0.offset];
+          
+          return .lerp(
+            valueStart: valueStart,
+            valueEnd: valueEnd,
+            percent: percent,
+            easing: easing
+          );
+        };
+        
+        return .luminosityCurveMap(
+          amount: amountInterpolated,
+          values: valuesInterpolated
+        );
+
+      case (
+        let .colorBlackAndWhite(amountStart),
+        let .colorBlackAndWhite(amountEnd)
+      ):
+        let amountInterpolated = CGFloat.lerp(
+          valueStart: amountStart,
+          valueEnd: amountEnd,
+          percent: percent,
+          easing: easing
+        );
+        
+        return .colorBlackAndWhite(amount: amountInterpolated);
+      
+      case (
+        let .saturateColors(amountStart),
+        let .saturateColors(amountEnd)
+      ):
+        let amountInterpolated = CGFloat.lerp(
+          valueStart: amountStart,
+          valueEnd: amountEnd,
+          percent: percent,
+          easing: easing
+        );
+        
+        return .saturateColors(amount: amountInterpolated);
+        
+      case (
+        let .brightenColors(amountStart),
+        let .brightenColors(amountEnd)
+      ):
+        let amountInterpolated = CGFloat.lerp(
+          valueStart: amountStart,
+          valueEnd: amountEnd,
+          percent: percent,
+          easing: easing
+        );
+
+        return .brightenColors(amount: amountInterpolated);
+        
+      case (
+        let .contrastColors(amountStart),
+        let .contrastColors(amountEnd)
+      ):
+        let amountInterpolated = CGFloat.lerp(
+          valueStart: amountStart,
+          valueEnd: amountEnd,
+          percent: percent,
+          easing: easing
+        );
+        
+        return .contrastColors(amount: amountInterpolated);
+      
+      case (
+        let .luminanceCompression(amountStart),
+        let .luminanceCompression(amountEnd)
+      ):
+        let amountInterpolated = CGFloat.lerp(
+          valueStart: amountStart,
+          valueEnd: amountEnd,
+          percent: percent,
+          easing: easing
+        );
+        
+        return .luminanceCompression(amount: amountInterpolated);
+        
+      case (
+        let .bias(amountStart),
+        let .bias(amountEnd)
+      ):
+        let amountInterpolated = CGFloat.lerp(
+          valueStart: amountStart,
+          valueEnd: amountEnd,
+          percent: percent,
+          easing: easing
+        );
+        
+        return .bias(amount: amountInterpolated);
+        
+      case (
+        let .gaussianBlur(radiusStart, _),
+        let .gaussianBlur(radiusEnd, shouldNormalizeEdges)
+      ):
+        let radiusInterpolated = CGFloat.lerp(
+          valueStart: radiusStart,
+          valueEnd: radiusEnd,
+          percent: percent,
+          easing: easing
+        );
+        
+        return .gaussianBlur(
+          radius: radiusInterpolated,
+          shouldNormalizeEdges: shouldNormalizeEdges
+        );
+        
+      case (
+        let .darkVibrant(_, color0Start, color1Start),
+        let .darkVibrant(isReversed, color0End, color1End)
+      ):
+      
+        let color0Start: UIColor = .init(cgColor: color0Start);
+        let color1Start: UIColor = .init(cgColor: color1Start);
+        
+        let color0End: UIColor = .init(cgColor: color0End);
+        let color1End: UIColor = .init(cgColor: color1End);
+      
+        let color0Interpolated = UIColor.lerp(
+          valueStart: color0Start,
+          valueEnd: color0End,
+          percent: percent,
+          easing: easing
+        );
+        
+        let color1Interpolated = UIColor.lerp(
+          valueStart: color1Start,
+          valueEnd: color1End,
+          percent: percent,
+          easing: easing
+        );
+        
+        return .darkVibrant(
+          isReversed: isReversed,
+          color0: color0Interpolated.cgColor,
+          color1: color1Interpolated.cgColor
+        );
+    
+      case (
+        let .lightVibrant(_, color0Start, color1Start),
+        let .lightVibrant(isReversed, color0End, color1End)
+      ):
+        let color0Start: UIColor = .init(cgColor: color0Start);
+        let color1Start: UIColor = .init(cgColor: color1Start);
+        
+        let color0End: UIColor = .init(cgColor: color0End);
+        let color1End: UIColor = .init(cgColor: color1End);
+      
+        let color0Interpolated = UIColor.lerp(
+          valueStart: color0Start,
+          valueEnd: color0End,
+          percent: percent,
+          easing: easing
+        );
+        
+        let color1Interpolated = UIColor.lerp(
+          valueStart: color1Start,
+          valueEnd: color1End,
+          percent: percent,
+          easing: easing
+        );
+      
+        return .lightVibrant(
+          isReversed: isReversed,
+          color0: color0Interpolated.cgColor,
+          color1: color1Interpolated.cgColor
+        );
+    
+      case (
+        let .colorMatrixVibrant(colorMatrixStart),
+        let .colorMatrixVibrant(colorMatrixEnd)
+      ):
+        let colorMatrixInterpolated: ColorMatrixRGBA = .lerp(
+          valueStart: colorMatrixStart,
+          valueEnd: colorMatrixEnd,
+          percent: percent,
+          easing: easing
+        );
+      
+        return .colorMatrixVibrant(colorMatrixInterpolated);
+        
+      case (
+        let .colorMatrix(colorMatrixStart),
+        let .colorMatrix(colorMatrixEnd)
+      ):
+        let colorMatrixInterpolated: ColorMatrixRGBA = .lerp(
+          valueStart: colorMatrixStart,
+          valueEnd: colorMatrixEnd,
+          percent: percent,
+          easing: easing
+        );
+      
+        return .colorMatrix(colorMatrixInterpolated);
+        
+      default:
+        throw VisualEffectBlurViewError(
+          errorCode: .invalidArgument,
+          description: "lerp not supported for \(type(of: valueStart)) and \(type(of: valueEnd))"
+        );
+    };
   };
 };
