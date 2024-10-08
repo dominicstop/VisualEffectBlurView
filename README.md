@@ -28,7 +28,7 @@ Version `3.x` of this library was made possible through a generous `$3,250` spon
 
 <br>
 
-Very special thanks to: [junzhengca](https://github.com/junzhengca), [brentvatne](https://github.com/brentvatne), and [expo](https://github.com/expo) for sponsoring my work 🥺
+very special thanks to: [junzhengca](https://github.com/junzhengca), [brentvatne](https://github.com/brentvatne), and [expo](https://github.com/expo) for sponsoring my work 🥺 (if you have the extra means to do so, please considering sponsoring [here](https://github.com/sponsors/dominicstop))
 
 <br><br>
 
