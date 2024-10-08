@@ -69,7 +69,7 @@ class ViewController: UIViewController {
     let blurContainerView: UIView = {
       let containerView = UIView();
       
-      let bgBlurView = VisualEffectBlurView(blurEffectStyle: .dark);
+      let bgBlurView = try! VisualEffectBlurView(blurEffectStyle: .dark);
       self.visualEffectBlurView = bgBlurView;
       
       bgBlurView.blurRadius = 0;
@@ -125,7 +125,7 @@ class ViewController: UIViewController {
       
       slider.addTarget(
         self,
-        action: #selector(self.onIntensitySliderValueChanged(_:)),
+        action: #selector(self.onBlurSliderValueChanged(_:)),
         for: .valueChanged
       );
       
