@@ -12,8 +12,11 @@ import DGSwiftUtilities
 enum Route: String, CaseIterable {
   
   case routeList;
+  
   case visualEffectBlurTest;
   case visualEffectBlurTest02;
+  case visualEffectBlurTest03;
+  
   case visualEffectViewExperiment01;
   case visualEffectViewExperiment02;
   
@@ -30,6 +33,9 @@ enum Route: String, CaseIterable {
         
       case .visualEffectBlurTest02:
         return VisualEffectBlurTest02ViewController();
+        
+      case .visualEffectBlurTest03:
+        return VisualEffectBlurTest03ViewController();
         
       case .visualEffectViewExperiment01:
         return VisualEffectViewExperiment01ViewController();
@@ -50,10 +56,10 @@ enum Route: String, CaseIterable {
       case .routeList:
         return "Route List";
         
-      case .visualEffectBlurTest:
-        return "VisualEffectBlurView";
-        
-      case .visualEffectBlurTest02:
+      case .visualEffectBlurTest,
+           .visualEffectBlurTest02,
+           .visualEffectBlurTest03:
+           
         return "VisualEffectBlurView";
         
       case .visualEffectViewExperiment01:
@@ -115,6 +121,11 @@ enum Route: String, CaseIterable {
       case .visualEffectBlurTest02:
         return [
           .init(text: "VisualEffectBlurView Blur Effect Intensity Test"),
+        ];
+        
+      case .visualEffectBlurTest03:
+        return [
+          .init(text: "VisualEffectBlurView Blur Effect Intensity + animation test"),
         ];
         
       case .visualEffectViewExperiment01:

@@ -1,16 +1,18 @@
 //
-//  VisualEffectBlurTest02ViewController.swift
+//  VisualEffectBlurTest03ViewController.swift
 //  
 //
-//  Created by Dominic Go on 8/14/24.
+//  Created by Dominic Go on 10/8/24.
 //
+
+import Foundation
 
 import UIKit
 import DGSwiftUtilities
 import VisualEffectBlurView
 
 
-class VisualEffectBlurTest02ViewController: UIViewController {
+class VisualEffectBlurTest03ViewController: UIViewController {
 
   weak var visualEffectBlurView: VisualEffectBlurView?;
   weak var effectIntensitySlider: UISlider?;
@@ -122,13 +124,14 @@ class VisualEffectBlurTest02ViewController: UIViewController {
       slider.minimumValue = 0;
       slider.maximumValue = 1;
       slider.value = 1;
-      slider.isContinuous = true;
+      slider.isContinuous = false;
       
       slider.addTarget(
         self,
         action: #selector(self.onIntensitySliderValueChanged(_:)),
         for: .valueChanged
       );
+      
       
       return slider;
     }();
@@ -306,9 +309,32 @@ class VisualEffectBlurTest02ViewController: UIViewController {
     let sliderValue = CGFloat(sender.value);
     
     intensityLabel.text = String(format: "%.3f", sender.value) + "%";
-    blurRadiusLabel.text = String(format: "%.3f", visualEffectBlurView.blurRadius);
+    // blurRadiusLabel.text = String(format: "%.3f", visualEffectBlurView.blurRadius);
     
-    visualEffectBlurView.setEffectIntensityViaAnimator(sliderValue);
+    let animator = UIViewPropertyAnimator(
+      duration: 0,
+      curve: .linear
+    );
+    
+    animator.addAnimations {
+      visualEffectBlurView.blurEffectStyle = .regular;
+    };
+    
+    let animationBlocks =
+      try! visualEffectBlurView.createSetEffectIntensityAnimationBlock(
+        nextEffectIntensity: sliderValue,
+        prevEffectIntensity: 1
+      );
+    
+    // animationBlocks.start();
+    UIView.animate(withDuration: 1, delay: 0) {
+      animationBlocks.end();
+    };
+    
+    
+    
+    
+    //visualEffectBlurView.setEffectIntensity(sliderValue);
   };
   
   @objc func onPressButtonNextEffect(_ sender: UIButton){
@@ -318,12 +344,9 @@ class VisualEffectBlurTest02ViewController: UIViewController {
           let blurRadiusLabel = self.blurRadiusLabel,
           let intensityLabel = self.intensityLabel,
           let effectIntensitySlider = self.effectIntensitySlider
-    else {
-      return;
-    };
+    else { return };
     
-    visualEffectBlurView.blurEffectStyle = self.currentBlurEffectStyle;
-    visualEffectBlurView.clearAnimator();
+    visualEffectBlurView.blurEffectStyle = self.currentBlurEffectStyle;    visualEffectBlurView.clearAnimator();
     
     let effectIntensity =
       visualEffectBlurView.animatorWrapper?.animator.fractionComplete ?? 1;
