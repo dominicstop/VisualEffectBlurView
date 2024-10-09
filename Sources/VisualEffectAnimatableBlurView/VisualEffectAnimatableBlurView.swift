@@ -9,14 +9,11 @@ import UIKit
 import DGSwiftUtilities
 
 
-
-
-public class VisualEffectSimplifiedBlurView: VisualEffectBlurView {
+public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
   
   public typealias BlurMode = VisualEffectBlurMode;
   
   public var previousBlurMode: BlurMode?;
-  
   public var currentBlurMode: BlurMode = .blurEffectNone;
   
   public init(blurMode: BlurMode) throws {
@@ -45,7 +42,7 @@ public class VisualEffectSimplifiedBlurView: VisualEffectBlurView {
       case (.blurEffectNone, _):
         self.effect = nil;
         
-      case (let .blurEffectStandard(blurStyle), _):
+      case (let .blurEffectSystem(blurStyle), _):
         if willChangeBlurEffect {
           let blurEffect = UIBlurEffect(style: blurStyle);
           self.effect = blurEffect;
@@ -102,4 +99,34 @@ public class VisualEffectSimplifiedBlurView: VisualEffectBlurView {
     self.currentBlurMode = nextBlurMode;
   };
   
+  public func createAnimationBlocks(
+    applyingBlurMode nextBlurMode: BlurMode
+  ) throws -> (
+    start: () -> Void,
+    end: () -> Void
+  ) {
+    
+    let currentBlurMode = self.currentBlurMode;
+    self.clearAnimator();
+    
+    let isRemovingBlurEffect =
+      currentBlurMode.hasBlurEffect && !nextBlurMode.hasBlurEffect;
+      
+    let isAddingBlurEffect =
+      !currentBlurMode.hasBlurEffect && nextBlurMode.hasBlurEffect;
+    
+    let willChangeBlurEffect =
+         currentBlurMode.hasBlurEffect
+      && nextBlurMode.hasBlurEffect
+      && currentBlurMode.blurEffectStyle != nextBlurMode.blurEffectStyle;
+    
+    return (
+      start: {
+      
+      },
+      end: {
+      
+      }
+    );
+  };
 };

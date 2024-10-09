@@ -12,7 +12,7 @@ import DGSwiftUtilities
 public enum VisualEffectBlurMode {
   case blurEffectNone;
   
-  case blurEffectStandard(blurStyle: UIBlurEffect.Style);
+  case blurEffectSystem(blurStyle: UIBlurEffect.Style);
   
   case blurEffectCustomIntensity(
     blurStyle: UIBlurEffect.Style,
@@ -33,7 +33,7 @@ public enum VisualEffectBlurMode {
       case .blurEffectNone:
         return nil;
   
-      case let .blurEffectStandard(blurStyle):
+      case let .blurEffectSystem(blurStyle):
         return blurStyle;
       
       case let .blurEffectCustomIntensity(blurStyle, _):
@@ -49,7 +49,7 @@ public enum VisualEffectBlurMode {
       case .blurEffectNone:
         return nil;
   
-      case .blurEffectStandard:
+      case .blurEffectSystem:
         return nil;
       
       case let .blurEffectCustomIntensity(_ ,effectIntensity):
@@ -75,8 +75,8 @@ extension VisualEffectBlurMode: EnumCaseStringRepresentable {
       case .blurEffectNone:
         return "blurEffectNone";
         
-      case .blurEffectStandard:
-        return "blurEffectStandard";
+      case .blurEffectSystem:
+        return "blurEffectSystem";
         
       case .blurEffectCustomIntensity:
         return "blurEffectCustomIntensity";
