@@ -309,32 +309,18 @@ class VisualEffectBlurTest03ViewController: UIViewController {
     let sliderValue = CGFloat(sender.value);
     
     intensityLabel.text = String(format: "%.3f", sender.value) + "%";
-    // blurRadiusLabel.text = String(format: "%.3f", visualEffectBlurView.blurRadius);
     
-    let animator = UIViewPropertyAnimator(
-      duration: 0,
-      curve: .linear
+    let animationBlocks = try! visualEffectBlurView.createSetEffectIntensityAnimationBlock(
+      nextEffectIntensity: sliderValue,
+      prevEffectIntensity: 1
     );
     
-    animator.addAnimations {
-      visualEffectBlurView.blurEffectStyle = .regular;
-    };
-    
-    let animationBlocks =
-      try! visualEffectBlurView.createSetEffectIntensityAnimationBlock(
-        nextEffectIntensity: sliderValue,
-        prevEffectIntensity: 1
-      );
-    
-    // animationBlocks.start();
     UIView.animate(withDuration: 1, delay: 0) {
       animationBlocks.end();
+    } completion: { _ in
+      
+      blurRadiusLabel.text = String(format: "%.3f", visualEffectBlurView.blurRadius);
     };
-    
-    
-    
-    
-    //visualEffectBlurView.setEffectIntensity(sliderValue);
   };
   
   @objc func onPressButtonNextEffect(_ sender: UIButton){
@@ -346,15 +332,14 @@ class VisualEffectBlurTest03ViewController: UIViewController {
           let effectIntensitySlider = self.effectIntensitySlider
     else { return };
     
-    visualEffectBlurView.blurEffectStyle = self.currentBlurEffectStyle;    visualEffectBlurView.clearAnimator();
+    visualEffectBlurView.blurEffectStyle = self.currentBlurEffectStyle;
     
-    let effectIntensity =
-      visualEffectBlurView.animatorWrapper?.animator.fractionComplete ?? 1;
-    
+    let nextEffectIntensity: CGFloat = 1;
     let currentBlurRadius = floor(visualEffectBlurView.blurRadius);
-    blurRadiusLabel.text = "\(currentBlurRadius)";
-    intensityLabel.text = String(format: "%.3f", effectIntensity) + "%";
     
-    effectIntensitySlider.value = 1;
+    blurRadiusLabel.text = "\(currentBlurRadius)";
+    intensityLabel.text = String(format: "%.3f", nextEffectIntensity) + "%";
+    
+    effectIntensitySlider.value = Float(nextEffectIntensity);
   };
 };
