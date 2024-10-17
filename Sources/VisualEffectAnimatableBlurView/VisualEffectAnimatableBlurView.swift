@@ -27,52 +27,25 @@ public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
   
   public func applyBlurMode(
     _ nextBlurMode: BlurMode,
-    useAnimationFriendlyWorkaround: Bool = false
+    useAnimationFriendlyWorkaround: Bool = true
   ) throws {
+    let nextBlurStyle =
+         nextBlurMode.blurEffectStyle
+      ?? self.blurEffectStyle
+      ?? .regular;
+    
     let currentBlurMode = self.currentBlurMode;
     
-    let willChangeBlurEffect =
-      currentBlurMode.blurEffectStyle != nextBlurMode.blurEffectStyle;
-      
     if useAnimationFriendlyWorkaround {
       self.clearAnimator();
     };
-    
-    switch (currentBlurMode, useAnimationFriendlyWorkaround) {
+        
+    if nextBlurStyle != self.blurEffectStyle {
+      self.blurEffectStyle = nextBlurStyle;
+    };
+        
+    switch (nextBlurMode, useAnimationFriendlyWorkaround) {
       case (.blurEffectNone, _):
-        self.effect = nil;
-        
-      case (let .blurEffectSystem(blurStyle), _):
-        if willChangeBlurEffect {
-          let blurEffect = UIBlurEffect(style: blurStyle);
-          self.effect = blurEffect;
-        };
-      
-      case (let .blurEffectCustomIntensity(blurStyle, effectIntensity), true):
-        if willChangeBlurEffect {
-          let blurEffect = UIBlurEffect(style: blurStyle);
-          self.effect = blurEffect;
-        };
-        
-        guard #available(iOS 13, *) else {
-          fallthrough;
-        };
-        
-        try self.setEffectIntensityViaEffectDescriptor(
-          intensityPercent: effectIntensity,
-          shouldImmediatelyApply: true,
-          shouldAdjustOpacityForOtherSubviews: true
-        );
-        
-      case (let .blurEffectCustomIntensity(blurStyle, effectIntensity), _):
-        if willChangeBlurEffect {
-          let blurEffect = UIBlurEffect(style: blurStyle);
-          self.effect = blurEffect;
-        };
-        
-        self.setEffectIntensityViaAnimator(effectIntensity);
-        
-      case (let .blurEffectCustomBlurRadius(blurStyle, customBlurRadius, effectIntensityForOtherEffects), _):
         guard #available(iOS 13, *) else {
           throw VisualEffectBlurViewError(
             errorCode: .runtimeError,
@@ -80,18 +53,75 @@ public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
           );
         };
         
-        if willChangeBlurEffect {
-          let blurEffect = UIBlurEffect(style: blurStyle);
-          self.effect = blurEffect;
+        self.alpha = 0;
+        try self.setEffectIntensityViaEffectDescriptor(
+          intensityPercent: 0,
+          shouldImmediatelyApply: true,
+          shouldAdjustOpacityForOtherSubviews: true
+        );
+        
+      case (.blurEffectSystem, _):
+        guard #available(iOS 13, *) else {
+          throw VisualEffectBlurViewError(
+            errorCode: .runtimeError,
+            description: "Not supported for current iOS version"
+          );
         };
         
+        let defaultBlurRadius =
+             self.blurEffectStyle?.defaultBlurRadius
+          ?? self.defaultBlurRadius;
+        
+        self.alpha = 1;
+        try self.setBlurRadius(
+          defaultBlurRadius,
+          shouldImmediatelyApply: false
+        );
+        
+        try self.setEffectIntensityViaEffectDescriptor(
+          intensityPercent: 1,
+          shouldImmediatelyApply: true,
+          shouldAdjustOpacityForOtherSubviews: true
+        );
+      
+      case (let .blurEffectCustomIntensity(_, effectIntensity), true):
+        guard #available(iOS 13, *) else {
+          throw VisualEffectBlurViewError(
+            errorCode: .runtimeError,
+            description: "Not supported for current iOS version"
+          );
+        };
+        
+        self.alpha = 1;
+        try self.setEffectIntensityViaEffectDescriptor(
+          intensityPercent: effectIntensity,
+          shouldImmediatelyApply: true,
+          shouldAdjustOpacityForOtherSubviews: true
+        );
+        
+      case (let .blurEffectCustomIntensity(_, effectIntensity), false):
+        self.setEffectIntensityViaAnimator(effectIntensity);
+        
+      case (let .blurEffectCustomBlurRadius(_, customBlurRadius, effectIntensityForOtherEffects), _):
+        guard #available(iOS 13, *) else {
+          throw VisualEffectBlurViewError(
+            errorCode: .runtimeError,
+            description: "Not supported for current iOS version"
+          );
+        };
+        
+        self.alpha = 1;
         try self.setEffectIntensityViaEffectDescriptor(
           intensityPercent: effectIntensityForOtherEffects,
           shouldImmediatelyApply: false,
           shouldAdjustOpacityForOtherSubviews: true
         );
         
-        try self.setBlurRadius(customBlurRadius);
+        try self.setBlurRadius(
+          customBlurRadius,
+          shouldImmediatelyApply: false
+        );
+        
         try self.applyRequestedFilterEffects();
     };
     
