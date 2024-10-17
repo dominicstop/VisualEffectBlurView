@@ -377,7 +377,11 @@ open class VisualEffectView: UIVisualEffectView {
     let filterDescs: [UVEFilterEntryWrapper] =
       try self.getCurrentFilterEntriesFromCurrentEffectDescriptor();
 
-    try? filterDescs.updateFilterValuesRequested(with: newFilter);
+    try filterDescs.updateFilterValuesRequested(with: newFilter);
+    
+    if shouldImmediatelyApply {
+      try self.applyRequestedFilterEffects();
+    };
   };
   
   public func applyRequestedFilterEffects() throws {
