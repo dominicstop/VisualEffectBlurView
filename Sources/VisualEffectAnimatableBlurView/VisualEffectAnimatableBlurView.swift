@@ -135,31 +135,272 @@ public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
   public func createAnimationBlocks(
     applyingBlurMode nextBlurMode: BlurMode
   ) throws -> (
-    start: () -> Void,
-    end: () -> Void
+    animation: () -> Void,
+    completion: () -> Void
   ) {
-    
     let currentBlurMode = self.currentBlurMode;
     self.clearAnimator();
     
-    let isRemovingBlurEffect =
-      currentBlurMode.hasBlurEffect && !nextBlurMode.hasBlurEffect;
-      
-    let isAddingBlurEffect =
-      !currentBlurMode.hasBlurEffect && nextBlurMode.hasBlurEffect;
+    let transitionMode: VisualEffectBlurTransitionMode = .init(
+      blurModePrev: currentBlurMode,
+      blurModeNext: nextBlurMode
+    );
     
-    let willChangeBlurEffect =
-         currentBlurMode.hasBlurEffect
-      && nextBlurMode.hasBlurEffect
-      && currentBlurMode.blurEffectStyle != nextBlurMode.blurEffectStyle;
+    let commonAnimationBlock = {
+      if transitionMode.isTransitioningFromBlurEffectNoneToAnyBlurMode {
+        return {
+          UIView.addKeyframe(
+            withRelativeStartTime: 0,
+            relativeDuration: 0.1
+          ) {
+            self.alpha = 1;
+          };
+        };
+      };
+      
+      if transitionMode.isTransitioningToBlurEffectNone {
+        return {
+          UIView.addKeyframe(
+            withRelativeStartTime: 0.9,
+            relativeDuration: 0.1
+          ) {
+            self.alpha = 0;
+          };
+        };
+      };
+      
+      return {
+        // no-op
+      };
+    }();
     
-    return (
-      start: {
+    let commonCompletionBlock = {
+      self.previousBlurMode = currentBlurMode;
+      self.currentBlurMode = nextBlurMode;
+    };
+    
+    switch transitionMode {
+      case .noChanges:
+        throw VisualEffectBlurViewError(
+          errorCode: .illegalState,
+          description: "No changes to animate"
+        );
+        
+      case .transitioningToBlurEffectNone:
+        guard #available(iOS 13, *) else {
+          throw VisualEffectBlurViewError(
+            errorCode: .runtimeError,
+            description: "Not supported in current OS version"
+          );
+        };
+        
+        try self.setEffectIntensityViaEffectDescriptor(
+          intensityPercent: 0,
+          shouldImmediatelyApply: false,
+          shouldAdjustOpacityForOtherSubviews: false
+        );
+        
+        return (
+          animation: {
+            try? self.applyRequestedFilterEffects();
+            self.setOpacityForOtherSubviews(newOpacity: 0);
+            commonAnimationBlock();
+          },
+          completion: {
+            commonCompletionBlock();
+          }
+        );
+        
+      case let .updatingBlurEffectSystem(_, blurEffectNext),
+           let .transitioningBlurEffectNoneToBlurEffectSystem(blurEffectNext):
+        
+        return (
+          animation: {
+            self.blurEffectStyle = blurEffectNext;
+            commonAnimationBlock();
+          },
+          completion: {
+            self.blurEffectStyle = blurEffectNext;
+            commonCompletionBlock();
+          }
+        );
+        
+      case let .transitioningFromBlurEffectNoneToBlurEffectCustomBlurRadius(
+        blurEffectNext,
+        customBlurRadiusNext,
+        customEffectIntensityNext
+      ):
+        guard #available(iOS 13, *) else {
+          throw VisualEffectBlurViewError(
+            errorCode: .runtimeError,
+            description: "Not supported in current OS version"
+          );
+        };
+        
+        self.alpha = 0;
+        self.blurEffectStyle = blurEffectNext;
+        
+        try self.setEffectIntensityViaEffectDescriptor(
+          intensityPercent: 0,
+          shouldImmediatelyApply: false,
+          shouldAdjustOpacityForOtherSubviews: true
+        );
+        
+        try self.setEffectIntensityViaEffectDescriptor(
+          intensityPercent: customEffectIntensityNext,
+          shouldImmediatelyApply: false,
+          shouldAdjustOpacityForOtherSubviews: false
+        );
+        
+        try self.setBlurRadius(
+          customBlurRadiusNext,
+          shouldImmediatelyApply: false
+        );
+        
+        return (
+          animation: {
+            try? self.applyRequestedFilterEffects();
+            self.setOpacityForOtherSubviews(newOpacity: 0);
+            commonAnimationBlock();
+          },
+          completion: {
+            commonCompletionBlock();
+          }
+        );
+        
+      case let .transitioningFromBlurEffectNoneToBlurEffectCustomIntensity(
+        blurEffectNext,
+        customEffectIntensityNext
+      ):
+        guard #available(iOS 13, *) else {
+          throw VisualEffectBlurViewError(
+            errorCode: .runtimeError,
+            description: "Not supported in current OS version"
+          );
+        };
+        
+        self.alpha = 0;
+        self.blurEffectStyle = blurEffectNext;
+        
+        try self.setEffectIntensityViaEffectDescriptor(
+          intensityPercent: customEffectIntensityNext,
+          shouldImmediatelyApply: false,
+          shouldAdjustOpacityForOtherSubviews: false
+        );
+        
+        return (
+          animation: {
+            try? self.applyRequestedFilterEffects();
+            self.setOpacityForOtherSubviews(newOpacity: customEffectIntensityNext);
+            commonAnimationBlock();
+          },
+          completion: {
+            commonCompletionBlock();
+          }
+        );
+                
+      case let .updatingBlurEffectCustomIntensity(_, _, nextEffectIntensity):
+        guard #available(iOS 13, *) else {
+          throw VisualEffectBlurViewError(
+            errorCode: .runtimeError,
+            description: "Not supported in current OS version"
+          );
+        };
+        
+        try self.setEffectIntensityViaEffectDescriptor(
+          intensityPercent: nextEffectIntensity,
+          shouldImmediatelyApply: false,
+          shouldAdjustOpacityForOtherSubviews: false
+        );
+        
+        return (
+          animation: {
+            try? self.applyRequestedFilterEffects();
+            self.setOpacityForOtherSubviews(newOpacity: nextEffectIntensity);
+            commonAnimationBlock();
+          },
+          completion: {
+            commonCompletionBlock();
+          }
+        );
+                
+      case let .updatingBlurEffectCustomBlurRadius(_, _, customBlurRadiusNext, _, customEffectIntensityNext):
+        guard #available(iOS 13, *) else {
+          throw VisualEffectBlurViewError(
+            errorCode: .runtimeError,
+            description: "Not supported in current OS version"
+          );
+        };
+        
+        try self.setEffectIntensityViaEffectDescriptor(
+          intensityPercent: customEffectIntensityNext,
+          shouldImmediatelyApply: false,
+          shouldAdjustOpacityForOtherSubviews: false
+        );
+        
+        try self.setBlurRadius(
+          customBlurRadiusNext,
+          shouldImmediatelyApply: false
+        );
+        
+        return (
+          animation: {
+            try? self.applyRequestedFilterEffects();
+            self.setOpacityForOtherSubviews(newOpacity: customEffectIntensityNext);
+            commonAnimationBlock();
+          },
+          completion: {
+            commonCompletionBlock();
+          }
+        );
+        
+      case let .transitioningFromDifferentBlurEffectModesWithSameBlurEffect(_, _, blurModeNext):
+        guard #available(iOS 13, *) else {
+          throw VisualEffectBlurViewError(
+            errorCode: .runtimeError,
+            description: "Not supported in current OS version"
+          );
+        };
+        
+        let nextEffectIntensity = blurModeNext.effectIntensity ?? 1;
+        
+        try self.setEffectIntensityViaEffectDescriptor(
+          intensityPercent: nextEffectIntensity,
+          shouldImmediatelyApply: false,
+          shouldAdjustOpacityForOtherSubviews: false
+        );
+        
+        if let customBlurRadius = blurModeNext.customBlurRadius {
+          try self.setBlurRadius(
+            customBlurRadius,
+            shouldImmediatelyApply: false
+          );
+        };
+        
+        return (
+          animation: {
+            try? self.applyRequestedFilterEffects();
+            self.setOpacityForOtherSubviews(newOpacity: nextEffectIntensity);
+            commonAnimationBlock();
+          },
+          completion: {
+            commonCompletionBlock();
+          }
+        );
       
-      },
-      end: {
-      
-      }
+      case .changingBlurEffectCustomIntensity,
+           .changingBlurEffectCustomBlurRadius,
+           .transitioningFromDifferentBlurEffectModesWithDifferingBlurEffect,
+           .unsupportedTransition:
+        
+        // animation not supported yet
+        try self.applyBlurMode(nextBlurMode);
+        break;
+    };
+    
+    throw VisualEffectBlurViewError(
+      errorCode: .runtimeError,
+      description: "Not supported"
     );
   };
 };
