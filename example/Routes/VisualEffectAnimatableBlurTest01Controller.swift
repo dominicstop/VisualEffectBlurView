@@ -384,6 +384,8 @@ class VisualEffectAnimatableBlurTest01Controller: UIViewController {
           applyingBlurMode: preset.end
         );
         
+        try! animationBlocks.setup();
+        
         UIView.animate(
           withDuration: 1,
           delay: 0.5
