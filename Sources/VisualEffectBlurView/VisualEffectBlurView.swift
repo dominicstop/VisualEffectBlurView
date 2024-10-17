@@ -126,65 +126,17 @@ public class VisualEffectBlurView: VisualEffectView {
   // -----------------
   
   @available(iOS 13, *)
-  public func setBlurRadius(_ blurRadius: CGFloat) throws {
-    guard let effectDescriptorWrapper = self.currentEffectMetadata else {
-      throw VisualEffectBlurViewError(
-        errorCode: .unexpectedNilValue,
-        description: "failed to get: effectDescriptorForCurrentEffect"
-      );
-    };
-    
-    guard let filterItemsWrapped = effectDescriptorWrapper.filterItemsWrapped,
-          filterItemsWrapped.count > 0
-    else {
-      throw VisualEffectBlurViewError(
-        errorCode: .unexpectedNilValue,
-        description: "failed to get: effectDescriptorForCurrentEffect"
-      );
-    };
-
-    let filterItemMatchWrapped = filterItemsWrapped.enumerated().first {
-      guard let filterType = $0.element.filterKind else {
-        return false;
-      };
-    
-      return filterType.lowercased().contains("blur");
-    };
-
-    guard let gaussianBlurFilterEntryWrapped = filterItemMatchWrapped?.element else {
-      throw VisualEffectBlurViewError(
-        errorCode: .unexpectedNilValue,
-        description: "unable to get matching filter from: filterItems"
-      );
-    };
-    
-    guard let filterValuesRequested = gaussianBlurFilterEntryWrapped.filterValuesRequested,
-          filterValuesRequested.count > 0,
-          
-          let filterValuesCurrentCopy =
-            filterValuesRequested.mutableCopy() as? NSMutableDictionary
-    else {
-      throw VisualEffectBlurViewError(
-        errorCode: .unexpectedNilValue,
-        description: "failed to get filterValuesCurrent"
-      );
-    };
-    
-    filterValuesCurrentCopy["inputRadius"] = NSNumber(value: blurRadius);
-    
-    guard let wrapper = self.wrapper,
-          let backgroundHostWrapper = wrapper.hostForBgWrapped,
-          let contentViewWrapper = backgroundHostWrapper.viewContentWrapped
-    else {
-      throw VisualEffectBlurViewError(
-        errorCode: .unexpectedNilValue,
-        description: "failed to get filterValuesCurrent"
-      );
-    };
-    
-    try gaussianBlurFilterEntryWrapped.setFilterValuesRequested(filterValuesCurrentCopy);
-    try backgroundHostWrapper.setEffectDescriptor(effectDescriptorWrapper);
-    try contentViewWrapper.applyRequestedFilterEffects();
+  public func setBlurRadius(
+    _ blurRadius: CGFloat,
+    shouldImmediatelyApply: Bool = true
+  ) throws {
+    try self.updateMatchingFilter(
+      with: .gaussianBlur(
+        radius: blurRadius,
+        shouldNormalizeEdges: true
+      ),
+      shouldImmediatelyApply: shouldImmediatelyApply
+    );
   };
 };
 
