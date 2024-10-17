@@ -63,6 +63,16 @@ public enum VisualEffectBlurMode {
   public var hasBlurEffect: Bool {
     self.blurEffectStyle != nil;
   };
+  
+  public var customBlurRadius: CGFloat? {
+    switch self {
+      case let .blurEffectCustomBlurRadius(_, customBlurRadius, _):
+        return customBlurRadius;
+        
+      default:
+        return nil;
+    };
+  };
 };
 
 // MARK: - VisualEffectBlurMode
