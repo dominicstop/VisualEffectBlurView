@@ -45,6 +45,8 @@ open class VisualEffectView: UIVisualEffectView {
   };
   
   /// Old name: `backdropLayerWrapper`
+  /// Contains the filter effect
+  ///
   public var bgLayerWrapper: BackgroundLayerWrapper? {
     self.viewContentWrapper?.bgLayerWrapper
   };
@@ -544,7 +546,7 @@ open class VisualEffectView: UIVisualEffectView {
     
     subviews.enumerated().forEach {
       print(
-        "\(#function)",
+        "\(self.className).\(#function)",
         "\n - Subview: \($0.offset) of \(subviews.count - 1)",
         "\n - className:", $0.element.className,
         "\n - parentName:", $0.element.superview?.className ?? "N/A",
