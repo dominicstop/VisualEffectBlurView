@@ -18,7 +18,10 @@ public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
   
   public init(blurMode: BlurMode) throws {
     let blurEffectStyle = blurMode.blurEffectStyle;
-    try super.init(blurEffectStyle: blurEffectStyle);
+    let blurEffectStyleInitial = blurEffectStyle ?? .regular;
+    
+    try super.init(blurEffectStyle: blurEffectStyleInitial);
+    try self.applyBlurMode(blurMode);
   };
 
   public required init?(coder: NSCoder) {
