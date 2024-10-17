@@ -201,7 +201,7 @@ open class VisualEffectView: UIVisualEffectView {
     }();
     
     otherSubviews.forEach {
-      $0.alpha = newOpacity;
+      $0.alpha = newOpacity.clamped(min: 0, max: 1);
     };
   };
   
@@ -502,7 +502,7 @@ open class VisualEffectView: UIVisualEffectView {
       end: {
         try? self.applyRequestedFilterEffects();
         self.setOpacityForOtherSubviews(
-          newOpacity: nextEffectIntensity.clamped(min: 0, max: 1)
+          newOpacity: nextEffectIntensity
         );
       }
     );
