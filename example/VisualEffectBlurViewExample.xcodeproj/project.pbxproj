@@ -7,30 +7,38 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8815150E2CB4DBD800710B9B /* VisualEffectBlurTest03ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8815150D2CB4DBD800710B9B /* VisualEffectBlurTest03ViewController.swift */; };
+		881515252CB66DAA00710B9B /* VisualEffectBlurTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8815151C2CB66D8E00710B9B /* VisualEffectBlurTestViewController.swift */; };
+		881515262CB66DAA00710B9B /* RouteListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8815151D2CB66D8E00710B9B /* RouteListViewController.swift */; };
+		881515272CB66DAA00710B9B /* VisualEffectBlurTest03ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8815151E2CB66D8E00710B9B /* VisualEffectBlurTest03ViewController.swift */; };
+		881515282CB66DAA00710B9B /* VisualEffectBlurTest02ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8815151F2CB66D8E00710B9B /* VisualEffectBlurTest02ViewController.swift */; };
+		881515292CB66DAA00710B9B /* VisualEffectViewExperiment02ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881515202CB66D8E00710B9B /* VisualEffectViewExperiment02ViewController.swift */; };
+		8815152B2CB66DAA00710B9B /* VisualEffectViewExperiment01ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881515222CB66D8E00710B9B /* VisualEffectViewExperiment01ViewController.swift */; };
+		8815152C2CB66DAA00710B9B /* BlurViewSwiftUIBasicUsage01ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881515232CB66D8E00710B9B /* BlurViewSwiftUIBasicUsage01ViewController.swift */; };
+		8815152D2CB66DAA00710B9B /* BlurViewBasicUsage01ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881515242CB66D8E00710B9B /* BlurViewBasicUsage01ViewController.swift */; };
+		8815152F2CB66DD300710B9B /* VisualEffectAnimatableBlurTest01Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8815152E2CB66DCD00710B9B /* VisualEffectAnimatableBlurTest01Controller.swift */; };
 		8823BF402C21C1CD00C7238A /* VisualEffectBlurView in Frameworks */ = {isa = PBXBuildFile; productRef = 8823BF3F2C21C1CD00C7238A /* VisualEffectBlurView */; };
-		8853DBED2C6CF8D6000E229D /* VisualEffectBlurTest02ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8853DBEC2C6CF8D6000E229D /* VisualEffectBlurTest02ViewController.swift */; };
 		88625F232AB08D530086B4FC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88625F222AB08D530086B4FC /* AppDelegate.swift */; };
 		88625F252AB08D530086B4FC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88625F242AB08D530086B4FC /* SceneDelegate.swift */; };
 		88625F2C2AB08D550086B4FC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 88625F2B2AB08D550086B4FC /* Assets.xcassets */; };
 		88625F2F2AB08D550086B4FC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 88625F2D2AB08D550086B4FC /* LaunchScreen.storyboard */; };
 		88AF8CAB2C21C9360086A6AD /* Routes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88AF8CAA2C21C9350086A6AD /* Routes.swift */; };
 		88AF8CAD2C231A020086A6AD /* RouteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88AF8CAC2C231A010086A6AD /* RouteManager.swift */; };
-		88AF8CAF2C231A430086A6AD /* RouteListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88AF8CAE2C231A430086A6AD /* RouteListViewController.swift */; };
-		88AF8CB12C2333320086A6AD /* VisualEffectViewExperiment01ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88AF8CB02C2333320086A6AD /* VisualEffectViewExperiment01ViewController.swift */; };
-		88D6B5A92C3EFD8C005E900B /* VisualEffectViewExperiment02ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D6B5A82C3EFD8C005E900B /* VisualEffectViewExperiment02ViewController.swift */; };
-		88F123622AB2D5DD00DEB121 /* VisualEffectBlurTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F123612AB2D5DD00DEB121 /* VisualEffectBlurTestViewController.swift */; };
-		88F1237A2AB30FF600DEB121 /* BlurViewSwiftUIBasicUsage01ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F123792AB30FF600DEB121 /* BlurViewSwiftUIBasicUsage01ViewController.swift */; };
-		88F123832AB341D800DEB121 /* BlurViewBasicUsage01ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F123822AB341D800DEB121 /* BlurViewBasicUsage01ViewController.swift */; };
 		88F7286B2C286C64005B49D0 /* NSValue+NSValue_Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 88F7286A2C286C64005B49D0 /* NSValue+NSValue_Helpers.m */; };
 		88F7286D2C308AB5005B49D0 /* LayerFilterType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F7286C2C308AB5005B49D0 /* LayerFilterType+Extensions.swift */; };
 		88F728712C30975D005B49D0 /* ColorMatrixRGBA+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F728702C30975D005B49D0 /* ColorMatrixRGBA+Helpers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		8815150D2CB4DBD800710B9B /* VisualEffectBlurTest03ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectBlurTest03ViewController.swift; sourceTree = "<group>"; };
+		8815151C2CB66D8E00710B9B /* VisualEffectBlurTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectBlurTestViewController.swift; sourceTree = "<group>"; };
+		8815151D2CB66D8E00710B9B /* RouteListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteListViewController.swift; sourceTree = "<group>"; };
+		8815151E2CB66D8E00710B9B /* VisualEffectBlurTest03ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectBlurTest03ViewController.swift; sourceTree = "<group>"; };
+		8815151F2CB66D8E00710B9B /* VisualEffectBlurTest02ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectBlurTest02ViewController.swift; sourceTree = "<group>"; };
+		881515202CB66D8E00710B9B /* VisualEffectViewExperiment02ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectViewExperiment02ViewController.swift; sourceTree = "<group>"; };
+		881515222CB66D8E00710B9B /* VisualEffectViewExperiment01ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectViewExperiment01ViewController.swift; sourceTree = "<group>"; };
+		881515232CB66D8E00710B9B /* BlurViewSwiftUIBasicUsage01ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurViewSwiftUIBasicUsage01ViewController.swift; sourceTree = "<group>"; };
+		881515242CB66D8E00710B9B /* BlurViewBasicUsage01ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurViewBasicUsage01ViewController.swift; sourceTree = "<group>"; };
+		8815152E2CB66DCD00710B9B /* VisualEffectAnimatableBlurTest01Controller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectAnimatableBlurTest01Controller.swift; sourceTree = "<group>"; };
 		8823BF3E2C21C1BC00C7238A /* VisualEffectBlurView */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = VisualEffectBlurView; path = ..; sourceTree = "<group>"; };
-		8853DBEC2C6CF8D6000E229D /* VisualEffectBlurTest02ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualEffectBlurTest02ViewController.swift; sourceTree = "<group>"; };
 		88625F1F2AB08D530086B4FC /* VisualEffectBlurViewExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VisualEffectBlurViewExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		88625F222AB08D530086B4FC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		88625F242AB08D530086B4FC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -39,12 +47,6 @@
 		88625F302AB08D550086B4FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		88AF8CAA2C21C9350086A6AD /* Routes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Routes.swift; sourceTree = "<group>"; };
 		88AF8CAC2C231A010086A6AD /* RouteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteManager.swift; sourceTree = "<group>"; };
-		88AF8CAE2C231A430086A6AD /* RouteListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteListViewController.swift; sourceTree = "<group>"; };
-		88AF8CB02C2333320086A6AD /* VisualEffectViewExperiment01ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectViewExperiment01ViewController.swift; sourceTree = "<group>"; };
-		88D6B5A82C3EFD8C005E900B /* VisualEffectViewExperiment02ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectViewExperiment02ViewController.swift; sourceTree = "<group>"; };
-		88F123612AB2D5DD00DEB121 /* VisualEffectBlurTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectBlurTestViewController.swift; sourceTree = "<group>"; };
-		88F123792AB30FF600DEB121 /* BlurViewSwiftUIBasicUsage01ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurViewSwiftUIBasicUsage01ViewController.swift; sourceTree = "<group>"; };
-		88F123822AB341D800DEB121 /* BlurViewBasicUsage01ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlurViewBasicUsage01ViewController.swift; sourceTree = "<group>"; };
 		88F728682C286C63005B49D0 /* VisualEffectBlurViewExample-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "VisualEffectBlurViewExample-Bridging-Header.h"; sourceTree = "<group>"; };
 		88F728692C286C64005B49D0 /* NSValue+NSValue_Helpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSValue+NSValue_Helpers.h"; sourceTree = "<group>"; };
 		88F7286A2C286C64005B49D0 /* NSValue+NSValue_Helpers.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSValue+NSValue_Helpers.m"; sourceTree = "<group>"; };
@@ -64,11 +66,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8815151B2CB66D8E00710B9B /* Routes */ = {
+			isa = PBXGroup;
+			children = (
+				8815152E2CB66DCD00710B9B /* VisualEffectAnimatableBlurTest01Controller.swift */,
+				8815151C2CB66D8E00710B9B /* VisualEffectBlurTestViewController.swift */,
+				8815151D2CB66D8E00710B9B /* RouteListViewController.swift */,
+				8815151E2CB66D8E00710B9B /* VisualEffectBlurTest03ViewController.swift */,
+				8815151F2CB66D8E00710B9B /* VisualEffectBlurTest02ViewController.swift */,
+				881515202CB66D8E00710B9B /* VisualEffectViewExperiment02ViewController.swift */,
+				881515222CB66D8E00710B9B /* VisualEffectViewExperiment01ViewController.swift */,
+				881515232CB66D8E00710B9B /* BlurViewSwiftUIBasicUsage01ViewController.swift */,
+				881515242CB66D8E00710B9B /* BlurViewBasicUsage01ViewController.swift */,
+			);
+			path = Routes;
+			sourceTree = "<group>";
+		};
 		88625F162AB08D530086B4FC = {
 			isa = PBXGroup;
 			children = (
 				8823BF3E2C21C1BC00C7238A /* VisualEffectBlurView */,
-				88F123752AB2FD5E00DEB121 /* Routes */,
+				8815151B2CB66D8E00710B9B /* Routes */,
 				88AF8CA92C21C9350086A6AD /* Sources */,
 				88625F212AB08D530086B4FC /* VisualEffectBlurViewExample */,
 				88625F202AB08D530086B4FC /* Products */,
@@ -108,21 +126,6 @@
 				88F728702C30975D005B49D0 /* ColorMatrixRGBA+Helpers.swift */,
 			);
 			path = Sources;
-			sourceTree = "<group>";
-		};
-		88F123752AB2FD5E00DEB121 /* Routes */ = {
-			isa = PBXGroup;
-			children = (
-				8815150D2CB4DBD800710B9B /* VisualEffectBlurTest03ViewController.swift */,
-				8853DBEC2C6CF8D6000E229D /* VisualEffectBlurTest02ViewController.swift */,
-				88F123612AB2D5DD00DEB121 /* VisualEffectBlurTestViewController.swift */,
-				88F123822AB341D800DEB121 /* BlurViewBasicUsage01ViewController.swift */,
-				88AF8CB02C2333320086A6AD /* VisualEffectViewExperiment01ViewController.swift */,
-				88F123792AB30FF600DEB121 /* BlurViewSwiftUIBasicUsage01ViewController.swift */,
-				88AF8CAE2C231A430086A6AD /* RouteListViewController.swift */,
-				88D6B5A82C3EFD8C005E900B /* VisualEffectViewExperiment02ViewController.swift */,
-			);
-			path = Routes;
 			sourceTree = "<group>";
 		};
 		88FD5DFC2AB0A27A00E89681 /* Frameworks */ = {
@@ -206,20 +209,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8815150E2CB4DBD800710B9B /* VisualEffectBlurTest03ViewController.swift in Sources */,
+				881515252CB66DAA00710B9B /* VisualEffectBlurTestViewController.swift in Sources */,
+				881515262CB66DAA00710B9B /* RouteListViewController.swift in Sources */,
+				881515272CB66DAA00710B9B /* VisualEffectBlurTest03ViewController.swift in Sources */,
+				881515282CB66DAA00710B9B /* VisualEffectBlurTest02ViewController.swift in Sources */,
+				881515292CB66DAA00710B9B /* VisualEffectViewExperiment02ViewController.swift in Sources */,
+				8815152B2CB66DAA00710B9B /* VisualEffectViewExperiment01ViewController.swift in Sources */,
+				8815152C2CB66DAA00710B9B /* BlurViewSwiftUIBasicUsage01ViewController.swift in Sources */,
+				8815152D2CB66DAA00710B9B /* BlurViewBasicUsage01ViewController.swift in Sources */,
 				88F7286D2C308AB5005B49D0 /* LayerFilterType+Extensions.swift in Sources */,
-				88F123622AB2D5DD00DEB121 /* VisualEffectBlurTestViewController.swift in Sources */,
-				8853DBED2C6CF8D6000E229D /* VisualEffectBlurTest02ViewController.swift in Sources */,
 				88625F232AB08D530086B4FC /* AppDelegate.swift in Sources */,
-				88AF8CAF2C231A430086A6AD /* RouteListViewController.swift in Sources */,
-				88D6B5A92C3EFD8C005E900B /* VisualEffectViewExperiment02ViewController.swift in Sources */,
 				88AF8CAB2C21C9360086A6AD /* Routes.swift in Sources */,
+				8815152F2CB66DD300710B9B /* VisualEffectAnimatableBlurTest01Controller.swift in Sources */,
 				88625F252AB08D530086B4FC /* SceneDelegate.swift in Sources */,
-				88AF8CB12C2333320086A6AD /* VisualEffectViewExperiment01ViewController.swift in Sources */,
-				88F123832AB341D800DEB121 /* BlurViewBasicUsage01ViewController.swift in Sources */,
 				88AF8CAD2C231A020086A6AD /* RouteManager.swift in Sources */,
 				88F728712C30975D005B49D0 /* ColorMatrixRGBA+Helpers.swift in Sources */,
-				88F1237A2AB30FF600DEB121 /* BlurViewSwiftUIBasicUsage01ViewController.swift in Sources */,
 				88F7286B2C286C64005B49D0 /* NSValue+NSValue_Helpers.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

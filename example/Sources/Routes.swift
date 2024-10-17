@@ -17,6 +17,8 @@ enum Route: String, CaseIterable {
   case visualEffectBlurTest02;
   case visualEffectBlurTest03;
   
+  case visualEffectAnimatableBlurTest01;
+  
   case visualEffectViewExperiment01;
   case visualEffectViewExperiment02;
   
@@ -36,6 +38,9 @@ enum Route: String, CaseIterable {
         
       case .visualEffectBlurTest03:
         return VisualEffectBlurTest03ViewController();
+        
+      case .visualEffectAnimatableBlurTest01:
+        return VisualEffectAnimatableBlurTest01Controller();
         
       case .visualEffectViewExperiment01:
         return VisualEffectViewExperiment01ViewController();
@@ -61,6 +66,9 @@ enum Route: String, CaseIterable {
            .visualEffectBlurTest03:
            
         return "VisualEffectBlurView";
+        
+      case .visualEffectAnimatableBlurTest01:
+        return "VisualEffectAnimatableBlurView";
         
       case .visualEffectViewExperiment01:
         return "UIVisualEffectView experiment";
@@ -126,6 +134,11 @@ enum Route: String, CaseIterable {
       case .visualEffectBlurTest03:
         return [
           .init(text: "VisualEffectBlurView Blur Effect Intensity + animation test"),
+        ];
+        
+      case .visualEffectAnimatableBlurTest01:
+        return [
+          .init(text: "TBA"),
         ];
         
       case .visualEffectViewExperiment01:
