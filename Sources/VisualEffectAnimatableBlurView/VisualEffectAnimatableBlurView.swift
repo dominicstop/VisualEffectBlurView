@@ -414,4 +414,44 @@ public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
       description: "Not supported"
     );
   };
+  
+  public func createCancellableAnimationBlocks(
+    applyingBlurMode nextBlurMode: BlurMode
+  ) throws -> (
+    setup: () throws -> Void,
+    animation: () -> Void,
+    animationCompletion: () -> Void,
+    cancelAnimation: () -> Void,
+    cancelAnimationCompletion: () -> Void
+  ) {
+    let currentBlurMode = self.currentBlurMode;
+    
+    let animationBlocks = try self.createAnimationBlocks(
+      applyingBlurMode: nextBlurMode
+    );
+    
+    let cancelAnimationBlocks = try self.createAnimationBlocks(
+      applyingBlurMode: currentBlurMode,
+      currentBlurMode: nextBlurMode
+    );
+    
+    return (
+      setup: {
+        try animationBlocks.setup();
+      },
+      animation: {
+        animationBlocks.animation();
+      },
+      animationCompletion: {
+        animationBlocks.completion();
+      },
+      cancelAnimation: {
+        try? cancelAnimationBlocks.setup();
+        cancelAnimationBlocks.animation();
+      },
+      cancelAnimationCompletion: {
+        cancelAnimationBlocks.completion();
+      }
+    );
+  };
 };
