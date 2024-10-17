@@ -9,7 +9,7 @@ import UIKit
 import DGSwiftUtilities
 
 
-public enum VisualEffectBlurMode {
+public enum VisualEffectBlurMode: Equatable {
   case blurEffectNone;
   
   case blurEffectSystem(blurEffectStyle: UIBlurEffect.Style);
