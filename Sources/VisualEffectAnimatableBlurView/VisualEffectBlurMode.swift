@@ -12,15 +12,15 @@ import DGSwiftUtilities
 public enum VisualEffectBlurMode {
   case blurEffectNone;
   
-  case blurEffectSystem(blurStyle: UIBlurEffect.Style);
+  case blurEffectSystem(blurEffectStyle: UIBlurEffect.Style);
   
   case blurEffectCustomIntensity(
-    blurStyle: UIBlurEffect.Style,
+    blurEffectStyle: UIBlurEffect.Style,
     effectIntensity: CGFloat
   );
   
   case blurEffectCustomBlurRadius(
-    blurStyle: UIBlurEffect.Style,
+    blurEffectStyle: UIBlurEffect.Style,
     customBlurRadius: CGFloat,
     effectIntensityForOtherEffects: CGFloat
   );
