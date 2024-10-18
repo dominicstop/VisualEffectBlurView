@@ -262,7 +262,7 @@ class VisualEffectAnimatableBlurTest01Controller: UIViewController {
     self.view.addSubview(overlayContainerView);
     
     defer {
-      self.setupBlurView();
+      self.applyCurrentBlurModePreset();
     }
     
     NSLayoutConstraint.activate([
