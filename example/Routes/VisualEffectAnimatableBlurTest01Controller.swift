@@ -135,6 +135,8 @@ class VisualEffectAnimatableBlurTest01Controller: UIViewController {
   var cardVC: CardViewController?;
   var counter = 0;
   
+  var shouldRecreateBlurViewFromScratch = true;
+  
   var currentPreset: VisualEffectBlurModeEntry {
     Self.blurModeTestPresets[cyclicIndex: self.counter];
   };
@@ -321,36 +323,15 @@ class VisualEffectAnimatableBlurTest01Controller: UIViewController {
         self.counter -= 1;
         self.updateDebugCard();
         
-        let preset = self.currentPreset;
-        
-        guard let blurView = self.blurView else {
-          return;
-        };
-        
-        try! blurView.applyBlurMode(
-          preset.start,
-          useAnimationFriendlyWorkaround: true
-        );
-        
-        let animationBlocks = try! blurView.createAnimationBlocks(
-          applyingBlurMode: preset.end
-        );
-        
-        UIView.animate(withDuration: 1) {
-          animationBlocks.animation();
-        } completion: { isSuccess in
-          
-          print(
-            "\(self.className).\(#function)",
-            "\n - isSuccess:", isSuccess,
-            "\n"
-          );
-          animationBlocks.completion();
-        }
-        
-
-        self.blurView?._debugRecursivelyPrintSubviews();
+        self.applyCurrentBlurModePreset();
       };
+      
+      let longPressGesture = UILongPressGestureRecognizer(
+        target: self,
+        action: #selector(self.handleOnButtonLongPress(_:))
+      );
+      
+      button.addGestureRecognizer(longPressGesture);
       
       return button;
     }();
@@ -372,37 +353,7 @@ class VisualEffectAnimatableBlurTest01Controller: UIViewController {
       button.addAction(for: .primaryActionTriggered){
         self.counter += 1;
         self.updateDebugCard();
-        self.setupBlurView();
-        
-        let preset = self.currentPreset;
-        
-        guard let blurView = self.blurView else {
-          return;
-        };
-        
-        let animationBlocks = try! blurView.createAnimationBlocks(
-          applyingBlurMode: preset.end
-        );
-        
-        try! animationBlocks.setup();
-        
-        UIView.animate(
-          withDuration: 1,
-          delay: 0.5
-        ) {
-          animationBlocks.animation();
-        } completion: { isSuccess in
-          
-          print(
-            "\(self.className).\(#function)",
-            "\n - isSuccess:", isSuccess,
-            "\n"
-          );
-          animationBlocks.completion();
-        }
-        
-
-        self.blurView?._debugRecursivelyPrintSubviews();
+        self.applyCurrentBlurModePreset();
       };
       
       return button;
@@ -499,9 +450,12 @@ class VisualEffectAnimatableBlurTest01Controller: UIViewController {
     
     if let blurViewOld = self.blurView {
       blurViewOld.removeFromSuperview();
+      self.blurView = nil;
     };
     
-    let visualEffectView = try? VisualEffectAnimatableBlurView(blurMode: self.currentPreset.start);
+    let visualEffectView =
+      try? VisualEffectAnimatableBlurView(blurMode: self.currentPreset.start);
+    
     guard let visualEffectView = visualEffectView else {
       return;
     };
@@ -560,6 +514,14 @@ class VisualEffectAnimatableBlurTest01Controller: UIViewController {
                 .init(text: "\(self.counter % Self.blurModeTestPresets.count) of \(Self.blurModeTestPresets.count - 1)")
               ]
             ),
+            .singleRow(
+              label: [
+                .init(text: "shouldRecreateBlurViewFromScratch"),
+              ],
+              value: [
+                .init(text: self.shouldRecreateBlurViewFromScratch.description)
+              ]
+            ),
             .multiLineRow(
               label: [
                 .init(text: "blurTransitionMode"),
@@ -598,8 +560,87 @@ class VisualEffectAnimatableBlurTest01Controller: UIViewController {
     self.cardVC?.applyCardConfig();
   };
   
+  func applyCurrentBlurModePreset(){
+    if self.shouldRecreateBlurViewFromScratch {
+      self.setupBlurView();
+    };
+    
+    let preset = self.currentPreset;
+    
+    guard let blurView = self.blurView else {
+      return;
+    };
+    
+    block:
+    if shouldRecreateBlurViewFromScratch {
+      try! blurView.applyBlurMode(
+        preset.start,
+        useAnimationFriendlyWorkaround: true
+      );
+      
+    } else {
+      let animationBlocks = try? blurView.createAnimationBlocks(
+        applyingBlurMode: preset.start
+      );
+      
+      guard let animationBlocks = animationBlocks else {
+        break block;
+      };
+      
+      try? animationBlocks.setup();
+    
+      UIView.animate(withDuration: 1) {
+        animationBlocks.animation();
+        
+      } completion: { isSuccess in
+        animationBlocks.completion();
+      }
+    };
+    
+    do {
+      let animationBlocks = try blurView.createAnimationBlocks(
+        applyingBlurMode: preset.end
+      );
+      
+      try animationBlocks.setup();
+    
+      UIView.animate(withDuration: 1) {
+        animationBlocks.animation();
+        
+      } completion: { isSuccess in
+        
+        print(
+          "\(self.className).\(#function)",
+          "\n - isSuccess:", isSuccess,
+          "\n"
+        );
+        animationBlocks.completion();
+      };
+      
+    } catch {
+      print(
+        "\(self.className).\(#function)",
+        "\n - animation error",
+        "\n - error: \(error.localizedDescription)"
+      );
+    };
+
+    self.blurView?._debugRecursivelyPrintSubviews();
+  };
+  
   @objc func onPressLabel(_ sender: UILabel!){
     // TBA
+  };
+  
+  @objc func handleOnButtonLongPress(_ sender: UILongPressGestureRecognizer!){
+    switch sender.state {
+      case .ended:
+        self.shouldRecreateBlurViewFromScratch.toggle();
+        self.updateDebugCard();
+      
+      default:
+        break;
+    };
   };
 };
 
