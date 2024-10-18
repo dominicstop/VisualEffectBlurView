@@ -149,6 +149,16 @@ public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
       blurModeNext: nextBlurMode
     );
     
+    let commonSetupBlock: Optional<() -> Void> = {
+      if !transitionMode.isTransitioningFromBlurEffectNoneToAnyBlurMode {
+        return {
+          self.alpha = 1;
+        };
+      };
+      
+      return nil;
+    }();
+    
     let commonAnimationBlock: Optional<() -> Void> = {
       guard shouldAnimateAlpha else {
         return nil;
@@ -196,8 +206,14 @@ public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
     }();
     
     let commonCompletionBlock = {
+      try? self.applyBlurMode(nextBlurMode);
+      
       self.previousBlurMode = currentBlurMode;
       self.currentBlurMode = nextBlurMode;
+      
+      if transitionMode.isTransitioningToBlurEffectNone {
+        self.alpha = 0;
+      };
     };
     
     switch transitionMode {
@@ -222,11 +238,13 @@ public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
               shouldImmediatelyApply: false,
               shouldAdjustOpacityForOtherSubviews: false
             );
+            
+            commonSetupBlock?();
           },
           animation: {
             try? self.applyRequestedFilterEffects();
             self.setOpacityForOtherSubviews(newOpacity: 0);
-            commonAnimationBlock();
+            commonAnimationBlock?();
           },
           completion: {
             commonCompletionBlock();
@@ -238,11 +256,12 @@ public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
         
         return (
           setup: {
-            // no-op
+            commonSetupBlock?();
           },
           animation: {
             self.blurEffectStyle = blurEffectNext;
-            commonAnimationBlock();
+            self.setOpacityForOtherSubviews(newOpacity: 1);
+            commonAnimationBlock?();
           },
           completion: {
             self.blurEffectStyle = blurEffectNext;
@@ -283,11 +302,13 @@ public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
               customBlurRadiusNext,
               shouldImmediatelyApply: false
             );
+            
+            commonSetupBlock?();
           },
           animation: {
             try? self.applyRequestedFilterEffects();
             self.setOpacityForOtherSubviews(newOpacity: 0);
-            commonAnimationBlock();
+            commonAnimationBlock?();
           },
           completion: {
             commonCompletionBlock();
@@ -315,11 +336,13 @@ public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
               shouldImmediatelyApply: false,
               shouldAdjustOpacityForOtherSubviews: false
             );
+            
+            commonSetupBlock?();
           },
           animation: {
             try? self.applyRequestedFilterEffects();
             self.setOpacityForOtherSubviews(newOpacity: customEffectIntensityNext);
-            commonAnimationBlock();
+            commonAnimationBlock?();
           },
           completion: {
             commonCompletionBlock();
@@ -341,11 +364,12 @@ public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
               shouldImmediatelyApply: false,
               shouldAdjustOpacityForOtherSubviews: false
             );
+            commonSetupBlock?();
           },
           animation: {
             try? self.applyRequestedFilterEffects();
             self.setOpacityForOtherSubviews(newOpacity: nextEffectIntensity);
-            commonAnimationBlock();
+            commonAnimationBlock?();
           },
           completion: {
             commonCompletionBlock();
@@ -362,6 +386,7 @@ public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
       
         return (
           setup: {
+            self.alpha = 1;
             try self.setEffectIntensityViaEffectDescriptor(
               intensityPercent: customEffectIntensityNext,
               shouldImmediatelyApply: false,
@@ -372,11 +397,13 @@ public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
               customBlurRadiusNext,
               shouldImmediatelyApply: false
             );
+            
+            commonSetupBlock?();
           },
           animation: {
             try? self.applyRequestedFilterEffects();
             self.setOpacityForOtherSubviews(newOpacity: customEffectIntensityNext);
-            commonAnimationBlock();
+            commonAnimationBlock?();
           },
           completion: {
             commonCompletionBlock();
@@ -407,11 +434,13 @@ public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
                 shouldImmediatelyApply: false
               );
             };
+            
+            commonSetupBlock?();
           },
           animation: {
             try? self.applyRequestedFilterEffects();
             self.setOpacityForOtherSubviews(newOpacity: nextEffectIntensity);
-            commonAnimationBlock();
+            commonAnimationBlock?();
           },
           completion: {
             commonCompletionBlock();
@@ -425,6 +454,7 @@ public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
         
         // animation not supported yet
         try self.applyBlurMode(nextBlurMode);
+        commonSetupBlock?();
         break;
     };
     
