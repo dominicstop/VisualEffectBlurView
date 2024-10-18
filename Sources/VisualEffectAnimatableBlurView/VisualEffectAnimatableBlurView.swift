@@ -134,7 +134,8 @@ public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
   
   public func createAnimationBlocks(
     applyingBlurMode nextBlurMode: BlurMode,
-    currentBlurMode: BlurMode? = nil
+    currentBlurMode: BlurMode? = nil,
+    shouldAnimateAlpha: Bool = false
   ) throws -> (
     setup: () throws -> Void,
     animation: () -> Void,
@@ -148,12 +149,25 @@ public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
       blurModeNext: nextBlurMode
     );
     
-    let commonAnimationBlock = {
+    let commonAnimationBlock: Optional<() -> Void> = {
+      guard shouldAnimateAlpha else {
+        return nil;
+      };
+        
+      let relativeDuration: CGFloat = 1 / 15;
+      
       if transitionMode.isTransitioningFromBlurEffectNoneToAnyBlurMode {
         return {
           UIView.addKeyframe(
             withRelativeStartTime: 0,
-            relativeDuration: 0.1
+            relativeDuration: 0
+          ) {
+            self.alpha = 0;
+          };
+          
+          UIView.addKeyframe(
+            withRelativeStartTime: 0 + relativeDuration,
+            relativeDuration: relativeDuration
           ) {
             self.alpha = 1;
           };
@@ -163,17 +177,22 @@ public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
       if transitionMode.isTransitioningToBlurEffectNone {
         return {
           UIView.addKeyframe(
-            withRelativeStartTime: 0.9,
-            relativeDuration: 0.1
+            withRelativeStartTime: 1.0 - (relativeDuration * 2),
+            relativeDuration: 0
+          ) {
+            self.alpha = 1;
+          };
+          
+          UIView.addKeyframe(
+            withRelativeStartTime: 1 - relativeDuration,
+            relativeDuration: relativeDuration
           ) {
             self.alpha = 0;
           };
         };
       };
       
-      return {
-        // no-op
-      };
+      return nil;
     }();
     
     let commonCompletionBlock = {
