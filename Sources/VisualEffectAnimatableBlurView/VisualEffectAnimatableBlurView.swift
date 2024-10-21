@@ -96,7 +96,7 @@ public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
           );
         };
         
-        self.alpha = 1;
+        self.alpha = effectIntensity <= 0 ? 0 : 1;
         try self.setEffectIntensityViaEffectDescriptor(
           intensityPercent: effectIntensity,
           shouldImmediatelyApply: true,
@@ -104,6 +104,7 @@ public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
         );
         
       case (let .blurEffectCustomIntensity(_, effectIntensity), false):
+        self.alpha = 1;
         self.setEffectIntensityViaAnimator(effectIntensity);
         
       case (let .blurEffectCustomBlurRadius(_, customBlurRadius, effectIntensityForOtherEffects), _):
@@ -114,7 +115,16 @@ public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
           );
         };
         
-        self.alpha = 1;
+        self.alpha = {
+          guard customBlurRadius <= 0,
+                effectIntensityForOtherEffects <= 0
+          else {
+            return 1;
+          };
+          
+          return 0;
+        }();
+        
         try self.setEffectIntensityViaEffectDescriptor(
           intensityPercent: effectIntensityForOtherEffects,
           shouldImmediatelyApply: false,
