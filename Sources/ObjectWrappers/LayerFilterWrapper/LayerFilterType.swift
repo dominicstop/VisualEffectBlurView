@@ -994,6 +994,41 @@ extension LayerFilterType {
           amount: amountInterpolated,
           values: valuesInterpolated
         );
+        
+      case (
+        let .luminosityCurveMap(amountStart, valuesStart),
+        let .luminosityCurveMap(amountEnd, valuesEnd)
+      ) where valuesStart.count != valuesEnd.count:
+    
+        let amountInterpolated = CGFloat.lerp(
+          valueStart: amountStart,
+          valueEnd: amountEnd,
+          percent: percent,
+          easing: easing
+        );
+        
+        let maxValuesArrayLength = max(valuesStart.count, valuesEnd.count);
+        
+        var valuesInterpolated: [CGFloat] = [];
+        
+        for index in 0..<maxValuesArrayLength {
+          let valueStart = valuesStart[safeIndex: index] ?? 0;
+          let valueEnd = valuesEnd[safeIndex: index] ?? 0;
+          
+          let valueInterpolated: CGFloat = .lerp(
+            valueStart: valueStart,
+            valueEnd: valueEnd,
+            percent: percent,
+            easing: easing
+          );
+          
+          valuesInterpolated.append(valueInterpolated);
+        };
+        
+        return .luminosityCurveMap(
+          amount: amountInterpolated,
+          values: valuesInterpolated
+        );
 
       case (
         let .colorBlackAndWhite(amountStart),
@@ -1179,7 +1214,10 @@ extension LayerFilterType {
       default:
         throw VisualEffectBlurViewError(
           errorCode: .invalidArgument,
-          description: "lerp not supported for \(type(of: valueStart)) and \(type(of: valueEnd))"
+          description:
+              "lerp not supported for  and \(type(of: valueEnd))"
+            + " \(valueStart.decodedFilterName ?? valueStart.associatedFilterTypeName.rawValue)"
+            + " and \(valueEnd.decodedFilterName ?? valueEnd.associatedFilterTypeName.rawValue)"
         );
     };
   };
