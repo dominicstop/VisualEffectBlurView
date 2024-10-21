@@ -8,7 +8,7 @@
 import Foundation
 import DGSwiftUtilities
 
-public enum LayerFilterTypeName: CaseIterable, HashedStringDecodable {
+public enum LayerFilterTypeName: String, CaseIterable, HashedStringDecodable {
 
     case colorBlendingModeMultiply;
     case colorBlendingModeAdd;
