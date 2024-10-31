@@ -22,7 +22,7 @@
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="TamaguiBox" translatesAutoresizingMaskIntoConstraints="NO" id="fRI-G3-pVk">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PuzzleBoxIcon" translatesAutoresizingMaskIntoConstraints="NO" id="fRI-G3-pVk">
                                 <rect key="frame" x="76" y="326" width="240" height="200"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                             </imageView>
@@ -42,7 +42,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="TamaguiBox" width="1024" height="1024"/>
+        <image name="PuzzleBoxIcon" width="1024" height="1024"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
