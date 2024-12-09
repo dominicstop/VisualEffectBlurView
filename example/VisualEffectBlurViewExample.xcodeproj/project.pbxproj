@@ -22,6 +22,7 @@
 		88625F252AB08D530086B4FC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88625F242AB08D530086B4FC /* SceneDelegate.swift */; };
 		88625F2C2AB08D550086B4FC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 88625F2B2AB08D550086B4FC /* Assets.xcassets */; };
 		88625F2F2AB08D550086B4FC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 88625F2D2AB08D550086B4FC /* LaunchScreen.storyboard */; };
+		8880318D2D067A2A009B1F36 /* Experiment02ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8880318C2D067A2A009B1F36 /* Experiment02ViewController.swift */; };
 		88AF8CAB2C21C9360086A6AD /* Routes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88AF8CAA2C21C9350086A6AD /* Routes.swift */; };
 		88AF8CAD2C231A020086A6AD /* RouteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88AF8CAC2C231A010086A6AD /* RouteManager.swift */; };
 		88F7286B2C286C64005B49D0 /* NSValue+NSValue_Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 88F7286A2C286C64005B49D0 /* NSValue+NSValue_Helpers.m */; };
@@ -47,6 +48,7 @@
 		88625F2B2AB08D550086B4FC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		88625F2E2AB08D550086B4FC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		88625F302AB08D550086B4FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8880318C2D067A2A009B1F36 /* Experiment02ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Experiment02ViewController.swift; sourceTree = "<group>"; };
 		88AF8CAA2C21C9350086A6AD /* Routes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Routes.swift; sourceTree = "<group>"; };
 		88AF8CAC2C231A010086A6AD /* RouteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteManager.swift; sourceTree = "<group>"; };
 		88F728682C286C63005B49D0 /* VisualEffectBlurViewExample-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "VisualEffectBlurViewExample-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -81,6 +83,7 @@
 				881515232CB66D8E00710B9B /* BlurViewSwiftUIBasicUsage01ViewController.swift */,
 				881515242CB66D8E00710B9B /* BlurViewBasicUsage01ViewController.swift */,
 				884811382CCA173B00928072 /* Experiment01ViewController.swift */,
+				8880318C2D067A2A009B1F36 /* Experiment02ViewController.swift */,
 			);
 			path = Routes;
 			sourceTree = "<group>";
@@ -218,6 +221,7 @@
 				881515282CB66DAA00710B9B /* VisualEffectBlurTest02ViewController.swift in Sources */,
 				881515292CB66DAA00710B9B /* VisualEffectViewExperiment02ViewController.swift in Sources */,
 				8815152B2CB66DAA00710B9B /* VisualEffectViewExperiment01ViewController.swift in Sources */,
+				8880318D2D067A2A009B1F36 /* Experiment02ViewController.swift in Sources */,
 				8815152C2CB66DAA00710B9B /* BlurViewSwiftUIBasicUsage01ViewController.swift in Sources */,
 				8815152D2CB66DAA00710B9B /* BlurViewBasicUsage01ViewController.swift in Sources */,
 				88F7286D2C308AB5005B49D0 /* LayerFilterType+Extensions.swift in Sources */,

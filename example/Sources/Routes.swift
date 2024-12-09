@@ -26,7 +26,8 @@ enum Route: String, CaseIterable {
   case blurViewSwiftUIBasicUsage01;
   
   case experiment01;
-  
+  case experiment02;
+
   var viewController: UIViewController {
     switch self {
       case .routeList:
@@ -58,6 +59,9 @@ enum Route: String, CaseIterable {
         
       case .experiment01:
         return Experiment01ViewController();
+        
+      case .experiment02:
+        return Experiment02ViewController();
     };
   };
   
@@ -87,7 +91,7 @@ enum Route: String, CaseIterable {
       case .blurViewSwiftUIBasicUsage01:
         return "VisualEffectBlurView SwiftUI";
         
-      case .experiment01:
+      default:
         return "N/A";
     };
   };
@@ -170,7 +174,7 @@ enum Route: String, CaseIterable {
           .init(text: "Example - Basic usage for VisualEffectBlurView in SwiftUI")
         ];
         
-      case .experiment01:
+      default:
         return [];
     };
   };
