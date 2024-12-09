@@ -332,7 +332,8 @@ open class VisualEffectView: UIVisualEffectView {
   
   @available(iOS 13, *)
   public func updateCurrentFiltersViaEffectDesc(
-    withFilterTypes updatedFilterTypes: [LayerFilterType]
+    withFilterTypes updatedFilterTypes: [LayerFilterType],
+    shouldAddMissingFilterTypes: Bool = false
   ) throws {
   
     guard let bgHostWrapper = self.bgHostWrapper else {
@@ -364,14 +365,53 @@ open class VisualEffectView: UIVisualEffectView {
         description: "Unable to create `filterItemsWrapped` instance"
       );
     };
+
+    var filterTypesWithMatches: [LayerFilterType] = [];
     
-    filterItemsWrapped.forEach { wrappedFilterItem in
+    typealias FilterPair = (
+      filterType: LayerFilterType,
+      filterEntryWrapped: UVEFilterEntryWrapper
+    );
+    
+    let filterTypesPaired: [FilterPair] = filterItemsWrapped.compactMap { wrappedFilterItem in
       let match = updatedFilterTypes.first {
-        $0.decodedFilterName == $0.decodedFilterName;
+        $0.decodedFilterName == wrappedFilterItem.filterKind;
       };
       
-      guard let match = match else { return };
-      try? match.applyTo(filterEntryWrapper: wrappedFilterItem);
+      guard let match = match else {
+        return nil;
+      };
+      
+      filterTypesWithMatches.append(match);
+      return (match, wrappedFilterItem);
+    };
+    
+    let orphanedFilterTypes = updatedFilterTypes.filter { filter in
+      let match = filterTypesPaired.first {
+        filter.decodedFilterName == $0.filterType.decodedFilterName;
+      };
+      
+      return match == nil;
+    };
+    
+    if shouldAddMissingFilterTypes,
+       orphanedFilterTypes.count > 0
+    {
+      let orphanedFilterTypesConvertedToIdentity = orphanedFilterTypes.map {
+        $0.identity;
+      };
+      
+      try self.setFiltersViaEffectDesc(
+        withFilterTypes: orphanedFilterTypesConvertedToIdentity,
+        shouldImmediatelyApplyFilter: false
+      );
+    };
+    
+    filterTypesPaired.forEach {
+      try? $0.filterType.applyTo(
+        filterEntryWrapper: $0.filterEntryWrapped,
+        shouldSetValuesIdentity: true
+      );
     };
   };
   
