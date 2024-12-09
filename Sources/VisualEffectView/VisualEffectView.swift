@@ -227,17 +227,22 @@ open class VisualEffectView: UIVisualEffectView {
       );
     };
     
-    guard let effectDescWrapper = UVEDescriptorWrapper(),
-          effectDescWrapper.wrappedObject != nil
-    else {
-      throw VisualEffectBlurViewError(
-        errorCode: .unexpectedNilValue,
-        description: "Unable to create `UVEDescriptorWrapper` instance"
-      );
-    };
-    
-    try effectDescWrapper.setFilterItems(filterEntryWrappers);
-    try bgHostWrapper.setEffectDescriptor(effectDescWrapper);
+    var acc: [UVEFilterEntryWrapper] = [];
+    for filterEntryWrapper in filterEntryWrappers {
+      acc.append(filterEntryWrapper);
+      
+      guard let effectDescWrapper = UVEDescriptorWrapper(),
+            effectDescWrapper.wrappedObject != nil
+      else {
+        throw VisualEffectBlurViewError(
+          errorCode: .unexpectedNilValue,
+          description: "Unable to create `UVEDescriptorWrapper` instance"
+        );
+      };
+      
+      try effectDescWrapper.setFilterItems(acc);
+      try bgHostWrapper.setEffectDescriptor(effectDescWrapper);
+    }
     
     if shouldImmediatelyApplyFilter {
       try viewContentWrapper.applyRequestedFilterEffects();
