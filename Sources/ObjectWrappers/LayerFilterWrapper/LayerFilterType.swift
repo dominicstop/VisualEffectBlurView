@@ -607,7 +607,7 @@ public enum LayerFilterType {
   
   public func applyTo(
     filterEntryWrapper: UVEFilterEntryWrapper,
-    shouldSetValuesIdentity: Bool = true,
+    shouldSetValuesIdentity: Bool,
     shouldSetValuesRequested: Bool = true,
     shouldSetValuesConfig: Bool = true
   ) throws {
