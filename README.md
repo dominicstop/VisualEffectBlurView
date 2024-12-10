@@ -30,7 +30,7 @@ This library powers [`react-native-ios-visual-effect-view`](https://github.com/d
 
 ## Acknowledgements
 
-Version `3.x` of this library was made possible through a generous `$3,750` sponsorship by [natew](https://github.com/natew) + [tamagui](https://github.com/tamagui/tamagui) over the course of 4 months (from: `05/27/24` to `09/30/24`) 🐦✨
+Version `3.x` of this library was made possible through a generous `$3,750` sponsorship by [tamagui](https://github.com/tamagui/tamagui) over the course of 4 months (from: `05/27/24` to `09/30/24`) 🐦✨
 
 <br>
 
