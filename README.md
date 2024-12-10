@@ -8,6 +8,12 @@ This library powers [`react-native-ios-visual-effect-view`](https://github.com/d
 
 ## Demo Gifs
 
+[`Experiment02ViewController.swift`](./example/Routes/Experiment02ViewController.swift)
+
+![Experiment02ViewController](./assets/Experiment02ViewController.gif)
+
+<br><br>
+
 [`VisualEffectBlurTestViewController.swift`](./example/Routes/VisualEffectBlurTestViewController.swift)
 
 ![VisualEffectBlurTestViewController](./assets/VisualEffectBlurTestViewController.gif)
