@@ -23,6 +23,7 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
     case methodSetDefaults;
     
     case propertyFilterInputKeyAmount;
+    case propertyFilterInputKeyAngle;
     case propertyFilterInputKeyValues;
     case propertyFilterInputKeyRadius;
     case propertyFilterInputKeyColorMatrix;
@@ -53,6 +54,10 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
         case .propertyFilterInputKeyAmount:
           // inputAmount
           return "aW5wdXRBbW91bnQ=";
+          
+         case .propertyFilterInputKeyAngle:
+          // inputAngle
+          return "aW5wdXRBbmdsZQ==";
           
         case .propertyFilterInputKeyValues:
           // inputValues
@@ -137,6 +142,14 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
     try self.setValue(
       forHashedString: .propertyFilterInputKeyAmount,
       value: value
+    );
+  };
+  
+  /// Set `inputAngle`
+  public func setFilterValue(angle: CGFloat) throws {
+    try self.setValue(
+      forHashedString: .propertyFilterInputKeyAngle,
+      value: angle
     );
   };
   

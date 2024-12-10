@@ -14,7 +14,6 @@ public enum LayerFilterType {
   // case colorBlendingModeAdd;
   // case colorBlendingModeSubtract;
   // case invertColors;
-  // case colorHueAdjust;
   // case meteor;
   // case distanceField;
   // case luminanceCompression;
@@ -35,11 +34,18 @@ public enum LayerFilterType {
   );
 
   case colorBlackAndWhite(amount: CGFloat);
+  
   case saturateColors(amount: CGFloat);
+  
   case brightenColors(amount: CGFloat);
+  
   case contrastColors(amount: CGFloat);
+  
   case luminanceCompression(amount: CGFloat)
+  
   case bias(amount: CGFloat);
+  
+  case colorHueAdjust(angle: Angle<CGFloat>);
   
   case gaussianBlur(
     radius: CGFloat,
@@ -87,9 +93,6 @@ public enum LayerFilterType {
       case .colorMatrix:
         return .colorMatrix;
         
-      // case .colorHueAdjust:
-      //   return .colorHueAdjust;
-        
       case .saturateColors:
         return .saturateColors;
         
@@ -98,6 +101,9 @@ public enum LayerFilterType {
         
       case .contrastColors:
         return .contrastColors;
+        
+      case .colorHueAdjust:
+        return .colorHueAdjust;
         
       // case .invertColors:
       //   return .invertColors;
@@ -183,6 +189,9 @@ public enum LayerFilterType {
       case .contrastColors:
         return .contrastColors(amount: 1);
         
+      case .colorHueAdjust:
+        return .colorHueAdjust(angle: .zero);
+        
       case .luminanceCompression:
         return .luminanceCompression(amount: 1);
         
@@ -221,7 +230,6 @@ public enum LayerFilterType {
     };
   };
   
-  
   public var filterValuesIdentity: Dictionary<String, Any> {
     var identityValues: Dictionary<String, Any> = [:];
     
@@ -246,6 +254,9 @@ public enum LayerFilterType {
         
       case .contrastColors:
         identityValues.filterInputValueAmount = 1;
+        
+      case .colorHueAdjust:
+        identityValues.filterInputValueAngle = 0;
         
       case .luminanceCompression:
         identityValues.filterInputValueAmount = 1;
@@ -307,6 +318,9 @@ public enum LayerFilterType {
       case let .contrastColors(amount):
         valuesRequested.filterInputValueAmount = amount;
         
+      case let .colorHueAdjust(angle):
+        valuesRequested.filterInputValueAngle = angle.radians;
+        
       case let .luminanceCompression(amount):
         valuesRequested.filterInputValueAmount = amount;
         
@@ -354,6 +368,27 @@ public enum LayerFilterType {
     };
     
     return valuesConfig;
+  };
+  
+  /// Can be adjusted by percent (via lerping) w/o the use of animation API
+  public var isPercentAdjustable: Bool {
+    switch self {
+      case .luminosityCurveMap,
+           .colorBlackAndWhite,
+           .saturateColors,
+           .brightenColors,
+           .contrastColors,
+           .luminanceCompression,
+           .bias,
+           .gaussianBlur,
+           .colorMatrixVibrant,
+           .colorMatrix,
+           .variadicBlur:
+        return true;
+      
+      default:
+        return false;
+    };
   };
   
   // MARK: - Init
@@ -560,6 +595,9 @@ public enum LayerFilterType {
       case let .contrastColors(inputAmount):
         try layerFilterWrapper.setFilterValue(amount: inputAmount);
         
+      case let .colorHueAdjust(angle):
+        try layerFilterWrapper.setFilterValue(angle: angle.radians);
+        
       case let .luminanceCompression(inputAmount):
         try layerFilterWrapper.setFilterValue(amount: inputAmount);
         
@@ -731,6 +769,28 @@ fileprivate extension Dictionary where Key == String, Value == Any {
       self[keyValue] = newValue;
     }
   };
+  
+  var filterInputValueAngle: CGFloat? {
+    get {
+      let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyAngle;
+      guard let keyValue = key.decodedString,
+            let inputAngleRaw = self[keyValue],
+            let inputAngle = inputAngleRaw as? CGFloat
+      else {
+        return nil;
+      };
+      
+      return inputAngle;
+    }
+    set {
+      let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyRadius;
+      guard let keyValue = key.decodedString else {
+        return;
+      };
+      
+      self[keyValue] = newValue
+    }
+  }
   
   var filterInputValueRadius: CGFloat? {
     get {
