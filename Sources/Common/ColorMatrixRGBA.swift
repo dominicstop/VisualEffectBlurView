@@ -9,7 +9,7 @@ import UIKit
 import DGSwiftUtilities
 
 /// Maps to `CAColorMatrix`
-public struct ColorMatrixRGBA: Equatable {
+public struct ColorMatrixRGBA: Equatable, MutableReference {
 
   public typealias MatrixPropertyKeyPath = WritableKeyPath<Self, Float>;
 
@@ -29,7 +29,13 @@ public struct ColorMatrixRGBA: Equatable {
     [\.m41, \.m42, \.m43, \.m44, \.m45],
   ];
   
-  public static var keyPathsForBrightness: [MatrixPropertyKeyPath] = [
+  public static var keyPathsForRGBTranslate: [MatrixPropertyKeyPath] = [
+    \.m15,
+    \.m25,
+    \.m35,
+  ];
+  
+  public static var keyPathsForRGBATranslate: [MatrixPropertyKeyPath] = [
     \.m15,
     \.m25,
     \.m35,
@@ -314,13 +320,17 @@ public struct ColorMatrixRGBA: Equatable {
   // -----------------------------
   
   public mutating func setBrightness(withAmount amount: Float){
-    Self.keyPathsForBrightness.forEach {
+    let amount = amount.clamped(min: -1, max: 1);
+    
+    Self.keyPathsForRGBTranslate.forEach {
       self[keyPath: $0] = amount;
     };
   };
   
   public mutating func adjustBrightness(byAmount adjAmount: Float){
-    Self.keyPathsForBrightness.forEach {
+    let adjAmount = adjAmount.clamped(min: -1, max: 1);
+    
+    Self.keyPathsForRGBTranslate.forEach {
       let currentValue = self[keyPath: $0];
       let nextValue = currentValue + adjAmount;
       let nextValueClamped = nextValue.clamped(min: -1, max: 1);
@@ -330,17 +340,15 @@ public struct ColorMatrixRGBA: Equatable {
   };
   
   public mutating func setContrast(withAmount contrastFactor: Float) {
+    let amount = contrastFactor.clamped(min: 0, max: 2);
+    let intercept = (-0.5 * amount) + 0.5;
+    
     Self.keyPathsForChannelRGB.forEach {
       self[keyPath: $0] = contrastFactor;
     };
-  };
-  
-  public mutating func adjustContrast(byAmount contrastFactorAdj: Float) {
-    Self.keyPathsForBrightness.forEach {
-      let currentValue = self[keyPath: $0];
-      let nextValue = currentValue + contrastFactorAdj;
-      
-      self[keyPath: $0] = nextValue;
+    
+    Self.keyPathsForRGBTranslate.forEach {
+      self[keyPath: $0] = intercept;
     };
   };
   
@@ -400,7 +408,7 @@ public struct ColorMatrixRGBA: Equatable {
     self.m33 = lumB * (1 - saturationFactor) + saturationFactor;
   };
   
-  public func concat(with otherColorMatrix: Self) -> Self {
+  public func concatByAddingLastColumn(with otherColorMatrix: Self) -> Self {
     let matrixA = self.matrix4x5;
     let matrixB = otherColorMatrix.matrix4x5;
     
@@ -426,6 +434,39 @@ public struct ColorMatrixRGBA: Equatable {
       let colIndex = 4;
       let sum = matrixA[rowIndex][colIndex] + matrixB[rowIndex][colIndex];
       matrixResult[rowIndex][colIndex] = sum;
+    };
+    
+    return .init(fromColorMatrix5x4: matrixResult);
+  };
+  
+  public func concatByExtendingThenTruncating(with otherColorMatrix: Self) -> Self {
+    let matrixA = self.matrix4x5;
+    let matrixB = otherColorMatrix.matrix4x5;
+    
+    var matrixResult: [[Float]] = .init(
+      repeating: .init(repeating: 0, count: 5),
+      count: 5
+    );
+    
+    for rowIndex in 0..<5 {
+      for colIndex in 0..<5 {
+        for commonIndex in 0..<5 {
+          let elementFallback: Float = rowIndex == colIndex ? 1 : 0;
+          
+          let elementMatrixA =
+            matrixA[safeIndex: rowIndex]?[safeIndex: commonIndex]
+            ?? elementFallback;
+            
+          let elementMatrixB =
+            matrixB[safeIndex: commonIndex]?[safeIndex: colIndex]
+            ?? elementFallback;
+          
+          let dotProduct = elementMatrixA * elementMatrixB;
+          
+          // acc dot product of row + col
+          matrixResult[rowIndex][colIndex] += dotProduct;
+        };
+      };
     };
     
     return .init(fromColorMatrix5x4: matrixResult);
