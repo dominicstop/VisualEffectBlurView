@@ -24,7 +24,9 @@ public struct ColorTransform: Equatable, MutableReference {
   
   public var contrast: Float;
   public var brightness: Float;
+  
   public var saturation: Float;
+  public var invert: Float;
   public var hueRotate: Angle<Float>;
   
   // MARK: - Computed Properties
@@ -53,6 +55,9 @@ public struct ColorTransform: Equatable, MutableReference {
         with: .brightness(withAmount: self.brightness)
       )
       .concatByAddingLastColumn(
+        with: .invert(withPercent: self.invert)
+      )
+      .concatByAddingLastColumn(
         with: .saturation(withFactor: self.saturation)
       )
       .concatByAddingLastColumn(
@@ -73,6 +78,7 @@ public struct ColorTransform: Equatable, MutableReference {
     contrast: Float = 1,
     brightness: Float = 0,
     saturation: Float = 1,
+    invert: Float = 0,
     hueRotate: Angle<Float> = .zero
   ) {
     self.intensityRed = intensityRed;
@@ -85,7 +91,9 @@ public struct ColorTransform: Equatable, MutableReference {
     
     self.contrast = contrast;
     self.brightness = brightness;
+    
     self.saturation = saturation;
+    self.invert = invert;
     self.hueRotate = hueRotate;
   };
   
@@ -161,6 +169,12 @@ public struct ColorTransform: Equatable, MutableReference {
   public func withSaturation(_ value: Float) -> Self {
     var copy = self;
     copy.saturation = value;
+    return copy;
+  };
+  
+  public func withInvert(_ percent: Float) -> Self {
+    var copy = self;
+    copy.invert = percent;
     return copy;
   };
   
@@ -245,6 +259,12 @@ public extension UnsafeMutablePointer<ColorTransform> {
   @discardableResult
   func withSaturation(_ value: Float) -> Self {
     self.pointee.saturation = value;
+    return self;
+  };
+  
+  @discardableResult
+  func withInvert(_ percent: Float) -> Self {
+    self.pointee.invert = percent;
     return self;
   };
   
