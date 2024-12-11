@@ -9,7 +9,7 @@ import Foundation
 import DGSwiftUtilities
 
 
-public struct ColorTransform: Equatable {
+public struct ColorTransform: Equatable, MutableReference {
 
   // MARK: - Properties
   // ------------------
@@ -170,4 +170,87 @@ public struct ColorTransform: Equatable {
     return copy;
   };
 };
+
+// MARK: - UnsafeMutablePointer+ColorTransform
+// -------------------------------------------
+
+public extension UnsafeMutablePointer<ColorTransform> {
+
+  @discardableResult
+  func withChannelIntensity(r: Float, g: Float, b: Float) -> Self {
+    self.pointee.intensityRed = r;
+    self.pointee.intensityGreen = g;
+    self.pointee.intensityBlue = b;
+    
+    return self;
+  };
+  
+  @discardableResult
+  func withIntensityRed(_ value: Float) -> Self {
+    self.pointee.intensityRed = value;
+    return self;
+  };
+  
+  @discardableResult
+  func withIntensityGreen(_ value: Float) -> Self {
+    self.pointee.intensityGreen = value;
+    return self;
+  };
+  
+  @discardableResult
+  func withIntensityBlue(_ value: Float) -> Self {
+    self.pointee.intensityBlue = value;
+    return self;
+  };
+  
+  @discardableResult
+  func withShiftRed(_ value: Float) -> Self {
+    self.pointee.shiftRed = value;
+    return self;
+  };
+  
+  @discardableResult
+  func withShiftGreen(_ value: Float) -> Self {
+    self.pointee.shiftGreen = value;
+    return self;
+  };
+  
+  @discardableResult
+  func withShiftBlue(_ value: Float) -> Self {
+    self.pointee.shiftBlue = value;
+    return self;
+  };
+  
+  @discardableResult
+  func withChannelShift(r: Float, g: Float, b: Float) -> Self {
+    self.pointee.shiftRed = r;
+    self.pointee.shiftGreen = g;
+    self.pointee.shiftBlue = b;
+    
+    return self;
+  };
+  
+  @discardableResult
+  func withContrast(_ value: Float) -> Self {
+    self.pointee.contrast = value;
+    return self;
+  };
+  
+  @discardableResult
+  func withBrightness(_ value: Float) -> Self {
+    self.pointee.brightness = value;
+    return self;
+  };
+  
+  @discardableResult
+  func withSaturation(_ value: Float) -> Self {
+    self.pointee.saturation = value;
+    return self;
+  };
+  
+  @discardableResult
+  func withHueRotate(_ value: Angle<Float>) -> Self {
+    self.pointee.hueRotate = value;
+    return self;
+  };
 };
