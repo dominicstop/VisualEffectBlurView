@@ -27,6 +27,7 @@ enum Route: String, CaseIterable {
   
   case experiment01;
   case experiment02;
+  case experiment03;
 
   var viewController: UIViewController {
     switch self {
@@ -62,6 +63,9 @@ enum Route: String, CaseIterable {
         
       case .experiment02:
         return Experiment02ViewController();
+        
+      case .experiment03:
+        return Experiment03ViewController();
     };
   };
   
