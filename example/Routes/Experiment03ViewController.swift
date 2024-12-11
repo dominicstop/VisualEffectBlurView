@@ -188,7 +188,7 @@ class Experiment03ViewController: UIViewController {
       
       func test07(){
         let colorMatrix = ColorMatrixRGBA.colorChannel(
-          r: 1,
+          r: 0,
           g: 0,
           b: 0
         );
@@ -202,11 +202,11 @@ class Experiment03ViewController: UIViewController {
       };
       
       func test08(){
-        var colorMatrix = ColorMatrixRGBA.identity;
-        colorMatrix.m15 = 1;
-        colorMatrix.m25 = 0;
-        colorMatrix.m35 = -1;
-        
+        var colorMatrix = ColorMatrixRGBA.colorShift(
+          r: -1,
+          g: 0,
+          b: 0
+        );
         
         try! effectView.setFiltersViaEffectDesc(
           withFilterTypes: [
@@ -216,7 +216,67 @@ class Experiment03ViewController: UIViewController {
         );
       };
       
-      test08();
+      func test09(){
+        let colorTransform: ColorTransform =
+          .init()
+          .withSaturation(-1)
+
+        
+        try! effectView.setFiltersViaEffectDesc(
+          withFilterTypes: [
+            .colorMatrix(colorTransform.colorMatrix),
+          ],
+          shouldImmediatelyApplyFilter: true
+        );
+      };
+      
+      func test10(){
+        var colorMatrix = ColorMatrixRGBA.invert(
+          withPercent: 1,
+          shouldSaturate: false
+        );
+        
+        try! effectView.setFiltersViaEffectDesc(
+          withFilterTypes: [
+            .colorMatrix(colorMatrix),
+          ],
+          shouldImmediatelyApplyFilter: true
+        );
+      };
+      
+      func test11(){
+        var colorMatrix =
+          ColorMatrixRGBA.invert(
+            withPercent: 0.1,
+            shouldSaturate: false
+          )
+          .concatByAddingLastColumn(
+            with: .saturation(withFactor: 1)
+          );
+        
+        try! effectView.setFiltersViaEffectDesc(
+          withFilterTypes: [
+            .colorMatrix(colorMatrix),
+          ],
+          shouldImmediatelyApplyFilter: true
+        );
+      };
+      
+      func test12(){
+        var colorMatrix = ColorMatrixRGBA.invert(
+          withPercent: 0.5,
+          shouldSaturate: true
+        );
+        
+        try! effectView.setFiltersViaEffectDesc(
+          withFilterTypes: [
+            .colorMatrix(colorMatrix),
+          ],
+          shouldImmediatelyApplyFilter: true
+        );
+      };
+      
+      test12();
       
 
       effectView.layer.shadowRadius = 0;
