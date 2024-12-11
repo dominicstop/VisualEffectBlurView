@@ -88,4 +88,86 @@ public struct ColorTransform: Equatable {
     self.saturation = saturation;
     self.hueRotate = hueRotate;
   };
+  
+  // MARK: - Chain Functions
+  // -----------------------
+  
+  public func withChannelIntensity(r: Float, g: Float, b: Float) -> Self {
+    var copy = self;
+    copy.intensityRed = r;
+    copy.intensityGreen = g;
+    copy.intensityBlue = b;
+    
+    return copy;
+  };
+  
+  public func withIntensityRed(_ value: Float) -> Self {
+    var copy = self;
+    copy.intensityRed = value;
+    return copy;
+  };
+  
+  public func withIntensityGreen(_ value: Float) -> Self {
+    var copy = self;
+    copy.intensityGreen = value;
+    return copy;
+  };
+  
+  public func withIntensityBlue(_ value: Float) -> Self {
+    var copy = self;
+    copy.intensityBlue = value;
+    return copy;
+  };
+  
+  public func withShiftRed(_ value: Float) -> Self {
+    var copy = self;
+    copy.shiftRed = value;
+    return copy;
+  };
+  
+  public func withShiftGreen(_ value: Float) -> Self {
+    var copy = self;
+    copy.shiftGreen = value;
+    return copy;
+  };
+  
+  public func withShiftBlue(_ value: Float) -> Self {
+    var copy = self;
+    copy.shiftBlue = value;
+    return copy;
+  };
+  
+  public func withChannelShift(r: Float, g: Float, b: Float) -> Self {
+    var copy = self;
+    copy.shiftRed = r;
+    copy.shiftGreen = g;
+    copy.shiftBlue = b;
+    
+    return copy;
+  };
+  
+  public func withContrast(_ value: Float) -> Self {
+    var copy = self;
+    copy.contrast = value;
+    return copy;
+  };
+  
+  public func withBrightness(_ value: Float) -> Self {
+    var copy = self;
+    copy.brightness = value;
+    return copy;
+  };
+  
+  public func withSaturation(_ value: Float) -> Self {
+    var copy = self;
+    copy.saturation = value;
+    return copy;
+  };
+  
+  public func withHueRotate(_ value: Angle<Float>) -> Self {
+    var copy = self;
+    copy.hueRotate = value;
+    return copy;
+  };
+};
 };
