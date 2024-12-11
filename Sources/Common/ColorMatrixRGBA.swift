@@ -329,6 +329,18 @@ public struct ColorMatrixRGBA: Equatable, MutableReference {
       self[keyPath: $0.element] = channelClamped;
     };
   };
+  
+  public mutating func setColorShift(r: Float, g: Float, b: Float) {
+    let channels = [r, g, b];
+    
+    Self.keyPathsForRGBTranslate.enumerated().forEach {
+      let channel = channels[$0.offset];
+      let channelClamped = channel.clamped(min: -1, max: 1);
+      
+      self[keyPath: $0.element] = channelClamped;
+    };
+  };
+  
   public mutating func setBrightness(withAmount amount: Float){
     let amount = amount.clamped(min: -1, max: 1);
     
@@ -511,6 +523,13 @@ public extension ColorMatrixRGBA {
     matrix.setChannels(r: r, g: g, b: b);
     return matrix;
   };
+  
+  static func colorShift(r: Float, g: Float, b: Float) -> Self {
+    var matrix: Self = .identity;
+    matrix.setColorShift(r: r, g: g, b: b);
+    return matrix;
+  };
+  
   static func brightness(withAmount amount: Float) -> Self {
     var matrix: Self = .identity;
     matrix.setBrightness(withAmount: amount);
