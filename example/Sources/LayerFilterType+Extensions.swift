@@ -90,6 +90,14 @@ extension LayerFilterType {
           ),
         ];
         
+      case let .colorHueAdjust(angle):
+        debugDisplayItems += [
+          .singleRowPlain(
+            label: "inputAngle",
+            value: "\(angle.degrees)"
+          ),
+        ];
+        
       case let .luminanceCompression(inputAmount):
         debugDisplayItems += [
           .singleRowPlain(
