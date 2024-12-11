@@ -414,7 +414,7 @@ public struct ColorMatrixRGBA: Equatable, MutableReference {
   };
   
   public mutating func setSaturation(withFactor saturationFactor: Float) {
-    let saturationFactor = saturationFactor.clamped(min: 0);
+    let saturationFactor = saturationFactor.clamped(min: -1);
     let (lumR, lumG, lumB) = Self.luminance;
     
     self.m11 = lumR * (1 - saturationFactor) + saturationFactor;
@@ -428,6 +428,35 @@ public struct ColorMatrixRGBA: Equatable, MutableReference {
     self.m31 = lumR * (1 - saturationFactor);
     self.m32 = lumG * (1 - saturationFactor);
     self.m33 = lumB * (1 - saturationFactor) + saturationFactor;
+  };
+  
+  public mutating func setInvert(
+    withPercent percent: Float,
+    shouldSaturate: Bool = true
+  ) {
+    let percentClamped = percent.clamped(min: 0, max: 1);
+    let saturationFactorInvert = Float.lerp(
+      valueStart: 0,
+      valueEnd: -1,
+      percent: .init(percentClamped),
+      easing: .linear
+    );
+    
+    self.setSaturation(withFactor: saturationFactorInvert);
+    guard shouldSaturate else {
+      return;
+    };
+    
+    let saturationFactorExtra = Float.lerp(
+      valueStart: 2,
+      valueEnd: 1,
+      percent: .init(percentClamped),
+      easing: .linear
+    );
+    
+    self = self.concatByAddingLastColumn(
+      with: .saturation(withFactor: .init(saturationFactorExtra))
+    );
   };
   
   public func concatByAddingLastColumn(with otherColorMatrix: Self) -> Self {
@@ -551,6 +580,19 @@ public extension ColorMatrixRGBA {
   static func saturation(withFactor saturationFactor: Float) -> Self {
     var matrix: Self = .identity;
     matrix.setSaturation(withFactor: saturationFactor);
+    return matrix;
+  };
+  
+  static func invert(
+    withPercent percent: Float,
+    shouldSaturate: Bool = true
+  ) -> Self {
+    var matrix: Self = .identity;
+    matrix.setInvert(
+      withPercent: percent,
+      shouldSaturate: shouldSaturate
+    );
+    
     return matrix;
   };
 };
