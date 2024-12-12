@@ -370,6 +370,28 @@ public enum LayerFilterType {
     return valuesConfig;
   };
   
+  /// Filter has no visible effects when set to identity/default value.
+  public var isNotVisibleWhenIdentity: Bool {
+    switch self {
+      case .luminosityCurveMap,
+           .colorBlackAndWhite,
+           .saturateColors,
+           .brightenColors,
+           .contrastColors,
+           .luminanceCompression,
+           .bias,
+           .colorHueAdjust,
+           .gaussianBlur,
+           .colorMatrixVibrant,
+           .colorMatrix,
+           .variadicBlur:
+        return true;
+        
+      default:
+        return false;
+    };
+  };
+  
   /// Can be adjusted by percent (via lerping) w/o the use of animation API
   public var isPercentAdjustable: Bool {
     switch self {
