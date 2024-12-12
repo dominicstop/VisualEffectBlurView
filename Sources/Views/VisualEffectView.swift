@@ -227,11 +227,26 @@ open class VisualEffectView: UIVisualEffectView {
       );
     };
     
-    var acc: [UVEFilterEntryWrapper] = [];
-    for filterEntryWrapper in filterEntryWrappers {
-      acc.append(filterEntryWrapper);
+    if shouldImmediatelyApplyFilter {
+      var acc: [UVEFilterEntryWrapper] = [];
+      for filterEntryWrapper in filterEntryWrappers {
+        acc.append(filterEntryWrapper);
+        
+        guard let effectDescWrapper = UVEDescriptorWrapper(),
+              effectDescWrapper.wrappedObject != nil
+        else {
+          throw VisualEffectBlurViewError(
+            errorCode: .unexpectedNilValue,
+            description: "Unable to create `UVEDescriptorWrapper` instance"
+          );
+        };
+        
+        try effectDescWrapper.setFilterItems(acc);
+        try bgHostWrapper.setEffectDescriptor(effectDescWrapper);
+      };
       
-      guard let effectDescWrapper = UVEDescriptorWrapper(),
+    } else {
+      guard let effectDescWrapper = try bgHostWrapper.getEffectDescriptorCurrent(),
             effectDescWrapper.wrappedObject != nil
       else {
         throw VisualEffectBlurViewError(
@@ -240,9 +255,9 @@ open class VisualEffectView: UIVisualEffectView {
         );
       };
       
-      try effectDescWrapper.setFilterItems(acc);
+      try effectDescWrapper.setFilterItems(filterEntryWrappers);
       try bgHostWrapper.setEffectDescriptor(effectDescWrapper);
-    }
+    };
     
     if shouldImmediatelyApplyFilter {
       try viewContentWrapper.applyRequestedFilterEffects();
