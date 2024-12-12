@@ -11,6 +11,20 @@ import DGSwiftUtilities
 
 public struct ColorTransform: Equatable, MutableReference {
 
+  public static let `default`: Self = .init(
+    intensityRed: 1,
+    intensityGreen: 1,
+    intensityBlue: 1,
+    shiftRed: 0,
+    shiftGreen: 0,
+    shiftBlue: 0,
+    contrast: 1,
+    brightness: 0,
+    saturation: 1,
+    invert: 0,
+    hueRotate: .zero
+  );
+
   // MARK: - Properties
   // ------------------
 
@@ -68,18 +82,22 @@ public struct ColorTransform: Equatable, MutableReference {
   // MARK: - Init
   // ------------
   
+  public init() {
+    self = .default;
+  };
+  
   public init(
-    intensityRed: Float = 1,
-    intensityGreen: Float = 1,
-    intensityBlue: Float = 1,
-    shiftRed: Float = 0,
-    shiftGreen: Float = 0,
-    shiftBlue: Float = 0,
-    contrast: Float = 1,
-    brightness: Float = 0,
-    saturation: Float = 1,
-    invert: Float = 0,
-    hueRotate: Angle<Float> = .zero
+    intensityRed: Float,
+    intensityGreen: Float,
+    intensityBlue: Float,
+    shiftRed: Float,
+    shiftGreen: Float,
+    shiftBlue: Float,
+    contrast: Float,
+    brightness: Float,
+    saturation: Float,
+    invert: Float,
+    hueRotate: Angle<Float>
   ) {
     self.intensityRed = intensityRed;
     self.intensityGreen = intensityGreen;
@@ -273,4 +291,98 @@ public extension UnsafeMutablePointer<ColorTransform> {
     self.pointee.hueRotate = value;
     return self;
   };
+};
+
+// MARK: - ColorTransform+ElementInterpolatable
+// --------------------------------------------
+
+extension ColorTransform: ElementInterpolatable {
+  
+  public struct InterpolatableElements: OptionSet, CompositeInterpolatableElements {
+    public let rawValue: Int;
+    
+    public static let intensityRed   = Self(rawValue: 1 << 2 );
+    public static let intensityGreen = Self(rawValue: 1 << 3 );
+    public static let intensityBlue  = Self(rawValue: 1 << 4 );
+    public static let shiftRed       = Self(rawValue: 1 << 5 );
+    public static let shiftGreen     = Self(rawValue: 1 << 6 );
+    public static let shiftBlue      = Self(rawValue: 1 << 7 );
+    public static let contrast       = Self(rawValue: 1 << 8 );
+    public static let brightness     = Self(rawValue: 1 << 9 );
+    public static let saturation     = Self(rawValue: 1 << 10);
+    public static let invert         = Self(rawValue: 1 << 11);
+    public static let hueRotate      = Self(rawValue: 1 << 12);
+
+    public var associatedAnyKeyPaths: [AnyKeyPath] {
+      guard !self.isEmpty else {
+        return [];
+      };
+      
+      var keyPaths: [PartialKeyPath<InterpolatableValue>] = [];
+      
+      if self.contains(.intensityRed) {
+        keyPaths.append(\.intensityRed);
+      };
+      
+      if self.contains(.intensityGreen) {
+        keyPaths.append(\.intensityGreen);
+      };
+      
+      if self.contains(.intensityBlue) {
+        keyPaths.append(\.intensityBlue);
+      };
+      
+      if self.contains(.shiftRed) {
+        keyPaths.append(\.shiftRed);
+      };
+      
+      if self.contains(.shiftGreen) {
+        keyPaths.append(\.shiftGreen);
+      };
+      
+      if self.contains(.shiftBlue) {
+        keyPaths.append(\.shiftBlue);
+      };
+      
+      if self.contains(.contrast) {
+        keyPaths.append(\.contrast);
+      };
+      
+      if self.contains(.brightness) {
+        keyPaths.append(\.brightness);
+      };
+      
+      if self.contains(.saturation) {
+        keyPaths.append(\.saturation);
+      };
+      
+      if self.contains(.invert) {
+        keyPaths.append(\.invert);
+      };
+      
+      if self.contains(.hueRotate) {
+        keyPaths.append(\.hueRotate);
+      };
+      
+      return keyPaths;
+    };
+    
+    public init(rawValue: Int) {
+      self.rawValue = rawValue;
+    };
+  };
+
+  public static var interpolatablePropertiesMap: InterpolatableValuesMap = [
+    \.intensityRed: Float.self,
+    \.intensityGreen: Float.self,
+    \.intensityBlue: Float.self,
+    \.shiftRed: Float.self,
+    \.shiftGreen: Float.self,
+    \.shiftBlue: Float.self,
+    \.contrast: Float.self,
+    \.brightness: Float.self,
+    \.saturation: Float.self,
+    \.invert: Float.self,
+    \.hueRotate: Angle<Float>.self,
+  ];
 };
