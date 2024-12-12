@@ -381,9 +381,10 @@ public enum LayerFilterType {
            .luminanceCompression,
            .bias,
            .gaussianBlur,
+           .darkVibrant,
+           .lightVibrant,
            .colorMatrixVibrant,
-           .colorMatrix,
-           .variadicBlur:
+           .colorMatrix:
         return true;
       
       default:
