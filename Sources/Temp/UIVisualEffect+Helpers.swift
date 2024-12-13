@@ -13,7 +13,7 @@ public extension UIVisualEffect {
   func extractColorMatrixValues() -> [NSValue] {
     let effectView = UIVisualEffectView(effect: self);
     
-    guard let effectViewWrappers = UVEViewWrapper(objectToWrap: self),
+    guard let effectViewWrappers = UVEViewWrapper(objectToWrap: effectView),
           let effectMetadataWrapped = try? effectViewWrappers.getEffectMetadata(
             forEffects: [self],
             usage: true
