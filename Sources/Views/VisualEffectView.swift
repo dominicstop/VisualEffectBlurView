@@ -455,15 +455,8 @@ open class VisualEffectView: UIVisualEffectView {
   public func immediatelyRemoveFilters(
     matching nameOfFiltersToRemove: [LayerFilterTypeName]
   ) throws {
-  
-    guard let bgHostWrapper = self.bgHostWrapper else {
-      throw VisualEffectBlurViewError(
-        errorCode: .unexpectedNilValue,
-        description: "Unable to get `self.bgHostWrapper`"
-      );
-    };
-    
-    guard let effectDescWrapper = try? bgHostWrapper.getEffectDescriptorCurrent() else {
+
+    guard let effectDescWrapper = try? self.getCurrentEffectDescriptor() else {
       throw VisualEffectBlurViewError(
         errorCode: .unexpectedNilValue,
         description: "Unable to create `effectDescWrapper` instance"
@@ -510,8 +503,7 @@ open class VisualEffectView: UIVisualEffectView {
   };
   
   @available(iOS 13, *)
-  public func getCurrentFilterEntriesFromCurrentEffectDescriptor() throws -> [UVEFilterEntryWrapper] {
-  
+  public func getCurrentEffectDescriptor() throws -> UVEDescriptorWrapper {
     guard let bgHostWrapper = self.bgHostWrapper else {
       throw VisualEffectBlurViewError(
         errorCode: .unexpectedNilValue,
@@ -520,13 +512,20 @@ open class VisualEffectView: UIVisualEffectView {
     };
     
     let effectDescWrapped = try bgHostWrapper.getEffectDescriptorCurrent();
-     guard let effectDescWrapped = effectDescWrapped else {
+    guard let effectDescWrapped = effectDescWrapped else {
       throw VisualEffectBlurViewError(
         errorCode: .unexpectedNilValue,
         description: "Unable to get effect desc for current effect"
       );
     };
     
+    return effectDescWrapped;
+  };
+  
+  @available(iOS 13, *)
+  public func getCurrentFilterEntriesFromCurrentEffectDescriptor() throws -> [UVEFilterEntryWrapper] {
+    let effectDescWrapped = try self.getCurrentEffectDescriptor();
+  
     guard let filterItemsWrapped = effectDescWrapped.filterItemsWrapped else {
       throw VisualEffectBlurViewError(
         errorCode: .unexpectedNilValue,
