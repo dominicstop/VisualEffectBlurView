@@ -104,6 +104,21 @@ open class VisualEffectView: UIVisualEffectView {
     }
   };
   
+  /// Shorthand for setting the `UIView.alpha` for `viewContentWrapper` (i.e.
+  /// the view that contains the filters
+  ///
+  public var effectOpacity: CGFloat? {
+    get {
+      self.viewContentWrapper?.wrappedObject?.alpha;
+    }
+    set {
+      guard let newValue = newValue else {
+        return;
+      };
+      self.viewContentWrapper?.wrappedObject?.alpha = newValue;
+    }
+  };
+  
   // MARK: - Init
   // ------------
   
