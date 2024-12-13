@@ -412,8 +412,8 @@ open class VisualEffectView: UIVisualEffectView {
     if shouldAddMissingFilterTypes,
        orphanedFilterTypes.count > 0
     {
-      let orphanedFilterTypesConvertedToIdentity = orphanedFilterTypes.map {
-        $0.identity;
+      let orphanedFilterTypesConvertedToIdentity = orphanedFilterTypes.compactMap {
+        $0.isNotVisibleWhenIdentity ? $0 : nil;
       };
       
       try self.setFiltersViaEffectDesc(
