@@ -66,7 +66,8 @@ public struct ColorMatrixRGBA: Equatable, MutableReference {
       $0 + $1;
     };
   };
-
+  
+  /// The associated `NSValue.objcType` for this type
   private static var _objcTypeRaw: UnsafePointer<CChar>?;
   
   // MARK: - Static Computed Properties
@@ -91,52 +92,7 @@ public struct ColorMatrixRGBA: Equatable, MutableReference {
         return nil;
       };
       
-      var inputColorMatrixValue: NSValue?;
-      
-      UIBlurEffect.Style.allCases.forEach { blurEffectStyle in
-        if inputColorMatrixValue != nil {
-          return;
-        };
-      
-        let blurEffect = UIBlurEffect(style: blurEffectStyle);
-
-        UIVibrancyEffectStyle.allCases.forEach { vibrancyEffectStyle in
-          let effect = UIVibrancyEffect(
-            blurEffect: blurEffect,
-            style: vibrancyEffectStyle
-          );
-          
-          let effectView = UIVisualEffectView(effect: effect);
-          guard let effectViewWrappers = UVEViewWrapper(objectToWrap: effectView),
-                let effectMetadataWrapped = try? effectViewWrappers.getEffectMetadata(
-                  forEffects: [effect],
-                  usage: true
-                ),
-                let filterItemsWrapped = effectMetadataWrapped.filterItemsWrapped
-          else {
-            return;
-          };
-          
-          let inputColorMatrixValues: [NSValue] = filterItemsWrapped.compactMap {
-            let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyColorMatrix;
-          
-            guard let keyValue = key.decodedString,
-                  let filterValuesRequested = $0.filterValuesRequested,
-                  let colorMatrixRaw = filterValuesRequested[keyValue],
-                  let colorMatrixValue = colorMatrixRaw as? NSValue
-            else {
-              return nil;
-            };
-            
-            return colorMatrixValue;
-          };
-          
-          inputColorMatrixValue = inputColorMatrixValues.first;
-          return;
-        };
-      };
-      
-      return inputColorMatrixValue?.objCType;
+      return Self.extractObjTypeForColorMatrixFromVisualEffects();
     }
   };
   
@@ -521,6 +477,41 @@ public struct ColorMatrixRGBA: Equatable, MutableReference {
     };
     
     return .init(fromColorMatrix5x4: matrixResult);
+  };
+};
+
+// MARK: - ColorMatrixRGBA+StaticHelpers
+
+public extension ColorMatrixRGBA {
+  
+  @available(iOS 13.0, *)
+  static func extractObjTypeForColorMatrixFromVisualEffects() -> UnsafePointer<CChar>? {
+    for blurEffectStyle in UIBlurEffect.Style.allCases {
+      let blurEffect = UIBlurEffect(style: blurEffectStyle);
+      
+      let colorMatrixValuesForBlurEffect =
+        blurEffect.extractColorMatrixValues();
+      
+      if let colorMatrixValue = colorMatrixValuesForBlurEffect.first {
+        return colorMatrixValue.objCType;
+      };
+      
+      for vibrancyEffectStyle in UIVibrancyEffectStyle.allCases {
+        let vibrancyEffect = UIVibrancyEffect(
+          blurEffect: blurEffect,
+          style: vibrancyEffectStyle
+        );
+          
+        let colorMatrixValuesForVibrancyEffect =
+          vibrancyEffect.extractColorMatrixValues();
+        
+        if let colorMatrixValue = colorMatrixValuesForVibrancyEffect.first {
+          return colorMatrixValue.objCType;
+        };
+      };
+    };
+    
+    return nil;
   };
 };
 
