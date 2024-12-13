@@ -19,7 +19,14 @@ public class VisualEffectCustomFilterView: VisualEffectView {
     try self.immediatelyApplyFilters(initialFilters);
   };
   
-  public func immediatelyApplyFilters(_ nextFilters: [LayerFilterType]) throws {
+  public func immediatelyApplyFilters(
+    _ nextFilters: [LayerFilterType]
+  ) throws {
+  
+    self.effect = nil;
+    let dummyEffect = UIBlurEffect(style: .regular);
+    self.effect = dummyEffect;
+    
     try self.setFiltersViaEffectDesc(
       withFilterTypes: nextFilters,
       shouldImmediatelyApplyFilter: true
