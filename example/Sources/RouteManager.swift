@@ -16,7 +16,7 @@ class RouteManager {
   var navController: UINavigationController?;
   
   var routes: [Route] = [
-    .experiment02,
+    // .experiment02,
     .routeList,
   ];
   
