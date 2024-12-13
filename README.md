@@ -157,9 +157,7 @@ struct SwiftUIBasicUsage01: View {
 
 ## Documentation
 
-The documentation for this library is currently not available. In the meantime, please browse through the [examples](.//example/Routes) (or look through the [impl. of RN wrapper](https://github.com/dominicstop/react-native-ios-visual-effect-view/blob/main/ios/RNIBlurView/RNIBlurViewDelegate.swift) for this library).
-
-The relevant classes are: ``
+The documentation for this library is currently not available. In the meantime, please browse through the [views](Sources/Views), and [examples](./example/Routes) directory (or look through the [impl. of RN wrapper](https://github.com/dominicstop/react-native-ios-visual-effect-view/blob/main/ios/RNIBlurView/RNIBlurViewDelegate.swift) for this library).
 
 <br><br>
 
