@@ -276,7 +276,417 @@ class Experiment03ViewController: UIViewController {
         );
       };
       
-      test12();
+      /// Remove an effect + animate, fail
+      func test13(){
+        let filterInitial: [LayerFilterType] = [
+          .lightVibrant(
+            isReversed: true,
+            color0: UIColor.red.cgColor,
+            color1: UIColor.blue.cgColor
+          ),
+        ];
+        
+        try! effectView.setFiltersViaEffectDesc(
+          withFilterTypes: filterInitial,
+          shouldImmediatelyApplyFilter: true
+        );
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        
+          try! effectView.setFiltersViaEffectDesc(
+            withFilterTypes: [
+              .saturateColors(amount: 1),
+            ],
+            shouldImmediatelyApplyFilter: false
+          );
+          // return;
+          
+          // try! effectView.removeFilters(matching: [.lightVibrant]);
+          
+          UIView.animate(withDuration: 2) {
+            //try! effectView.applyRequestedFilterEffects();
+          };
+        };
+      };
+      
+      /// extract CA animation from animation block, success
+      func test14(){
+        let dormantView = UIView();
+        // dormantView.displayNow();
+        
+        UIView.animate(withDuration: 1) {
+          dormantView.backgroundColor = .red;
+          dormantView.bounds = .init(origin: .zero, size: .init(width: 100, height: 100));
+          dormantView.alpha = 0.5;
+          dormantView.isHidden = false;
+          dormantView.backgroundColor = .red;
+          dormantView.transform = .init(translationX: 1, y: 1);
+        };
+        
+        let animations = dormantView.layer.recursivelyGetAllChildAnimations();
+        print("animations:", animations);
+      };
+      
+      /// extract CA animation from animation config, success
+      func test15(){
+        let dormantView = UIView();
+        // dormantView.displayNow();
+        
+        let animationConfig: AnimationConfig = .presetCurve(duration: 1, curve: .easeIn);
+        let animator = animationConfig.createAnimator(gestureInitialVelocity: .zero);
+        
+        animator.addAnimations {
+          dormantView.backgroundColor = .red;
+          dormantView.bounds = .init(origin: .zero, size: .init(width: 100, height: 100));
+          dormantView.alpha = 0.5;
+          dormantView.isHidden = false;
+          dormantView.backgroundColor = .red;
+          dormantView.transform = .init(translationX: 1, y: 1);
+        };
+        
+        animator.startAnimation();
+ 
+        let animations = dormantView.layer.recursivelyGetAllChildAnimations();
+        print("animations:", animations);
+      };
+      
+      func test16(){
+        let filterInitial: [LayerFilterType] = [
+          .lightVibrant(
+            isReversed: true,
+            color0: UIColor.red.cgColor,
+            color1: UIColor.blue.cgColor
+          ),
+        ];
+        
+        try! effectView.setFiltersViaEffectDesc(
+          withFilterTypes: filterInitial,
+          shouldImmediatelyApplyFilter: true
+        );
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+          try! effectView.immediatelyRemoveFilters(matching: [.lightVibrant]);
+        };
+      };
+      
+      func test17(){
+        let filterInitial: [LayerFilterType] = [
+          .lightVibrant(
+            isReversed: true,
+            color0: UIColor.red.cgColor,
+            color1: UIColor.blue.cgColor
+          ),
+        ];
+        
+        try! effectView.setFiltersViaEffectDesc(
+          withFilterTypes: filterInitial,
+          shouldImmediatelyApplyFilter: true
+        );
+        
+        let animationConfig: AnimationConfig = .presetCurve(
+         duration: 1,
+         curve: .easeIn
+        );
+          
+        let basisAnimation = animationConfig.createBasicAnimation()!;
+        
+        print(
+          "test17",
+          // nil - "\n - effectView.layer.filters:", effectView.layer.filters,
+          // nil - "\n - effectView.bgHostWrapper:", (effectView.bgHostWrapper?.wrappedObject as? UIView),
+          // "\n - effectView.bgHostWrapper:", effectView.bgHostWrapper?.wrappedObject,
+          "\n - effectView.bgHostWrapper:", effectView.bgHostWrapper?.viewContentWrapped?.wrappedObject,
+          "\n - effectView.bgHostWrapper:", effectView.bgHostWrapper?.viewContentWrapped?.wrappedObject?.layer.filters,
+          "\n"
+        );
+        
+        let filterView =
+          effectView.bgHostWrapper!.viewContentWrapped!.wrappedObject!;
+        
+        let targetFilter = filterView.layer.filters!.first!;
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+          // not working
+          // UIView.animate(withDuration: 1) {
+          //   effectView.layer.filters = nil;
+          // };
+          
+          // not working
+          // effectView.layer.filters = nil;
+          
+          // works
+          // filterView.layer.filters = nil;
+          
+          // works, no animation
+          // UIView.animate(withDuration: 1) {
+          //  filterView.layer.filters = nil;
+          // };
+          
+          // works, no animation
+          // basisAnimation.keyPath = #keyPath(CALayer.filters)
+          // basisAnimation.fromValue = targetFilter;
+          // basisAnimation.toValue = nil;
+          // filterView.layer.filters = [];
+          // filterView.layer.add(basisAnimation, forKey: "filterAnimation")
+          
+        };
+      };
+        
+      /// animate out filters, result failed
+      /// log
+      /// ```
+      /// test18
+      /// - animations [(animationKey: "filters.colorMonochrome.inputAmount", animation: <CABasicAnimation:0x600000838d40; delegate = <UIViewAnimationState: 0x141d0ea00>; fillMode = both; timingFunction = easeInEaseOut; duration = 1; highFrameRateReason = 1048609; preferredFrameRateRangePreferred = 120; preferredFrameRateRangeMaximum = 120; preferredFrameRateRangeMinimum = 30; fromValue = 1; keyPath = filters.colorMonochrome.inputAmount>)]
+      /// ```
+      func test18(){
+        let filterInitial: [LayerFilterType] = [
+          .colorBlackAndWhite(amount: 1)
+        ];
+        
+        try! effectView.setFiltersViaEffectDesc(
+          withFilterTypes: filterInitial,
+          shouldImmediatelyApplyFilter: true
+        );
+        
+        let filterView =
+          effectView.bgHostWrapper!.viewContentWrapped!.wrappedObject!;
+        
+        let targetFilter = filterView.layer.filters!.first!;
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+          try! effectView.updateCurrentFiltersViaEffectDesc(
+            withFilterTypes: [
+              .colorBlackAndWhite(amount: 0)
+            ],
+            shouldAddMissingFilterTypes: false
+          );
+          
+          UIView.animate(withDuration: 1){
+            try! effectView.applyRequestedFilterEffects();
+          };
+          
+          print(
+            "test18",
+            "\n - animations", effectView.layer.recursivelyGetAllChildAnimations(),
+            "\n"
+          );
+        };
+      };
+      
+      // animate out filters, result failed
+      func test19(){
+        let filterInitial: [LayerFilterType] = [
+          .colorBlackAndWhite(amount: 1)
+        ];
+        
+        try! effectView.setFiltersViaEffectDesc(
+          withFilterTypes: filterInitial,
+          shouldImmediatelyApplyFilter: true
+        );
+        
+        let filterView =
+          effectView.bgHostWrapper!.viewContentWrapped!.wrappedObject!;
+        
+        let targetFilter = filterView.layer.filters!.first! as! NSObject;
+        let targetFilterWrapped = LayerFilterWrapper(objectToWrap: targetFilter);
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+          try! targetFilterWrapped!.setFilterIsEnabled(false);
+          try! effectView.applyRequestedFilterEffects();
+          filterView.layer.filters = [targetFilter];
+          
+          try! targetFilterWrapped!.setFilterIsEnabled(false);
+          try! effectView.applyRequestedFilterEffects();
+          filterView.layer.filters = [targetFilter];
+          
+          try! targetFilterWrapped!.setFilterIsEnabled(false);
+          try! effectView.applyRequestedFilterEffects();
+          filterView.layer.filters = [targetFilter];
+          
+          try! targetFilterWrapped!.setFilterIsEnabled(false);
+          try! effectView.applyRequestedFilterEffects();
+          filterView.layer.filters = [targetFilter];
+          
+          try! targetFilterWrapped!.setFilterIsEnabled(false);
+          try! effectView.applyRequestedFilterEffects();
+          filterView.layer.filters = [targetFilter];
+          
+          try! targetFilterWrapped!.setFilterIsEnabled(false);
+          try! effectView.applyRequestedFilterEffects();
+          filterView.layer.filters = [targetFilter];
+          
+          
+          print(
+            "test19",
+            "\n - getFilterIsEnabled:", try! targetFilterWrapped!.getFilterIsEnabled(),
+            "\n"
+          );
+          
+          return;
+          try! effectView.updateCurrentFiltersViaEffectDesc(
+            withFilterTypes: [
+              .colorBlackAndWhite(amount: 0)
+            ],
+            shouldAddMissingFilterTypes: false
+          );
+          
+          UIView.animate(withDuration: 1){
+            try! effectView.applyRequestedFilterEffects();
+          };
+          
+          print(
+            "test18",
+            "\n - animations", effectView.layer.recursivelyGetAllChildAnimations(),
+            "\n"
+          );
+        };
+      };
+      
+      // disable filter via copy, success
+      func test20(){
+        let filterInitial: [LayerFilterType] = [
+          .colorBlackAndWhite(amount: 1)
+        ];
+        
+        try! effectView.setFiltersViaEffectDesc(
+          withFilterTypes: filterInitial,
+          shouldImmediatelyApplyFilter: true
+        );
+        
+        let filterView =
+          effectView.bgHostWrapper!.viewContentWrapped!.wrappedObject!;
+        
+        let targetFilter = filterView.layer.filters!.first! as! NSObject;
+        let targetFilterWrapped = LayerFilterWrapper(objectToWrap: targetFilter);
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+          let targetFilterCopy = targetFilter.copy() as AnyObject;
+          let targetFilterCopyWrapped = LayerFilterWrapper(objectToWrap: targetFilterCopy);
+          
+          try! targetFilterCopyWrapped!.setFilterIsEnabled(false);
+          try! effectView.applyRequestedFilterEffects();
+          filterView.layer.filters = [targetFilterCopy];
+          
+          print(
+            "test19",
+            "\n - getFilterIsEnabled:", try! targetFilterWrapped!.getFilterIsEnabled(),
+            "\n"
+          );
+        };
+      };
+      
+      // disable filter, failed
+      func test21(){
+        let filterInitial: [LayerFilterType] = [
+          .colorBlackAndWhite(amount: 1)
+        ];
+        
+        try! effectView.setFiltersViaEffectDesc(
+          withFilterTypes: filterInitial,
+          shouldImmediatelyApplyFilter: true
+        );
+        
+        let filterView =
+          effectView.bgHostWrapper!.viewContentWrapped!.wrappedObject!;
+        
+        let targetFilter = filterView.layer.filters!.first! as! NSObject;
+        let targetFilterWrapped = LayerFilterWrapper(objectToWrap: targetFilter);
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+          try! targetFilterWrapped!.setFilterIsEnabled(false);
+          try! effectView.applyRequestedFilterEffects();
+          filterView.layer.filters = [targetFilter];
+          
+          print(
+            "test21",
+            "\n - getFilterIsEnabled:", try! targetFilterWrapped!.getFilterIsEnabled(),
+            "\n"
+          );
+        };
+      };
+      
+      /// animate out filters, result failed
+      func test22(){
+        let filterInitial: [LayerFilterType] = [
+          .colorBlackAndWhite(amount: 1)
+        ];
+        
+        try! effectView.setFiltersViaEffectDesc(
+          withFilterTypes: filterInitial,
+          shouldImmediatelyApplyFilter: true
+        );
+        
+        let animationConfig: AnimationConfig = .presetCurve(
+         duration: 1,
+         curve: .easeIn
+        );
+          
+        let basisAnimation = animationConfig.createBasicAnimation()!;
+        
+        let filterView =
+          effectView.bgHostWrapper!.viewContentWrapped!.wrappedObject!;
+        
+        let targetFilterPrev = filterView.layer.filters!.first! as! NSObject;
+        
+        let targetFilterNext = targetFilterPrev.copy() as! NSObject;
+        
+        let targetFilterNextWrapped =
+          LayerFilterWrapper(objectToWrap: targetFilterNext)!;
+          
+        try! targetFilterNextWrapped.setFilterIsEnabled(false);
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+
+          basisAnimation.keyPath = "filters.colorMonochrome"
+          basisAnimation.fromValue = targetFilterPrev;
+          basisAnimation.toValue = targetFilterNext;
+          filterView.layer.filters = [targetFilterNext];
+          
+          filterView.layer.add(basisAnimation, forKey: "filterAnimation")
+          
+        };
+      };
+      
+      /// animate out filters, failed, doesnt animate
+      func test23(){
+        let filterInitial: [LayerFilterType] = [
+          .colorBlackAndWhite(amount: 1)
+        ];
+        
+        try! effectView.setFiltersViaEffectDesc(
+          withFilterTypes: filterInitial,
+          shouldImmediatelyApplyFilter: true
+        );
+        
+        let animationConfig: AnimationConfig = .presetCurve(
+         duration: 1,
+         curve: .easeIn
+        );
+          
+        let basisAnimation = animationConfig.createBasicAnimation()!;
+        
+        let filterView =
+          effectView.bgHostWrapper!.viewContentWrapped!.wrappedObject!;
+        
+        let targetFilter = filterView.layer.filters!.first! as! NSObject;
+        
+        let targetFilterWrapped =
+          LayerFilterWrapper(objectToWrap: targetFilter)!;
+          
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+
+          basisAnimation.keyPath = "filters.colorMonochrome.enabled"
+          basisAnimation.fromValue = true;
+          basisAnimation.toValue = false;
+          
+          // try! targetFilterWrapped.setFilterIsEnabled(false);
+          filterView.layer.add(basisAnimation, forKey: "filterAnimation")
+          
+        };
+      };
+      
+      
+      test23();
       
 
       effectView.layer.shadowRadius = 0;
