@@ -149,13 +149,16 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
     try self.performSelector(usingEncodedString: .methodSetDefaults);
   };
   
-    /// Selector:
+  /// Selector:
   /// `-(void)setEnabled:(BOOL)arg1 ;`
   ///
   public func setFilterIsEnabled(_ isEnabled: Bool) throws {
-    try self.performSelector(
-      usingEncodedString: .methodSetFilterIsEnabled,
-      withArg1: isEnabled
+    try self.setValue(
+      forHashedString: .methodGetFilterIsEnabled,
+      value: isEnabled
+    );
+  };
+  
   /// Selector:
   /// `-(BOOL)enabled;`
   /// 
