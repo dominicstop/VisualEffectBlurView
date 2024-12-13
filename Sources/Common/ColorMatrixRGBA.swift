@@ -68,7 +68,7 @@ public struct ColorMatrixRGBA: Equatable, MutableReference {
   };
   
   /// The associated `NSValue.objcType` for this type
-  private static var _objcTypeRaw: UnsafePointer<CChar>?;
+  public static var associatedObjcTypeCached: UnsafePointer<CChar>?;
   
   // MARK: - Static Computed Properties
   // ----------------------------------
@@ -79,12 +79,12 @@ public struct ColorMatrixRGBA: Equatable, MutableReference {
     };
   };
   
-  private static var objcTypeRaw: UnsafePointer<CChar>? {
+  private static var associatedObjcType: UnsafePointer<CChar>? {
     set {
-      self._objcTypeRaw = newValue;
+      self.associatedObjcTypeCached = newValue;
     }
     get {
-      if let _objcTypeRaw = Self._objcTypeRaw {
+      if let _objcTypeRaw = Self.associatedObjcTypeCached {
         return _objcTypeRaw;
       };
       
@@ -136,7 +136,7 @@ public struct ColorMatrixRGBA: Equatable, MutableReference {
   };
   
   public var objcValue: NSValue? {
-    guard let objcTypeRaw = Self.objcTypeRaw else {
+    guard let objcTypeRaw = Self.associatedObjcType else {
       return nil;
     };
     
@@ -197,8 +197,8 @@ public struct ColorMatrixRGBA: Equatable, MutableReference {
       return nil;
     };
     
-    if Self._objcTypeRaw == nil {
-      Self._objcTypeRaw = objcTypeCharPointer;
+    if Self.associatedObjcTypeCached == nil {
+      Self.associatedObjcTypeCached = objcTypeCharPointer;
     };
     
     let floatMembersInStructCount = 20;
