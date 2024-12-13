@@ -23,6 +23,7 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
     
     case methodSetDefaults;
     case methodSetFilterIsEnabled;
+    case methodGetFilterIsEnabled;
     
     case propertyFilterInputKeyAmount;
     case propertyFilterInputKeyAngle;
@@ -56,6 +57,10 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
         case .methodSetFilterIsEnabled:
           // `setEnabled:`
           return "c2V0RW5hYmxlZDo=";
+          
+        case .methodGetFilterIsEnabled:
+          // `enabled`
+          return "ZW5hYmxlZA==";
           
         case .propertyFilterInputKeyAmount:
           // inputAmount
@@ -151,7 +156,23 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
     try self.performSelector(
       usingEncodedString: .methodSetFilterIsEnabled,
       withArg1: isEnabled
+  /// Selector:
+  /// `-(BOOL)enabled;`
+  /// 
+  public func getFilterIsEnabled() throws -> Bool {
+    let value = try self.getValue(
+      forHashedString: .methodGetFilterIsEnabled,
+      type: Bool.self
     );
+    
+    guard let value = value else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to get value for property"
+      );
+    };
+    
+    return value;
   };
   
   // MARK: - Property Setters
