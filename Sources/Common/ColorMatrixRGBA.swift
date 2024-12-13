@@ -92,7 +92,13 @@ public struct ColorMatrixRGBA: Equatable, MutableReference {
         return nil;
       };
       
-      return Self.extractObjTypeForColorMatrixFromVisualEffects();
+      let objcType = Self.extractObjTypeForColorMatrixFromVisualEffects();
+      guard let objcType = objcType else {
+        return nil;
+      };
+      
+      self.associatedObjcTypeCached = objcType;
+      return objcType;
     }
   };
   
