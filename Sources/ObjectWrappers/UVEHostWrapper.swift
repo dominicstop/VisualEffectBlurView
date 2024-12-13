@@ -30,6 +30,9 @@ public class UVEHostWrapper: PrivateObjectWrapper<
     /// `currentEffectDescriptor`
     case methodGetEffectDescriptorCurrent;
     
+    /// `_applyEffectDescriptor`
+    case methodApplyProvidedEffectDescriptor;
+    
     public var encodedString: String {
       switch self {
         case .className:
@@ -47,6 +50,10 @@ public class UVEHostWrapper: PrivateObjectWrapper<
         case .methodGetEffectDescriptorCurrent:
           // `currentEffectDescriptor`
           return "Y3VycmVudEVmZmVjdERlc2NyaXB0b3I=";
+          
+        case .methodApplyProvidedEffectDescriptor:
+          // `_applyEffectDescriptor:`
+          return "X2FwcGx5RWZmZWN0RGVzY3JpcHRvcjo=";
       };
     };
   };
@@ -109,5 +116,25 @@ public class UVEHostWrapper: PrivateObjectWrapper<
     };
     
     return .init(objectToWrap: result);
+  };
+  
+  /// Selector:
+  /// `-(void)setCurrentEffectDescriptor:(_UIVisualEffectDescriptor *)arg1`
+  ///
+  @available(iOS 13, *)
+  public func applyProvidedEffectDescriptor(
+    _ effectDescriptorWrapper: UVEDescriptorWrapper
+  ) throws {
+    guard let effectDescriptor = effectDescriptorWrapper.wrappedObject else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Could not get `effectDescriptorWrapper`"
+      );
+    };
+    
+    try self.performSelector(
+      usingEncodedString: .methodSetEffectDescriptor,
+      withArg1: effectDescriptor
+    );
   };
 };
