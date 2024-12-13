@@ -40,6 +40,8 @@ open class VisualEffectView: UIVisualEffectView {
   };
   
   /// Old name: `contentViewWrapper`
+  /// The view instance that contains the `CALayer` + `CAFilter` items
+  ///
   public var viewContentWrapper: UVEBackdropViewWrapper? {
     self.bgHostWrapper?.viewContentWrapped;
   };
@@ -345,6 +347,17 @@ open class VisualEffectView: UIVisualEffectView {
     self.currentFilterTypes = filterTypes;
   };
   
+  /// NOTE: Not all filters are animatable (see caveats below)
+  ///
+  /// * In order for the filter to animate, it has to be already set
+  ///
+  /// * this means that filters that don't have lerp-able values cannot
+  ///   be animated, as there is nothing to update.
+  ///
+  /// * Also, since the filter has to be already been applied, filters
+  ///   that aren't "invisible" when set to identity cannot be smoothly
+  ///   animated in/out.
+  ///
   @available(iOS 13, *)
   public func updateCurrentFiltersViaEffectDesc(
     withFilterTypes updatedFilterTypes: [LayerFilterType],
@@ -446,6 +459,7 @@ open class VisualEffectView: UIVisualEffectView {
     };
   };
   
+  /// does not support animations, immediately applies the effect
   @available(iOS 13, *)
   public func immediatelyRemoveFilters(
     matching nameOfFiltersToRemove: [LayerFilterTypeName]
