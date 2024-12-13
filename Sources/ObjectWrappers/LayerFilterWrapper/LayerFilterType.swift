@@ -175,7 +175,7 @@ public enum LayerFilterType {
         return .averagedColor;
         
       case .luminosityCurveMap:
-        return .luminosityCurveMap(amount: 0, values: [0, 0, 0]);
+        return .luminosityCurveMap(amount: 0, values: [0, 0, 0, 0]);
         
       case .colorBlackAndWhite:
         return .colorBlackAndWhite(amount: 0);
