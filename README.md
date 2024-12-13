@@ -1,8 +1,12 @@
 # VisualEffectBlurView
 
-A subclass of `UIVisualEffectView` that lets you set a custom blur radius + intensity, or create use `CALayer.filter` using `CAFilter` (which is obfuscated since it's private API). 
+A subclass of `UIVisualEffectView` that lets you set a custom blur radius + intensity, or set `CALayer.filter` using `CAFilter` (which is obfuscated since it's private API). 
 
-This library powers [`react-native-ios-visual-effect-view`](https://github.com/dominicstop/react-native-ios-visual-effect-view) under the hood.
+Animation is supported for changing the blur radius (or blur percent intensity) for a given `UIBlurEffect.Style`, and also for custom effects via `CAFilter` (please see gif below for demo).
+
+* Support for animatable `CAColorMatrix` (i.e. `colorMatrix` filter). configurable via [`ColorTransform`](Sources/Common/ColorTransform.swift) or [`ColorMatrixRGBA`](Sources/Common/ColorMatrixRGBA.swift).
+* Support for `variableBlur`, w/ animatable blur radius.
+* Other animatable filters: `colorMonochrome`, `colorSaturate`, `colorBrightness`, `colorContrast`, `colorHueRotate`, `compressLuminance`, `gaussianBlur`, `luminanceCurveMap`, `vibrantDark`, `vibrantLight`, etc (see [`LayerFilterType`](Sources/ObjectWrappers/LayerFilterWrapper/LayerFilterType.swift) for full list of filters).
 
 <br><br>
 
@@ -35,6 +39,8 @@ Version `3.x` of this library was made possible through a generous `$3,750` spon
 <br>
 
 very special thanks to: [junzhengca](https://github.com/junzhengca), [brentvatne](https://github.com/brentvatne), [expo](https://github.com/expo), [EvanBacon](https://github.com/EvanBacon), [corasan](https://github.com/corasan), [lauridskern](https://github.com/lauridskern), [ronintechnologies](https://github.com/ronintechnologies), and [gerzonc](https://github.com/gerzonc) for becoming a monthly sponsor, and thank you [fobos531](https://github.com/fobos531) for being a one time sponsor 🥺 (if you have the means to do so, please considering sponsoring [here](https://github.com/sponsors/dominicstop))
+
+This little library powers [`react-native-ios-visual-effect-view`](https://github.com/dominicstop/react-native-ios-visual-effect-view) under the hood ✨
 
 <br><br>
 
@@ -149,7 +155,9 @@ struct SwiftUIBasicUsage01: View {
 
 ## Documentation
 
-The documentation for this library is currently not available. In the meantime, please browse through the [examples](./VisualEffectBlurView/example/Routes) (or look through the [impl. of RN wrapper](https://github.com/dominicstop/react-native-ios-visual-effect-view/blob/main/ios/RNIBlurView/RNIBlurViewDelegate.swift) for this library).
+The documentation for this library is currently not available. In the meantime, please browse through the [examples](.//example/Routes) (or look through the [impl. of RN wrapper](https://github.com/dominicstop/react-native-ios-visual-effect-view/blob/main/ios/RNIBlurView/RNIBlurViewDelegate.swift) for this library).
+
+The relevant classes are: ``
 
 <br><br>
 
