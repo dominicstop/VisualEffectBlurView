@@ -371,15 +371,6 @@ open class VisualEffectView: UIVisualEffectView {
       );
     };
     
-    guard let effectDescWrapper = UVEDescriptorWrapper(),
-          effectDescWrapper.wrappedObject != nil
-    else {
-      throw VisualEffectBlurViewError(
-        errorCode: .unexpectedNilValue,
-        description: "Unable to create `UVEDescriptorWrapper` instance"
-      );
-    }
-    
     guard let effectDescWrapper = try? bgHostWrapper.getEffectDescriptorCurrent() else {
       throw VisualEffectBlurViewError(
         errorCode: .unexpectedNilValue,
