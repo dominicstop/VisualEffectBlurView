@@ -446,6 +446,53 @@ open class VisualEffectView: UIVisualEffectView {
     };
   };
   
+  @available(iOS 13, *)
+  public func immediatelyRemoveFilters(
+    matching nameOfFiltersToRemove: [LayerFilterTypeName]
+  ) throws {
+  
+    guard let bgHostWrapper = self.bgHostWrapper else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to get `self.bgHostWrapper`"
+      );
+    };
+    
+    guard let effectDescWrapper = try? bgHostWrapper.getEffectDescriptorCurrent() else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to create `effectDescWrapper` instance"
+      );
+    };
+    
+    guard let currentFilterItems = effectDescWrapper.filterItemsWrapped else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to create `filterItemsWrapped` instance"
+      );
+    };
+    
+    var nextFilterItems = currentFilterItems.filter { filterItem in
+      let hasMatch = nameOfFiltersToRemove.contains {
+        $0.decodedString == filterItem.filterKind;
+      };
+      
+      return !hasMatch;
+    };
+    
+    if nextFilterItems.isEmpty {
+      let dummyFilter: LayerFilterType = .saturateColors(amount: 1);
+      let dummyFilterEntry = try dummyFilter.createFilterEntry();
+      
+      nextFilterItems.append(dummyFilterEntry);
+    };
+    
+    try self.setFiltersViaEffectDesc(
+      withFilterEntryWrappers: nextFilterItems,
+      shouldImmediatelyApplyFilter: true
+    );
+  };
+  
   public func applyRequestedFilterEffects() throws {
     guard let viewContentWrapper = self.viewContentWrapper else {
       throw VisualEffectBlurViewError(
