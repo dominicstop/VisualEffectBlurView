@@ -414,6 +414,11 @@ public enum LayerFilterType {
     };
   };
   
+  /// Can be "faded" in and out
+  public var isAbleToBeTransitionedInAndOut: Bool {
+    self.isNotVisibleWhenIdentity && self.isPercentAdjustable;
+  };
+  
   // MARK: - Init
   // ------------
   
