@@ -22,6 +22,7 @@
 		88625F252AB08D530086B4FC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88625F242AB08D530086B4FC /* SceneDelegate.swift */; };
 		88625F2C2AB08D550086B4FC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 88625F2B2AB08D550086B4FC /* Assets.xcassets */; };
 		88625F2F2AB08D550086B4FC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 88625F2D2AB08D550086B4FC /* LaunchScreen.storyboard */; };
+		88793AA92D0C3DAB0061C61C /* VisualEffectCustomFilterViewTest01Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88793AA82D0C3DAB0061C61C /* VisualEffectCustomFilterViewTest01Controller.swift */; };
 		8880318D2D067A2A009B1F36 /* Experiment02ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8880318C2D067A2A009B1F36 /* Experiment02ViewController.swift */; };
 		8880318F2D071C18009B1F36 /* Experiment03ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8880318E2D071C18009B1F36 /* Experiment03ViewController.swift */; };
 		88AF8CAB2C21C9360086A6AD /* Routes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88AF8CAA2C21C9350086A6AD /* Routes.swift */; };
@@ -49,6 +50,7 @@
 		88625F2B2AB08D550086B4FC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		88625F2E2AB08D550086B4FC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		88625F302AB08D550086B4FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		88793AA82D0C3DAB0061C61C /* VisualEffectCustomFilterViewTest01Controller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectCustomFilterViewTest01Controller.swift; sourceTree = "<group>"; };
 		8880318C2D067A2A009B1F36 /* Experiment02ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Experiment02ViewController.swift; sourceTree = "<group>"; };
 		8880318E2D071C18009B1F36 /* Experiment03ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Experiment03ViewController.swift; sourceTree = "<group>"; };
 		88AF8CAA2C21C9350086A6AD /* Routes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Routes.swift; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 				884811382CCA173B00928072 /* Experiment01ViewController.swift */,
 				8880318C2D067A2A009B1F36 /* Experiment02ViewController.swift */,
 				8880318E2D071C18009B1F36 /* Experiment03ViewController.swift */,
+				88793AA82D0C3DAB0061C61C /* VisualEffectCustomFilterViewTest01Controller.swift */,
 			);
 			path = Routes;
 			sourceTree = "<group>";
@@ -237,6 +240,7 @@
 				884811392CCA173B00928072 /* Experiment01ViewController.swift in Sources */,
 				88F7286B2C286C64005B49D0 /* NSValue+NSValue_Helpers.m in Sources */,
 				8880318F2D071C18009B1F36 /* Experiment03ViewController.swift in Sources */,
+				88793AA92D0C3DAB0061C61C /* VisualEffectCustomFilterViewTest01Controller.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
