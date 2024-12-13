@@ -181,6 +181,8 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
   // MARK: - Property Setters
   // ------------------------
   
+  // TODO: `inputNormalizeEdgesTransparent`, `inputHardEdges`
+  
   /// Set `inputAmount`
   public func setFilterValue(amount value: CGFloat) throws {
     try self.setValue(
