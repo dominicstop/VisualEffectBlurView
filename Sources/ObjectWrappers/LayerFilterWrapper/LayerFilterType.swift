@@ -735,6 +735,24 @@ public enum LayerFilterType {
       );
     };
   };
+  
+  public func createFilterEntry() throws -> UVEFilterEntryWrapper {
+    let instance = try UVEFilterEntryWrapper(
+      filterKind: self.associatedFilterTypeName,
+      filterValuesConfig: self.filterValuesConfig,
+      filterValuesRequested: self.filterValuesRequested,
+      filterValuesIdentity: self.filterValuesIdentity
+    );
+    
+    guard let instance = instance else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to create `UVEFilterEntryWrapper` instance"
+      );
+    };
+    
+    return instance;
+  };
 };
 
 // MARK: - LayerFilterType+StaticAlias
