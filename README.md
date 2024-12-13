@@ -1,5 +1,7 @@
 # VisualEffectBlurView
 
+[![Swift Version Compatibility Badge](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fdominicstop%2FVisualEffectBlurView%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/dominicstop/VisualEffectBlurView) [![Platform Compatibility Badge](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fdominicstop%2FVisualEffectBlurView%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/dominicstop/VisualEffectBlurView)
+
 A subclass of `UIVisualEffectView` that lets you set a custom blur radius + intensity, or set `CALayer.filter` using `CAFilter` (which is obfuscated since it's private API). 
 
 Animation is supported for changing the blur radius (or blur percent intensity) for a given `UIBlurEffect.Style`, and also for custom effects via `CAFilter` (please see gif below for demo).
