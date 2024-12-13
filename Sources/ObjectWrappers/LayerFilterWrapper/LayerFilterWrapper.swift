@@ -20,7 +20,9 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
     case className;
     case classMethodFilterWithType;
     case classMethodFilterTypes;
+    
     case methodSetDefaults;
+    case methodSetFilterIsEnabled;
     
     case propertyFilterInputKeyAmount;
     case propertyFilterInputKeyAngle;
@@ -50,6 +52,10 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
         case .methodSetDefaults:
           // setDefaults
           return "c2V0RGVmYXVsdHM=";
+          
+        case .methodSetFilterIsEnabled:
+          // `setEnabled:`
+          return "c2V0RW5hYmxlZDo=";
           
         case .propertyFilterInputKeyAmount:
           // inputAmount
@@ -133,9 +139,23 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
   
   /// Selector:
   /// `-(void)setDefaults;`
+  ///
   public func setDefaults() throws {
     try self.performSelector(usingEncodedString: .methodSetDefaults);
   };
+  
+    /// Selector:
+  /// `-(void)setEnabled:(BOOL)arg1 ;`
+  ///
+  public func setFilterIsEnabled(_ isEnabled: Bool) throws {
+    try self.performSelector(
+      usingEncodedString: .methodSetFilterIsEnabled,
+      withArg1: isEnabled
+    );
+  };
+  
+  // MARK: - Property Setters
+  // ------------------------
   
   /// Set `inputAmount`
   public func setFilterValue(amount value: CGFloat) throws {
