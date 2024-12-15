@@ -39,7 +39,9 @@ public enum LayerFilterConfig: Equatable {
   
   case gaussianBlur(
     radius: CGFloat,
-    shouldNormalizeEdges: Bool = true
+    shouldNormalizeEdges: Bool = true,
+    shouldNormalizeEdgesToTransparent: Bool = false,
+    shouldUseHardEdges: Bool = false
   );
   
   case colorMatrixVibrant(_ colorMatrix: ColorMatrixRGBA);
@@ -49,7 +51,9 @@ public enum LayerFilterConfig: Equatable {
   case variadicBlur(
     radius: CGFloat,
     imageGradientConfig: ImageConfigGradient,
-    shouldNormalizeEdges: Bool
+    shouldNormalizeEdges: Bool = true,
+    shouldNormalizeEdgesToTransparent: Bool = false,
+    shouldUseHardEdges: Bool = false
   );
   
   // MARK: - Properties
@@ -90,10 +94,17 @@ public enum LayerFilterConfig: Equatable {
       case let .colorHueAdjust(angle):
         return .colorHueAdjust(angle: angle);
       
-      case let .gaussianBlur(radius, shouldNormalizeEdges):
+      case let .gaussianBlur(
+        radius,
+        shouldNormalizeEdges,
+        shouldNormalizeEdgesToTransparent,
+        shouldUseHardEdges
+      ):
         return .gaussianBlur(
           radius: radius,
-          shouldNormalizeEdges: shouldNormalizeEdges
+          shouldNormalizeEdges: shouldNormalizeEdges,
+          shouldNormalizeEdgesToTransparent: shouldNormalizeEdgesToTransparent,
+          shouldUseHardEdges: shouldUseHardEdges
         );
       
       case let .colorMatrixVibrant(colorMatrix):
@@ -105,13 +116,24 @@ public enum LayerFilterConfig: Equatable {
       case let .variadicBlur(
         radius,
         imageGradientConfig,
-        shouldNormalizeEdges
+        shouldNormalizeEdges,
+        shouldNormalizeEdgesToTransparent,
+        shouldUseHardEdges
       ):
-        let maskImage = try? imageGradientConfig.makeImage();
+        let maskImage: UIImage? = {
+          if let cachedImage = imageGradientConfig.cachedImage {
+            return cachedImage;
+          };
+          
+          return try? imageGradientConfig.makeImage();
+        }();
+          
         return .variadicBlur(
           radius: radius,
           maskImage: maskImage?.cgImage,
-          shouldNormalizeEdges: shouldNormalizeEdges
+          shouldNormalizeEdges: shouldNormalizeEdges,
+          shouldNormalizeEdgesToTransparent: shouldNormalizeEdgesToTransparent,
+          shouldUseHardEdges: shouldUseHardEdges
         );
     };
   };
@@ -139,7 +161,13 @@ public enum LayerFilterConfig: Equatable {
     };
   
     switch self {
-      case let .variadicBlur(radius, imageGradientConfig, shouldNormalizeEdges):
+      case let .variadicBlur(
+        radius,
+        imageGradientConfig,
+        shouldNormalizeEdges,
+        shouldNormalizeEdgesToTransparent,
+        shouldUseHardEdges
+      ):
         guard imageGradientConfig.cachedImage == nil else {
           invokeCompletionIfNeeded();
           return;
@@ -164,7 +192,9 @@ public enum LayerFilterConfig: Equatable {
             .variadicBlur(
               radius: radius,
               imageGradientConfig: imageGradientConfig,
-              shouldNormalizeEdges: shouldNormalizeEdges
+              shouldNormalizeEdges: shouldNormalizeEdges,
+              shouldNormalizeEdgesToTransparent: shouldNormalizeEdgesToTransparent,
+              shouldUseHardEdges: shouldUseHardEdges
             )
           );
         };

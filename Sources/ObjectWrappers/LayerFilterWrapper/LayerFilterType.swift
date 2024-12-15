@@ -21,6 +21,7 @@ public enum LayerFilterType {
   // case pageCurl;
   
   case alphaFromLuminance;
+  
   case averagedColor;
   
   // case curves(
@@ -49,7 +50,9 @@ public enum LayerFilterType {
   
   case gaussianBlur(
     radius: CGFloat,
-    shouldNormalizeEdges: Bool = true
+    shouldNormalizeEdges: Bool = true,
+    shouldNormalizeEdgesToTransparent: Bool = false,
+    shouldUseHardEdges: Bool = false
   );
   
   case darkVibrant(
@@ -65,12 +68,15 @@ public enum LayerFilterType {
   );
   
   case colorMatrixVibrant(_ colorMatrix: ColorMatrixRGBA);
+  
   case colorMatrix(_ colorMatrix: ColorMatrixRGBA);
   
   case variadicBlur(
     radius: CGFloat,
     maskImage: CGImage?,
-    shouldNormalizeEdges: Bool
+    shouldNormalizeEdges: Bool = true,
+    shouldNormalizeEdgesToTransparent: Bool = false,
+    shouldUseHardEdges: Bool = false
   );
   
   // MARK: - Computed Properties
@@ -327,9 +333,16 @@ public enum LayerFilterType {
       case let .bias(amount):
         valuesRequested.filterInputValueAmount = amount;
         
-      case let .gaussianBlur(radius, shouldNormalizeEdges):
+      case let .gaussianBlur(
+        radius,
+        shouldNormalizeEdges,
+        shouldNormalizeEdgesToTransparent,
+        shouldUseHardEdges
+      ):
         valuesRequested.filterInputValueRadius = radius;
         valuesRequested.filterInputValueShouldNormalizeEdgesObjc = shouldNormalizeEdges ? 1 : 0;
+        valuesRequested.filterInputValueShouldNormalizeEdgesToTransparentObjc = shouldNormalizeEdgesToTransparent ? 1 : 0;
+        valuesRequested.filterInputValueShouldUseHardEdgesObjc = shouldUseHardEdges ? 1 : 0
         
       case let .darkVibrant(isReversed, color0, color1):
         valuesRequested.filterInputValueIsReversed = isReversed;
@@ -347,10 +360,18 @@ public enum LayerFilterType {
       case let .colorMatrix(matrix):
         valuesRequested.filterInputValueColorMatrixObjc = matrix.objcValue;
         
-      case let .variadicBlur(radius, maskImage, shouldNormalizeEdges):
+      case let .variadicBlur(
+        radius,
+        maskImage,
+        shouldNormalizeEdges,
+        shouldNormalizeEdgesToTransparent,
+        shouldUseHardEdges
+      ):
         valuesRequested.filterInputValueRadius = radius;
         valuesRequested.filterInputMaskImage = maskImage;
         valuesRequested.filterInputValueShouldNormalizeEdgesObjc = shouldNormalizeEdges ? 1 : 0;
+        valuesRequested.filterInputValueShouldNormalizeEdgesToTransparentObjc = shouldNormalizeEdgesToTransparent ? 1 : 0;
+        valuesRequested.filterInputValueShouldUseHardEdgesObjc = shouldUseHardEdges ? 1 : 0
     };
     
     return valuesRequested;
@@ -632,9 +653,25 @@ public enum LayerFilterType {
       case let .bias(inputAmount):
         try layerFilterWrapper.setFilterValue(amount: inputAmount);
         
-      case let .gaussianBlur(inputRadius, inputNormalizeEdges):
+      case let .gaussianBlur(
+        inputRadius,
+        shouldNormalizeEdges,
+        shouldNormalizeEdgesToTransparent,
+        shouldUseHardEdges
+      ):
         try layerFilterWrapper.setFilterValue(radius: inputRadius);
-        try layerFilterWrapper.setFilterValue(shouldNormalizeEdges: inputNormalizeEdges);
+        
+        try layerFilterWrapper.setFilterValue(
+          shouldNormalizeEdges: shouldNormalizeEdges
+        );
+        
+        try layerFilterWrapper.setFilterValue(
+          shouldNormalizeEdgesToTransparent: shouldNormalizeEdgesToTransparent
+        );
+        
+        try layerFilterWrapper.setFilterValue(
+          shouldUseHardEdges: shouldUseHardEdges
+        );
         
       case let .darkVibrant(
         inputReversed,
@@ -663,11 +700,24 @@ public enum LayerFilterType {
       case let .variadicBlur(
         inputRadius,
         inputMaskImage,
-        inputNormalizeEdges
+        shouldNormalizeEdges,
+        shouldNormalizeEdgesToTransparent,
+        shouldUseHardEdges
       ):
         try layerFilterWrapper.setFilterValue(radius: inputRadius);
         try layerFilterWrapper.setFilterValue(maskImage: inputMaskImage);
-        try layerFilterWrapper.setFilterValue(shouldNormalizeEdges: inputNormalizeEdges);
+        
+        try layerFilterWrapper.setFilterValue(
+          shouldNormalizeEdges: shouldNormalizeEdges
+        );
+        
+        try layerFilterWrapper.setFilterValue(
+          shouldNormalizeEdgesToTransparent: shouldNormalizeEdgesToTransparent
+        );
+        
+        try layerFilterWrapper.setFilterValue(
+          shouldUseHardEdges: shouldUseHardEdges
+        );
     };
   };
   
@@ -1263,8 +1313,13 @@ extension LayerFilterType {
         return .bias(amount: amountInterpolated);
         
       case (
-        let .gaussianBlur(radiusStart, _),
-        let .gaussianBlur(radiusEnd, shouldNormalizeEdges)
+        let .gaussianBlur(radiusStart, _, _, _),
+        let .gaussianBlur(
+          radiusEnd,
+          shouldNormalizeEdges,
+          shouldNormalizeEdgesToTransparent,
+          shouldUseHardEdges
+        )
       ):
         let radiusInterpolated = CGFloat.lerp(
           valueStart: radiusStart,
@@ -1275,7 +1330,9 @@ extension LayerFilterType {
         
         return .gaussianBlur(
           radius: radiusInterpolated,
-          shouldNormalizeEdges: shouldNormalizeEdges
+          shouldNormalizeEdges: shouldNormalizeEdges,
+          shouldNormalizeEdgesToTransparent: shouldNormalizeEdgesToTransparent,
+          shouldUseHardEdges: shouldUseHardEdges
         );
         
       case (
