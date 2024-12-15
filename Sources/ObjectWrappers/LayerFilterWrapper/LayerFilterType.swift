@@ -1036,6 +1036,32 @@ fileprivate extension Dictionary where Key == String, Value == Any {
     }
   };
   
+  var filterInputValueShouldNormalizeEdgesToTransparentObjc: Int? {
+    get {
+      let key: LayerFilterWrapper.EncodedString =
+        .propertyFilterInputKeyShouldNormalizeEdgesToTransparent;
+        
+      guard let keyValue = key.decodedString,
+            let inputValuesRaw = self[keyValue],
+            let inputValue = inputValuesRaw as? Int
+      else {
+        return nil;
+      };
+      
+      return inputValue;
+    }
+    set {
+      let key: LayerFilterWrapper.EncodedString =
+        .propertyFilterInputKeyShouldNormalizeEdgesToTransparent;
+        
+      guard let keyValue = key.decodedString else {
+        return;
+      };
+      
+      self[keyValue] = newValue;
+    }
+  };
+  
   var filterInputValueShouldUseHardEdgesObjc: Int? {
     get {
       let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyShouldUseHardEdges;

@@ -34,6 +34,7 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
     case propertyFilterInputKeyColor0;
     case propertyFilterInputKeyColor1;
     case propertyFilterInputKeyNormalizeEdges;
+    case propertyFilterInputKeyShouldNormalizeEdgesToTransparent;
     case propertyFilterInputKeyShouldUseHardEdges;
     case propertyFilterInputKeyMaskImage;
     
@@ -98,6 +99,10 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
         case .propertyFilterInputKeyNormalizeEdges:
           // inputNormalizeEdges
           return "aW5wdXROb3JtYWxpemVFZGdlcw==";
+          
+        case .propertyFilterInputKeyShouldNormalizeEdgesToTransparent:
+          // inputNormalizeEdgesTransparent
+          return "aW5wdXROb3JtYWxpemVFZGdlc1RyYW5zcGFyZW50";
           
         case .propertyFilterInputKeyShouldUseHardEdges:
           // inputHardEdges
@@ -257,6 +262,19 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
   public func setFilterValue(shouldNormalizeEdges value: Bool) throws {
     try self.setValue(
       forHashedString: .propertyFilterInputKeyNormalizeEdges,
+      value: false
+    );
+  };
+  
+  /// Set `inputNormalizeEdgesTransparent`
+  public func setFilterValue(
+    shouldNormalizeEdgesToTransparent value: Bool
+  ) throws {
+    try self.setValue(
+      forHashedString: .propertyFilterInputKeyShouldNormalizeEdgesToTransparent,
+      value: value ? 1 : 0
+    );
+  };
   
   /// Set `inputHardEdges`
   public func setFilterValue(shouldUseHardEdges value: Bool) throws {
