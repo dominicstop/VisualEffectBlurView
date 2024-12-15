@@ -204,3 +204,13 @@ public enum LayerFilterConfig: Equatable {
     };
   };
 };
+
+// MARK: - `LayerFilterConfig+EnumCaseStringRepresentable`
+// -------------------------------------------------------
+
+extension LayerFilterConfig: EnumCaseStringRepresentable {
+
+  public var caseString: String {
+    self.associatedFilterTypeName.rawValue;
+  };
+};
