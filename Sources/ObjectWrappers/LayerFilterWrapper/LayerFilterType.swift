@@ -1433,3 +1433,13 @@ extension LayerFilterType {
     };
   };
 };
+
+// MARK: - `LayerFilterType+EnumCaseStringRepresentable`
+// -----------------------------------------------------
+
+extension LayerFilterType: EnumCaseStringRepresentable {
+
+  public var caseString: String {
+    self.associatedFilterTypeName.rawValue;
+  };
+};
