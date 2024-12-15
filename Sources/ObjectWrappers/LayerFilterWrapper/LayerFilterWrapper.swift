@@ -34,6 +34,7 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
     case propertyFilterInputKeyColor0;
     case propertyFilterInputKeyColor1;
     case propertyFilterInputKeyNormalizeEdges;
+    case propertyFilterInputKeyShouldUseHardEdges;
     case propertyFilterInputKeyMaskImage;
     
     public var encodedString: String {
@@ -97,6 +98,10 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
         case .propertyFilterInputKeyNormalizeEdges:
           // inputNormalizeEdges
           return "aW5wdXROb3JtYWxpemVFZGdlcw==";
+          
+        case .propertyFilterInputKeyShouldUseHardEdges:
+          // inputHardEdges
+          return "aW5wdXRIYXJkRWRnZXM=";
           
         case .propertyFilterInputKeyMaskImage:
           // inputMaskImage
@@ -252,6 +257,11 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
   public func setFilterValue(shouldNormalizeEdges value: Bool) throws {
     try self.setValue(
       forHashedString: .propertyFilterInputKeyNormalizeEdges,
+  
+  /// Set `inputHardEdges`
+  public func setFilterValue(shouldUseHardEdges value: Bool) throws {
+    try self.setValue(
+      forHashedString: .propertyFilterInputKeyShouldUseHardEdges,
       value: value ? 1 : 0
     );
   };
