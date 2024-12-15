@@ -114,15 +114,28 @@ extension LayerFilterType {
           ),
         ];
           
-      case let .gaussianBlur(inputRadius, inputNormalizeEdges):
+      case let .gaussianBlur(
+        inputRadius,
+        inputNormalizeEdges,
+        shouldNormalizeEdgesToTransparent,
+        shouldUseHardEdges
+      ):
         debugDisplayItems += [
           .singleRowPlain(
             label: "inputRadius",
             value: "\(inputRadius)"
           ),
-          .singleRowPlain(
+           .singleRowPlain(
             label: "inputNormalizeEdges",
-            value: "\(inputNormalizeEdges)"
+            value: inputNormalizeEdges.description
+          ),
+          .singleRowPlain(
+            label: "inputNormalizeEdgesToTransparent",
+            value: shouldNormalizeEdgesToTransparent.description
+          ),
+          .singleRowPlain(
+            label: "inputHardEdges",
+            value: shouldUseHardEdges.description
           ),
         ];
         
@@ -181,7 +194,9 @@ extension LayerFilterType {
       case let .variadicBlur(
         inputRadius,
         _ /* inputMaskImage */,
-        inputNormalizeEdges
+        inputNormalizeEdges,
+        shouldNormalizeEdgesToTransparent,
+        shouldUseHardEdges
       ):
         debugDisplayItems += [
           .singleRowPlain(
@@ -191,6 +206,14 @@ extension LayerFilterType {
           .singleRowPlain(
             label: "inputNormalizeEdges",
             value: inputNormalizeEdges.description
+          ),
+          .singleRowPlain(
+            label: "inputNormalizeEdgesToTransparent",
+            value: shouldNormalizeEdgesToTransparent.description
+          ),
+          .singleRowPlain(
+            label: "inputHardEdges",
+            value: shouldUseHardEdges.description
           ),
         ];
     };

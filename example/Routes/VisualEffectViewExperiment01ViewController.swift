@@ -634,7 +634,7 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
         
         items += nextFilterType?.filterDescAsAttributedConfig ?? [];
         
-        if case let .variadicBlur(_, inputMaskImage, _) = nextFilterType,
+        if case let .variadicBlur(_, inputMaskImage, _, _, _) = nextFilterType,
            let inputMaskImage = inputMaskImage
         {
           items.append(

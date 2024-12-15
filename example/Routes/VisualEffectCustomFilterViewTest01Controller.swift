@@ -31,54 +31,38 @@ class VisualEffectCustomFilterViewTest01Controller: UIViewController {
     self.counterForCurrentEffectGroup % effectGroups.count;
   };
   
-  var currentEffectGroup: [LayerFilterType] {
+  var currentEffectGroup: [LayerFilterConfig] {
     self.effectGroups[self.indexForCurrentEffectGroup];
   };
   
-  var effectGroups: [[LayerFilterType]] = {
-    let gradientImage1 = {
-      let imageConfig: ImageConfigGradient = ImageConfigGradient(
-        colors: [.black, .clear],
-        startPointPreset: .top,
-        endPointPreset: .bottom,
-        size: UIScreen.main.bounds.size
-      );
-      
-      return try! imageConfig.makeImage();
-    }();
+  var effectGroups: [[LayerFilterConfig]] = {
+    let gradientImageConfig1: ImageConfigGradient = ImageConfigGradient(
+      colors: [.black, .clear],
+      startPointPreset: .top,
+      endPointPreset: .bottom,
+      size: UIScreen.main.bounds.size
+    );
     
-    let gradientImage2 = {
-      let imageConfig: ImageConfigGradient = ImageConfigGradient(
-        colors: [.clear, .black],
-        startPointPreset: .left,
-        endPointPreset: .right,
-        size: UIScreen.main.bounds.size
-      );
-      
-      return try! imageConfig.makeImage();
-    }();
+    let gradientImageConfig2 = ImageConfigGradient(
+      colors: [.clear, .black],
+      startPointPreset: .left,
+      endPointPreset: .right,
+      size: UIScreen.main.bounds.size
+    );
     
-    let gradientImage3 = {
-      let imageConfig: ImageConfigGradient = ImageConfigGradient(
-        colors: [.clear, .black],
-        startPointPreset: .top,
-        endPointPreset: .bottom,
-        size: UIScreen.main.bounds.size
-      );
-      
-      return try! imageConfig.makeImage();
-    }();
+    let gradientImageConfig3 = ImageConfigGradient(
+      colors: [.clear, .black],
+      startPointPreset: .top,
+      endPointPreset: .bottom,
+      size: UIScreen.main.bounds.size
+    );
     
-    let gradientImage4 = {
-      let imageConfig: ImageConfigGradient = ImageConfigGradient(
-        colors: [.black, .clear],
-        startPointPreset: .left,
-        endPointPreset: .right,
-        size: UIScreen.main.bounds.size
-      );
-      
-      return try! imageConfig.makeImage();
-    }();
+    let gradientImageConfig4 = ImageConfigGradient(
+      colors: [.black, .clear],
+      startPointPreset: .left,
+      endPointPreset: .right,
+      size: UIScreen.main.bounds.size
+    );
   
     return [
       [
@@ -97,7 +81,7 @@ class VisualEffectCustomFilterViewTest01Controller: UIViewController {
         .brightenColors(amount: -0.5),
         .variadicBlur(
           radius: 24,
-          maskImage: gradientImage1.cgImage,
+          imageGradientConfig: gradientImageConfig1,
           shouldNormalizeEdges: true
         ),
       ],
@@ -106,7 +90,7 @@ class VisualEffectCustomFilterViewTest01Controller: UIViewController {
         .brightenColors(amount: 0.3),
         .variadicBlur(
           radius: 0,
-          maskImage: gradientImage1.cgImage,
+          imageGradientConfig: gradientImageConfig1,
           shouldNormalizeEdges: true
         ),
       ],
@@ -114,7 +98,7 @@ class VisualEffectCustomFilterViewTest01Controller: UIViewController {
         .brightenColors(amount: 0),
         .variadicBlur(
           radius: 32,
-          maskImage: gradientImage2.cgImage,
+          imageGradientConfig: gradientImageConfig2,
           shouldNormalizeEdges: true
         ),
       ],
@@ -122,7 +106,7 @@ class VisualEffectCustomFilterViewTest01Controller: UIViewController {
         .luminanceCompression(amount: 0.4),
         .variadicBlur(
           radius: 0,
-          maskImage: gradientImage2.cgImage,
+          imageGradientConfig: gradientImageConfig2,
           shouldNormalizeEdges: true
         ),
       ],
@@ -131,7 +115,7 @@ class VisualEffectCustomFilterViewTest01Controller: UIViewController {
         .colorMatrix(ColorMatrixRGBAPreset.preset01.colorMatrix),
         .variadicBlur(
           radius: 16,
-          maskImage: gradientImage1.cgImage,
+          imageGradientConfig: gradientImageConfig1,
           shouldNormalizeEdges: true
         ),
       ],
@@ -139,7 +123,7 @@ class VisualEffectCustomFilterViewTest01Controller: UIViewController {
         .colorMatrix(ColorMatrixRGBAPreset.preset02.colorMatrix),
         .variadicBlur(
           radius: 0,
-          maskImage: gradientImage1.cgImage,
+          imageGradientConfig: gradientImageConfig1,
           shouldNormalizeEdges: true
         ),
       ],
@@ -147,7 +131,7 @@ class VisualEffectCustomFilterViewTest01Controller: UIViewController {
         .colorMatrix(ColorMatrixRGBAPreset.preset03.colorMatrix),
         .variadicBlur(
           radius: 16,
-          maskImage: gradientImage2.cgImage,
+          imageGradientConfig: gradientImageConfig2,
           shouldNormalizeEdges: true
         ),
       ],
@@ -155,7 +139,7 @@ class VisualEffectCustomFilterViewTest01Controller: UIViewController {
         .colorMatrix(ColorMatrixRGBAPreset.preset04.colorMatrix),
         .variadicBlur(
           radius: 0,
-          maskImage: gradientImage2.cgImage,
+          imageGradientConfig: gradientImageConfig2,
           shouldNormalizeEdges: true
         ),
       ],
@@ -163,7 +147,7 @@ class VisualEffectCustomFilterViewTest01Controller: UIViewController {
         .colorMatrix(ColorMatrixRGBAPreset.preset05.colorMatrix),
         .variadicBlur(
           radius: 16,
-          maskImage: gradientImage3.cgImage,
+          imageGradientConfig: gradientImageConfig3,
           shouldNormalizeEdges: true
         ),
       ],
@@ -171,7 +155,7 @@ class VisualEffectCustomFilterViewTest01Controller: UIViewController {
         .colorMatrix(ColorMatrixRGBAPreset.preset06.colorMatrix),
         .variadicBlur(
           radius: 0,
-          maskImage: gradientImage3.cgImage,
+          imageGradientConfig: gradientImageConfig3,
           shouldNormalizeEdges: true
         ),
       ],
@@ -179,7 +163,7 @@ class VisualEffectCustomFilterViewTest01Controller: UIViewController {
         .colorMatrix(ColorMatrixRGBAPreset.preset07.colorMatrix),
         .variadicBlur(
           radius: 16,
-          maskImage: gradientImage4.cgImage,
+          imageGradientConfig: gradientImageConfig4,
           shouldNormalizeEdges: true
         ),
       ],
@@ -187,7 +171,7 @@ class VisualEffectCustomFilterViewTest01Controller: UIViewController {
         .colorMatrix(ColorMatrixRGBAPreset.preset09.colorMatrix),
         .variadicBlur(
           radius: 0,
-          maskImage: gradientImage4.cgImage,
+          imageGradientConfig: gradientImageConfig4,
           shouldNormalizeEdges: true
         ),
       ],
@@ -207,7 +191,7 @@ class VisualEffectCustomFilterViewTest01Controller: UIViewController {
   }();
   
   override func viewDidLoad() {
-  
+    self.preloadEffects();
     self.setupBackgroundView();
     
     let blurContainerView: UIView = {
@@ -311,6 +295,17 @@ class VisualEffectCustomFilterViewTest01Controller: UIViewController {
         constant: -20
       ),
     ]);
+  };
+  
+  func preloadEffects(){
+    for (effectGroupIndex, effectGroup) in self.effectGroups.enumerated() {
+      for (filterIndex, filter) in effectGroup.enumerated() {
+        filter.preloadIfNeeded(shouldAlwaysInvokeCompletion: false) {
+          print("loaded-\(effectGroupIndex)-\(filterIndex)");
+          self.effectGroups[effectGroupIndex][filterIndex] = $0;
+        };
+      };
+    };
   };
   
   func setupBackgroundView(){

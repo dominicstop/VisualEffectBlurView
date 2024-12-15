@@ -684,9 +684,36 @@ class Experiment03ViewController: UIViewController {
           
         };
       };
+            
+      func test24(){
+        try! effectView.setFiltersViaEffectDesc(
+          withFilterTypes: [
+            .luminosityCurveMap(
+              amount: 1,
+              values: [1, 0, 0, 1])
+          ],
+          shouldImmediatelyApplyFilter: true
+        );
+      };
       
+      func test25(){
+        let filterType: LayerFilterType = .gaussianBlur(
+          radius: 16,
+          shouldNormalizeEdges: true
+        );
+        
+        let filterWrapped = filterType.createFilterWrapper()!;
+        print("shouldNormalizeEdges:", try! filterWrapped.getValue(forHashedString: .propertyFilterInputKeyNormalizeEdges));
+        try! filterWrapped.setFilterValue(shouldNormalizeEdges: false);
+        try! filterWrapped.setFilterValue(shouldUseHardEdges: false);
+        try! filterWrapped.setFilterValue(shouldNormalizeEdgesToTransparent: false);
+        
+        let effectLayer = effectView.bgLayerWrapper!.wrappedObject!;
+        effectLayer.filters = [filterWrapped.wrappedObject!];
+        
+      };
       
-      test23();
+      test25();
       
 
       effectView.layer.shadowRadius = 0;
@@ -788,8 +815,8 @@ class Experiment03ViewController: UIViewController {
   func setupBackgroundView(){
     let bgView: UIView = {
       let label = UILabel();
-      label.text = "🖼️❤️\n🌆🧡\n🌄💚\n🏞️💛\n🌉💙";
-      label.font = .systemFont(ofSize: 128);
+      label.text = "🖼️❤️🌸\n🌆🧡🌹\n🌄💚🌷\n🏞️💛🌼\n🌉💙💐";
+      label.font = .systemFont(ofSize: 128 + 32);
       
       label.numberOfLines = 0
       label.lineBreakMode = .byWordWrapping;
