@@ -40,10 +40,10 @@ extension LayerFilterType {
     };
       
     switch self {
-      case .alphaFromLuminance:
-        break;
-
-      case .averagedColor:
+      case .alphaFromLuminance,
+           .averagedColor,
+           .invertColors,
+           .distanceField:
         break;
         
       case let .luminosityCurveMap(inputAmount, inputValues):

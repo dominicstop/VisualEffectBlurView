@@ -713,7 +713,472 @@ class Experiment03ViewController: UIViewController {
         
       };
       
-      test25();
+      // test "curves", failed
+      func test26(){
+        let filterWrapped = LayerFilterWrapper(
+          rawFilterType: LayerFilterTypeName.colorBlendingModeMultiply.decodedString!
+        )!;
+        try! filterWrapped.setDefaults();
+        
+        print(
+          "test26",
+          "\n - propertyFilterInputKeyAmount:", try! filterWrapped.getValue(forHashedString: .propertyFilterInputKeyAmount),
+          "\n - propertyFilterInputKeyValues:", try! filterWrapped.getValue(forHashedString: .propertyFilterInputKeyValues),
+          "\n - propertyFilterInputKeyColorMatrix:", try! filterWrapped.getValue(forHashedString: .propertyFilterInputKeyColorMatrix),
+          "\n"
+        );
+        
+        try! filterWrapped.setFilterValue(amount: 1);
+        try! filterWrapped.setFilterValue(values: [1, 0, 0, 1]);
+      
+
+        print("shouldNormalizeEdges:", try! filterWrapped.getValue(forHashedString: .propertyFilterInputKeyNormalizeEdges));
+        try! filterWrapped.setFilterValue(shouldNormalizeEdges: false);
+        try! filterWrapped.setFilterValue(shouldUseHardEdges: false);
+        try! filterWrapped.setFilterValue(shouldNormalizeEdgesToTransparent: false);
+        
+        let effectLayer = effectView.bgLayerWrapper!.wrappedObject!;
+        effectLayer.filters = [filterWrapped.wrappedObject!];
+        
+      };
+      
+      // test blending mode, failed
+      func test27(){
+        let filterWrapped = LayerFilterWrapper(
+          rawFilterType: "colorBurnBlendMode"//LayerFilterTypeName.luminosityCurveMap.decodedString!
+        )!;
+        try! filterWrapped.setDefaults();
+        
+        print(
+          "test26",
+          "\n - filterWrapped:", filterWrapped.wrappedObject!,
+          "\n - propertyFilterInputKeyAmount:", try! filterWrapped.getValue(forHashedString: .propertyFilterInputKeyAmount),
+          "\n - propertyFilterInputKeyValues:", try! filterWrapped.getValue(forHashedString: .propertyFilterInputKeyValues),
+          "\n - propertyFilterInputKeyColorMatrix:", try! filterWrapped.getValue(forHashedString: .propertyFilterInputKeyColorMatrix),
+          "\n"
+        );
+        
+        try! filterWrapped.setFilterValue(amount: 1);
+        try! filterWrapped.setFilterValue(values: [1, 0, 0, 1]);
+        
+        let effectLayer = effectView.bgLayerWrapper!.wrappedObject!;
+        effectLayer.perform("setCompositingFilter:", with: [filterWrapped.wrappedObject!]);
+        effectLayer.filters = [filterWrapped.wrappedObject!];
+        
+      };
+      
+      /// filters are applied to content view?
+      func test28(){
+        effectView.effect = UIVibrancyEffect(
+          blurEffect: UIBlurEffect(style: .prominent),
+          style: .fill
+        );
+        
+        let bgHostWrapper = effectView.bgHostWrapper!;
+        let effectLayer = effectView.bgLayerWrapper!.wrappedObject!;
+        
+        
+        
+
+        print(
+          "test28",
+          "\n - effectView:", effectView,
+          "\n - effectLayer:", effectLayer,
+          "\n - filters:", effectLayer.filters,
+          "\n - compositingFilter:", effectLayer.compositingFilter,
+          "\n - bgHostWrapper:", bgHostWrapper.wrappedObject!,
+          "\n - viewContentWrapper:", effectView.viewContentWrapper!.wrappedObject,
+          // "\n - viewContentWrapper.superview:", effectView.viewContentWrapper!.wrappedObject!.superview,
+          "\n - viewContentWrapper.recursivelyGetAllSubviews:", effectView.recursivelyGetAllSubviews.map({ ($0, $0.layer) }),
+          "\n - effectView.contentView:", effectView.contentView,
+          "\n"
+        );
+        
+      };
+      
+      // try to apply to filter to content only, failed
+      func test29(){
+        try! effectView.setFiltersViaEffectDesc(
+          withFilterTypes: [
+            .luminosityCurveMap(
+              amount: 1,
+              values: [1, 0, 0, 1])
+          ],
+          shouldImmediatelyApplyFilter: true
+        );
+      };
+      
+      // works
+      func test30(){
+        // try! effectView.setFiltersViaEffectDesc(
+        //   withFilterTypes: [
+        //     .colorBlackAndWhite(amount: 1)
+        //   ],
+        //   shouldImmediatelyApplyFilter: true
+        // );
+      
+        let filterType: LayerFilterType = .darkVibrant(
+          isReversed: true,
+          color0: UIColor.red.cgColor,
+          color1: UIColor.blue.cgColor
+        );
+        
+        let filterWrapped = filterType.createFilterWrapper()!;
+        effectView.contentView.layer.filters = [filterWrapped.wrappedObject!];
+        
+        // crashed
+        // effectView.contentView.perform(
+        //   NSSelectorFromString("setFilters:"),
+        //   with: [filterWrapped.wrappedObject!]
+        // );
+      };
+      
+      // works
+      func test31(){
+        effectView.effect = UIVibrancyEffect(
+          blurEffect: UIBlurEffect(style: .prominent),
+          style: .fill
+        );
+        
+        let filterType: LayerFilterType = .lightVibrant(
+          isReversed: false,
+          color0: UIColor.red.cgColor,
+          color1: UIColor.blue.cgColor
+        );
+        
+        let filterWrapped = filterType.createFilterWrapper()!;
+        effectView.contentView.layer.filters = [filterWrapped.wrappedObject!];
+        
+        let bgHostWrapper = effectView.bgHostWrapper!;
+        let effectLayer = effectView.bgLayerWrapper!.wrappedObject!;
+        
+        
+        
+
+        print(
+          "test31",
+          "\n - effectView:", effectView,
+          "\n - effectLayer:", effectLayer,
+          "\n - filters:", effectLayer.filters,
+          "\n - compositingFilter:", effectLayer.compositingFilter,
+          "\n - bgHostWrapper:", bgHostWrapper.wrappedObject!,
+          "\n - viewContentWrapper:", effectView.viewContentWrapper!.wrappedObject,
+          // "\n - viewContentWrapper.superview:", effectView.viewContentWrapper!.wrappedObject!.superview,
+          "\n - viewContentWrapper.recursivelyGetAllSubviews:", effectView.recursivelyGetAllSubviews.map({ ($0, $0.layer) }),
+          "\n - effectView.contentView:", effectView.contentView,
+          "\n"
+        );
+        
+      };
+      
+      // not working correctly
+      func test32(){
+        // effectView.effect = UIVibrancyEffect(
+        //   blurEffect: UIBlurEffect(style: .prominent),
+        //   style: .fill
+        // );
+        
+         try! effectView.setFiltersViaEffectDesc(
+           withFilterTypes: [
+             .colorBlackAndWhite(amount: 1)
+           ],
+           shouldImmediatelyApplyFilter: true
+         );
+        
+        let filterType: LayerFilterType = .lightVibrant(
+          isReversed: true,
+          color0: UIColor.red.cgColor,
+          color1: UIColor.blue.cgColor
+        );
+        
+        let filterWrapped = filterType.createFilterWrapper()!;
+        effectView.contentView.layer.filters = [filterWrapped.wrappedObject!];
+        
+        let bgHostWrapper = effectView.bgHostWrapper!;
+        let effectLayer = effectView.bgLayerWrapper!.wrappedObject!;
+        
+        
+        
+
+        print(
+          "test31",
+          "\n - effectView:", effectView,
+          "\n - effectLayer:", effectLayer,
+          "\n - filters:", effectLayer.filters,
+          "\n - compositingFilter:", effectLayer.compositingFilter,
+          "\n - bgHostWrapper:", bgHostWrapper.wrappedObject!,
+          "\n - viewContentWrapper:", effectView.viewContentWrapper!.wrappedObject,
+          // "\n - viewContentWrapper.superview:", effectView.viewContentWrapper!.wrappedObject!.superview,
+          "\n - viewContentWrapper.recursivelyGetAllSubviews:", effectView.recursivelyGetAllSubviews.map({ ($0, $0.layer) }),
+          "\n - effectView.contentView:", effectView.contentView,
+          "\n"
+        );
+        
+      };
+      
+      func test33(){
+        var vibEffect: UIVisualEffect = UIVibrancyEffect(
+          blurEffect: UIBlurEffect(style: .prominent),
+          style: .fill
+        );
+        
+        //vibEffect = UIBlurEffect(style: .regular)
+        effectView.effect = vibEffect;
+        
+        print(
+          "effectView.contentView",
+          "\n - disableGroupFiltering:", effectView.contentView.perform("disableGroupFiltering"),
+          "\n - viewEffects:", effectView.contentView.perform("viewEffects"),
+          "\n - filters:", effectView.contentView.perform("filters"),
+          "\n"
+        );
+        
+        print(
+          "vibEffect",
+          "\n - vibEffect:", vibEffect,
+          "\n - _allEffects:", vibEffect.perform(NSSelectorFromString("_allEffects")),
+          "\n - effectConfig:", vibEffect.perform(NSSelectorFromString("effectConfig")),
+          "\n - effectSettings:", vibEffect.perform(NSSelectorFromString("effectSettings")),
+          "\n"
+        );
+
+        let bgHostWrapper = effectView.bgHostWrapper!;
+        let effectLayer = effectView.bgLayerWrapper!.wrappedObject!;
+        
+        
+        
+        print(
+          "\n - backgroundEffects", effectView.value(forKey: "backgroundEffects"),
+          "\n - contentEffects", effectView.value(forKey: "contentEffects"),
+          "\n - _allowsGroupFiltering", effectView.value(forKey: "_allowsGroupFiltering"),
+          "\n - _backdropViewBackgroundColorAlpha", effectView.value(forKey: "_backdropViewBackgroundColorAlpha"),
+          
+          "\n - effectView.getCurrentEffectDescriptor:", {
+            let effectDesc = try! effectView.getCurrentEffectDescriptor();
+            
+            return [
+              ("_UIVisualEffectDescriptor", effectDesc.wrappedObject!),
+              ("viewEffects", effectDesc.wrappedObject!.value(forKey: "viewEffects")),
+              ("_identityContainerView", effectDesc.wrappedObject!.value(forKey: "_identityContainerView")),
+              ("alphaTransition", effectDesc.wrappedObject!.value(forKey: "alphaTransition")),
+              ("filterEntries", effectDesc.wrappedObject!.value(forKey: "filterEntries")),
+              ("containerView", effectDesc.wrappedObject!.value(forKey: "containerView")),
+              ("underlays", effectDesc.wrappedObject!.value(forKey: "underlays")),
+              ("overlays", effectDesc.wrappedObject!.value(forKey: "overlays")),
+              ("textShouldRenderWithTintColor", effectDesc.wrappedObject!.value(forKey: "textShouldRenderWithTintColor")),
+              ("allowsVibrancyInContent", effectDesc.wrappedObject!.value(forKey: "allowsVibrancyInContent")),
+              ("disableInPlaceFiltering", effectDesc.wrappedObject!.value(forKey: "disableInPlaceFiltering")),
+              ("requestAlphaTransition", effectDesc.wrappedObject!.value(forKey: "requestAlphaTransition")),
+              
+              
+              //("uniqueFilterNames", effectDesc.wrappedObject!.perform(NSSelectorFromString("uniqueFilterNames"))),
+              ("_requestedContainerView", effectDesc.wrappedObject!.perform(NSSelectorFromString("_requestedContainerView"))),
+              
+              //("effectConfig", effectDesc.wrappedObject!.value(forKey: "effectConfig")),
+              //("description", effectDesc.wrappedObject!.value(forKey: "description")),
+              
+              (
+                "_vibrantShadowEffect",
+                (NSClassFromString("UIVibrancyEffect")! as AnyObject).perform(NSSelectorFromString("_vibrantShadowEffect"))
+              ),
+              (
+                "vibrantMediumShadowEffect",
+                (NSClassFromString("UIVibrancyEffect")! as AnyObject).perform(NSSelectorFromString("vibrantMediumShadowEffect"))
+              ),
+              (
+                "vibrantHeavyShadowEffect",
+                (NSClassFromString("UIVibrancyEffect")! as AnyObject).perform(NSSelectorFromString("vibrantHeavyShadowEffect"))
+              ),
+              (
+                "vibrantChromeShadowEffect",
+                (NSClassFromString("UIVibrancyEffect")! as AnyObject).perform(NSSelectorFromString("vibrantChromeShadowEffect"))
+              ),
+              
+            ].reduce(into: "") {
+              $0 += "\n - \($1)";
+            };
+          }(),
+          "\n"
+        );
+        
+        print(
+          "effectLayer, UICABackdropLayer:", effectLayer,
+          "\n - effectLayer.filters:", effectLayer.filters,
+          "\n - mt_colorMatrixDrivenOpacity:", effectLayer.value(forKey: "mt_colorMatrixDrivenOpacity"),
+          
+          "\n - groupName:", effectLayer.value(forKey: "groupName"),
+          "\n - usesGlobalGroupNamespace:", effectLayer.value(forKey: "usesGlobalGroupNamespace"),
+          "\n - scale:", effectLayer.value(forKey: "scale"),
+          "\n - backdropRect:", effectLayer.value(forKey: "backdropRect"),
+          "\n - marginWidth:", effectLayer.value(forKey: "marginWidth"),
+          "\n - disablesOccludedBackdropBlurs:", effectLayer.value(forKey: "disablesOccludedBackdropBlurs"),
+          "\n - captureOnly:", effectLayer.value(forKey: "captureOnly"),
+          "\n - allowsInPlaceFiltering:", effectLayer.value(forKey: "allowsInPlaceFiltering"),
+          "\n - reducesCaptureBitDepth:", effectLayer.value(forKey: "reducesCaptureBitDepth"),
+          "\n - ignoresScreenClip:", effectLayer.value(forKey: "ignoresScreenClip"),
+          "\n - zoom:", effectLayer.value(forKey: "zoom"),
+          "\n - tracksLuma:", effectLayer.value(forKey: "tracksLuma"),
+          
+          
+          
+          
+          //"\n - ", effectLayer.perform(NSSelectorFromString("")),
+          "\n"
+        );
+        
+        print(
+          "effectView.contentView, _UIVisualEffectContentView",
+          "\n - effectView.contentView:", effectView.contentView,
+          "\n - effectView.contentView.layer:", effectView.contentView.layer,
+          "\n - effectView.contentView.layer.filters:", effectView.contentView.layer.filters,
+          "\n - effectView.contentView.layer.filters:", {
+            let filter = effectView.contentView.layer.filters!.first! as AnyObject;
+            let filterWrapped = LayerFilterWrapper(objectToWrap: filter)!;
+            
+            return [
+              ("InputKeyAmount:", try! filterWrapped.getValue(forHashedString: .propertyFilterInputKeyAmount)),
+              ("InputKeyAngle:", try! filterWrapped.getValue(forHashedString: .propertyFilterInputKeyAngle)),
+              ("InputKeyValues:", try! filterWrapped.getValue(forHashedString: .propertyFilterInputKeyValues)),
+              ("InputKeyRadius:", try! filterWrapped.getValue(forHashedString: .propertyFilterInputKeyRadius)),
+              ("InputKeyColorMatrix:", try! filterWrapped.getValue(forHashedString: .propertyFilterInputKeyColorMatrix)),
+              ("InputKeyReversed:", try! filterWrapped.getValue(forHashedString: .propertyFilterInputKeyReversed)),
+              ("InputKeyColor0:", try! filterWrapped.getValue(forHashedString: .propertyFilterInputKeyColor0)),
+              ("InputKeyColor1:", try! filterWrapped.getValue(forHashedString: .propertyFilterInputKeyColor1)),
+              ("InputKeyNormalizeEdges:", try! filterWrapped.getValue(forHashedString: .propertyFilterInputKeyNormalizeEdges)),
+              ("InputKeyShouldNormalizeEdgesToTransparent:", try! filterWrapped.getValue(forHashedString: .propertyFilterInputKeyShouldNormalizeEdgesToTransparent)),
+              ("InputKeyShouldUseHardEdges:", try! filterWrapped.getValue(forHashedString: .propertyFilterInputKeyShouldUseHardEdges)),
+              ("InputKeyMaskImage:", try! filterWrapped.getValue(forHashedString: .propertyFilterInputKeyMaskImage)),
+              
+            
+            ].reduce(into: "") {
+              $0 += "\n - \($1)";
+            };
+          }(),
+          "\n"
+        );
+        
+        print(
+          "test33",
+          "\n - effectView:", effectView,
+          "\n - bgHostWrapper:", bgHostWrapper.wrappedObject!,
+          "\n - viewContentWrapper:", effectView.viewContentWrapper!.wrappedObject,
+          // "\n - viewContentWrapper.superview:", effectView.viewContentWrapper!.wrappedObject!.superview,
+      
+          "\n"
+        );
+        
+        effectView.recursivelyGetAllSubviews.enumerated().forEach {
+          print(
+            "\($0.offset) - view:", $0.element.debugDescription,
+            "\n - layer:", $0.element.layer.debugDescription,
+            "\n - layer.filters:", $0.element.layer.filters.debugDescription,
+            "\n"
+          );
+        };
+        
+      };
+      
+      func test34(){
+        var vibEffect: UIVisualEffect = UIVibrancyEffect(
+          blurEffect: UIBlurEffect(style: .prominent),
+          style: .fill
+        );
+        
+        effectView.effect = vibEffect;
+        
+        
+       try! effectView.setFiltersViaEffectDesc(
+         withFilterTypes: [
+           .colorBlackAndWhite(amount: 1)
+         ],
+         shouldImmediatelyApplyFilter: true
+       );
+       
+        
+        let filterType: LayerFilterType = .lightVibrant(
+          isReversed: false,
+          color0: UIColor(white: 0.25, alpha: 1).cgColor,
+          color1: UIColor.init(red: 0, green: 0, blue: 0.313725, alpha: 0.05).cgColor
+        );
+        
+        let filterWrapped = filterType.createFilterWrapper()!;
+        effectView.contentView.layer.filters = [filterWrapped.wrappedObject!];
+        
+        let bgHostWrapper = effectView.bgHostWrapper!;
+        let effectLayer = effectView.bgLayerWrapper!.wrappedObject!;
+        
+        effectLayer.setValue(1, forKey: "allowsInPlaceFiltering")
+        
+        let effectDesc = try! bgHostWrapper.getEffectDescriptorCurrent()!.wrappedObject!;
+        effectDesc.setValue(0, forKey: "disableInPlaceFiltering");
+        effectDesc.setValue(0, forKey: "allowsVibrancyInContent");
+        effectDesc.setValue(0, forKey: "requestAlphaTransition");
+        
+        let effectDescWrapped = UVEDescriptorWrapper(objectToWrap: effectDesc)!;
+
+        // effectView.effect = nil;
+        // effectView.effect = vibEffect;
+        
+        effectLayer.setValue(1, forKey: "allowsInPlaceFiltering")
+        
+        
+        try! bgHostWrapper.setEffectDescriptor(effectDescWrapped);
+        // try! bgHostWrapper.applyProvidedEffectDescriptor(effectDescWrapped);
+        try! effectView.applyRequestedFilterEffects();
+        
+        effectView.displayNow();
+
+        print(
+          "test31",
+          
+          "\n"
+        );
+        
+      };
+      
+      // test bias
+      func test35(){
+        try! effectView.setFiltersViaEffectDesc(
+          withFilterTypes: [
+            .bias(amount: 0.5)
+          ],
+          shouldImmediatelyApplyFilter: true
+        );
+      };
+      
+      func test37(){
+        let filterWrapped = LayerFilterWrapper(
+          rawFilterType:
+            // LayerFilterTypeName.invertColors.decodedString!
+            // LayerFilterTypeName.invertColorsDisplayAware.decodedString! // nope
+            // LayerFilterTypeName.pairedOpacity.decodedString! // nope
+            // LayerFilterTypeName.lanczosResampling.decodedString! // nope
+            // LayerFilterTypeName.lanczosResampling.decodedString! // nope
+            // LayerFilterTypeName.lanczosResampling.decodedString! // nope
+            // LayerFilterTypeName.luminanceMap.decodedString! // nope
+            // LayerFilterTypeName.colorHueAdjust.decodedString! // yes
+            // LayerFilterTypeName.colorBlendingModeMultiply.decodedString! // mope
+            // LayerFilterTypeName.distanceField.decodedString! // yes
+            // LayerFilterTypeName.meteor.decodedString! // nopw
+            LayerFilterTypeName.alphaFromLuminance.decodedString!
+        )!;
+        
+        try! filterWrapped.setDefaults();
+        try! filterWrapped.setFilterValue(amount: 1);
+        try! filterWrapped.setFilterValue(values: [1, 0, 0, 1]);
+        try! filterWrapped.setFilterValue(color0: .red);
+        try! filterWrapped.setFilterValue(color1: .blue);
+        try! filterWrapped.setFilterValue(angle: Angle.degrees(90.0).radians);
+        try! filterWrapped.setFilterValue(angle: Angle.degrees(90.0).radians);
+        try! filterWrapped.setFilterValue(isReversed: false);
+        try! filterWrapped.setFilterValue(radius: 32);
+
+        
+        let effectLayer = effectView.bgLayerWrapper!.wrappedObject!;
+        effectLayer.filters = [filterWrapped.wrappedObject!];
+      };
+      
+      test37();
       
 
       effectView.layer.shadowRadius = 0;
@@ -810,13 +1275,16 @@ class Experiment03ViewController: UIViewController {
         constant: -20
       ),
     ]);
+    
+    // self.setupEffectContents();
   };
   
   func setupBackgroundView(){
     let bgView: UIView = {
       let label = UILabel();
-      label.text = "🖼️❤️🌸\n🌆🧡🌹\n🌄💚🌷\n🏞️💛🌼\n🌉💙💐";
-      label.font = .systemFont(ofSize: 128 + 32);
+      // label.text = "🖼️❤️🌸\n🌆🧡🌹\n🌄💚🌷\n🏞️💛🌼\n🌉💙💐";
+      label.text = "🖼️❤️\n🌆🧡\n🌄💚\n🏞️💛\n🌉💙";
+      label.font = .systemFont(ofSize: 128);
       
       label.numberOfLines = 0
       label.lineBreakMode = .byWordWrapping;
@@ -841,6 +1309,57 @@ class Experiment03ViewController: UIViewController {
       ),
       
       bgView.centerYAnchor.constraint(
+        equalTo: self.view.centerYAnchor
+      ),
+    ]);
+  };
+  
+  func setupEffectContents(){
+    guard let visualEffectView = self.visualEffectView else {
+      return;
+    };
+    
+    let contentView: UIView = {
+      let label = UILabel();
+      
+      let dummyString: [AttributedStringConfig]  = (0..<15).map {
+        .init(
+          text: "\n \($0 + 1)-hello world, hello",
+          fontConfig: .init(
+            size: 40,
+            weight: [.light, .medium, .regular, .bold, .heavy][cyclicIndex: $0],
+            symbolicTraits: nil
+          ),
+          color: [.black, .init(white: 0.5, alpha: 1)][cyclicIndex: $0]
+        )
+      };
+
+      label.attributedText = dummyString.makeAttributedString();
+      
+      label.numberOfLines = 0
+      label.lineBreakMode = .byWordWrapping;
+      label.sizeToFit();
+      
+      return label;
+    }();
+  
+    contentView.translatesAutoresizingMaskIntoConstraints = false;
+    visualEffectView.contentView.addSubview(contentView)
+    return;
+    
+    NSLayoutConstraint.activate([
+      contentView.heightAnchor.constraint(
+        equalTo: self.view.heightAnchor
+      ),
+      contentView.heightAnchor.constraint(
+        equalTo: self.view.heightAnchor
+      ),
+      
+      contentView.centerXAnchor.constraint(
+        equalTo: self.view.centerXAnchor
+      ),
+      
+      contentView.centerYAnchor.constraint(
         equalTo: self.view.centerYAnchor
       ),
     ]);
