@@ -11,9 +11,8 @@ import DGSwiftUtilities
 
 public enum LayerFilterConfig: Equatable {
 
-  case alphaFromLuminance;
-  
-  case averagedColor;
+  // MARK: - Enum Members: Animatable Filters
+  // ----------------------------------------
   
   case luminosityCurveMap(
     amount: CGFloat,
@@ -55,6 +54,32 @@ public enum LayerFilterConfig: Equatable {
     shouldNormalizeEdgesToTransparent: Bool = false,
     shouldUseHardEdges: Bool = false
   );
+  
+  // MARK: - Enum Members: Partially Animatable Filters
+  // --------------------------------------------------
+  
+  case darkVibrant(
+    isReversed: Bool,
+    color0: UIColor,
+    color1: UIColor
+  );
+  
+  case lightVibrant(
+    isReversed: Bool,
+    color0: UIColor,
+    color1: UIColor
+  );
+  
+  // MARK: - Enum Members: Not Animatable
+  // ------------------------------------
+  
+  case alphaFromLuminance;
+  
+  case averagedColor;
+  
+  case invertColors;
+  
+  case distanceField;
   
   // MARK: - Properties
   // ------------------
@@ -135,6 +160,27 @@ public enum LayerFilterConfig: Equatable {
           shouldNormalizeEdgesToTransparent: shouldNormalizeEdgesToTransparent,
           shouldUseHardEdges: shouldUseHardEdges
         );
+        
+      case let .darkVibrant(isReversed, color0, color1):
+        return .darkVibrant(
+          isReversed: isReversed,
+          color0: color0.cgColor,
+          color1: color1.cgColor
+        );
+      
+      case let .lightVibrant(isReversed, color0, color1):
+        return .lightVibrant(
+          isReversed: isReversed,
+          color0: color0.cgColor,
+          color1: color1.cgColor
+        );
+        
+      
+      case .invertColors:
+        return .invertColors;
+        
+      case .distanceField:
+        return .distanceField;
     };
   };
   

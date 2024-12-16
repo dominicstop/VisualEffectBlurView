@@ -13,21 +13,23 @@ public enum LayerFilterType {
   // case colorBlendingModeMultiply;
   // case colorBlendingModeAdd;
   // case colorBlendingModeSubtract;
-  // case invertColors;
   // case meteor;
-  // case distanceField;
   // case luminanceCompression;
   // case lanczosResampling;
   // case pageCurl;
-  
-  case alphaFromLuminance;
-  
-  case averagedColor;
-  
+  //
   // case curves(
   //   inputAmount: CGFloat,
   //   inputValues: [CGFloat]
   // );
+  
+  case invertColors;
+  
+  case averagedColor;
+  
+  case distanceField;
+  
+  case alphaFromLuminance;
   
   case luminosityCurveMap(
     amount: CGFloat,
@@ -111,8 +113,8 @@ public enum LayerFilterType {
       case .colorHueAdjust:
         return .colorHueAdjust;
         
-      // case .invertColors:
-      //   return .invertColors;
+       case .invertColors:
+         return .invertColors;
         
       case .luminanceCompression:
         return .luminanceCompression;
@@ -126,14 +128,11 @@ public enum LayerFilterType {
       case .bias:
         return .bias;
         
-      // case .distanceField:
-      //   return .distanceField;
+       case .distanceField:
+         return .distanceField;
         
       case .gaussianBlur:
         return .gaussianBlur;
-        
-      // case .luminanceCompression:
-      //   return .luminanceCompression;
         
        case .luminosityCurveMap:
          return .luminosityCurveMap;
@@ -179,6 +178,12 @@ public enum LayerFilterType {
         
       case .averagedColor:
         return .averagedColor;
+        
+      case .invertColors:
+        return .invertColors;
+        
+      case .distanceField:
+        return .distanceField;
         
       case .luminosityCurveMap:
         return .luminosityCurveMap(amount: 0, values: [0, 0, 0, 0]);
@@ -240,10 +245,10 @@ public enum LayerFilterType {
     var identityValues: Dictionary<String, Any> = [:];
     
     switch self {
-      case .alphaFromLuminance:
-        break;
-        
-      case .averagedColor:
+      case .alphaFromLuminance,
+           .averagedColor,
+           .invertColors,
+           .distanceField:
         break;
         
       case .luminosityCurveMap:
@@ -303,10 +308,10 @@ public enum LayerFilterType {
     var valuesRequested: Dictionary<String, Any> = [:];
     
     switch self {
-      case .alphaFromLuminance:
-        break;
-        
-      case .averagedColor:
+        case .alphaFromLuminance,
+           .averagedColor,
+           .invertColors,
+           .distanceField:
         break;
         
       case let .luminosityCurveMap(amount, _):
@@ -619,8 +624,10 @@ public enum LayerFilterType {
   
   public func applyTo(layerFilterWrapper: LayerFilterWrapper) throws {
     switch self {
-      case .alphaFromLuminance: fallthrough;
-      case .averagedColor:
+      case .alphaFromLuminance,
+           .averagedColor,
+           .invertColors,
+           .distanceField:
         // no-op
         break;
         
