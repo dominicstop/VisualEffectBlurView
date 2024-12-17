@@ -30,7 +30,7 @@ class Experiment03ViewController: UIViewController {
     let blurContainerView: UIView = {
       let containerView = UIView();
       
-      let effectView = try! VisualEffectView(withEffect: CustomEffect());
+      var effectView = try! VisualEffectCustomFilterView(withInitialFilters: [])
       self.visualEffectView = effectView;
       
       func test01(){
@@ -1192,7 +1192,115 @@ class Experiment03ViewController: UIViewController {
         );
       };
       
-      test38();
+      
+      // remove filters, failed
+      func test39(){
+        let colorTransform: ColorTransform =
+          .init()
+          .withInvert(1)
+          .withSaturation(-1)
+          //.withHueRotate(.degrees(90));
+        
+        let effectDescWrapped = try! effectView.getCurrentEffectDescriptor();
+        let effectDesc = effectDescWrapped.wrappedObject!;
+        
+        effectDesc.setValue([], forKey: "filterEntries");
+        effectDesc.setValue([], forKey: "viewEffects");
+        effectDesc.setValue([], forKey: "underlays");
+        effectDesc.setValue([], forKey: "overlays");
+        
+        let bgHostWrapper = effectView.bgHostWrapper!;
+        try! bgHostWrapper.setEffectDescriptor(effectDescWrapped);
+        try! bgHostWrapper.applyProvidedEffectDescriptor(effectDescWrapped);
+        try! effectView.applyRequestedFilterEffects();
+      };
+      
+      func test40(){
+        let effectDescWrapped = try! effectView.getCurrentEffectDescriptor();
+        let effectDesc = effectDescWrapped.wrappedObject!;
+        
+        effectDesc.setValue([], forKey: "filterEntries");
+        effectDesc.setValue([], forKey: "viewEffects");
+        effectDesc.setValue([], forKey: "underlays");
+        effectDesc.setValue([], forKey: "overlays");
+        
+        let bgHostWrapper = effectView.bgHostWrapper!;
+        try! bgHostWrapper.setEffectDescriptor(effectDescWrapped);
+        try! bgHostWrapper.applyProvidedEffectDescriptor(effectDescWrapped);
+        try! effectView.applyRequestedFilterEffects();
+        
+        effectView.bgLayerWrapper?.wrappedObject?.filters = [];
+        
+        let colorTransform: ColorTransform =
+          .init()
+          .withInvert(1)
+          .withSaturation(-1)
+          //.withHueRotate(.degrees(90));
+        
+        try! effectView.setFiltersViaEffectDesc(
+          withFilterTypes: [
+            .colorMatrix(colorTransform.colorMatrix),
+          ],
+          shouldImmediatelyApplyFilter: true
+        );
+      };
+      
+      func test41(){
+        
+        try! effectView.immediatelyRemoveAllFilters();
+        print(
+          "currentFilters:", effectView.bgLayerWrapper?.currentFilters
+        );
+        
+        return;
+        let colorTransform: ColorTransform =
+          .init()
+          .withInvert(1)
+          .withSaturation(-1)
+          //.withHueRotate(.degrees(90));
+        
+        try! effectView.setFiltersViaEffectDesc(
+          withFilterTypes: [
+            .colorMatrix(colorTransform.colorMatrix),
+          ],
+          shouldImmediatelyApplyFilter: true
+        );
+      };
+      
+      func test42(){
+        effectView = try! .init(withInitialFilters: [
+          .colorBlackAndWhite(amount: 1)
+        ]);
+        
+        var waitTime: TimeInterval = 0;
+        
+        waitTime += 1;
+        DispatchQueue.main.asyncAfter(deadline: .now() + waitTime) {
+          let colorTransform: ColorTransform =
+            .init()
+            .withInvert(1)
+            .withSaturation(-1)
+            //.withHueRotate(.degrees(90));
+          
+          try! effectView.immediatelyApplyFilters([
+            .colorMatrix(colorTransform.colorMatrix),
+          ]);
+        };
+        
+        waitTime += 1;
+        DispatchQueue.main.asyncAfter(deadline: .now() + waitTime) {
+          try! effectView.immediatelyApplyFilters([]);
+        };
+        
+        waitTime += 1;
+        DispatchQueue.main.asyncAfter(deadline: .now() + waitTime) {
+          try! effectView.immediatelyApplyFilters([
+             .colorBlackAndWhite(amount: 1)
+          ]);
+        };
+      };
+      
+      test42();
       
 
       effectView.layer.shadowRadius = 0;
