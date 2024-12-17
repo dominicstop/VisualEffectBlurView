@@ -1177,7 +1177,22 @@ class Experiment03ViewController: UIViewController {
         effectLayer.filters = [filterWrapped.wrappedObject!];
       };
       
-      test37();
+      func test38(){
+        let colorTransform: ColorTransform =
+          .init()
+          .withInvert(1)
+          .withSaturation(-1)
+          //.withHueRotate(.degrees(90));
+        
+        try! effectView.setFiltersViaEffectDesc(
+          withFilterTypes: [
+            .colorMatrix(colorTransform.colorMatrix),
+          ],
+          shouldImmediatelyApplyFilter: true
+        );
+      };
+      
+      test38();
       
 
       effectView.layer.shadowRadius = 0;
