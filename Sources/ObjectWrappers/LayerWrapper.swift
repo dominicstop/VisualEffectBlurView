@@ -12,9 +12,9 @@ import DGSwiftUtilities
 /// Old name: `BackdropLayerWrapper`
 ///
 @available(iOS 12, *)
-public class BackgroundLayerWrapper: PrivateObjectWrapper<
+public class LayerWrapper: PrivateObjectWrapper<
   CALayer,
-  BackgroundLayerWrapper.EncodedString
+  LayerWrapper.EncodedString
 > {
 
   public enum EncodedString: PrivateObjectWrappingEncodedString {
