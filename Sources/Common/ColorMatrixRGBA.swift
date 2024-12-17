@@ -193,6 +193,36 @@ public struct ColorMatrixRGBA: Equatable, MutableReference {
     self.m45 = m45;
   };
   
+  public init<T: BinaryFloatingPoint>(
+    withSourceType sourceType: T.Type = T.self,
+    
+    m11: T, m12: T, m13: T, m14: T, m15: T,
+    m21: T, m22: T, m23: T, m24: T, m25: T,
+    m31: T, m32: T, m33: T, m34: T, m35: T,
+    m41: T, m42: T, m43: T, m44: T, m45: T
+  ) {
+    self.m11 = .init(m11);
+    self.m12 = .init(m12);
+    self.m13 = .init(m13);
+    self.m14 = .init(m14);
+    self.m15 = .init(m15);
+    self.m21 = .init(m21);
+    self.m22 = .init(m22);
+    self.m23 = .init(m23);
+    self.m24 = .init(m24);
+    self.m25 = .init(m25);
+    self.m31 = .init(m31);
+    self.m32 = .init(m32);
+    self.m33 = .init(m33);
+    self.m34 = .init(m34);
+    self.m35 = .init(m35);
+    self.m41 = .init(m41);
+    self.m42 = .init(m42);
+    self.m43 = .init(m43);
+    self.m44 = .init(m44);
+    self.m45 = .init(m45);
+  };
+  
   public init?(fromValue value: NSValue){
     let objcTypeCharPointer = value.objCType as UnsafePointer<CChar>;
     guard let objcTypeString = NSString(utf8String: objcTypeCharPointer) else {
