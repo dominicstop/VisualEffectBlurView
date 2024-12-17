@@ -20,6 +20,7 @@ public class BackgroundLayerWrapper: PrivateObjectWrapper<
   public enum EncodedString: PrivateObjectWrappingEncodedString {
     case className;
     case propertySetterFilters;
+    case propertyGetterFilters;
     
     public var encodedString: String {
       switch self {
@@ -30,8 +31,25 @@ public class BackgroundLayerWrapper: PrivateObjectWrapper<
         case .propertySetterFilters:
           // setFilters:
           return "c2V0RmlsdGVyczo=";
+          
+        case .propertyGetterFilters:
+          // filters
+          return "ZmlsdGVycw==";
       };
     };
+  };
+  
+  // MARK: - Properties: Getters
+  // --------------------------
+  
+  public var currentFilters: [NSObject]? {
+    let values = try? self.getValue(forHashedString: .propertyGetterFilters);
+    
+    guard let values = values else {
+      return nil;
+    };
+    
+    return values as? [NSObject];
   };
   
   // MARK: - Wrapped Properties
@@ -39,8 +57,7 @@ public class BackgroundLayerWrapper: PrivateObjectWrapper<
   
   // TODO: temp - replace w/ `CIFilter`
   public var gaussianBlurFilterWrapper: GaussianBlurFilterWrapper? {
-    guard let wrappedObject = self.wrappedObject,
-          let filters = wrappedObject.filters,
+    guard let filters = self.currentFilters,
           filters.count > 0
     else {
       return nil;
@@ -60,7 +77,7 @@ public class BackgroundLayerWrapper: PrivateObjectWrapper<
       return filterType.lowercased().contains("blur");
     };
     
-    guard let match = match as? AnyObject else {
+    guard let match = match else {
       return nil;
     };
     
