@@ -53,6 +53,13 @@ open class VisualEffectView: UIVisualEffectView {
     self.viewContentWrapper?.bgLayerWrapper
   };
   
+  /// Contains the filter effect that only affects the content view
+  /// Related: `allowsInPlaceFiltering`, `disableInPlaceFiltering`
+  ///
+  public var contentLayer: CALayer {
+    self.contentView.layer;
+  };
+  
   /// Old name: `effectDescriptorForCurrentEffectWrapper`
   @available(iOS 13, *)
   public var currentEffectMetadata: UVEDescriptorWrapper? {
