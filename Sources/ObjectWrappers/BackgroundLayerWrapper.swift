@@ -19,12 +19,17 @@ public class BackgroundLayerWrapper: PrivateObjectWrapper<
 
   public enum EncodedString: PrivateObjectWrappingEncodedString {
     case className;
+    case propertySetterFilters;
     
     public var encodedString: String {
       switch self {
         case .className:
           // UICABackdropLayer
           return "VUlDQUJhY2tkcm9wTGF5ZXI=";
+          
+        case .propertySetterFilters:
+          // setFilters:
+          return "c2V0RmlsdGVyczo=";
       };
     };
   };
@@ -60,5 +65,15 @@ public class BackgroundLayerWrapper: PrivateObjectWrapper<
     };
     
     return .init(objectToWrap: match);
+  };
+
+  // MARK: - Wrapped Methods
+  // -----------------------
+  
+  public func setValuesForFilters(newFilters: [AnyObject]) throws {
+    try self.performSelector(
+      usingEncodedString: .propertySetterFilters,
+      withArg1: newFilters
+    );
   };
 };

@@ -340,7 +340,7 @@ open class VisualEffectView: UIVisualEffectView {
     };
     
     guard let bgLayerWrapper = contentViewWrapper.bgLayerWrapper,
-          let bgLayer = bgLayerWrapper.wrappedObject
+          bgLayerWrapper.wrappedObject != nil
     else {
       throw VisualEffectBlurViewError(
         errorCode: .unexpectedNilValue,
@@ -352,7 +352,7 @@ open class VisualEffectView: UIVisualEffectView {
       $0.wrappedObject;
     };
     
-    bgLayer.filters = filters;
+    try bgLayerWrapper.setValuesForFilters(newFilters: filters);
     
     if shouldImmediatelyApplyFilter {
       try contentViewWrapper.applyRequestedFilterEffects();
