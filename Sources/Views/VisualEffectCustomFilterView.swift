@@ -17,7 +17,6 @@ public class VisualEffectCustomFilterView: VisualEffectView {
     let dummyEffect = UIBlurEffect(style: .regular);
     try self.init(withEffect: dummyEffect);
     
-    self.setOpacityForOtherSubviews(newOpacity: 0);
     try self.immediatelyApplyFilters(initialFilters);
   };
   
@@ -25,8 +24,6 @@ public class VisualEffectCustomFilterView: VisualEffectView {
     self.effect = nil;
     let dummyEffect = UIBlurEffect(style: .regular);
     self.effect = dummyEffect;
-    
-    self.setOpacityForOtherSubviews(newOpacity: 0);
   };
   
   public func immediatelyApplyFilters(
@@ -36,6 +33,15 @@ public class VisualEffectCustomFilterView: VisualEffectView {
     
     let filterTypes = nextFilters.map {
       $0.associatedFilterType;
+    };
+    
+    let isResettingFilters = nextFilters.count == 0;
+    if isResettingFilters {
+      try self.immediatelyRemoveAllFilters();
+      self.effectOpacity = 0;
+      
+    } else {
+      self.effectOpacity = 1;
     };
     
     try self.setFiltersViaEffectDesc(
