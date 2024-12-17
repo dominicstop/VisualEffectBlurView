@@ -455,6 +455,15 @@ public struct ColorMatrixRGBA: Equatable, MutableReference {
     );
   };
   
+  public mutating func setInvert(withPercent percent: Float) {
+    let percentClamped = percent.clamped(min: 0, max: 1);
+    let invertMatrix = ColorMatrixRGBA.createInvertColorMatrix5x4(
+      amount: percentClamped
+    );
+    
+    self = .init(fromColorMatrix5x4: invertMatrix);
+  };
+  
   public func concatByAddingLastColumn(with otherColorMatrix: Self) -> Self {
     let matrixA = self.matrix4x5;
     let matrixB = otherColorMatrix.matrix4x5;
@@ -611,6 +620,12 @@ public extension ColorMatrixRGBA {
   static func saturation(withFactor saturationFactor: Float) -> Self {
     var matrix: Self = .identity;
     matrix.setSaturation(withFactor: saturationFactor);
+    return matrix;
+  };
+  
+  static func invert(withPercent percent: Float) -> Self {
+    var matrix: Self = .identity;
+    matrix.setInvert(withPercent: percent);
     return matrix;
   };
   
