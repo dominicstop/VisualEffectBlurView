@@ -531,6 +531,40 @@ open class VisualEffectView: UIVisualEffectView {
     );
   };
   
+  @available(iOS 13, *)
+  public func immediatelyRemoveAllFilters() throws {
+    guard let bgHostWrapper = self.bgHostWrapper else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to get `self.bgHostWrapper`"
+      );
+    };
+    
+    guard let bgLayerWrapper = self.bgLayerWrapper else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to get `self.bgLayerWrapper`"
+      );
+    };
+    
+    guard let effectDescWrapper = UVEDescriptorWrapper() else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to create `effectDescWrapper` instance"
+      );
+    };
+    
+    // does nothing, but reset just in case
+    try bgHostWrapper.setEffectDescriptor(effectDescWrapper);
+    try self.applyRequestedFilterEffects();
+    
+    self.currentFilterTypes = [];
+    
+    // reset `CALayer.filters`
+    try bgLayerWrapper.setValuesForFilters(newFilters: []);
+    try self.contentLayerWrapped?.setValuesForFilters(newFilters: []);
+  };
+  
   public func applyRequestedFilterEffects() throws {
     guard let viewContentWrapper = self.viewContentWrapper else {
       throw VisualEffectBlurViewError(
