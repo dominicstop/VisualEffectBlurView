@@ -53,8 +53,8 @@ public enum LayerFilterType {
   case gaussianBlur(
     radius: CGFloat,
     shouldNormalizeEdges: Bool = true,
-    shouldNormalizeEdgesToTransparent: Bool = false,
-    shouldUseHardEdges: Bool = false
+    shouldNormalizeEdgesToTransparent: Bool? = nil,
+    shouldUseHardEdges: Bool? = nil
   );
   
   case darkVibrant(
@@ -77,8 +77,8 @@ public enum LayerFilterType {
     radius: CGFloat,
     maskImage: CGImage?,
     shouldNormalizeEdges: Bool = true,
-    shouldNormalizeEdgesToTransparent: Bool = false,
-    shouldUseHardEdges: Bool = false
+    shouldNormalizeEdgesToTransparent: Bool? = nil,
+    shouldUseHardEdges: Bool? = nil
   );
   
   // MARK: - Computed Properties
@@ -346,8 +346,14 @@ public enum LayerFilterType {
       ):
         valuesRequested.filterInputValueRadius = radius;
         valuesRequested.filterInputValueShouldNormalizeEdgesObjc = shouldNormalizeEdges ? 1 : 0;
-        valuesRequested.filterInputValueShouldNormalizeEdgesToTransparentObjc = shouldNormalizeEdgesToTransparent ? 1 : 0;
-        valuesRequested.filterInputValueShouldUseHardEdgesObjc = shouldUseHardEdges ? 1 : 0
+        
+        if let shouldNormalizeEdgesToTransparent = shouldNormalizeEdgesToTransparent {
+          valuesRequested.filterInputValueShouldNormalizeEdgesToTransparentObjc = shouldNormalizeEdgesToTransparent ? 1 : 0;
+        };
+        
+        if let shouldUseHardEdges = shouldUseHardEdges {
+          valuesRequested.filterInputValueShouldUseHardEdgesObjc = shouldUseHardEdges ? 1 : 0
+        };
         
       case let .darkVibrant(isReversed, color0, color1):
         valuesRequested.filterInputValueIsReversed = isReversed;
@@ -375,8 +381,14 @@ public enum LayerFilterType {
         valuesRequested.filterInputValueRadius = radius;
         valuesRequested.filterInputMaskImage = maskImage;
         valuesRequested.filterInputValueShouldNormalizeEdgesObjc = shouldNormalizeEdges ? 1 : 0;
-        valuesRequested.filterInputValueShouldNormalizeEdgesToTransparentObjc = shouldNormalizeEdgesToTransparent ? 1 : 0;
-        valuesRequested.filterInputValueShouldUseHardEdgesObjc = shouldUseHardEdges ? 1 : 0
+        
+        if let shouldNormalizeEdgesToTransparent = shouldNormalizeEdgesToTransparent {
+          valuesRequested.filterInputValueShouldNormalizeEdgesToTransparentObjc = shouldNormalizeEdgesToTransparent ? 1 : 0;
+        };
+        
+        if let shouldUseHardEdges = shouldUseHardEdges {
+          valuesRequested.filterInputValueShouldUseHardEdgesObjc = shouldUseHardEdges ? 1 : 0
+        };
     };
     
     return valuesRequested;
@@ -540,7 +552,12 @@ public enum LayerFilterType {
         
         self = .gaussianBlur(
           radius: inputRadius,
-          shouldNormalizeEdges: shouldNormalizeEdges
+          shouldNormalizeEdges: shouldNormalizeEdges,
+          shouldNormalizeEdgesToTransparent:
+            filterValuesConfig.filterInputValueShouldNormalizeEdgesToTransparent,
+            
+          shouldUseHardEdges:
+            filterValuesConfig.filterInputValueShouldUseHardEdges
         );
         
       case .darkVibrant:
@@ -596,7 +613,12 @@ public enum LayerFilterType {
         self = .variadicBlur(
           radius: inputRadius,
           maskImage: maskImage,
-          shouldNormalizeEdges: inputNormalizeEdges
+          shouldNormalizeEdges: inputNormalizeEdges,
+          shouldNormalizeEdgesToTransparent:
+            filterValuesConfig.filterInputValueShouldNormalizeEdgesToTransparent,
+            
+          shouldUseHardEdges:
+            filterValuesConfig.filterInputValueShouldUseHardEdges
         );
         
       default:
@@ -672,13 +694,17 @@ public enum LayerFilterType {
           shouldNormalizeEdges: shouldNormalizeEdges
         );
         
-        try layerFilterWrapper.setFilterValue(
-          shouldNormalizeEdgesToTransparent: shouldNormalizeEdgesToTransparent
-        );
+        if let shouldNormalizeEdgesToTransparent = shouldNormalizeEdgesToTransparent {
+          try layerFilterWrapper.setFilterValue(
+            shouldNormalizeEdgesToTransparent: shouldNormalizeEdgesToTransparent
+          );
+        };
         
-        try layerFilterWrapper.setFilterValue(
-          shouldUseHardEdges: shouldUseHardEdges
-        );
+        if let shouldUseHardEdges = shouldUseHardEdges {
+          try layerFilterWrapper.setFilterValue(
+            shouldUseHardEdges: shouldUseHardEdges
+          );
+        };
         
       case let .darkVibrant(
         inputReversed,
@@ -718,13 +744,17 @@ public enum LayerFilterType {
           shouldNormalizeEdges: shouldNormalizeEdges
         );
         
-        try layerFilterWrapper.setFilterValue(
-          shouldNormalizeEdgesToTransparent: shouldNormalizeEdgesToTransparent
-        );
+        if let shouldNormalizeEdgesToTransparent = shouldNormalizeEdgesToTransparent {
+          try layerFilterWrapper.setFilterValue(
+            shouldNormalizeEdgesToTransparent: shouldNormalizeEdgesToTransparent
+          );
+        };
         
-        try layerFilterWrapper.setFilterValue(
-          shouldUseHardEdges: shouldUseHardEdges
-        );
+        if let shouldUseHardEdges = shouldUseHardEdges {
+          try layerFilterWrapper.setFilterValue(
+            shouldUseHardEdges: shouldUseHardEdges
+          );
+        };
     };
   };
   
@@ -786,7 +816,6 @@ public enum LayerFilterType {
       filterEntryWrapper.filterValuesConfig as? Dictionary<String, Any> ?? [:];
       
     let configValuesNext = self.filterValuesConfig;
-    
     let didConfigValuesChange = configValuesPrev != configValuesNext;
     
     if shouldSetValuesConfig,
@@ -1049,28 +1078,6 @@ fileprivate extension Dictionary where Key == String, Value == Any {
     }
   };
   
-  var filterInputValueShouldNormalizeEdges: Bool? {
-    get {
-      let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyNormalizeEdges;
-      guard let keyValue = key.decodedString,
-            let inputValuesRaw = self[keyValue],
-            let inputValue = inputValuesRaw as? NSNumber
-      else {
-        return nil;
-      };
-      
-      return inputValue.boolValue;
-    }
-    set {
-      let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyNormalizeEdges;
-      guard let keyValue = key.decodedString else {
-        return;
-      };
-      
-      self[keyValue] = newValue;
-    }
-  };
-  
   var filterInputValueShouldNormalizeEdgesObjc: Int? {
     get {
       let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyNormalizeEdges;
@@ -1090,6 +1097,23 @@ fileprivate extension Dictionary where Key == String, Value == Any {
       };
       
       self[keyValue] = newValue;
+    }
+  };
+  
+  var filterInputValueShouldNormalizeEdges: Bool? {
+    set {
+      guard let newValue = newValue else {
+        return;
+      };
+      
+      self.filterInputValueShouldNormalizeEdgesObjc = newValue ? 1 : 0;
+    }
+    get {
+      guard let currentValue = self.filterInputValueShouldNormalizeEdgesObjc else {
+        return nil;
+      };
+      
+      return currentValue == 1 ? true : false;
     }
   };
   
@@ -1119,6 +1143,23 @@ fileprivate extension Dictionary where Key == String, Value == Any {
     }
   };
   
+  var filterInputValueShouldNormalizeEdgesToTransparent: Bool? {
+    set {
+      guard let newValue = newValue else {
+        return;
+      };
+      
+      self.filterInputValueShouldNormalizeEdgesToTransparentObjc = newValue ? 1 : 0;
+    }
+    get {
+      guard let currentValue = self.filterInputValueShouldNormalizeEdgesToTransparentObjc else {
+        return nil;
+      };
+      
+      return currentValue == 1 ? true : false;
+    }
+  };
+  
   var filterInputValueShouldUseHardEdgesObjc: Int? {
     get {
       let key = LayerFilterWrapper.EncodedString.propertyFilterInputKeyShouldUseHardEdges;
@@ -1138,6 +1179,23 @@ fileprivate extension Dictionary where Key == String, Value == Any {
       };
       
       self[keyValue] = newValue;
+    }
+  };
+  
+  var filterInputValueShouldUseHardEdges: Bool? {
+    set {
+      guard let newValue = newValue else {
+        return;
+      };
+      
+      self.filterInputValueShouldUseHardEdgesObjc = newValue ? 1 : 0;
+    }
+    get {
+      guard let currentValue = self.filterInputValueShouldUseHardEdgesObjc else {
+        return nil;
+      };
+      
+      return currentValue == 1 ? true : false;
     }
   };
   

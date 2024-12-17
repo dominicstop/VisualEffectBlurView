@@ -131,11 +131,11 @@ extension LayerFilterType {
           ),
           .singleRowPlain(
             label: "inputNormalizeEdgesToTransparent",
-            value: shouldNormalizeEdgesToTransparent.description
+            value: shouldNormalizeEdgesToTransparent?.description
           ),
           .singleRowPlain(
             label: "inputHardEdges",
-            value: shouldUseHardEdges.description
+            value: shouldNormalizeEdgesToTransparent?.description
           ),
         ];
         
@@ -209,11 +209,11 @@ extension LayerFilterType {
           ),
           .singleRowPlain(
             label: "inputNormalizeEdgesToTransparent",
-            value: shouldNormalizeEdgesToTransparent.description
+            value: shouldNormalizeEdgesToTransparent?.description
           ),
           .singleRowPlain(
             label: "inputHardEdges",
-            value: shouldUseHardEdges.description
+            value: shouldUseHardEdges?.description
           ),
         ];
     };

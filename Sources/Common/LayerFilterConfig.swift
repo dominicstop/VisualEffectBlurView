@@ -39,8 +39,8 @@ public enum LayerFilterConfig: Equatable {
   case gaussianBlur(
     radius: CGFloat,
     shouldNormalizeEdges: Bool = true,
-    shouldNormalizeEdgesToTransparent: Bool = false,
-    shouldUseHardEdges: Bool = false
+    shouldNormalizeEdgesToTransparent: Bool? = nil,
+    shouldUseHardEdges: Bool? = nil
   );
   
   case colorMatrixVibrant(_ colorMatrix: ColorMatrixRGBA);
@@ -51,8 +51,8 @@ public enum LayerFilterConfig: Equatable {
     radius: CGFloat,
     imageGradientConfig: ImageConfigGradient,
     shouldNormalizeEdges: Bool = true,
-    shouldNormalizeEdgesToTransparent: Bool = false,
-    shouldUseHardEdges: Bool = false
+    shouldNormalizeEdgesToTransparent: Bool? = nil,
+    shouldUseHardEdges: Bool? = nil
   );
   
   // MARK: - Enum Members: Partially Animatable Filters
