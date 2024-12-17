@@ -47,6 +47,10 @@ public enum LayerFilterConfig: Equatable {
   
   case colorMatrix(_ colorMatrix: ColorMatrixRGBA);
   
+  case colorTransformVibrant(_ colorTransform: ColorTransform);
+  
+  case colorTransform(_ colorTransform: ColorTransform);
+  
   case variadicBlur(
     radius: CGFloat,
     imageGradientConfig: ImageConfigGradient,
@@ -137,6 +141,12 @@ public enum LayerFilterConfig: Equatable {
       
       case let .colorMatrix(colorMatrix):
         return .colorMatrix(colorMatrix);
+        
+      case let .colorTransformVibrant(colorTransform):
+        return .colorMatrix(colorTransform.colorMatrix);
+        
+      case let .colorTransform(colorTransform):
+        return .colorMatrix(colorTransform.colorMatrix);
       
       case let .variadicBlur(
         radius,
@@ -175,7 +185,6 @@ public enum LayerFilterConfig: Equatable {
           color1: color1.cgColor
         );
         
-      
       case .invertColors:
         return .invertColors;
         
