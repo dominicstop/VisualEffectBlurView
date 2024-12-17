@@ -421,12 +421,16 @@ public struct ColorMatrixRGBA: Equatable, MutableReference {
     self.m32 = lumG * (1 - saturationFactor);
     self.m33 = lumB * (1 - saturationFactor) + saturationFactor;
   };
-  
-  public mutating func setInvert(
+    
+  public mutating func setInvertColors(
     withPercent percent: Float,
     shouldSaturate: Bool = true
   ) {
     let percentClamped = percent.clamped(min: 0, max: 1);
+    guard percentClamped > 0 else {
+      return;
+    };
+    
     let saturationFactorInvert = Float.lerp(
       valueStart: 0,
       valueEnd: -1,
@@ -610,12 +614,12 @@ public extension ColorMatrixRGBA {
     return matrix;
   };
   
-  static func invert(
+  static func invertColors(
     withPercent percent: Float,
     shouldSaturate: Bool = true
   ) -> Self {
     var matrix: Self = .identity;
-    matrix.setInvert(
+    matrix.setInvertColors(
       withPercent: percent,
       shouldSaturate: shouldSaturate
     );

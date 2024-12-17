@@ -232,8 +232,7 @@ class Experiment03ViewController: UIViewController {
       
       func test10(){
         var colorMatrix = ColorMatrixRGBA.invert(
-          withPercent: 1,
-          shouldSaturate: false
+          withPercent: 1
         );
         
         try! effectView.setFiltersViaEffectDesc(
@@ -246,7 +245,7 @@ class Experiment03ViewController: UIViewController {
       
       func test11(){
         var colorMatrix =
-          ColorMatrixRGBA.invert(
+          ColorMatrixRGBA.invertColors(
             withPercent: 0.1,
             shouldSaturate: false
           )
@@ -263,7 +262,7 @@ class Experiment03ViewController: UIViewController {
       };
       
       func test12(){
-        var colorMatrix = ColorMatrixRGBA.invert(
+        var colorMatrix = ColorMatrixRGBA.invertColors(
           withPercent: 0.5,
           shouldSaturate: true
         );
