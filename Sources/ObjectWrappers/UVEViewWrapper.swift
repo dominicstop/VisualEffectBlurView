@@ -146,6 +146,12 @@ public class UVEViewWrapper: ObjectWrapper<
     );
   };
 
+  public var effectSubviewsWrapped: [UVESubviewWrapper]? {
+    self.wrappedObject?.subviews.compactMap {
+      .init(objectToWrap: $0);
+    };
+  };
+
   // MARK: - Wrapped Methods
   // -----------------------
   
