@@ -574,13 +574,6 @@ open class VisualEffectView: UIVisualEffectView {
       self.currentFilterTypes = [];
     };
     
-    print(
-      "",
-      "contentLayer", self.contentLayerWrapped?.wrappedObject,
-      "contentView:", self.contentView,
-      "\n"
-    );
-    
     try? self.wrapper.setBGColorAlphaForBDView(0);
     try? self.wrapper.setOpacityForTint(0);
     
