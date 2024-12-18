@@ -18,19 +18,25 @@ Animation is supported for changing the blur radius (or blur percent intensity) 
 
 ![Experiment02ViewController](./assets/Experiment02ViewController.gif)
 
-<br><br>
+<br>
 
 [`VisualEffectBlurTestViewController.swift`](./example/Routes/VisualEffectBlurTestViewController.swift)
 
 ![VisualEffectBlurTestViewController](./assets/VisualEffectBlurTestViewController.gif)
 
-<br><br>
+<br>
 
 [`VisualEffectViewExperiment01ViewController.swift`](./example/Routes/VisualEffectViewExperiment01ViewController.swift)
 
 ![Render-03 - 2024-07-03-05-26-13 - 1080p Web - Gif-03](./assets/Demo-VisualEffectBlurTestViewController-01.gif)
 
 ![Render-02 - 2024-07-06-06-39-51 Gif-01](./assets/Demo-VisualEffectBlurTestViewController-02.gif)
+
+<br>
+
+[`RNIVisualEffectCustomFilterViewTest01Screen.tsx`](https://github.com/dominicstop/react-native-ios-visual-effect-view/blob/main/example/src/examples/RNIVisualEffectCustomFilterViewTest01Screen.tsx)
+
+![Render-03 - 2024-07-03-05-26-13 - 1080p Web - Gif-03](./assets/RNIVisualEffectCustomFilterViewTest01Screen.gif)
 
 <br><br>
 
