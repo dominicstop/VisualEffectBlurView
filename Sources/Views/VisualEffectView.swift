@@ -227,22 +227,27 @@ open class VisualEffectView: UIVisualEffectView {
     return filterMetadataMap;
   };
   
-  public func setOpacityForOtherSubviews(newOpacity: CGFloat){
-    let otherSubviews: [UIView] = {
-      guard let bgLayerWrapper = self.bgLayerWrapper,
-            let backdropLayer = bgLayerWrapper.wrappedObject
-      else {
-        return [];
+  public func getOtherSubviews() throws -> [UIView] {
+    guard let bgLayerWrapper = self.bgLayerWrapper,
+          let backdropLayer = bgLayerWrapper.wrappedObject
+    else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to get `self.bgLayerWrapper`"
+      );
+    };
+    
+    return self.subviews.filter {
+      guard $0.layer !== backdropLayer else {
+        return false;
       };
       
-      return self.subviews.filter {
-        guard $0.layer !== backdropLayer else {
-          return false;
-        };
-        
-        return true;
-      };
-    }();
+      return true;
+    };
+  };
+  
+  public func setOpacityForOtherSubviews(newOpacity: CGFloat){
+    let otherSubviews = (try? self.getOtherSubviews()) ?? [];
     
     otherSubviews.forEach {
       $0.alpha = newOpacity.clamped(min: 0, max: 1);
@@ -490,6 +495,12 @@ open class VisualEffectView: UIVisualEffectView {
     };
   };
   
+  public func removeTintingInSubviews() throws {
+    try self.getOtherSubviews().forEach {
+      $0.backgroundColor = .clear;
+    };
+  };
+  
   /// does not support animations, immediately applies the effect
   @available(iOS 13, *)
   public func immediatelyRemoveFilters(
@@ -562,6 +573,18 @@ open class VisualEffectView: UIVisualEffectView {
       
       self.currentFilterTypes = [];
     };
+    
+    print(
+      "",
+      "contentLayer", self.contentLayerWrapped?.wrappedObject,
+      "contentView:", self.contentView,
+      "\n"
+    );
+    
+    try? self.wrapper.setBGColorAlphaForBDView(0);
+    try? self.wrapper.setOpacityForTint(0);
+    
+    try self.removeTintingInSubviews();
     
     // reset `CALayer.filters`
     try bgLayerWrapper.setValuesForFilters(newFilters: []);
