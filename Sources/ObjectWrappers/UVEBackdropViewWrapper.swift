@@ -10,6 +10,13 @@ import DGSwiftUtilities
 
 
 /// Wrapper for:`_UIVisualEffectBackdropView`
+///
+/// Subclass of: `_UIVisualEffectSubview`
+/// * Wrapper: `UVESubviewWrapper`.
+///
+/// Inherits conformance to: `_UIVisualEffectViewParticipating`
+/// * Wrapper: `UVEViewParticipatingWrappable`
+///
 /// Old name: `VisualEffectBackdropViewWrapper`
 ///
 @available(iOS 12, *)

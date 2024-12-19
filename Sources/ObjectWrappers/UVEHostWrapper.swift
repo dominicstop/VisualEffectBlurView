@@ -10,9 +10,9 @@ import DGSwiftUtilities
 
 
 /// Wrapper for: `_UIVisualEffectHost`
-/// Old name: `VisualEffectHostWrapper`
-///
 /// Instance conforms to: `_UIVisualEffectViewSubviewMonitoring`
+///
+/// old name: `VisualEffectHostWrapper`
 ///
 @available(iOS 12, *)
 public class UVEHostWrapper: PrivateObjectWrapper<
@@ -64,7 +64,11 @@ public class UVEHostWrapper: PrivateObjectWrapper<
   // ------------------
   
   /// `-(UIView *)contentView`
-  /// 
+  ///
+  /// Used from:
+  /// * `UIVisualEffectView._contentHost.contentView`
+  /// * `UIVisualEffectView._backgroundHost.contentView`
+  ///
   public var viewContent: UIView? {
     try? self.performSelector(
       usingEncodedString: .methodGetViewContent,

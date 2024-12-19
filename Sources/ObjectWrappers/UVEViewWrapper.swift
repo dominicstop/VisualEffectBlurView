@@ -258,13 +258,48 @@ public class UVEViewWrapper: ObjectWrapper<
   /// * Subview Types: `_UIVisualEffectContentView`,
   ///   `_UIVisualEffectBackdropView`, `_UIVisualEffectSubview`
   ///
-  /// * The `UIVisualEffectView.contentView` is: `_UIVisualEffectContentView`
+  ///   * These subviews are a subclass of: `_UIVisualEffectSubview`
   ///
-  /// * When no effect is active, the only subview will be:
-  ///   `_UIVisualEffectContentView`.
+  ///   * Observation: for a `UIBlurEffect` w/ `.regular`, all three subviews
+  ///     will be available, but sometimes only 1 or 2 subviews are present.
   ///
-  /// * E.g. for a `UIBlurEffect` w/ `.regular`, all three subviews will be
-  ///   available
+  ///   * Observation: When using a `UIVibrancyEffect`, there will only be 1
+  ///     subview present: `_UIVisualEffectContentView`
+  ///
+  ///     * The other views still exist, but they can only be accessed via
+  ///       their host objects (`_UIVisualEffectHost.contentView`),
+  ///       e.g. `UIVisualEffectView._contentHost`, and
+  ///       `UIVisualEffectView._backgroundHost`.
+  ///
+  ///
+  /// * `_UIVisualEffectContentView`:
+  ///   * When no effect is active, the only subview will be:
+  ///     `_UIVisualEffectContentView`.
+  ///
+  ///   * The `_UIVisualEffectContentView` is the same as:
+  ///     `UIVisualEffectView.contentView`.
+  ///
+  ///   * this view is always at the front since it contains the content
+  ///
+  ///
+  /// * `_UIVisualEffectBackdropView`:
+  ///   * Usually the first subview, since it's the "backdrop" that contains
+  ///     the effect snapshot + filters
+  ///
+  ///   * The `_UIVisualEffectBackdropView.layer` type is: `UICABackdropLayer`,
+  ///     and the same as: `UIVisualEffectView._backgroundHost.contentView.layer`
+  ///
+  ///
+  /// * `_UIVisualEffectSubview`:
+  ///   * Just the plain base class, not specialized; sometimes not added (e.g.
+  ///     when using `.systemUltraThinMaterial`, `.systemThickMaterial`, etc).
+  ///
+  ///   * It's usually in the middle, because it seems to act as a tinting
+  ///     layer; it has a background color, and `layer.compositingFilter)` is
+  ///     set to: `sourceOver`
+  ///
+  ///     * the value is not an object, it's just a plain string.
+  ///
   ///
   public var effectSubviewsWrapped: [UVESubviewWrapper]? {
     guard let instance = self.wrappedObject else {

@@ -43,6 +43,7 @@ open class VisualEffectView: UIVisualEffectView {
   };
   
   /// Old name: `contentViewWrapper`
+  ///
   /// Type: `_UIVisualEffectBackdropView`
   /// Property: `_UIVisualEffectHost.contentView`
   /// Full Path: `UIVisualEffectView._backgroundHost.contentView`

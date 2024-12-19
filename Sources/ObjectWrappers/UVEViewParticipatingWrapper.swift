@@ -11,8 +11,10 @@ import DGSwiftUtilities
 
 /// Protocol: `_UIVisualEffectViewParticipating`
 ///
-/// Classes that conform: `_UIVisualEffectSubview`,
-/// `_UIVisualEffectContentView`, `_UIVisualEffectBackdropView`
+/// Classes that conform:
+/// * `_UIVisualEffectSubview` (`UVEViewParticipatingWrapper`),
+/// * `_UIVisualEffectContentView` (`UVEContentViewWrapper`),
+/// * `_UIVisualEffectBackdropView` (`VisualEffectBackdropViewWrapper`)
 ///
 public class UVEViewParticipatingWrapper: ObjectWrapper<
   UIView,
