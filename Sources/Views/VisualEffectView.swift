@@ -319,7 +319,7 @@ open class VisualEffectView: UIVisualEffectView {
     };
     
     if shouldImmediatelyApplyFilter {
-      try viewContentWrapper.applyRequestedFilterEffects();
+      try viewContentWrapper.applyFilterEffectsRequested();
     };
   };
   
@@ -383,7 +383,7 @@ open class VisualEffectView: UIVisualEffectView {
     try bgLayerWrapper.setValuesForFilters(newFilters: filters);
     
     if shouldImmediatelyApplyFilter {
-      try contentViewWrapper.applyRequestedFilterEffects();
+      try contentViewWrapper.applyFilterEffectsRequested();
     };
   };
   
@@ -604,7 +604,7 @@ open class VisualEffectView: UIVisualEffectView {
       );
     };
     
-    try viewContentWrapper.applyRequestedFilterEffects();
+    try viewContentWrapper.applyFilterEffectsRequested();
   };
   
   @available(iOS 13, *)

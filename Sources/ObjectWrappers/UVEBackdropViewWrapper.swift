@@ -20,22 +20,16 @@ import DGSwiftUtilities
 /// Old name: `VisualEffectBackdropViewWrapper`
 ///
 @available(iOS 12, *)
-public class UVEBackdropViewWrapper: PrivateObjectWrapper<
-  UIView,
-  UVEBackdropViewWrapper.EncodedString
-> {
+public class UVEBackdropViewWrapper:
+  PrivateObjectWrapper<UIView, UVEBackdropViewWrapper.EncodedString>,
+  UVEViewParticipatingWrappable
+{
 
   public enum EncodedString: PrivateObjectWrappingEncodedString {
     case className;
     
     /// `backdropLayer`
     case getterBgLayer;
-    
-    /// `applyRequestedFilterEffects`
-    case methodApplyCurrentFilterEffects;
-    
-    /// `applyIdentityFilterEffects`
-    case methodApplyDefaultFilterEffects;
     
     public var encodedString: String {
       switch self {
@@ -46,20 +40,20 @@ public class UVEBackdropViewWrapper: PrivateObjectWrapper<
         case .getterBgLayer:
           // backdropLayer
           return "YmFja2Ryb3BMYXllcg==";
-          
-        case .methodApplyCurrentFilterEffects:
-          // applyRequestedFilterEffects
-          return "YXBwbHlSZXF1ZXN0ZWRGaWx0ZXJFZmZlY3Rz";
-          
-        case .methodApplyDefaultFilterEffects:
-          // applyIdentityFilterEffects
-          return "YXBwbHlJZGVudGl0eUZpbHRlckVmZmVjdHM=";
       };
     };
   };
   
   // MARK: - Wrapped Properties
   // --------------------------
+  
+  public lazy var asEffectViewParticipatingWrapped: UVEViewParticipatingWrapper? = {
+    guard let wrappedObject = self.wrappedObject else {
+      return nil;
+    };
+    
+    return .init(objectToWrap: wrappedObject);
+  }();
   
   /// Selector:
   /// `-(CABackdropLayer *)backdropLayer;`
@@ -74,25 +68,5 @@ public class UVEBackdropViewWrapper: PrivateObjectWrapper<
     };
     
     return .init(objectToWrap: result);
-  };
-  
-  // MARK: - Wrapped Methods
-  // -----------------------
-  
-  /// Selector:
-  /// `-(void)applyRequestedFilterEffects`
-  ///
-  public func applyRequestedFilterEffects() throws {
-    try self.performSelector(
-      usingEncodedString: .methodApplyCurrentFilterEffects
-    );
-  };
-  
-  /// Selector:
-  /// `-(void)applyIdentityFilterEffects`
-  public func applyIdentityFilterEffects() throws {
-    try self.performSelector(
-      usingEncodedString: .methodApplyDefaultFilterEffects
-    );
   };
 };
