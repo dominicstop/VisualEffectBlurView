@@ -256,7 +256,9 @@ public class UVEViewWrapper: ObjectWrapper<
   
   /// Type: `_UIVisualEffectContentView` (superclass: `_UIVisualEffectSubview`)
   /// Property: `UIVisualEffectView.contentView`
-  /// Also in: `UIVisualEffectView.subviews`
+  /// Also in:
+  /// * `UIVisualEffectView.subviews`
+  /// * `UIVisualEffectView._contentHost.contentView`
   ///
   public var viewContentWrapped: UVEContentViewWrapper? {
     guard let instance = self.wrappedObject else {
