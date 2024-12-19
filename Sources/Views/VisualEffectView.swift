@@ -224,33 +224,15 @@ open class VisualEffectView: UIVisualEffectView {
     return filterMetadataMap;
   };
   
-  public func getOtherSubviews() throws -> [UIView] {
-    guard let bgLayerWrapper = self.bgLayerWrapper,
-          let backdropLayer = bgLayerWrapper.wrappedObject
-    else {
-      throw VisualEffectBlurViewError(
-        errorCode: .unexpectedNilValue,
-        description: "Unable to get `self.bgLayerWrapper`"
-      );
-    };
-    
-    return self.subviews.filter {
-      guard $0.layer !== backdropLayer,
-            $0 !== self.contentView
-      else {
-        return false;
-      };
-      
-      return true;
-    };
-  };
-  
   public func setOpacityForOtherSubviews(newOpacity: CGFloat){
-    let otherSubviews = (try? self.getOtherSubviews()) ?? [];
-    
-    otherSubviews.forEach {
-      $0.alpha = newOpacity.clamped(min: 0, max: 1);
+    guard let wrapper = self.wrapper,
+          let tintViewWrapped = wrapper.tintViewWrapped,
+          let tintView = tintViewWrapped.wrappedObject
+    else {
+      return;
     };
+    
+    tintView.alpha = newOpacity.clamped(min: 0, max: 1);
   };
   
   @available(iOS 13, *)
@@ -492,9 +474,17 @@ open class VisualEffectView: UIVisualEffectView {
   };
   
   public func removeTintingInSubviews() throws {
-    try self.getOtherSubviews().forEach {
-      $0.backgroundColor = .clear;
+    guard let wrapper = self.wrapper,
+          let tintViewWrapped = wrapper.tintViewWrapped,
+          let tintView = tintViewWrapped.wrappedObject
+    else {
+      return;
     };
+    
+    tintView.backgroundColor = .clear;
+    
+    // just in case
+    tintView.tintColor = nil;
   };
   
   /// does not support animations, immediately applies the effect
