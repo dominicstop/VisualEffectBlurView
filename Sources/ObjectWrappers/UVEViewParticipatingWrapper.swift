@@ -287,3 +287,199 @@ public class UVEViewParticipatingWrapper: ObjectWrapper<
     );
   };
 };
+
+/// MARK: - `UVEViewParticipatingWrappable`
+/// --------------------------------------
+
+public protocol UVEViewParticipatingWrappable: ValueInjectable {
+  
+  var asEffectViewParticipatingWrapped: UVEViewParticipatingWrapper? { get };
+};
+
+/// MARK: - `UVEViewParticipatingWrappable+Default`
+/// ----------------------------------------------
+
+public extension UVEViewParticipatingWrappable {
+  
+  /// Selectors:
+  /// `@property (assign,nonatomic) BOOL disableGroupFiltering;`
+  /// `-(BOOL)disableGroupFiltering;`
+  ///
+  func getShouldDisableFilteringTheGroup() throws -> Bool {
+    guard let effectViewParticipatingWrapped = self.asEffectViewParticipatingWrapped else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Could not wrap instance in `UVEViewParticipatingWrapper`"
+      );
+    };
+    
+    return try effectViewParticipatingWrapped.getShouldDisableFilteringTheGroup();
+  };
+  
+  /// Selectors:
+  /// `@property (assign,nonatomic) BOOL disableGroupFiltering;`
+  /// `-(void)setDisableGroupFiltering:(BOOL)arg1 ;`
+  ///
+  func setFilterIsEnabled(_ isDisabled: Bool) throws {
+    guard let effectViewParticipatingWrapped = self.asEffectViewParticipatingWrapped else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Could not wrap instance in `UVEViewParticipatingWrapper`"
+      );
+    };
+    
+    try effectViewParticipatingWrapped.setFilterIsEnabled(isDisabled);
+  };
+  
+  /// Selectors:
+  /// `@property (nonatomic,copy) NSArray * viewEffects;
+  /// `-(NSArray *)viewEffects;`
+  ///
+  /// Array of `_UITintColorViewEntry`
+  ///
+  func getEffectsForView() throws -> Bool {
+    guard let effectViewParticipatingWrapped = self.asEffectViewParticipatingWrapped else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Could not wrap instance in `UVEViewParticipatingWrapper`"
+      );
+    };
+    
+    return try effectViewParticipatingWrapped.getEffectsForView();
+  };
+  
+  /// Selectors:
+  /// `@property (nonatomic,copy) NSArray * viewEffects;
+  /// `-(void)setViewEffects:(NSArray *)arg1`
+  ///
+  /// Array of `_UITintColorViewEntry`
+  ///
+  func setEffectsForView(_ effects: Array<NSObject>) throws {
+    guard let effectViewParticipatingWrapped = self.asEffectViewParticipatingWrapped else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Could not wrap instance in `UVEViewParticipatingWrapper`"
+      );
+    };
+    
+    try effectViewParticipatingWrapped.setEffectsForView(effects);
+  };
+    
+  /// Selectors:
+  /// `@property (nonatomic,copy) NSArray * filters;`
+  /// `-(NSArray *)filters;`
+  ///
+  /// Array of `_UIVisualEffectFilterEntry`
+  ///
+  func getCurrentFilters() throws -> Bool {
+    guard let effectViewParticipatingWrapped = self.asEffectViewParticipatingWrapped else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Could not wrap instance in `UVEViewParticipatingWrapper`"
+      );
+    };
+    
+    return try effectViewParticipatingWrapped.getCurrentFilters();
+  };
+  
+  /// Selectors:
+  /// `@property (nonatomic,copy) NSArray * filters;`
+  /// `-(void)setFilters:(NSArray *)arg1`
+  ///
+  func setCurrentFilters(_ effects: Array<NSObject>) throws {
+    guard let effectViewParticipatingWrapped = self.asEffectViewParticipatingWrapped else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Could not wrap instance in `UVEViewParticipatingWrapper`"
+      );
+    };
+    
+    try effectViewParticipatingWrapped.setCurrentFilters(effects);
+  };
+  
+  /// Selectors:
+  /// `@property (nonatomic,retain) UIView*<_UIVisualEffectViewParticipating> containedView;`
+  /// `-(UIView*<_UIVisualEffectViewParticipating>)containedView;`
+  ///
+  func getViewContained() throws -> Bool {
+    guard let effectViewParticipatingWrapped = self.asEffectViewParticipatingWrapped else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Could not wrap instance in `UVEViewParticipatingWrapper`"
+      );
+    };
+    
+    return try effectViewParticipatingWrapped.getViewContained();
+  };
+  
+  /// Selectors:
+  /// `@property (nonatomic,retain) UIView*<_UIVisualEffectViewParticipating> containedView;`
+  /// `-(void)setContainedView:(id)arg1;`
+  ///
+  func setViewContained(_ effects: Array<NSObject>) throws {
+    guard let effectViewParticipatingWrapped = self.asEffectViewParticipatingWrapped else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Could not wrap instance in `UVEViewParticipatingWrapper`"
+      );
+    };
+    
+    try effectViewParticipatingWrapped.setViewContained(effects);
+  };
+  
+  /// Selector:
+  /// `-(void)applyRequestedFilterEffects;`
+  ///
+  func applyFilterEffectsRequested() throws {
+    guard let effectViewParticipatingWrapped = self.asEffectViewParticipatingWrapped else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Could not wrap instance in `UVEViewParticipatingWrapper`"
+      );
+    };
+    
+    try effectViewParticipatingWrapped.applyFilterEffectsRequested();
+  };
+  
+  /// Selector:
+  /// `-(void)applyIdentityFilterEffects;`
+  ///
+  func applyFilterEffectsIdentity() throws {
+    guard let effectViewParticipatingWrapped = self.asEffectViewParticipatingWrapped else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Could not wrap instance in `UVEViewParticipatingWrapper`"
+      );
+    };
+    
+    try effectViewParticipatingWrapped.applyFilterEffectsIdentity();
+  };
+  
+  /// Selector:
+  /// `-(void)applyIdentityViewEffects;`
+  ///
+  func applyViewEffectsIdentity() throws {
+    guard let effectViewParticipatingWrapped = self.asEffectViewParticipatingWrapped else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Could not wrap instance in `UVEViewParticipatingWrapper`"
+      );
+    };
+    
+    try effectViewParticipatingWrapped.applyViewEffectsIdentity();
+  };
+  
+  /// Selector:
+  /// `-(void)applyRequestedViewEffects;`
+  ///
+  func applyViewEffectsRequested() throws {
+    guard let effectViewParticipatingWrapped = self.asEffectViewParticipatingWrapped else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Could not wrap instance in `UVEViewParticipatingWrapper`"
+      );
+    };
+    
+    try effectViewParticipatingWrapped.applyViewEffectsRequested();
+  };
+};
