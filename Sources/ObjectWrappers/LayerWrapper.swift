@@ -39,8 +39,8 @@ public class LayerWrapper: PrivateObjectWrapper<
     };
   };
   
-  // MARK: - Properties: Getters
-  // --------------------------
+  // MARK: - Properties
+  // ------------------
   
   public var currentFilters: [NSObject]? {
     let values = try? self.getValue(forHashedString: .propertyGetterFilters);
@@ -54,6 +54,16 @@ public class LayerWrapper: PrivateObjectWrapper<
   
   // MARK: - Wrapped Properties
   // --------------------------
+  
+  public var currentFiltersWrapped: [LayerFilterWrapper]? {
+    guard let currentFilters = self.currentFilters else {
+      return nil;
+    };
+    
+    return currentFilters.compactMap {
+      .init(objectToWrap: $0);
+    };
+  };
   
   // TODO: temp - replace w/ `CIFilter`
   public var gaussianBlurFilterWrapper: GaussianBlurFilterWrapper? {
