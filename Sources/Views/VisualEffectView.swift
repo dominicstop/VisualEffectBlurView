@@ -45,7 +45,7 @@ open class VisualEffectView: UIVisualEffectView {
   /// Old name: `backdropLayerWrapper`
   /// Contains the filter effect that affects the bg views
   ///
-  public var bgLayerWrapper: LayerWrapper? {
+  public var bgLayerWrapper: BackgroundLayerWrapper? {
     self.wrapper.backdropViewWrapped?.bgLayerWrapper;
   };
   

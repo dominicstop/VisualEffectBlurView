@@ -298,7 +298,7 @@ public class UVEViewParticipatingWrapper: ObjectWrapper<
 /// MARK: - `UVEViewParticipatingWrappable`
 /// --------------------------------------
 
-public protocol UVEViewParticipatingWrappable: ValueInjectable {
+public protocol UVEViewParticipatingWrappable {
   
   var asEffectViewParticipatingWrapped: UVEViewParticipatingWrapper? { get };
 };

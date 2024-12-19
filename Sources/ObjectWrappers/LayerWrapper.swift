@@ -1,33 +1,27 @@
 //
-//  BackgroundLayerWrapper.swift
+//  LayerWrapper.swift
 //  
 //
-//  Created by Dominic Go on 6/19/24.
+//  Created by Dominic Go on 12/20/24.
 //
 
 import UIKit
 import DGSwiftUtilities
 
-/// Wrapper for:`UICABackdropLayer`
-/// Old name: `BackdropLayerWrapper`
+
+/// Wraps: `CALayer`
 ///
-@available(iOS 12, *)
-public class LayerWrapper: PrivateObjectWrapper<
+public class LayerWrapper: ObjectWrapper<
   CALayer,
   LayerWrapper.EncodedString
 > {
-
-  public enum EncodedString: PrivateObjectWrappingEncodedString {
-    case className;
+  
+  public enum EncodedString: HashedStringDecodable {
     case propertySetterFilters;
     case propertyGetterFilters;
     
     public var encodedString: String {
       switch self {
-        case .className:
-          // UICABackdropLayer
-          return "VUlDQUJhY2tkcm9wTGF5ZXI=";
-          
         case .propertySetterFilters:
           // setFilters:
           return "c2V0RmlsdGVyczo=";
@@ -102,5 +96,45 @@ public class LayerWrapper: PrivateObjectWrapper<
       usingEncodedString: .propertySetterFilters,
       withArg1: newFilters
     );
+  };
+};
+
+// MARK: - `LayerWrappable`
+// ------------------------
+
+public protocol LayerWrappable {
+  
+  var asLayerWrapper: LayerWrapper? { get };
+};
+
+// MARK: - `LayerWrappable+Helpers`
+// --------------------------------
+
+public extension LayerWrappable {
+  
+  var currentFilters: [NSObject]? {
+    self.asLayerWrapper?.currentFilters;
+  };
+  
+  var currentFiltersWrapped: [LayerFilterWrapper]? {
+    self.asLayerWrapper?.currentFiltersWrapped;
+  };
+  
+  var gaussianBlurFilterWrapper: GaussianBlurFilterWrapper? {
+    self.asLayerWrapper?.gaussianBlurFilterWrapper;
+  };
+  
+  func setValuesForFilters(newFilters: [AnyObject]) throws {
+    try self.asLayerWrapper?.setValuesForFilters(newFilters: newFilters);
+  };
+};
+
+// MARK: - `CALayer+LayerWrappable`
+// -------------------------------
+
+extension CALayer: LayerWrappable {
+  
+  public var asLayerWrapper: LayerWrapper? {
+    .init(objectToWrap: self);
   };
 };

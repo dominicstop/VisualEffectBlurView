@@ -57,7 +57,7 @@ public class UVEBackdropViewWrapper:
   
   /// Selector:
   /// `-(CABackdropLayer *)backdropLayer;`
-  public var bgLayerWrapper: LayerWrapper? {
+  public var bgLayerWrapper: BackgroundLayerWrapper? {
     let result = try? self.performSelector(
       usingEncodedString: .getterBgLayer,
       type: CALayer.self
