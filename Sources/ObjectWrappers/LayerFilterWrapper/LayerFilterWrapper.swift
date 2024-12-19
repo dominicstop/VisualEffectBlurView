@@ -37,6 +37,11 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
     case propertyFilterInputKeyShouldNormalizeEdgesToTransparent;
     case propertyFilterInputKeyShouldUseHardEdges;
     case propertyFilterInputKeyMaskImage;
+    case propertyFilterInputKeyQuality;
+    case propertyFilterInputKeyBounds;
+    case propertyFilterInputKeyDither;
+    case propertyFilterInputKeyLinear;
+    case propertyFilterInputKeyIntermediateBitDepth;
     
     public var encodedString: String {
       switch self {
@@ -111,6 +116,26 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
         case .propertyFilterInputKeyMaskImage:
           // inputMaskImage
           return "aW5wdXRNYXNrSW1hZ2U=";
+
+        case .propertyFilterInputKeyQuality:
+          // inputQuality
+          return "aW5wdXRRdWFsaXR5";
+
+        case .propertyFilterInputKeyBounds:
+          // inputBounds
+          return "aW5wdXRCb3VuZHM=";
+
+        case .propertyFilterInputKeyDither:
+          // inputDither
+          return "aW5wdXREaXRoZXI=";
+
+        case .propertyFilterInputKeyLinear:
+          // inputLinear
+          return "aW5wdXRMaW5lYXI=";
+
+        case .propertyFilterInputKeyIntermediateBitDepth:
+          // inputIntermediateBitDepth
+          return "aW5wdXRJbnRlcm1lZGlhdGVCaXREZXB0aA==";
       };
     };
   };
