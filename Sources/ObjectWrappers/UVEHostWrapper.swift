@@ -60,6 +60,18 @@ public class UVEHostWrapper: PrivateObjectWrapper<
     };
   };
   
+  // MARK: - Properties
+  // ------------------
+  
+  /// `-(UIView *)contentView`
+  /// 
+  public var viewContent: UIView? {
+    try? self.performSelector(
+      usingEncodedString: .methodGetViewContent,
+      type: UIView.self
+    );
+  };
+  
   // MARK: - Wrapped Properties
   // --------------------------
   
