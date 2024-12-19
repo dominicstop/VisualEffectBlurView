@@ -254,8 +254,9 @@ public class UVEViewWrapper: ObjectWrapper<
   // ---------------------------------
   
   
-  /// Property: `UIVisualEffectView.contentView`
   /// Type: `_UIVisualEffectContentView` (superclass: `_UIVisualEffectSubview`)
+  /// Property: `UIVisualEffectView.contentView`
+  /// Also in: `UIVisualEffectView.subviews`
   ///
   public var viewContentWrapped: UVEContentViewWrapper? {
     guard let instance = self.wrappedObject else {
@@ -264,6 +265,21 @@ public class UVEViewWrapper: ObjectWrapper<
     
     return .init(objectToWrap: instance);
   };
+  
+  /// Type: `_UIVisualEffectBackdropView` (superclass: `_UIVisualEffectSubview`)
+  /// Full Path: `UIVisualEffectView._backgroundHost.contentView`
+  /// Also in: `UIVisualEffectView.subviews`
+  ///
+  /// The view instance that contains the `CALayer` + `CAFilter` items
+  ///
+  public var backdropViewWrapped: UVEBackdropViewWrapper? {
+    guard let bgHostContent = self.hostForBgWrapped?.viewContent else {
+      return nil;
+    };
+    
+    return .init(objectToWrap: bgHostContent);
+  };
+  
   
   /// Property: `UIVisualEffectView.subviews`
   ///

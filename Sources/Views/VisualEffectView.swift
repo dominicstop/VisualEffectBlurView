@@ -42,27 +42,11 @@ open class VisualEffectView: UIVisualEffectView {
     self.wrapper.hostForBgWrapped;
   };
   
-  /// Old name: `contentViewWrapper`
-  ///
-  /// Type: `_UIVisualEffectBackdropView`
-  /// Property: `_UIVisualEffectHost.contentView`
-  /// Full Path: `UIVisualEffectView._backgroundHost.contentView`
-  ///
-  /// The view instance that contains the `CALayer` + `CAFilter` items
-  ///
-  public var viewContentWrapper: UVEBackdropViewWrapper? {
-    guard let bgHostContent = self.bgHostWrapper?.viewContent else {
-      return nil;
-    };
-    
-    return .init(objectToWrap: bgHostContent);
-  };
-  
   /// Old name: `backdropLayerWrapper`
   /// Contains the filter effect that affects the bg views
   ///
   public var bgLayerWrapper: LayerWrapper? {
-    self.viewContentWrapper?.bgLayerWrapper
+    self.wrapper.backdropViewWrapped?.bgLayerWrapper;
   };
   
   /// Contains the filter effect that only affects the content view
@@ -127,18 +111,19 @@ open class VisualEffectView: UIVisualEffectView {
     }
   };
   
-  /// Shorthand for setting the `UIView.alpha` for `viewContentWrapper` (i.e.
-  /// the view that contains the filters
+  /// Shorthand for setting the `UIView.alpha` for the subview that contains
+  /// the filters that affect the background (i.e. `UIVisualEffectView._backgroundHost.contentView`)
   ///
   public var effectOpacity: CGFloat? {
     get {
-      self.viewContentWrapper?.wrappedObject?.alpha;
+      self.wrapper.backdropViewWrapped?.wrappedObject?.alpha;
     }
     set {
       guard let newValue = newValue else {
         return;
       };
-      self.viewContentWrapper?.wrappedObject?.alpha = newValue;
+      
+      self.wrapper.backdropViewWrapped?.wrappedObject?.alpha = newValue;
     }
   };
   
@@ -272,17 +257,19 @@ open class VisualEffectView: UIVisualEffectView {
     shouldImmediatelyApplyFilter: Bool = true
   ) throws {
   
+    guard let wrapper = self.wrapper,
+          let backdropViewWrapped = wrapper.backdropViewWrapped
+    else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to get `backdropViewWrapped`"
+      );
+    };
+  
     guard let bgHostWrapper = self.bgHostWrapper else {
       throw VisualEffectBlurViewError(
         errorCode: .unexpectedNilValue,
         description: "Unable to get `self.bgHostWrapper`"
-      );
-    };
-    
-    guard let viewContentWrapper = self.viewContentWrapper else {
-      throw VisualEffectBlurViewError(
-        errorCode: .unexpectedNilValue,
-        description: "Unable to get `self.viewContentWrapper`"
       );
     };
     
@@ -319,7 +306,7 @@ open class VisualEffectView: UIVisualEffectView {
     };
     
     if shouldImmediatelyApplyFilter {
-      try viewContentWrapper.applyFilterEffectsRequested();
+      try backdropViewWrapped.applyFilterEffectsRequested();
     };
   };
   
@@ -352,15 +339,17 @@ open class VisualEffectView: UIVisualEffectView {
     withLayerFilterWrappers layerFilterWrappers: [LayerFilterWrapper],
     shouldImmediatelyApplyFilter: Bool = true
   ) throws {
-  
-    guard let contentViewWrapper = self.viewContentWrapper else {
+    
+    guard let wrapper = self.wrapper,
+          let backdropViewWrapped = wrapper.backdropViewWrapped
+    else {
       throw VisualEffectBlurViewError(
         errorCode: .unexpectedNilValue,
-        description: "Unable to get `UVEHostWrapper.viewContentWrapped`"
+        description: "Unable to get `backdropViewWrapped`"
       );
     };
     
-    guard let bgLayerWrapper = contentViewWrapper.bgLayerWrapper,
+    guard let bgLayerWrapper = backdropViewWrapped.bgLayerWrapper,
           bgLayerWrapper.wrappedObject != nil
     else {
       throw VisualEffectBlurViewError(
@@ -376,7 +365,7 @@ open class VisualEffectView: UIVisualEffectView {
     try bgLayerWrapper.setValuesForFilters(newFilters: filters);
     
     if shouldImmediatelyApplyFilter {
-      try contentViewWrapper.applyFilterEffectsRequested();
+      try backdropViewWrapped.applyFilterEffectsRequested();
     };
   };
   
@@ -590,14 +579,16 @@ open class VisualEffectView: UIVisualEffectView {
   };
   
   public func applyRequestedFilterEffects() throws {
-    guard let viewContentWrapper = self.viewContentWrapper else {
+    guard let wrapper = self.wrapper,
+          let backdropViewWrapped = wrapper.backdropViewWrapped
+    else {
       throw VisualEffectBlurViewError(
         errorCode: .unexpectedNilValue,
-        description: "Unable to get `self.viewContentWrapper`"
+        description: "Unable to get `backdropViewWrapped`"
       );
     };
     
-    try viewContentWrapper.applyFilterEffectsRequested();
+    try backdropViewWrapped.applyFilterEffectsRequested();
   };
   
   @available(iOS 13, *)

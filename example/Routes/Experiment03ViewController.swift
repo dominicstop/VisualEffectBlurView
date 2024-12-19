@@ -394,13 +394,13 @@ class Experiment03ViewController: UIViewController {
           // nil - "\n - effectView.layer.filters:", effectView.layer.filters,
           // nil - "\n - effectView.bgHostWrapper:", (effectView.bgHostWrapper?.wrappedObject as? UIView),
           // "\n - effectView.bgHostWrapper:", effectView.bgHostWrapper?.wrappedObject,
-          "\n - effectView.bgHostWrapper:", effectView.bgHostWrapper?.viewContentWrapped?.wrappedObject,
-          "\n - effectView.bgHostWrapper:", effectView.bgHostWrapper?.viewContentWrapped?.wrappedObject?.layer.filters,
+          "\n - effectView.bgHostWrapper:", effectView.wrapper.backdropViewWrapped!.wrappedObject!,
+          "\n - effectView.bgHostWrapper:", effectView.wrapper.backdropViewWrapped!.wrappedObject?.layer.filters,
           "\n"
         );
         
         let filterView =
-          effectView.bgHostWrapper!.viewContentWrapped!.wrappedObject!;
+          effectView.wrapper.backdropViewWrapped!.wrappedObject!;
         
         let targetFilter = filterView.layer.filters!.first!;
         
@@ -448,7 +448,7 @@ class Experiment03ViewController: UIViewController {
         );
         
         let filterView =
-          effectView.bgHostWrapper!.viewContentWrapped!.wrappedObject!;
+          effectView.wrapper.backdropViewWrapped!.wrappedObject!;
         
         let targetFilter = filterView.layer.filters!.first!;
         
@@ -484,7 +484,7 @@ class Experiment03ViewController: UIViewController {
         );
         
         let filterView =
-          effectView.bgHostWrapper!.viewContentWrapped!.wrappedObject!;
+          effectView.wrapper.backdropViewWrapped!.wrappedObject!;
         
         let targetFilter = filterView.layer.filters!.first! as! NSObject;
         let targetFilterWrapped = LayerFilterWrapper(objectToWrap: targetFilter);
@@ -553,7 +553,7 @@ class Experiment03ViewController: UIViewController {
         );
         
         let filterView =
-          effectView.bgHostWrapper!.viewContentWrapped!.wrappedObject!;
+          effectView.wrapper.backdropViewWrapped!.wrappedObject!;
         
         let targetFilter = filterView.layer.filters!.first! as! NSObject;
         let targetFilterWrapped = LayerFilterWrapper(objectToWrap: targetFilter);
@@ -586,7 +586,7 @@ class Experiment03ViewController: UIViewController {
         );
         
         let filterView =
-          effectView.bgHostWrapper!.viewContentWrapped!.wrappedObject!;
+          effectView.wrapper.backdropViewWrapped!.wrappedObject!;
         
         let targetFilter = filterView.layer.filters!.first! as! NSObject;
         let targetFilterWrapped = LayerFilterWrapper(objectToWrap: targetFilter);
@@ -623,7 +623,7 @@ class Experiment03ViewController: UIViewController {
         let basisAnimation = animationConfig.createBasicAnimation()!;
         
         let filterView =
-          effectView.bgHostWrapper!.viewContentWrapped!.wrappedObject!;
+          effectView.wrapper.backdropViewWrapped!.wrappedObject!;
         
         let targetFilterPrev = filterView.layer.filters!.first! as! NSObject;
         
@@ -665,7 +665,7 @@ class Experiment03ViewController: UIViewController {
         let basisAnimation = animationConfig.createBasicAnimation()!;
         
         let filterView =
-          effectView.bgHostWrapper!.viewContentWrapped!.wrappedObject!;
+          effectView.wrapper.backdropViewWrapped!.wrappedObject!;
         
         let targetFilter = filterView.layer.filters!.first! as! NSObject;
         
@@ -786,7 +786,7 @@ class Experiment03ViewController: UIViewController {
           "\n - filters:", effectLayer.filters,
           "\n - compositingFilter:", effectLayer.compositingFilter,
           "\n - bgHostWrapper:", bgHostWrapper.wrappedObject!,
-          "\n - viewContentWrapper:", effectView.viewContentWrapper!.wrappedObject,
+          "\n - viewContentWrapper:", effectView.wrapper.backdropViewWrapped!.wrappedObject,
           // "\n - viewContentWrapper.superview:", effectView.viewContentWrapper!.wrappedObject!.superview,
           "\n - viewContentWrapper.recursivelyGetAllSubviews:", effectView.recursivelyGetAllSubviews.map({ ($0, $0.layer) }),
           "\n - effectView.contentView:", effectView.contentView,
@@ -861,7 +861,7 @@ class Experiment03ViewController: UIViewController {
           "\n - filters:", effectLayer.filters,
           "\n - compositingFilter:", effectLayer.compositingFilter,
           "\n - bgHostWrapper:", bgHostWrapper.wrappedObject!,
-          "\n - viewContentWrapper:", effectView.viewContentWrapper!.wrappedObject,
+          "\n - viewContentWrapper:", effectView.wrapper.backdropViewWrapped!.wrappedObject,
           // "\n - viewContentWrapper.superview:", effectView.viewContentWrapper!.wrappedObject!.superview,
           "\n - viewContentWrapper.recursivelyGetAllSubviews:", effectView.recursivelyGetAllSubviews.map({ ($0, $0.layer) }),
           "\n - effectView.contentView:", effectView.contentView,
@@ -906,7 +906,7 @@ class Experiment03ViewController: UIViewController {
           "\n - filters:", effectLayer.filters,
           "\n - compositingFilter:", effectLayer.compositingFilter,
           "\n - bgHostWrapper:", bgHostWrapper.wrappedObject!,
-          "\n - viewContentWrapper:", effectView.viewContentWrapper!.wrappedObject,
+          "\n - viewContentWrapper:", effectView.wrapper.backdropViewWrapped!.wrappedObject,
           // "\n - viewContentWrapper.superview:", effectView.viewContentWrapper!.wrappedObject!.superview,
           "\n - viewContentWrapper.recursivelyGetAllSubviews:", effectView.recursivelyGetAllSubviews.map({ ($0, $0.layer) }),
           "\n - effectView.contentView:", effectView.contentView,
@@ -1060,7 +1060,7 @@ class Experiment03ViewController: UIViewController {
           "test33",
           "\n - effectView:", effectView,
           "\n - bgHostWrapper:", bgHostWrapper.wrappedObject!,
-          "\n - viewContentWrapper:", effectView.viewContentWrapper!.wrappedObject,
+          "\n - viewContentWrapper:", effectView.wrapper.backdropViewWrapped!.wrappedObject,
           // "\n - viewContentWrapper.superview:", effectView.viewContentWrapper!.wrappedObject!.superview,
       
           "\n"
