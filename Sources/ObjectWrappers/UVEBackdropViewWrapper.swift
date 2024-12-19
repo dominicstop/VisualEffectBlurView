@@ -74,6 +74,7 @@ public class UVEBackdropViewWrapper: PrivateObjectWrapper<
   
   /// Selector:
   /// `-(void)applyRequestedFilterEffects`
+  ///
   public func applyRequestedFilterEffects() throws {
     try self.performSelector(
       usingEncodedString: .methodApplyCurrentFilterEffects

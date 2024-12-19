@@ -12,6 +12,8 @@ import DGSwiftUtilities
 /// Wrapper for: `_UIVisualEffectHost`
 /// Old name: `VisualEffectHostWrapper`
 ///
+/// Instance conforms to: `_UIVisualEffectViewSubviewMonitoring`
+///
 @available(iOS 12, *)
 public class UVEHostWrapper: PrivateObjectWrapper<
   NSObject,
@@ -61,7 +63,8 @@ public class UVEHostWrapper: PrivateObjectWrapper<
   // MARK: - Wrapped Properties
   // --------------------------
   
-    /// `-(UIView *)contentView`
+  /// `-(UIView *)contentView`
+  ///
   public var viewContentWrapped: UVEBackdropViewWrapper? {
     let result = try? self.performSelector(
       usingEncodedString: .methodGetViewContent,

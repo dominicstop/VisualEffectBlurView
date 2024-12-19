@@ -35,11 +35,18 @@ open class VisualEffectView: UIVisualEffectView {
   public var currentFilterTypes: [LayerFilterType] = [];
   
   /// Old name: `backgroundHostWrapper`
+  /// Wrapper for: `_UIVisualEffectHost`
+  /// Property: `UIVisualEffectView._backgroundHost`
+  ///
   public var bgHostWrapper: UVEHostWrapper? {
     self.wrapper.hostForBgWrapped;
   };
   
   /// Old name: `contentViewWrapper`
+  /// Type: `_UIVisualEffectBackdropView`
+  /// Property: `_UIVisualEffectHost.contentView`
+  /// Full Path: `UIVisualEffectView._backgroundHost.contentView`
+  ///
   /// The view instance that contains the `CALayer` + `CAFilter` items
   ///
   public var viewContentWrapper: UVEBackdropViewWrapper? {

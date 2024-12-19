@@ -100,6 +100,9 @@ public class UVEViewWrapper: ObjectWrapper<
   /// Selector:
   /// `-(id)_backgroundHost`
   ///
+  /// Type: `_UIVisualEffectHost`
+  /// Property: `UIVisualEffectView._backgroundHost`
+  ///
   @available(iOS 12, *)
   public var hostForBgWrapped: UVEHostWrapper? {
     let result = try? self.performSelector(
@@ -145,13 +148,7 @@ public class UVEViewWrapper: ObjectWrapper<
       type: NSArray.self
     );
   };
-
-  public var effectSubviewsWrapped: [UVESubviewWrapper]? {
-    self.wrappedObject?.subviews.compactMap {
-      .init(objectToWrap: $0);
-    };
-  };
-
+  
   // MARK: - Wrapped Methods
   // -----------------------
   
@@ -231,4 +228,31 @@ public class UVEViewWrapper: ObjectWrapper<
     return result as String;
   };
   #endif
+  
+    
+  // MARK: - Helper/Utility Properties
+  // ---------------------------------
+  
+  /// Property: `UIVisualEffectView.subviews`
+  ///
+  /// * Subview Types: `_UIVisualEffectContentView`,
+  ///   `_UIVisualEffectBackdropView`, `_UIVisualEffectSubview`
+  ///
+  /// * The `UIVisualEffectView.contentView` is: `_UIVisualEffectContentView`
+  ///
+  /// * When no effect is active, the only subview will be:
+  ///   `_UIVisualEffectContentView`.
+  ///
+  /// * E.g. for a `UIBlurEffect` w/ `.regular`, all three subviews will be
+  ///   available
+  ///
+  public var effectSubviewsWrapped: [UVESubviewWrapper]? {
+    guard let instance = self.wrappedObject else {
+      return nil;
+    };
+    
+    return instance.subviews.compactMap {
+      .init(objectToWrap: $0);
+    };
+  };
 };
