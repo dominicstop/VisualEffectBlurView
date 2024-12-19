@@ -235,7 +235,9 @@ open class VisualEffectView: UIVisualEffectView {
     };
     
     return self.subviews.filter {
-      guard $0.layer !== backdropLayer else {
+      guard $0.layer !== backdropLayer,
+            $0 !== self.contentView
+      else {
         return false;
       };
       
