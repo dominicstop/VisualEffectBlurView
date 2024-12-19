@@ -42,10 +42,6 @@ Animation is supported for changing the blur radius (or blur percent intensity) 
 
 ## Acknowledgements
 
-Version `3.x` of this library was made possible through a generous `$3,750` sponsorship by [tamagui](https://github.com/tamagui/tamagui) over the course of 4 months (from: `05/27/24` to `09/30/24`) 🐦✨
-
-<br>
-
 very special thanks to: [junzhengca](https://github.com/junzhengca), [brentvatne](https://github.com/brentvatne), [expo](https://github.com/expo), [EvanBacon](https://github.com/EvanBacon), [corasan](https://github.com/corasan), [lauridskern](https://github.com/lauridskern), [ronintechnologies](https://github.com/ronintechnologies), and [gerzonc](https://github.com/gerzonc) for becoming a monthly sponsor, and thank you [fobos531](https://github.com/fobos531) for being a one time sponsor 🥺 (if you have the means to do so, please considering sponsoring [here](https://github.com/sponsors/dominicstop))
 
 This little library powers [`react-native-ios-visual-effect-view`](https://github.com/dominicstop/react-native-ios-visual-effect-view) under the hood ✨
