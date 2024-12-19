@@ -160,20 +160,20 @@ public class UVEViewParticipatingWrapper: ObjectWrapper<
   ///
   /// Array of `_UITintColorViewEntry`
   ///
-  public func getEffectsForView() throws -> Bool {
-    let value = try self.getValue(
+  public func getEffectsForView() throws -> NSArray {
+    let values = try self.getValue(
       forHashedString: .propertyGetterEffectsForView,
-      type: Bool.self
+      type: NSArray.self
     );
     
-    guard let value = value else {
+    guard let values = values else {
       throw VisualEffectBlurViewError(
         errorCode: .unexpectedNilValue,
         description: "Unable to get value for property"
       );
     };
     
-    return value;
+    return values;
   };
   
   /// Selectors:
@@ -182,7 +182,7 @@ public class UVEViewParticipatingWrapper: ObjectWrapper<
   ///
   /// Array of `_UITintColorViewEntry`
   ///
-  public func setEffectsForView(_ effects: Array<NSObject>) throws {
+  public func setEffectsForView(_ effects: NSArray) throws {
     try self.setValue(
       forHashedString: .propertyGetterEffectsForView,
       value: effects
@@ -195,30 +195,35 @@ public class UVEViewParticipatingWrapper: ObjectWrapper<
   ///
   /// Array of `_UIVisualEffectFilterEntry`
   ///
-  public func getCurrentFilters() throws -> Bool {
-    let value = try self.getValue(
+  public func getCurrentFilters() throws -> NSArray {
+    let values = try self.getValue(
       forHashedString: .propertyGetterCurrentFilters,
-      type: Bool.self
+      type: NSArray.self
     );
     
-    guard let value = value else {
+    let values2 = try self.performSelector(
+      usingEncodedString: .propertyGetterCurrentFilters,
+      type: NSArray.self
+    );
+    
+    guard let values = values else {
       throw VisualEffectBlurViewError(
         errorCode: .unexpectedNilValue,
         description: "Unable to get value for property"
       );
     };
     
-    return value;
+    return values;
   };
   
   /// Selectors:
   /// `@property (nonatomic,copy) NSArray * filters;`
   /// `-(void)setFilters:(NSArray *)arg1`
   ///
-  public func setCurrentFilters(_ effects: Array<NSObject>) throws {
+  public func setCurrentFilters(_ filters: NSArray) throws {
     try self.setValue(
       forHashedString: .propertyGetterCurrentFilters,
-      value: effects
+      value: filters
     );
   };
   
@@ -226,30 +231,30 @@ public class UVEViewParticipatingWrapper: ObjectWrapper<
   /// `@property (nonatomic,retain) UIView*<_UIVisualEffectViewParticipating> containedView;`
   /// `-(UIView*<_UIVisualEffectViewParticipating>)containedView;`
   ///
-  public func getViewContained() throws -> Bool {
-    let value = try self.getValue(
+  public func getViewContained() throws -> UIView {
+    let view = try self.getValue(
       forHashedString: .propertyGetterViewContained,
-      type: Bool.self
+      type: UIView.self
     );
     
-    guard let value = value else {
+    guard let view = view else {
       throw VisualEffectBlurViewError(
         errorCode: .unexpectedNilValue,
         description: "Unable to get value for property"
       );
     };
     
-    return value;
+    return view;
   };
   
   /// Selectors:
   /// `@property (nonatomic,retain) UIView*<_UIVisualEffectViewParticipating> containedView;`
   /// `-(void)setContainedView:(id)arg1;`
   ///
-  public func setViewContained(_ effects: Array<NSObject>) throws {
+  public func setViewContained(_ view: UIView) throws {
     try self.setValue(
       forHashedString: .propertyGetterViewContained,
-      value: effects
+      value: view
     );
   };
   
@@ -339,7 +344,7 @@ public extension UVEViewParticipatingWrappable {
   ///
   /// Array of `_UITintColorViewEntry`
   ///
-  func getEffectsForView() throws -> Bool {
+  func getEffectsForView() throws -> NSArray {
     guard let effectViewParticipatingWrapped = self.asEffectViewParticipatingWrapped else {
       throw VisualEffectBlurViewError(
         errorCode: .unexpectedNilValue,
@@ -356,7 +361,7 @@ public extension UVEViewParticipatingWrappable {
   ///
   /// Array of `_UITintColorViewEntry`
   ///
-  func setEffectsForView(_ effects: Array<NSObject>) throws {
+  func setEffectsForView(_ effects: NSArray) throws {
     guard let effectViewParticipatingWrapped = self.asEffectViewParticipatingWrapped else {
       throw VisualEffectBlurViewError(
         errorCode: .unexpectedNilValue,
@@ -373,7 +378,7 @@ public extension UVEViewParticipatingWrappable {
   ///
   /// Array of `_UIVisualEffectFilterEntry`
   ///
-  func getCurrentFilters() throws -> Bool {
+  func getCurrentFilters() throws -> NSArray {
     guard let effectViewParticipatingWrapped = self.asEffectViewParticipatingWrapped else {
       throw VisualEffectBlurViewError(
         errorCode: .unexpectedNilValue,
@@ -388,7 +393,7 @@ public extension UVEViewParticipatingWrappable {
   /// `@property (nonatomic,copy) NSArray * filters;`
   /// `-(void)setFilters:(NSArray *)arg1`
   ///
-  func setCurrentFilters(_ effects: Array<NSObject>) throws {
+  func setCurrentFilters(_ filters: NSArray) throws {
     guard let effectViewParticipatingWrapped = self.asEffectViewParticipatingWrapped else {
       throw VisualEffectBlurViewError(
         errorCode: .unexpectedNilValue,
@@ -396,14 +401,14 @@ public extension UVEViewParticipatingWrappable {
       );
     };
     
-    try effectViewParticipatingWrapped.setCurrentFilters(effects);
+    try effectViewParticipatingWrapped.setCurrentFilters(filters);
   };
   
   /// Selectors:
   /// `@property (nonatomic,retain) UIView*<_UIVisualEffectViewParticipating> containedView;`
   /// `-(UIView*<_UIVisualEffectViewParticipating>)containedView;`
   ///
-  func getViewContained() throws -> Bool {
+  func getViewContained() throws -> UIView {
     guard let effectViewParticipatingWrapped = self.asEffectViewParticipatingWrapped else {
       throw VisualEffectBlurViewError(
         errorCode: .unexpectedNilValue,
@@ -418,7 +423,7 @@ public extension UVEViewParticipatingWrappable {
   /// `@property (nonatomic,retain) UIView*<_UIVisualEffectViewParticipating> containedView;`
   /// `-(void)setContainedView:(id)arg1;`
   ///
-  func setViewContained(_ effects: Array<NSObject>) throws {
+  func setViewContained(_ view: UIView) throws {
     guard let effectViewParticipatingWrapped = self.asEffectViewParticipatingWrapped else {
       throw VisualEffectBlurViewError(
         errorCode: .unexpectedNilValue,
@@ -426,7 +431,7 @@ public extension UVEViewParticipatingWrappable {
       );
     };
     
-    try effectViewParticipatingWrapped.setViewContained(effects);
+    try effectViewParticipatingWrapped.setViewContained(view);
   };
   
   /// Selector:

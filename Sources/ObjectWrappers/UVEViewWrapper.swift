@@ -263,7 +263,7 @@ public class UVEViewWrapper: ObjectWrapper<
       return nil;
     };
     
-    return .init(objectToWrap: instance);
+    return .init(objectToWrap: instance.contentView);
   };
   
   /// Type: `_UIVisualEffectBackdropView` (superclass: `_UIVisualEffectSubview`)
