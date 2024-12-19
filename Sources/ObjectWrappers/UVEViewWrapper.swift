@@ -94,6 +94,20 @@ public class UVEViewWrapper: ObjectWrapper<
     };
   };
   
+  // MARK: - Properties
+  // ------------------
+  
+  /// Selector:
+  /// `-(id)_contentHost`
+  ///
+  @available(iOS 12, *)
+  public var hostForContent: NSObject? {
+    return try? self.performSelector(
+      usingEncodedString: .getterHostForContent,
+      type: NSObject.self
+    );
+  };
+  
   // MARK: - Wrapped Properties
   // --------------------------
   
@@ -121,12 +135,18 @@ public class UVEViewWrapper: ObjectWrapper<
   /// Selector:
   /// `-(id)_contentHost`
   ///
-  @available(iOS 12, *)
-  public var hostForContent: NSObject? {
-    return try? self.performSelector(
-      usingEncodedString: .getterHostForContent,
-      type: NSObject.self
-    );
+  /// Type: `_UIVisualEffectHost`
+  /// Property: `UIVisualEffectView._contentHost`
+  ///
+  /// * Contains a ref to: `_UIVisualEffectContentView` (i.e.
+  ///  `UIVisualEffectView.contentView`)
+  ///
+  public var hostForContentWrapped: UVEHostWrapper? {
+    guard let instance = self.hostForContent else {
+      return nil;
+    };
+    
+    return .init(objectToWrap: instance);
   };
   
   /// Selector:
