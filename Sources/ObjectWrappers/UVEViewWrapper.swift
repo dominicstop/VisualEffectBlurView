@@ -253,6 +253,18 @@ public class UVEViewWrapper: ObjectWrapper<
   // MARK: - Helper/Utility Properties
   // ---------------------------------
   
+  
+  /// Property: `UIVisualEffectView.contentView`
+  /// Type: `_UIVisualEffectContentView` (superclass: `_UIVisualEffectSubview`)
+  ///
+  public var viewContentWrapped: UVEContentViewWrapper? {
+    guard let instance = self.wrappedObject else {
+      return nil;
+    };
+    
+    return .init(objectToWrap: instance);
+  };
+  
   /// Property: `UIVisualEffectView.subviews`
   ///
   /// * Subview Types: `_UIVisualEffectContentView`,
