@@ -138,6 +138,46 @@ public class LayerFilterWrapper: PrivateObjectWrapper<
           return "aW5wdXRJbnRlcm1lZGlhdGVCaXREZXB0aA==";
       };
     };
+    
+    public static var propertyFilterInputKeys: [Self] {
+      [
+        .propertyFilterInputKeyAmount,
+        .propertyFilterInputKeyAngle,
+        .propertyFilterInputKeyValues,
+        .propertyFilterInputKeyRadius,
+        .propertyFilterInputKeyColorMatrix,
+        .propertyFilterInputKeyReversed,
+        .propertyFilterInputKeyColor0,
+        .propertyFilterInputKeyColor1,
+        .propertyFilterInputKeyNormalizeEdges,
+        .propertyFilterInputKeyShouldNormalizeEdgesToTransparent,
+        .propertyFilterInputKeyShouldUseHardEdges,
+        .propertyFilterInputKeyMaskImage,
+        .propertyFilterInputKeyQuality,
+        .propertyFilterInputKeyBounds,
+        .propertyFilterInputKeyDither,
+        .propertyFilterInputKeyLinear,
+        .propertyFilterInputKeyIntermediateBitDepth,
+      ];
+    };
+  };
+  
+  public var filterInputKeys: [String] {
+    EncodedString.propertyFilterInputKeys.compactMap {
+      $0.decodedString;
+    };
+  };
+  
+  public var filterInputs: [String: Any] {
+    EncodedString.propertyFilterInputKeys.reduce(into: [:]) {
+      guard let key = $1.decodedString,
+            let valueForKey = try? self.getValue(forHashedString: $1)
+      else {
+        return;
+      };
+      
+      $0[key] = valueForKey;
+    };
   };
   
   // MARK: - Wrapped Properties
