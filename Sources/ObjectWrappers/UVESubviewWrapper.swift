@@ -35,6 +35,10 @@ public class UVESubviewWrapper:
   };
   
   public lazy var asEffectViewParticipatingWrapped: UVEViewParticipatingWrapper? = {
-    .init(objectToWrap: self);
+    guard let wrappedObject = self.wrappedObject else {
+      return nil;
+    };
+    
+    return .init(objectToWrap: wrappedObject);
   }();
 };

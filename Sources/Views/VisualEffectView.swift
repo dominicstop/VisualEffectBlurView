@@ -51,7 +51,11 @@ open class VisualEffectView: UIVisualEffectView {
   /// The view instance that contains the `CALayer` + `CAFilter` items
   ///
   public var viewContentWrapper: UVEBackdropViewWrapper? {
-    self.bgHostWrapper?.viewContentWrapped;
+    guard let bgHostContent = self.bgHostWrapper?.viewContent else {
+      return nil;
+    };
+    
+    return .init(objectToWrap: bgHostContent);
   };
   
   /// Old name: `backdropLayerWrapper`
