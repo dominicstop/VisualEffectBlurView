@@ -353,14 +353,7 @@ open class VisualEffectView: UIVisualEffectView {
     shouldImmediatelyApplyFilter: Bool = true
   ) throws {
   
-    guard let bgHostWrapper = self.bgHostWrapper else {
-      throw VisualEffectBlurViewError(
-        errorCode: .unexpectedNilValue,
-        description: "Unable to get `self.bgHostWrapper`"
-      );
-    };
-    
-    guard let contentViewWrapper = bgHostWrapper.viewContentWrapped else {
+    guard let contentViewWrapper = self.viewContentWrapper else {
       throw VisualEffectBlurViewError(
         errorCode: .unexpectedNilValue,
         description: "Unable to get `UVEHostWrapper.viewContentWrapped`"

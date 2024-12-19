@@ -76,24 +76,6 @@ public class UVEHostWrapper: PrivateObjectWrapper<
     );
   };
   
-  // MARK: - Wrapped Properties
-  // --------------------------
-  
-  /// `-(UIView *)contentView`
-  ///
-  public var viewContentWrapped: UVEBackdropViewWrapper? {
-    let result = try? self.performSelector(
-      usingEncodedString: .methodGetViewContent,
-      type: UIView.self
-    );
-    
-    guard let result = result else {
-      return nil;
-    };
-    
-    return .init(objectToWrap: result);
-  };
-  
   // MARK: - Wrapped Methods
   // -----------------------
   
