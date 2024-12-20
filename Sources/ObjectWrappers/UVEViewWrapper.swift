@@ -39,6 +39,14 @@ public class UVEViewWrapper: ObjectWrapper<
     /// `_setTintOpacity:`
     case methodSetOpacityForTint;
     
+    /// Selectors:
+    /// `@property (nonatomic,readonly) UIView * contentView; `
+    /// `-(UIView *)contentView;`
+    /// `-(void)setContentView:(UIView *)arg1;
+    ///
+    case propertyGetterContentView;
+    case propertySetterContentView;
+    
     #if DEBUG
     /// `_debug`
     case methodDebug;
@@ -81,6 +89,14 @@ public class UVEViewWrapper: ObjectWrapper<
           // _setTintOpacity:
           return "X3NldFRpbnRPcGFjaXR5Og==";
           
+        case .propertyGetterContentView:
+          // contentView
+          return "Y29udGVudFZpZXc=";
+          
+        case .propertySetterContentView:
+          // setContentView:
+          return "c2V0Q29udGVudFZpZXc6";
+        
         #if DEBUG
         case .methodDebug:
           // _debug
@@ -208,6 +224,18 @@ public class UVEViewWrapper: ObjectWrapper<
     try self.performSelector(
       usingEncodedString: .methodSetOpacityForTint,
       withArg1: opacity
+    );
+  };
+  
+  /// Selectors:
+  /// `@property (nonatomic,readonly) UIView * contentView; `
+  /// `-(UIView *)contentView;`
+  /// `-(void)setContentView:(UIView *)arg1;
+  ///
+  public func setViewForContent(_ view: UIView) throws {
+    try self.setValue(
+      forHashedString: .propertyGetterContentView,
+      value: view
     );
   };
   
