@@ -163,6 +163,7 @@ class VisualEffectViewExperiment02ViewController: UIViewController {
       let containerView = UIView();
       
       let visualEffectView = try? VisualEffectView(withEffect: self.currentBlurEffect);
+      visualEffectView?.backgroundLayerSamplingSizeScale = 1;
       self.visualEffectView = visualEffectView;
       
       if let visualEffectView = visualEffectView {

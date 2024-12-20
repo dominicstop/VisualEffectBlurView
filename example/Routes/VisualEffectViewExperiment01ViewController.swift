@@ -381,6 +381,7 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
       let containerView = UIView();
       
       let visualEffectView = try? VisualEffectView(rawFilterTypes: []);
+      visualEffectView?.backgroundLayerSamplingSizeScale = 1;
       self.visualEffectView = visualEffectView;
       
       visualEffectView?.shouldOnlyShowBgLayer = true;

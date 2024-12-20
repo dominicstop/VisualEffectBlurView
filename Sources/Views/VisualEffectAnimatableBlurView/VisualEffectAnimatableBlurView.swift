@@ -46,6 +46,7 @@ public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
     if nextBlurStyle != self.blurEffectStyle {
       self.blurEffectStyle = nextBlurStyle;
       self.displayNow();
+      self.applyBackgroundLayerSamplingSizeScaleIfNeeded();
     };
         
     switch (nextBlurMode, useAnimationFriendlyWorkaround) {
@@ -162,6 +163,7 @@ public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
     
     let commonSetupBlock = {
       self.alpha = 1;
+      self.applyBackgroundLayerSamplingSizeScaleIfNeeded();
     }
     
     let commonAnimationBlock: Optional<() -> Void> = {

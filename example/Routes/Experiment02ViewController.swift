@@ -56,6 +56,7 @@ class Experiment02ViewController: UIViewController {
       // test01();
       
       let effectView = try! VisualEffectView(withEffect: CustomEffect());
+      effectView.backgroundLayerSamplingSizeScale = 1;
       self.visualEffectView = effectView;
       
       
