@@ -201,11 +201,6 @@ public class UVEViewParticipatingWrapper: ObjectWrapper<
       type: NSArray.self
     );
     
-    let values2 = try self.performSelector(
-      usingEncodedString: .propertyGetterCurrentFilters,
-      type: NSArray.self
-    );
-    
     guard let values = values else {
       throw VisualEffectBlurViewError(
         errorCode: .unexpectedNilValue,
