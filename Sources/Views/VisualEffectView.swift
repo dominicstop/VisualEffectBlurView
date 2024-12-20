@@ -190,21 +190,6 @@ open class VisualEffectView: UIVisualEffectView {
     self.wrapper = wrapper;
   };
   
-  public convenience init(rawFilterTypes: [String]?) throws {
-    try self.init(withEffect: UIBlurEffect(style: .regular));
-    
-    let rawFilterTypes = rawFilterTypes ?? [];
-    
-    let filterWrappers: [LayerFilterWrapper] = rawFilterTypes.compactMap {
-      .init(rawFilterType: $0);
-    };
-    
-    try self.setFiltersViaLayers(
-      withLayerFilterWrappers: filterWrappers,
-      shouldImmediatelyApplyFilter: true
-    );
-  };
-  
   public convenience init(
     filterTypes: [LayerFilterType],
     shouldSetFiltersUsingEffectDesc: Bool = true
