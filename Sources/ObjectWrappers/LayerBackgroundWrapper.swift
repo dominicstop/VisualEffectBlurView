@@ -1,5 +1,5 @@
 //
-//  BackgroundLayerWrapper.swift
+//  LayerBackgroundWrapper.swift
 //  
 //
 //  Created by Dominic Go on 6/19/24.
@@ -12,8 +12,8 @@ import DGSwiftUtilities
 /// Old name: `BackdropLayerWrapper` -> `LayerWrapper`
 ///
 @available(iOS 12, *)
-public class BackgroundLayerWrapper:
-  PrivateObjectWrapper<CALayer, BackgroundLayerWrapper.EncodedString>,
+public class LayerBackgroundWrapper:
+  PrivateObjectWrapper<CALayer, LayerBackgroundWrapper.EncodedString>,
   LayerWrappable
 {
   
