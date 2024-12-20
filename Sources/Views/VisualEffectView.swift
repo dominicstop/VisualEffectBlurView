@@ -225,7 +225,7 @@ open class VisualEffectView: UIVisualEffectView {
   required public init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented");
   };
-  
+
   // MARK: - Methods
   // ---------------
   
@@ -273,6 +273,58 @@ open class VisualEffectView: UIVisualEffectView {
     };
     
     tintView.alpha = newOpacity.clamped(min: 0, max: 1);
+  };
+  
+  public func removeTintingInSubviews() throws {
+    guard let wrapper = self.wrapper,
+          let tintViewWrapped = wrapper.tintViewWrapped,
+          let tintView = tintViewWrapped.wrappedObject
+    else {
+      return;
+    };
+    
+    tintView.backgroundColor = .clear;
+    
+    // just in case
+    tintView.tintColor = nil;
+  };
+  
+  // MARK: - Methods for Background Effects
+  // --------------------------------------
+  
+  @available(iOS 13, *)
+  public func getCurrentEffectDescriptor() throws -> UVEDescriptorWrapper {
+    guard let bgHostWrapper = self.hostForBackgroundWrapped else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to get `self.bgHostWrapper`"
+      );
+    };
+    
+    let effectDescWrapped = try bgHostWrapper.getEffectDescriptorCurrent();
+    guard let effectDescWrapped = effectDescWrapped else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to get effect desc for current effect"
+      );
+    };
+    
+    return effectDescWrapped;
+  };
+  
+  
+  @available(iOS 13, *)
+  public func getCurrentFilterEntriesFromCurrentEffectDescriptor() throws -> [UVEFilterEntryWrapper] {
+    let effectDescWrapped = try self.getCurrentEffectDescriptor();
+  
+    guard let filterItemsWrapped = effectDescWrapped.filterItemsWrapped else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to get filter items"
+      );
+    };
+    
+    return filterItemsWrapped;
   };
   
   @available(iOS 13, *)
@@ -513,20 +565,6 @@ open class VisualEffectView: UIVisualEffectView {
     };
   };
   
-  public func removeTintingInSubviews() throws {
-    guard let wrapper = self.wrapper,
-          let tintViewWrapped = wrapper.tintViewWrapped,
-          let tintView = tintViewWrapped.wrappedObject
-    else {
-      return;
-    };
-    
-    tintView.backgroundColor = .clear;
-    
-    // just in case
-    tintView.tintColor = nil;
-  };
-  
   /// does not support animations, immediately applies the effect
   @available(iOS 13, *)
   public func immediatelyRemoveFilters(
@@ -623,39 +661,8 @@ open class VisualEffectView: UIVisualEffectView {
     try backdropViewWrapped.applyFilterEffectsRequested();
   };
   
-  @available(iOS 13, *)
-  public func getCurrentEffectDescriptor() throws -> UVEDescriptorWrapper {
-    guard let bgHostWrapper = self.hostForBackgroundWrapped else {
-      throw VisualEffectBlurViewError(
-        errorCode: .unexpectedNilValue,
-        description: "Unable to get `self.bgHostWrapper`"
-      );
-    };
-    
-    let effectDescWrapped = try bgHostWrapper.getEffectDescriptorCurrent();
-    guard let effectDescWrapped = effectDescWrapped else {
-      throw VisualEffectBlurViewError(
-        errorCode: .unexpectedNilValue,
-        description: "Unable to get effect desc for current effect"
-      );
-    };
-    
-    return effectDescWrapped;
-  };
-  
-  @available(iOS 13, *)
-  public func getCurrentFilterEntriesFromCurrentEffectDescriptor() throws -> [UVEFilterEntryWrapper] {
-    let effectDescWrapped = try self.getCurrentEffectDescriptor();
-  
-    guard let filterItemsWrapped = effectDescWrapped.filterItemsWrapped else {
-      throw VisualEffectBlurViewError(
-        errorCode: .unexpectedNilValue,
-        description: "Unable to get filter items"
-      );
-    };
-    
-    return filterItemsWrapped;
-  };
+  // MARK: - Methods - Animation Related
+  // -----------------------------------
   
   @available(iOS 13, *)
   public func setEffectIntensityViaEffectDescriptor(
@@ -772,6 +779,9 @@ open class VisualEffectView: UIVisualEffectView {
     animatorWrapper.clear();
     self.animatorWrapper = nil;
   };
+  
+  // MARK: - Helpers
+  // ---------------
   
   public func _debugRecursivelyPrintSubviews(){
     let subviews = self.recursivelyGetAllSubviews;
