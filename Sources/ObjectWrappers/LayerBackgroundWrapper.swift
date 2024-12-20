@@ -120,7 +120,7 @@ public class LayerBackgroundWrapper:
   ///
   public func setSamplingSizeScale(_ scale: CGFloat) throws {
     try self.setValue(
-      forHashedString: .propertyGetterShouldAllowFilteringInPlace,
+      forHashedString: .propertyGetterSamplingSizeScale,
       value: scale
     );
   };
