@@ -27,15 +27,27 @@ public class LayerBackgroundWrapper:
     ///
     case propertyGetterShouldAllowFilteringInPlace;
     
+    /// Selectors:
+    /// `@property (assign) double scale;
+    /// `-(double)scale;`
+    /// `-(void)setScale:(double)arg1 ;`
+    ///
+    case propertyGetterSamplingSizeScale;
+    
     public var encodedString: String {
       switch self {
         case .className:
           // UICABackdropLayer
           return "VUlDQUJhY2tkcm9wTGF5ZXI=";
           
-          // allowsInPlaceFiltering
+          
         case .propertyGetterShouldAllowFilteringInPlace:
+          // allowsInPlaceFiltering
           return "YWxsb3dzSW5QbGFjZUZpbHRlcmluZw==";
+          
+        case .propertyGetterSamplingSizeScale:
+          // scale
+          return "c2NhbGU=";
       };
     };
   };
@@ -79,6 +91,37 @@ public class LayerBackgroundWrapper:
     try self.setValue(
       forHashedString: .propertyGetterShouldAllowFilteringInPlace,
       value: isEnabled
+    );
+  };
+
+  /// Selectors:
+  /// `@property (assign) double scale;
+  /// `-(double)scale;`
+  ///
+  public func getSamplingSizeScale() throws -> CGFloat {
+    let value = try self.getValue(
+      forHashedString: .propertyGetterSamplingSizeScale,
+      type: CGFloat.self
+    );
+    
+    guard let value = value else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to get value for property"
+      );
+    };
+    
+    return value;
+  };
+  
+  /// Selectors:
+  /// `@property (assign) double scale;
+  /// `-(void)setScale:(double)arg1 ;`
+  ///
+  public func setSamplingSizeScale(_ scale: CGFloat) throws {
+    try self.setValue(
+      forHashedString: .propertyGetterShouldAllowFilteringInPlace,
+      value: scale
     );
   };
 };
