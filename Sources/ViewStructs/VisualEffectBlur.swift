@@ -13,13 +13,16 @@ public struct VisualEffectBlur: UIViewRepresentable {
 
   @Binding public var blurEffectStyle: UIBlurEffect.Style;
   @Binding public var blurRadius: Double?;
+  @Binding public var backgroundLayerSamplingSizeScale: Double?;
   
   public init(
     blurEffectStyle: Binding<UIBlurEffect.Style>,
-    blurRadius: Binding<Double?> = .constant(nil)
+    blurRadius: Binding<Double?> = .constant(nil),
+    backgroundLayerSamplingSizeScale: Binding<Double?> = .constant(nil)
   ) {
     self._blurEffectStyle = blurEffectStyle;
     self._blurRadius = blurRadius;
+    self._backgroundLayerSamplingSizeScale = backgroundLayerSamplingSizeScale;
   };
 
   public func makeUIView(context: Context) -> VisualEffectBlurView {
@@ -34,6 +37,10 @@ public struct VisualEffectBlur: UIViewRepresentable {
     
     if let blurRadius = self.blurRadius {
       view.blurRadius = CGFloat(blurRadius);
+    };
+    
+    if let backgroundLayerSamplingSizeScale = self.backgroundLayerSamplingSizeScale {
+      view.blurRadius = CGFloat(backgroundLayerSamplingSizeScale);
     };
   };
 };

@@ -362,4 +362,19 @@ public class UVEViewWrapper: ObjectWrapper<
       .init(objectToWrap: $0);
     };
   };
+  
+  /// Path: `_backgroundHost.contentView.backdropLayer.scale`
+  ///
+  public var backgroundLayerSamplingSizeScale: CGFloat? {
+    get {
+      try? self.backdropViewWrapped?.bgLayerWrapper?.getSamplingSizeScale();
+    }
+    set {
+      guard let newValue = newValue else {
+        return;
+      };
+      
+      try? self.backdropViewWrapped?.bgLayerWrapper?.setSamplingSizeScale(newValue);
+    }
+  };
 };
