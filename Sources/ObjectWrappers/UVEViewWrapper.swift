@@ -274,7 +274,7 @@ public class UVEViewWrapper: ObjectWrapper<
   ///
   /// The view instance that contains the `CALayer` + `CAFilter` items
   ///
-  public var backdropViewWrapped: UVEBackdropViewWrapper? {
+  public var backgroundViewWrapped: UVEBackdropViewWrapper? {
     guard let bgHostContent = self.hostForBgWrapped?.viewContent else {
       return nil;
     };
@@ -292,7 +292,7 @@ public class UVEViewWrapper: ObjectWrapper<
       return nil;
     };
     
-    let bgLayer = self.backdropViewWrapped?.bgLayerWrapper?.wrappedObject;
+    let bgLayer = self.backgroundViewWrapped?.backgroundLayerWrapped?.wrappedObject;
     
     let match = instance.subviews.first {
       $0.layer !== bgLayer && $0 !== instance.contentView;
@@ -367,14 +367,14 @@ public class UVEViewWrapper: ObjectWrapper<
   ///
   public var backgroundLayerSamplingSizeScale: CGFloat? {
     get {
-      try? self.backdropViewWrapped?.bgLayerWrapper?.getSamplingSizeScale();
+      try? self.backgroundViewWrapped?.backgroundLayerWrapped?.getSamplingSizeScale();
     }
     set {
       guard let newValue = newValue else {
         return;
       };
       
-      try? self.backdropViewWrapped?.bgLayerWrapper?.setSamplingSizeScale(newValue);
+      try? self.backgroundViewWrapped?.backgroundLayerWrapped?.setSamplingSizeScale(newValue);
     }
   };
 };

@@ -394,13 +394,13 @@ class Experiment03ViewController: UIViewController {
           // nil - "\n - effectView.layer.filters:", effectView.layer.filters,
           // nil - "\n - effectView.bgHostWrapper:", (effectView.bgHostWrapper?.wrappedObject as? UIView),
           // "\n - effectView.bgHostWrapper:", effectView.bgHostWrapper?.wrappedObject,
-          "\n - effectView.bgHostWrapper:", effectView.wrapper.backdropViewWrapped!.wrappedObject!,
-          "\n - effectView.bgHostWrapper:", effectView.wrapper.backdropViewWrapped!.wrappedObject?.layer.filters,
+          "\n - effectView.bgHostWrapper:", effectView.wrapper.backgroundViewWrapped!.wrappedObject!,
+          "\n - effectView.bgHostWrapper:", effectView.wrapper.backgroundViewWrapped!.wrappedObject?.layer.filters,
           "\n"
         );
         
         let filterView =
-          effectView.wrapper.backdropViewWrapped!.wrappedObject!;
+          effectView.wrapper.backgroundViewWrapped!.wrappedObject!;
         
         let targetFilter = filterView.layer.filters!.first!;
         
@@ -448,7 +448,7 @@ class Experiment03ViewController: UIViewController {
         );
         
         let filterView =
-          effectView.wrapper.backdropViewWrapped!.wrappedObject!;
+          effectView.wrapper.backgroundViewWrapped!.wrappedObject!;
         
         let targetFilter = filterView.layer.filters!.first!;
         
@@ -484,7 +484,7 @@ class Experiment03ViewController: UIViewController {
         );
         
         let filterView =
-          effectView.wrapper.backdropViewWrapped!.wrappedObject!;
+          effectView.wrapper.backgroundViewWrapped!.wrappedObject!;
         
         let targetFilter = filterView.layer.filters!.first! as! NSObject;
         let targetFilterWrapped = LayerFilterWrapper(objectToWrap: targetFilter);
@@ -553,7 +553,7 @@ class Experiment03ViewController: UIViewController {
         );
         
         let filterView =
-          effectView.wrapper.backdropViewWrapped!.wrappedObject!;
+          effectView.wrapper.backgroundViewWrapped!.wrappedObject!;
         
         let targetFilter = filterView.layer.filters!.first! as! NSObject;
         let targetFilterWrapped = LayerFilterWrapper(objectToWrap: targetFilter);
@@ -586,7 +586,7 @@ class Experiment03ViewController: UIViewController {
         );
         
         let filterView =
-          effectView.wrapper.backdropViewWrapped!.wrappedObject!;
+          effectView.wrapper.backgroundViewWrapped!.wrappedObject!;
         
         let targetFilter = filterView.layer.filters!.first! as! NSObject;
         let targetFilterWrapped = LayerFilterWrapper(objectToWrap: targetFilter);
@@ -623,7 +623,7 @@ class Experiment03ViewController: UIViewController {
         let basisAnimation = animationConfig.createBasicAnimation()!;
         
         let filterView =
-          effectView.wrapper.backdropViewWrapped!.wrappedObject!;
+          effectView.wrapper.backgroundViewWrapped!.wrappedObject!;
         
         let targetFilterPrev = filterView.layer.filters!.first! as! NSObject;
         
@@ -665,7 +665,7 @@ class Experiment03ViewController: UIViewController {
         let basisAnimation = animationConfig.createBasicAnimation()!;
         
         let filterView =
-          effectView.wrapper.backdropViewWrapped!.wrappedObject!;
+          effectView.wrapper.backgroundViewWrapped!.wrappedObject!;
         
         let targetFilter = filterView.layer.filters!.first! as! NSObject;
         
@@ -707,7 +707,7 @@ class Experiment03ViewController: UIViewController {
         try! filterWrapped.setFilterValue(shouldUseHardEdges: false);
         try! filterWrapped.setFilterValue(shouldNormalizeEdgesToTransparent: false);
         
-        let effectLayer = effectView.bgLayerWrapper!.wrappedObject!;
+        let effectLayer = effectView.backgroundLayerWrapped!.wrappedObject!;
         effectLayer.filters = [filterWrapped.wrappedObject!];
         
       };
@@ -736,7 +736,7 @@ class Experiment03ViewController: UIViewController {
         try! filterWrapped.setFilterValue(shouldUseHardEdges: false);
         try! filterWrapped.setFilterValue(shouldNormalizeEdgesToTransparent: false);
         
-        let effectLayer = effectView.bgLayerWrapper!.wrappedObject!;
+        let effectLayer = effectView.backgroundLayerWrapped!.wrappedObject!;
         effectLayer.filters = [filterWrapped.wrappedObject!];
         
       };
@@ -760,7 +760,7 @@ class Experiment03ViewController: UIViewController {
         try! filterWrapped.setFilterValue(amount: 1);
         try! filterWrapped.setFilterValue(values: [1, 0, 0, 1]);
         
-        let effectLayer = effectView.bgLayerWrapper!.wrappedObject!;
+        let effectLayer = effectView.backgroundLayerWrapped!.wrappedObject!;
         effectLayer.perform("setCompositingFilter:", with: [filterWrapped.wrappedObject!]);
         effectLayer.filters = [filterWrapped.wrappedObject!];
         
@@ -773,8 +773,8 @@ class Experiment03ViewController: UIViewController {
           style: .fill
         );
         
-        let bgHostWrapper = effectView.bgHostWrapper!;
-        let effectLayer = effectView.bgLayerWrapper!.wrappedObject!;
+        let bgHostWrapper = effectView.hostForBackgroundWrapped!;
+        let effectLayer = effectView.backgroundLayerWrapped!.wrappedObject!;
         
         
         
@@ -786,7 +786,7 @@ class Experiment03ViewController: UIViewController {
           "\n - filters:", effectLayer.filters,
           "\n - compositingFilter:", effectLayer.compositingFilter,
           "\n - bgHostWrapper:", bgHostWrapper.wrappedObject!,
-          "\n - viewContentWrapper:", effectView.wrapper.backdropViewWrapped!.wrappedObject,
+          "\n - viewContentWrapper:", effectView.wrapper.backgroundViewWrapped!.wrappedObject,
           // "\n - viewContentWrapper.superview:", effectView.viewContentWrapper!.wrappedObject!.superview,
           "\n - viewContentWrapper.recursivelyGetAllSubviews:", effectView.recursivelyGetAllSubviews.map({ ($0, $0.layer) }),
           "\n - effectView.contentView:", effectView.contentView,
@@ -848,8 +848,8 @@ class Experiment03ViewController: UIViewController {
         let filterWrapped = filterType.createFilterWrapper()!;
         effectView.contentView.layer.filters = [filterWrapped.wrappedObject!];
         
-        let bgHostWrapper = effectView.bgHostWrapper!;
-        let effectLayer = effectView.bgLayerWrapper!.wrappedObject!;
+        let bgHostWrapper = effectView.hostForBackgroundWrapped!;
+        let effectLayer = effectView.backgroundLayerWrapped!.wrappedObject!;
         
         
         
@@ -861,7 +861,7 @@ class Experiment03ViewController: UIViewController {
           "\n - filters:", effectLayer.filters,
           "\n - compositingFilter:", effectLayer.compositingFilter,
           "\n - bgHostWrapper:", bgHostWrapper.wrappedObject!,
-          "\n - viewContentWrapper:", effectView.wrapper.backdropViewWrapped!.wrappedObject,
+          "\n - viewContentWrapper:", effectView.wrapper.backgroundViewWrapped!.wrappedObject,
           // "\n - viewContentWrapper.superview:", effectView.viewContentWrapper!.wrappedObject!.superview,
           "\n - viewContentWrapper.recursivelyGetAllSubviews:", effectView.recursivelyGetAllSubviews.map({ ($0, $0.layer) }),
           "\n - effectView.contentView:", effectView.contentView,
@@ -893,8 +893,8 @@ class Experiment03ViewController: UIViewController {
         let filterWrapped = filterType.createFilterWrapper()!;
         effectView.contentView.layer.filters = [filterWrapped.wrappedObject!];
         
-        let bgHostWrapper = effectView.bgHostWrapper!;
-        let effectLayer = effectView.bgLayerWrapper!.wrappedObject!;
+        let bgHostWrapper = effectView.hostForBackgroundWrapped!;
+        let effectLayer = effectView.backgroundLayerWrapped!.wrappedObject!;
         
         
         
@@ -906,7 +906,7 @@ class Experiment03ViewController: UIViewController {
           "\n - filters:", effectLayer.filters,
           "\n - compositingFilter:", effectLayer.compositingFilter,
           "\n - bgHostWrapper:", bgHostWrapper.wrappedObject!,
-          "\n - viewContentWrapper:", effectView.wrapper.backdropViewWrapped!.wrappedObject,
+          "\n - viewContentWrapper:", effectView.wrapper.backgroundViewWrapped!.wrappedObject,
           // "\n - viewContentWrapper.superview:", effectView.viewContentWrapper!.wrappedObject!.superview,
           "\n - viewContentWrapper.recursivelyGetAllSubviews:", effectView.recursivelyGetAllSubviews.map({ ($0, $0.layer) }),
           "\n - effectView.contentView:", effectView.contentView,
@@ -941,8 +941,8 @@ class Experiment03ViewController: UIViewController {
           "\n"
         );
 
-        let bgHostWrapper = effectView.bgHostWrapper!;
-        let effectLayer = effectView.bgLayerWrapper!.wrappedObject!;
+        let bgHostWrapper = effectView.hostForBackgroundWrapped!;
+        let effectLayer = effectView.backgroundLayerWrapped!.wrappedObject!;
         
         
         
@@ -1060,7 +1060,7 @@ class Experiment03ViewController: UIViewController {
           "test33",
           "\n - effectView:", effectView,
           "\n - bgHostWrapper:", bgHostWrapper.wrappedObject!,
-          "\n - viewContentWrapper:", effectView.wrapper.backdropViewWrapped!.wrappedObject,
+          "\n - viewContentWrapper:", effectView.wrapper.backgroundViewWrapped!.wrappedObject,
           // "\n - viewContentWrapper.superview:", effectView.viewContentWrapper!.wrappedObject!.superview,
       
           "\n"
@@ -1103,8 +1103,8 @@ class Experiment03ViewController: UIViewController {
         let filterWrapped = filterType.createFilterWrapper()!;
         effectView.contentView.layer.filters = [filterWrapped.wrappedObject!];
         
-        let bgHostWrapper = effectView.bgHostWrapper!;
-        let effectLayer = effectView.bgLayerWrapper!.wrappedObject!;
+        let bgHostWrapper = effectView.hostForBackgroundWrapped!;
+        let effectLayer = effectView.backgroundLayerWrapped!.wrappedObject!;
         
         effectLayer.setValue(1, forKey: "allowsInPlaceFiltering")
         
@@ -1173,7 +1173,7 @@ class Experiment03ViewController: UIViewController {
         try! filterWrapped.setFilterValue(radius: 32);
 
         
-        let effectLayer = effectView.bgLayerWrapper!.wrappedObject!;
+        let effectLayer = effectView.backgroundLayerWrapped!.wrappedObject!;
         effectLayer.filters = [filterWrapped.wrappedObject!];
       };
       
@@ -1208,7 +1208,7 @@ class Experiment03ViewController: UIViewController {
         effectDesc.setValue([], forKey: "underlays");
         effectDesc.setValue([], forKey: "overlays");
         
-        let bgHostWrapper = effectView.bgHostWrapper!;
+        let bgHostWrapper = effectView.hostForBackgroundWrapped!;
         try! bgHostWrapper.setEffectDescriptor(effectDescWrapped);
         try! bgHostWrapper.applyProvidedEffectDescriptor(effectDescWrapped);
         try! effectView.applyRequestedFilterEffects();
@@ -1223,12 +1223,12 @@ class Experiment03ViewController: UIViewController {
         effectDesc.setValue([], forKey: "underlays");
         effectDesc.setValue([], forKey: "overlays");
         
-        let bgHostWrapper = effectView.bgHostWrapper!;
+        let bgHostWrapper = effectView.hostForBackgroundWrapped!;
         try! bgHostWrapper.setEffectDescriptor(effectDescWrapped);
         try! bgHostWrapper.applyProvidedEffectDescriptor(effectDescWrapped);
         try! effectView.applyRequestedFilterEffects();
         
-        effectView.bgLayerWrapper?.wrappedObject?.filters = [];
+        effectView.backgroundLayerWrapped?.wrappedObject?.filters = [];
         
         let colorTransform: ColorTransform =
           .init()
@@ -1248,7 +1248,7 @@ class Experiment03ViewController: UIViewController {
         
         try! effectView.immediatelyRemoveAllFilters();
         print(
-          "currentFilters:", effectView.bgLayerWrapper?.currentFilters
+          "currentFilters:", effectView.backgroundLayerWrapped?.currentFilters
         );
         
         return;
@@ -1299,7 +1299,8 @@ class Experiment03ViewController: UIViewController {
         };
       };
       
-      // in place filtering tests
+      // in place filtering tests via vibrancy effect
+      // result: works...
       func test45_1(){
         let blurEffect = UIBlurEffect(style: .prominent);
         let vibrancyEffect = UIVibrancyEffect(blurEffect: blurEffect);
@@ -1310,27 +1311,147 @@ class Experiment03ViewController: UIViewController {
         /// Type: `_UIVisualEffectHost`
         /// Property: `UIVisualEffectView._backgroundHost`
         ///
-        let effectHostWrapped: UVEHostWrapper = effectView.bgHostWrapper!;
-        let effectHost: NSObject = effectHostWrapped.wrappedObject!;
-        
+        let backgroundHostWrapped: UVEHostWrapper? = effectView.hostForBackgroundWrapped;
+        let backgroundHost: NSObject? = backgroundHostWrapped?.wrappedObject;
         
         
         /// Type: `_UIVisualEffectBackdropView`
         /// Property: `_UIVisualEffectHost.contentView`
         /// Full Path: `UIVisualEffectView._backgroundHost.contentView`
         ///
-        let contentViewWrapped: UVEBackdropViewWrapper = effectView.wrapper.backdropViewWrapped!;
-        let contentView: NSObject = contentViewWrapped.wrappedObject!;
+        let backgroundHostContentViewWrapped: UVEBackdropViewWrapper? = effectView.wrapper.backgroundViewWrapped;
+        let backgroundHostContentView: NSObject? = backgroundHostContentViewWrapped?.wrappedObject;
         
         /// Type: `UICABackdropLayer` - `CALayer` subclass
         /// Property: `_UIVisualEffectBackdropView.backdropLayer`
         /// Full Path: `UIVisualEffectView._backgroundHost.contentView.backdropLayer`
         ///
-        let backdropLayerWrapped: LayerBackgroundWrapper = contentViewWrapped.bgLayerWrapper!;
-        let backdropLayer = backdropLayerWrapped.wrappedObject!;
+        let backgroundHostLayerWrapped: LayerBackgroundWrapper? = backgroundHostContentViewWrapped?.backgroundLayerWrapped!;
+        let backgroundHostLayer = backgroundHostLayerWrapped?.wrappedObject!;
+        
+        /// Type: `_UIVisualEffectHost`
+        /// `UIVisualEffectView._contentHost`
+        ///
+        let contentHostWrapped: UVEHostWrapper! = effectView.wrapper.hostForContentWrapped!;
+        let contentHost = contentHostWrapped.wrappedObject!;
+        
+        /// Type: `_UIVisualEffectContentView`
+        /// `UIVisualEffectView._contentHost.contentView`
+        ///
+        let contentHostContentViewWrapped: UVEContentViewWrapper! = effectView.wrapper.viewContentWrapped;
+        let contentHostContentView = contentHostContentViewWrapped!.wrappedObject!;
+        
+        /// Type: `_UIVisualEffectContentView`
+        /// `UIVisualEffectView._contentHost.contentView.layer`
+        ///
+        let contentHostLayer = contentHostContentView.layer;
+        let contentHostLayerWrapped: LayerWrapper! = .init(objectToWrap: contentHostLayer);
+        
+        
+        let blurFilterConfig: LayerFilterType = .gaussianBlur(
+          radius: 8,
+          shouldNormalizeEdges: false
+        );
+        
+        let blurFilterWrapped = blurFilterConfig.createFilterWrapper()!;
+        let blurFilter = blurFilterWrapped.wrappedObject!;
+        
+        contentHostLayer.filters = [blurFilter];
+        
+        
+        print(
+          "test45_1",
+          "\n - blurEffect:", blurEffect,
+          "\n - vibrancyEffect:", vibrancyEffect,
+          "\n - UIVisualEffectView._backgroundHost:", backgroundHost,
+          "\n - UIVisualEffectView._backgroundHost.contentView:", backgroundHostContentView,
+          "\n - UIVisualEffectView._backgroundHost.contentView.backdropLayer:", backgroundHostLayer,
+          "\n - UIVisualEffectView._contentHost:", contentHost,
+          "\n - UIVisualEffectView._contentHost.contentView:", contentHostContentView,
+          "\n - UIVisualEffectView._contentHost.contentView.layer:", contentHostLayer,
+          "\n"
+        );
+        
         
       };
       
+      // in place filtering tests via vibrancy effect
+      // result: works...
+      func test45_2(){
+        let blurEffect = UIBlurEffect(style: .prominent);
+        let vibrancyEffect = UIVibrancyEffect(blurEffect: blurEffect);
+      
+        effectView = try! .init(withEffect: vibrancyEffect);
+        self.visualEffectView = effectView;
+        
+        /// Type: `_UIVisualEffectHost`
+        /// Property: `UIVisualEffectView._backgroundHost`
+        ///
+        let backgroundHostWrapped: UVEHostWrapper? = effectView.hostForBackgroundWrapped;
+        let backgroundHost: NSObject? = backgroundHostWrapped?.wrappedObject;
+        
+        
+        /// Type: `_UIVisualEffectBackdropView`
+        /// Property: `_UIVisualEffectHost.contentView`
+        /// Full Path: `UIVisualEffectView._backgroundHost.contentView`
+        ///
+        let backgroundHostContentViewWrapped: UVEBackdropViewWrapper? = effectView.wrapper.backgroundViewWrapped;
+        let backgroundHostContentView: NSObject? = backgroundHostContentViewWrapped?.wrappedObject;
+        
+        /// Type: `UICABackdropLayer` - `CALayer` subclass
+        /// Property: `_UIVisualEffectBackdropView.backdropLayer`
+        /// Full Path: `UIVisualEffectView._backgroundHost.contentView.backdropLayer`
+        ///
+        let backgroundHostLayerWrapped: LayerBackgroundWrapper? = backgroundHostContentViewWrapped?.backgroundLayerWrapped!;
+        let backgroundHostLayer = backgroundHostLayerWrapped?.wrappedObject!;
+        
+        /// Type: `_UIVisualEffectHost`
+        /// `UIVisualEffectView._contentHost`
+        ///
+        let contentHostWrapped: UVEHostWrapper! = effectView.wrapper.hostForContentWrapped!;
+        let contentHost = contentHostWrapped.wrappedObject!;
+        
+        /// Type: `_UIVisualEffectContentView`
+        /// `UIVisualEffectView._contentHost.contentView`
+        ///
+        let contentHostContentViewWrapped: UVEContentViewWrapper! = effectView.wrapper.viewContentWrapped;
+        let contentHostContentView = contentHostContentViewWrapped!.wrappedObject!;
+        
+        /// Type: `_UIVisualEffectContentView`
+        /// `UIVisualEffectView._contentHost.contentView.layer`
+        ///
+        let contentHostLayer = contentHostContentView.layer;
+        let contentHostLayerWrapped: LayerWrapper! = .init(objectToWrap: contentHostLayer);
+        
+        
+        let blurFilterConfig: LayerFilterType = .gaussianBlur(
+          radius: 8,
+          shouldNormalizeEdges: false
+        );
+        
+        let blurFilterWrapped = blurFilterConfig.createFilterWrapper()!;
+        let blurFilter = blurFilterWrapped.wrappedObject!;
+        
+        contentHostLayer.filters = [blurFilter];
+        
+        
+        print(
+          "test45_1",
+          "\n - blurEffect:", blurEffect,
+          "\n - vibrancyEffect:", vibrancyEffect,
+          "\n - UIVisualEffectView._backgroundHost:", backgroundHost,
+          "\n - UIVisualEffectView._backgroundHost.contentView:", backgroundHostContentView,
+          "\n - UIVisualEffectView._backgroundHost.contentView.backdropLayer:", backgroundHostLayer,
+          "\n - UIVisualEffectView._contentHost:", contentHost,
+          "\n - UIVisualEffectView._contentHost.contentView:", contentHostContentView,
+          "\n - UIVisualEffectView._contentHost.contentView.layer:", contentHostLayer,
+          "\n"
+        );
+        
+        
+      };
+      
+      // log blur + vibrancy effect
       func test46(){
         effectView = try! VisualEffectCustomFilterView(withEffect: nil);
         self.visualEffectView = effectView;
@@ -1386,21 +1507,21 @@ class Experiment03ViewController: UIViewController {
             /// Type: `_UIVisualEffectHost`
             /// Property: `UIVisualEffectView._backgroundHost`
             ///
-            let effectHostWrapped: UVEHostWrapper = effectView.bgHostWrapper!;
+            let effectHostWrapped: UVEHostWrapper = effectView.hostForBackgroundWrapped!;
             let effectHost: NSObject = effectHostWrapped.wrappedObject!;
             
             /// Type: `_UIVisualEffectBackdropView`
             /// Property: `_UIVisualEffectHost.contentView`
             /// Full Path: `UIVisualEffectView._backgroundHost.contentView`
             ///
-            let contentViewWrapped: UVEBackdropViewWrapper = effectView.wrapper.backdropViewWrapped!;
+            let contentViewWrapped: UVEBackdropViewWrapper = effectView.wrapper.backgroundViewWrapped!;
             let contentView: NSObject = contentViewWrapped.wrappedObject!;
             
             /// Type: `UICABackdropLayer` - `CALayer` subclass
             /// Property: `_UIVisualEffectBackdropView.backdropLayer`
             /// Full Path: `UIVisualEffectView._backgroundHost.contentView.backdropLayer`
             ///
-            let backdropLayerWrapped: LayerBackgroundWrapper = contentViewWrapped.bgLayerWrapper!;
+            let backdropLayerWrapped: LayerBackgroundWrapper = contentViewWrapped.backgroundLayerWrapped!;
             let backdropLayer = backdropLayerWrapped.wrappedObject!;
             
             
@@ -1426,10 +1547,10 @@ class Experiment03ViewController: UIViewController {
               
               "\n - UIVisualEffectView._backgroundHost:", effectViewWrapped.hostForBgWrapped!.wrappedObject!,
               "\n - UIVisualEffectView._backgroundHost.contentView:", effectViewWrapped.hostForBgWrapped!.viewContent!,
-              "\n - UIVisualEffectView._backgroundHost.contentView.filters:", try? effectViewWrapped.backdropViewWrapped!.getCurrentFilters(),
-              "\n - UIVisualEffectView._backgroundHost.contentView.viewEffects:", try? effectViewWrapped.backdropViewWrapped!.getEffectsForView(),
-              "\n - UIVisualEffectView._backgroundHost.contentView.containedView:", try? effectViewWrapped.backdropViewWrapped!.getViewContained(),
-              "\n - UIVisualEffectView._backgroundHost.contentView.disableGroupFiltering:", try! effectViewWrapped.backdropViewWrapped!.getShouldDisableFilteringTheGroup(),
+              "\n - UIVisualEffectView._backgroundHost.contentView.filters:", try? effectViewWrapped.backgroundViewWrapped!.getCurrentFilters(),
+              "\n - UIVisualEffectView._backgroundHost.contentView.viewEffects:", try? effectViewWrapped.backgroundViewWrapped!.getEffectsForView(),
+              "\n - UIVisualEffectView._backgroundHost.contentView.containedView:", try? effectViewWrapped.backgroundViewWrapped!.getViewContained(),
+              "\n - UIVisualEffectView._backgroundHost.contentView.disableGroupFiltering:", try! effectViewWrapped.backgroundViewWrapped!.getShouldDisableFilteringTheGroup(),
               
               
               "\n - UIVisualEffectView.contentView:", effectView.contentView
@@ -1447,12 +1568,16 @@ class Experiment03ViewController: UIViewController {
               );
             };
             
-            let bgLayerWrapper = effectViewWrapped.backdropViewWrapped!.bgLayerWrapper!;
+            let bgLayerWrapper = effectViewWrapped.backgroundViewWrapped!.backgroundLayerWrapped!;
             if let bgLayer = bgLayerWrapper.wrappedObject {
+              try! bgLayerWrapper.setShouldAllowFilteringInPlace(true);
+              try! bgLayerWrapper.setSamplingSizeScale(1);
+            
               print(
                 " - UIVisualEffectView._backgroundHost.contentView.backdropLayer.allowsInPlaceFiltering:", try? bgLayerWrapper.getShouldAllowFilteringInPlace(),
                 "\n - UIVisualEffectView._backgroundHost.contentView.backdropLayer.scale:", try? bgLayerWrapper.wrappedObject!.value(forKey: "scale")
               );
+              
               // bgLayerWrapper.setShouldAllowFilteringInPlace(t)
               
               bgLayerWrapper.currentFiltersWrapped?.forEach {
@@ -1525,7 +1650,7 @@ class Experiment03ViewController: UIViewController {
         recursivelyDequeueAction();
       };
       
-      test46();
+      test45_1();
       
 
       effectView.layer.shadowRadius = 0;

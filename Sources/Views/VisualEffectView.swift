@@ -12,11 +12,12 @@ import DGSwiftUtilities
 open class VisualEffectView: UIVisualEffectView {
   
   public var wrapper: UVEViewWrapper!;
+  public var currentFilterTypes: [LayerFilterType] = [];
   
   /// Old name: `shouldOnlyShowBackdropLayer`
   public var shouldOnlyShowBgLayer: Bool = false {
     willSet {
-      guard let bgLayerWrapper = self.bgLayerWrapper,
+      guard let bgLayerWrapper = self.backgroundLayerWrapped,
             let backdropLayer = bgLayerWrapper.wrappedObject
       else {
         return;
@@ -30,67 +31,6 @@ open class VisualEffectView: UIVisualEffectView {
         $0.isHidden = newValue;
       };
     }
-  };
-  
-  public var currentFilterTypes: [LayerFilterType] = [];
-  
-  /// Old name: `backgroundHostWrapper`
-  /// Wrapper for: `_UIVisualEffectHost`
-  /// Property: `UIVisualEffectView._backgroundHost`
-  ///
-  public var bgHostWrapper: UVEHostWrapper? {
-    self.wrapper.hostForBgWrapped;
-  };
-  
-  /// Old name: `backdropLayerWrapper`
-  /// Contains the filter effect that affects the bg views
-  ///
-  public var bgLayerWrapper: LayerBackgroundWrapper? {
-    self.wrapper.backdropViewWrapped?.bgLayerWrapper;
-  };
-  
-  /// Contains the filter effect that only affects the content view
-  /// Related: `allowsInPlaceFiltering`, `disableInPlaceFiltering`
-  ///
-  public var contentLayer: CALayer {
-    self.contentView.layer;
-  };
-  
-  public var contentLayerWrapped: LayerWrapper? {
-    .init(objectToWrap: self.contentLayer);
-  };
-  
-  /// Old name: `effectDescriptorForCurrentEffectWrapper`
-  @available(iOS 13, *)
-  public var currentEffectMetadata: UVEDescriptorWrapper? {
-    guard let effect = self.effect,
-          let wrapper = self.wrapper
-    else {
-      return nil;
-    };
-    
-    return try? wrapper.getEffectMetadata(
-      forEffects: [effect],
-      usage: true
-    );
-  };
-  
-  public var animatorWrapper: ViewPropertyAnimatorWrapper?;
-  
-  private var _filterMetadataMapForCurrentEffect: Dictionary<String, FilterMetadata>?;
-  public var filterMetadataMapForCurrentEffect: Dictionary<String, FilterMetadata>? {
-    if let cached = self._filterMetadataMapForCurrentEffect {
-      return cached;
-    };
-    
-    guard #available(iOS 13, *),
-          let filterMetadataMap = try? self.createFilterMetadataMapForCurrentEffect()
-    else {
-      return nil;
-    };
-    
-    self._filterMetadataMapForCurrentEffect = filterMetadataMap;
-    return filterMetadataMap;
   };
   
   open override var effect: UIVisualEffect? {
@@ -110,20 +50,20 @@ open class VisualEffectView: UIVisualEffectView {
       self._filterMetadataMapForCurrentEffect = filterMetadataMap;
     }
   };
-  
+
   /// Shorthand for setting the `UIView.alpha` for the subview that contains
   /// the filters that affect the background (i.e. `UIVisualEffectView._backgroundHost.contentView`)
   ///
   public var effectOpacity: CGFloat? {
     get {
-      self.wrapper.backdropViewWrapped?.wrappedObject?.alpha;
+      self.wrapper.backgroundViewWrapped?.wrappedObject?.alpha;
     }
     set {
       guard let newValue = newValue else {
         return;
       };
       
-      self.wrapper.backdropViewWrapped?.wrappedObject?.alpha = newValue;
+      self.wrapper.backgroundViewWrapped?.wrappedObject?.alpha = newValue;
     }
   };
   
@@ -133,6 +73,107 @@ open class VisualEffectView: UIVisualEffectView {
     }
   };
   
+  // MARK: Computed Properties - Wrappers
+  // ------------------------------------
+  
+  /// Type: `_UIVisualEffectHost`
+  /// Property: `UIVisualEffectView._backgroundHost`
+  ///
+  public var hostForBackgroundWrapped: UVEHostWrapper? {
+    self.wrapper?.hostForBgWrapped;
+  };
+  
+  /// Type: `_UIVisualEffectBackdropView`
+  /// Property: `_UIVisualEffectHost.contentView`
+  /// Full Path: `UIVisualEffectView._backgroundHost.contentView`
+  ///
+  public var hostForBackgroundContentViewWrapped: UVEBackdropViewWrapper? {
+    self.wrapper?.backgroundViewWrapped;
+  };
+  
+  /// Type: `UICABackdropLayer` - `CALayer` subclass
+  /// Property: `_UIVisualEffectBackdropView.backdropLayer`
+  /// Full Path: `UIVisualEffectView._backgroundHost.contentView.backdropLayer`
+  ///
+  /// The "backdrop" that composites the views/layers behind it, and applies
+  /// filters to it (e.g. blurring the views behind the content view).
+  ///
+  public var backgroundLayerWrapped: LayerBackgroundWrapper? {
+    self.wrapper?.backgroundViewWrapped?.backgroundLayerWrapped;
+  };
+  
+  /// Type: `_UIVisualEffectHost`
+  /// Property: `UIVisualEffectView._contentHost`
+  ///
+  public var hostForContentWrapped: UVEHostWrapper? {
+    self.wrapper?.hostForContentWrapped;
+  };
+  
+  /// Type: `_UIVisualEffectContentView`
+  /// Property: `_UIVisualEffectHost.contentView`
+  ///
+  /// Full Path:
+  /// * `UIVisualEffectView._contentHost.contentView`
+  /// * `UIVisualEffectView.contentView`
+  ///
+  public var viewContentWrapped: UVEContentViewWrapper? {
+    self.wrapper?.viewContentWrapped;
+  };
+  
+  /// Type: `_UIVisualEffectContentView`
+  /// Full Path:
+  /// * `UIVisualEffectView._contentHost.contentView.layer`
+  /// * `UIVisualEffectView.contentView.layer`
+  ///
+  public var viewContentLayerWrapped: LayerWrapper? {
+    .init(objectToWrap: self.contentView.layer);
+  };
+  
+  /// Contains the filter effect that only affects the content view
+  /// Related: `allowsInPlaceFiltering`, `disableInPlaceFiltering`
+  ///
+  public var viewContentLayer: CALayer {
+    self.contentView.layer;
+  };
+  
+  /// Selector:
+  /// `_effectDescriptorForEffects:(id)arg1 usage:(long long)arg2`
+  ///
+  @available(iOS 13, *)
+  public var currentEffectMetadata: UVEDescriptorWrapper? {
+    guard let effect = self.effect,
+          let wrapper = self.wrapper
+    else {
+      return nil;
+    };
+    
+    return try? wrapper.getEffectMetadata(
+      forEffects: [effect],
+      usage: true
+    );
+  };
+  
+  // MARK: - Properties
+  // ------------------
+  
+  public var animatorWrapper: ViewPropertyAnimatorWrapper?;
+  
+  private var _filterMetadataMapForCurrentEffect: Dictionary<String, FilterMetadata>?;
+  public var filterMetadataMapForCurrentEffect: Dictionary<String, FilterMetadata>? {
+    if let cached = self._filterMetadataMapForCurrentEffect {
+      return cached;
+    };
+    
+    guard #available(iOS 13, *),
+          let filterMetadataMap = try? self.createFilterMetadataMapForCurrentEffect()
+    else {
+      return nil;
+    };
+    
+    self._filterMetadataMapForCurrentEffect = filterMetadataMap;
+    return filterMetadataMap;
+  };
+
   // MARK: - Init
   // ------------
   
@@ -247,7 +288,7 @@ open class VisualEffectView: UIVisualEffectView {
   ) throws {
   
     guard let wrapper = self.wrapper,
-          let backdropViewWrapped = wrapper.backdropViewWrapped
+          let backdropViewWrapped = wrapper.backgroundViewWrapped
     else {
       throw VisualEffectBlurViewError(
         errorCode: .unexpectedNilValue,
@@ -255,7 +296,7 @@ open class VisualEffectView: UIVisualEffectView {
       );
     };
   
-    guard let bgHostWrapper = self.bgHostWrapper else {
+    guard let bgHostWrapper = self.hostForBackgroundWrapped else {
       throw VisualEffectBlurViewError(
         errorCode: .unexpectedNilValue,
         description: "Unable to get `self.bgHostWrapper`"
@@ -330,7 +371,7 @@ open class VisualEffectView: UIVisualEffectView {
   ) throws {
     
     guard let wrapper = self.wrapper,
-          let backdropViewWrapped = wrapper.backdropViewWrapped
+          let backdropViewWrapped = wrapper.backgroundViewWrapped
     else {
       throw VisualEffectBlurViewError(
         errorCode: .unexpectedNilValue,
@@ -338,7 +379,7 @@ open class VisualEffectView: UIVisualEffectView {
       );
     };
     
-    guard let bgLayerWrapper = backdropViewWrapped.bgLayerWrapper,
+    guard let bgLayerWrapper = backdropViewWrapped.backgroundLayerWrapped,
           bgLayerWrapper.wrappedObject != nil
     else {
       throw VisualEffectBlurViewError(
@@ -392,7 +433,7 @@ open class VisualEffectView: UIVisualEffectView {
     shouldAddMissingFilterTypes: Bool = false
   ) throws {
   
-    guard let bgHostWrapper = self.bgHostWrapper else {
+    guard let bgHostWrapper = self.hostForBackgroundWrapped else {
       throw VisualEffectBlurViewError(
         errorCode: .unexpectedNilValue,
         description: "Unable to get `self.bgHostWrapper`"
@@ -537,14 +578,14 @@ open class VisualEffectView: UIVisualEffectView {
   public func immediatelyRemoveAllFilters(
     shouldResetEffectDescriptor: Bool = false
   ) throws {
-    guard let bgHostWrapper = self.bgHostWrapper else {
+    guard let bgHostWrapper = self.hostForBackgroundWrapped else {
       throw VisualEffectBlurViewError(
         errorCode: .unexpectedNilValue,
         description: "Unable to get `self.bgHostWrapper`"
       );
     };
     
-    guard let bgLayerWrapper = self.bgLayerWrapper else {
+    guard let bgLayerWrapper = self.backgroundLayerWrapped else {
       throw VisualEffectBlurViewError(
         errorCode: .unexpectedNilValue,
         description: "Unable to get `self.bgLayerWrapper`"
@@ -572,12 +613,12 @@ open class VisualEffectView: UIVisualEffectView {
     
     // reset `CALayer.filters`
     try bgLayerWrapper.setValuesForFilters(newFilters: []);
-    try self.contentLayerWrapped?.setValuesForFilters(newFilters: []);
+    try self.viewContentLayerWrapped?.setValuesForFilters(newFilters: []);
   };
   
   public func applyRequestedFilterEffects() throws {
     guard let wrapper = self.wrapper,
-          let backdropViewWrapped = wrapper.backdropViewWrapped
+          let backdropViewWrapped = wrapper.backgroundViewWrapped
     else {
       throw VisualEffectBlurViewError(
         errorCode: .unexpectedNilValue,
@@ -590,7 +631,7 @@ open class VisualEffectView: UIVisualEffectView {
   
   @available(iOS 13, *)
   public func getCurrentEffectDescriptor() throws -> UVEDescriptorWrapper {
-    guard let bgHostWrapper = self.bgHostWrapper else {
+    guard let bgHostWrapper = self.hostForBackgroundWrapped else {
       throw VisualEffectBlurViewError(
         errorCode: .unexpectedNilValue,
         description: "Unable to get `self.bgHostWrapper`"

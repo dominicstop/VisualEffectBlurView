@@ -46,7 +46,7 @@ public class VisualEffectBlurView: VisualEffectView {
       try? self.setBlurRadius(newValue, shouldImmediatelyApply: true);
     }
     get {
-      guard let bgLayerWrapper = self.bgLayerWrapper,
+      guard let bgLayerWrapper = self.backgroundLayerWrapped,
             let gaussianBlurFilterWrapper = bgLayerWrapper.gaussianBlurFilterWrapper,
             let inputRadius = gaussianBlurFilterWrapper.inputRadius
       else {
