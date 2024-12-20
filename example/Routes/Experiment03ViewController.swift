@@ -37,7 +37,7 @@ class Experiment03ViewController: UIViewController {
         let angle: Angle<CGFloat> = .degrees(90 + 45);
         let filterType: LayerFilterType = .colorHueAdjust(angle: angle);
         
-        try! effectView.setFiltersViaEffectDesc(
+        try! effectView.setBackgroundFiltersViaEffectDesc(
           withFilterTypes: [
             filterType,
           ],
@@ -79,7 +79,7 @@ class Experiment03ViewController: UIViewController {
         //colorMatrix.setContrast(withAmount: 0.5);
         //colorMatrix.setSaturation(withFactor: 0.5);
         
-        try! effectView.setFiltersViaEffectDesc(
+        try! effectView.setBackgroundFiltersViaEffectDesc(
           withFilterTypes: [
             .colorMatrix(colorMatrix),
           ],
@@ -146,7 +146,7 @@ class Experiment03ViewController: UIViewController {
         resultMatrix = combineColorMatrices(matrix1: resultMatrix, matrix2: grayScaleMatrix);
         
         let colorMatrix = ColorMatrixRGBA.init(fromColorMatrix5x4: resultMatrix);
-        try! effectView.setFiltersViaEffectDesc(
+        try! effectView.setBackgroundFiltersViaEffectDesc(
           withFilterTypes: [
             .colorMatrix(colorMatrix),
           ],
@@ -162,7 +162,7 @@ class Experiment03ViewController: UIViewController {
         
 
         
-        try! effectView.setFiltersViaEffectDesc(
+        try! effectView.setBackgroundFiltersViaEffectDesc(
           withFilterTypes: [
             .colorMatrix(colorMatrix),
           ],
@@ -178,7 +178,7 @@ class Experiment03ViewController: UIViewController {
           .withSaturation(0.3)
           .withHueRotate(.degrees(90));
         
-        try! effectView.setFiltersViaEffectDesc(
+        try! effectView.setBackgroundFiltersViaEffectDesc(
           withFilterTypes: [
             .colorMatrix(colorTransform.colorMatrix),
           ],
@@ -193,7 +193,7 @@ class Experiment03ViewController: UIViewController {
           b: 0
         );
         
-        try! effectView.setFiltersViaEffectDesc(
+        try! effectView.setBackgroundFiltersViaEffectDesc(
           withFilterTypes: [
             .colorMatrix(colorMatrix),
           ],
@@ -208,7 +208,7 @@ class Experiment03ViewController: UIViewController {
           b: 0
         );
         
-        try! effectView.setFiltersViaEffectDesc(
+        try! effectView.setBackgroundFiltersViaEffectDesc(
           withFilterTypes: [
             .colorMatrix(colorMatrix),
           ],
@@ -222,7 +222,7 @@ class Experiment03ViewController: UIViewController {
           .withSaturation(-1)
 
         
-        try! effectView.setFiltersViaEffectDesc(
+        try! effectView.setBackgroundFiltersViaEffectDesc(
           withFilterTypes: [
             .colorMatrix(colorTransform.colorMatrix),
           ],
@@ -235,7 +235,7 @@ class Experiment03ViewController: UIViewController {
           withPercent: 1
         );
         
-        try! effectView.setFiltersViaEffectDesc(
+        try! effectView.setBackgroundFiltersViaEffectDesc(
           withFilterTypes: [
             .colorMatrix(colorMatrix),
           ],
@@ -253,7 +253,7 @@ class Experiment03ViewController: UIViewController {
             with: .saturation(withFactor: 1)
           );
         
-        try! effectView.setFiltersViaEffectDesc(
+        try! effectView.setBackgroundFiltersViaEffectDesc(
           withFilterTypes: [
             .colorMatrix(colorMatrix),
           ],
@@ -267,7 +267,7 @@ class Experiment03ViewController: UIViewController {
           shouldSaturate: true
         );
         
-        try! effectView.setFiltersViaEffectDesc(
+        try! effectView.setBackgroundFiltersViaEffectDesc(
           withFilterTypes: [
             .colorMatrix(colorMatrix),
           ],
@@ -285,14 +285,14 @@ class Experiment03ViewController: UIViewController {
           ),
         ];
         
-        try! effectView.setFiltersViaEffectDesc(
+        try! effectView.setBackgroundFiltersViaEffectDesc(
           withFilterTypes: filterInitial,
           shouldImmediatelyApplyFilter: true
         );
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
         
-          try! effectView.setFiltersViaEffectDesc(
+          try! effectView.setBackgroundFiltersViaEffectDesc(
             withFilterTypes: [
               .saturateColors(amount: 1),
             ],
@@ -358,13 +358,13 @@ class Experiment03ViewController: UIViewController {
           ),
         ];
         
-        try! effectView.setFiltersViaEffectDesc(
+        try! effectView.setBackgroundFiltersViaEffectDesc(
           withFilterTypes: filterInitial,
           shouldImmediatelyApplyFilter: true
         );
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-          try! effectView.immediatelyRemoveFilters(matching: [.lightVibrant]);
+          try! effectView.immediatelyRemoveBackgroundFilters(matching: [.lightVibrant]);
         };
       };
       
@@ -377,7 +377,7 @@ class Experiment03ViewController: UIViewController {
           ),
         ];
         
-        try! effectView.setFiltersViaEffectDesc(
+        try! effectView.setBackgroundFiltersViaEffectDesc(
           withFilterTypes: filterInitial,
           shouldImmediatelyApplyFilter: true
         );
@@ -442,7 +442,7 @@ class Experiment03ViewController: UIViewController {
           .colorBlackAndWhite(amount: 1)
         ];
         
-        try! effectView.setFiltersViaEffectDesc(
+        try! effectView.setBackgroundFiltersViaEffectDesc(
           withFilterTypes: filterInitial,
           shouldImmediatelyApplyFilter: true
         );
@@ -453,7 +453,7 @@ class Experiment03ViewController: UIViewController {
         let targetFilter = filterView.layer.filters!.first!;
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-          try! effectView.updateCurrentFiltersViaEffectDesc(
+          try! effectView.updateBackgroundFiltersViaEffectDesc(
             withFilterTypes: [
               .colorBlackAndWhite(amount: 0)
             ],
@@ -461,7 +461,7 @@ class Experiment03ViewController: UIViewController {
           );
           
           UIView.animate(withDuration: 1){
-            try! effectView.applyRequestedFilterEffects();
+            try! effectView.applyRequestedBackgroundFilterEffects();
           };
           
           print(
@@ -478,7 +478,7 @@ class Experiment03ViewController: UIViewController {
           .colorBlackAndWhite(amount: 1)
         ];
         
-        try! effectView.setFiltersViaEffectDesc(
+        try! effectView.setBackgroundFiltersViaEffectDesc(
           withFilterTypes: filterInitial,
           shouldImmediatelyApplyFilter: true
         );
@@ -491,27 +491,27 @@ class Experiment03ViewController: UIViewController {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
           try! targetFilterWrapped!.setFilterIsEnabled(false);
-          try! effectView.applyRequestedFilterEffects();
+          try! effectView.applyRequestedBackgroundFilterEffects();
           filterView.layer.filters = [targetFilter];
           
           try! targetFilterWrapped!.setFilterIsEnabled(false);
-          try! effectView.applyRequestedFilterEffects();
+          try! effectView.applyRequestedBackgroundFilterEffects();
           filterView.layer.filters = [targetFilter];
           
           try! targetFilterWrapped!.setFilterIsEnabled(false);
-          try! effectView.applyRequestedFilterEffects();
+          try! effectView.applyRequestedBackgroundFilterEffects();
           filterView.layer.filters = [targetFilter];
           
           try! targetFilterWrapped!.setFilterIsEnabled(false);
-          try! effectView.applyRequestedFilterEffects();
+          try! effectView.applyRequestedBackgroundFilterEffects();
           filterView.layer.filters = [targetFilter];
           
           try! targetFilterWrapped!.setFilterIsEnabled(false);
-          try! effectView.applyRequestedFilterEffects();
+          try! effectView.applyRequestedBackgroundFilterEffects();
           filterView.layer.filters = [targetFilter];
           
           try! targetFilterWrapped!.setFilterIsEnabled(false);
-          try! effectView.applyRequestedFilterEffects();
+          try! effectView.applyRequestedBackgroundFilterEffects();
           filterView.layer.filters = [targetFilter];
           
           
@@ -522,7 +522,7 @@ class Experiment03ViewController: UIViewController {
           );
           
           return;
-          try! effectView.updateCurrentFiltersViaEffectDesc(
+          try! effectView.updateBackgroundFiltersViaEffectDesc(
             withFilterTypes: [
               .colorBlackAndWhite(amount: 0)
             ],
@@ -530,7 +530,7 @@ class Experiment03ViewController: UIViewController {
           );
           
           UIView.animate(withDuration: 1){
-            try! effectView.applyRequestedFilterEffects();
+            try! effectView.applyRequestedBackgroundFilterEffects();
           };
           
           print(
@@ -547,7 +547,7 @@ class Experiment03ViewController: UIViewController {
           .colorBlackAndWhite(amount: 1)
         ];
         
-        try! effectView.setFiltersViaEffectDesc(
+        try! effectView.setBackgroundFiltersViaEffectDesc(
           withFilterTypes: filterInitial,
           shouldImmediatelyApplyFilter: true
         );
@@ -563,7 +563,7 @@ class Experiment03ViewController: UIViewController {
           let targetFilterCopyWrapped = LayerFilterWrapper(objectToWrap: targetFilterCopy);
           
           try! targetFilterCopyWrapped!.setFilterIsEnabled(false);
-          try! effectView.applyRequestedFilterEffects();
+          try! effectView.applyRequestedBackgroundFilterEffects();
           filterView.layer.filters = [targetFilterCopy];
           
           print(
@@ -580,7 +580,7 @@ class Experiment03ViewController: UIViewController {
           .colorBlackAndWhite(amount: 1)
         ];
         
-        try! effectView.setFiltersViaEffectDesc(
+        try! effectView.setBackgroundFiltersViaEffectDesc(
           withFilterTypes: filterInitial,
           shouldImmediatelyApplyFilter: true
         );
@@ -593,7 +593,7 @@ class Experiment03ViewController: UIViewController {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
           try! targetFilterWrapped!.setFilterIsEnabled(false);
-          try! effectView.applyRequestedFilterEffects();
+          try! effectView.applyRequestedBackgroundFilterEffects();
           filterView.layer.filters = [targetFilter];
           
           print(
@@ -610,7 +610,7 @@ class Experiment03ViewController: UIViewController {
           .colorBlackAndWhite(amount: 1)
         ];
         
-        try! effectView.setFiltersViaEffectDesc(
+        try! effectView.setBackgroundFiltersViaEffectDesc(
           withFilterTypes: filterInitial,
           shouldImmediatelyApplyFilter: true
         );
@@ -652,7 +652,7 @@ class Experiment03ViewController: UIViewController {
           .colorBlackAndWhite(amount: 1)
         ];
         
-        try! effectView.setFiltersViaEffectDesc(
+        try! effectView.setBackgroundFiltersViaEffectDesc(
           withFilterTypes: filterInitial,
           shouldImmediatelyApplyFilter: true
         );
@@ -685,7 +685,7 @@ class Experiment03ViewController: UIViewController {
       };
             
       func test24(){
-        try! effectView.setFiltersViaEffectDesc(
+        try! effectView.setBackgroundFiltersViaEffectDesc(
           withFilterTypes: [
             .luminosityCurveMap(
               amount: 1,
@@ -797,7 +797,7 @@ class Experiment03ViewController: UIViewController {
       
       // try to apply to filter to content only, failed
       func test29(){
-        try! effectView.setFiltersViaEffectDesc(
+        try! effectView.setBackgroundFiltersViaEffectDesc(
           withFilterTypes: [
             .luminosityCurveMap(
               amount: 1,
@@ -877,7 +877,7 @@ class Experiment03ViewController: UIViewController {
         //   style: .fill
         // );
         
-         try! effectView.setFiltersViaEffectDesc(
+         try! effectView.setBackgroundFiltersViaEffectDesc(
            withFilterTypes: [
              .colorBlackAndWhite(amount: 1)
            ],
@@ -953,7 +953,7 @@ class Experiment03ViewController: UIViewController {
           "\n - _backdropViewBackgroundColorAlpha", effectView.value(forKey: "_backdropViewBackgroundColorAlpha"),
           
           "\n - effectView.getCurrentEffectDescriptor:", {
-            let effectDesc = try! effectView.getCurrentEffectDescriptor();
+            let effectDesc = try! effectView.getCurrentBackgroundEffectDescriptor();
             
             return [
               ("_UIVisualEffectDescriptor", effectDesc.wrappedObject!),
@@ -1086,7 +1086,7 @@ class Experiment03ViewController: UIViewController {
         effectView.effect = vibEffect;
         
         
-       try! effectView.setFiltersViaEffectDesc(
+       try! effectView.setBackgroundFiltersViaEffectDesc(
          withFilterTypes: [
            .colorBlackAndWhite(amount: 1)
          ],
@@ -1123,7 +1123,7 @@ class Experiment03ViewController: UIViewController {
         
         try! bgHostWrapper.setEffectDescriptor(effectDescWrapped);
         // try! bgHostWrapper.applyProvidedEffectDescriptor(effectDescWrapped);
-        try! effectView.applyRequestedFilterEffects();
+        try! effectView.applyRequestedBackgroundFilterEffects();
         
         effectView.displayNow();
 
@@ -1137,7 +1137,7 @@ class Experiment03ViewController: UIViewController {
       
       // test bias
       func test35(){
-        try! effectView.setFiltersViaEffectDesc(
+        try! effectView.setBackgroundFiltersViaEffectDesc(
           withFilterTypes: [
             .bias(amount: 0.5)
           ],
@@ -1184,7 +1184,7 @@ class Experiment03ViewController: UIViewController {
           .withSaturation(-1)
           //.withHueRotate(.degrees(90));
         
-        try! effectView.setFiltersViaEffectDesc(
+        try! effectView.setBackgroundFiltersViaEffectDesc(
           withFilterTypes: [
             .colorMatrix(colorTransform.colorMatrix),
           ],
@@ -1200,7 +1200,7 @@ class Experiment03ViewController: UIViewController {
           .withSaturation(-1)
           //.withHueRotate(.degrees(90));
         
-        let effectDescWrapped = try! effectView.getCurrentEffectDescriptor();
+        let effectDescWrapped = try! effectView.getCurrentBackgroundEffectDescriptor();
         let effectDesc = effectDescWrapped.wrappedObject!;
         
         effectDesc.setValue([], forKey: "filterEntries");
@@ -1211,11 +1211,11 @@ class Experiment03ViewController: UIViewController {
         let bgHostWrapper = effectView.hostForBackgroundWrapped!;
         try! bgHostWrapper.setEffectDescriptor(effectDescWrapped);
         try! bgHostWrapper.applyProvidedEffectDescriptor(effectDescWrapped);
-        try! effectView.applyRequestedFilterEffects();
+        try! effectView.applyRequestedBackgroundFilterEffects();
       };
       
       func test40(){
-        let effectDescWrapped = try! effectView.getCurrentEffectDescriptor();
+        let effectDescWrapped = try! effectView.getCurrentBackgroundEffectDescriptor();
         let effectDesc = effectDescWrapped.wrappedObject!;
         
         effectDesc.setValue([], forKey: "filterEntries");
@@ -1226,7 +1226,7 @@ class Experiment03ViewController: UIViewController {
         let bgHostWrapper = effectView.hostForBackgroundWrapped!;
         try! bgHostWrapper.setEffectDescriptor(effectDescWrapped);
         try! bgHostWrapper.applyProvidedEffectDescriptor(effectDescWrapped);
-        try! effectView.applyRequestedFilterEffects();
+        try! effectView.applyRequestedBackgroundFilterEffects();
         
         effectView.backgroundLayerWrapped?.wrappedObject?.filters = [];
         
@@ -1236,7 +1236,7 @@ class Experiment03ViewController: UIViewController {
           .withSaturation(-1)
           //.withHueRotate(.degrees(90));
         
-        try! effectView.setFiltersViaEffectDesc(
+        try! effectView.setBackgroundFiltersViaEffectDesc(
           withFilterTypes: [
             .colorMatrix(colorTransform.colorMatrix),
           ],
@@ -1246,7 +1246,7 @@ class Experiment03ViewController: UIViewController {
       
       func test41(){
         
-        try! effectView.immediatelyRemoveAllFilters();
+        try! effectView.immediatelyRemoveAllBackgroundFilters();
         print(
           "currentFilters:", effectView.backgroundLayerWrapped?.currentFilters
         );
@@ -1258,7 +1258,7 @@ class Experiment03ViewController: UIViewController {
           .withSaturation(-1)
           //.withHueRotate(.degrees(90));
         
-        try! effectView.setFiltersViaEffectDesc(
+        try! effectView.setBackgroundFiltersViaEffectDesc(
           withFilterTypes: [
             .colorMatrix(colorTransform.colorMatrix),
           ],
@@ -1376,13 +1376,17 @@ class Experiment03ViewController: UIViewController {
       };
       
       // in place filtering tests via vibrancy effect
-      // result: works...
+      // result:
       func test45_2(){
-        let blurEffect = UIBlurEffect(style: .prominent);
-        let vibrancyEffect = UIVibrancyEffect(blurEffect: blurEffect);
+        let blurEffect = UIBlurEffect(style: .regular);
+        // let vibrancyEffect = UIVibrancyEffect(blurEffect: blurEffect);
       
-        effectView = try! .init(withEffect: vibrancyEffect);
+        effectView = try! .init(withEffect: blurEffect);
         self.visualEffectView = effectView;
+        // effectView.displayNow();
+        // effectView.perform(NSSelectorFromString("_updateSubviews")); // nope
+        // try! effectView.applyRequestedFilterEffects();
+        // effectView.perform(NSSelectorFromString("setContentView:"), with: effectView.contentView);
         
         /// Type: `_UIVisualEffectHost`
         /// Property: `UIVisualEffectView._backgroundHost`
@@ -1390,26 +1394,28 @@ class Experiment03ViewController: UIViewController {
         let backgroundHostWrapped: UVEHostWrapper? = effectView.hostForBackgroundWrapped;
         let backgroundHost: NSObject? = backgroundHostWrapped?.wrappedObject;
         
-        
         /// Type: `_UIVisualEffectBackdropView`
         /// Property: `_UIVisualEffectHost.contentView`
         /// Full Path: `UIVisualEffectView._backgroundHost.contentView`
         ///
-        let backgroundHostContentViewWrapped: UVEBackdropViewWrapper? = effectView.wrapper.backgroundViewWrapped;
-        let backgroundHostContentView: NSObject? = backgroundHostContentViewWrapped?.wrappedObject;
+        let backgroundHostContentViewWrapped: UVEBackdropViewWrapper = effectView.wrapper.backgroundViewWrapped!;
+        let backgroundHostContentView: NSObject = backgroundHostContentViewWrapped.wrappedObject!;
         
         /// Type: `UICABackdropLayer` - `CALayer` subclass
         /// Property: `_UIVisualEffectBackdropView.backdropLayer`
         /// Full Path: `UIVisualEffectView._backgroundHost.contentView.backdropLayer`
         ///
-        let backgroundHostLayerWrapped: LayerBackgroundWrapper? = backgroundHostContentViewWrapped?.backgroundLayerWrapped!;
-        let backgroundHostLayer = backgroundHostLayerWrapped?.wrappedObject!;
+        let backgroundHostLayerWrapped: LayerBackgroundWrapper = backgroundHostContentViewWrapped.backgroundLayerWrapped!;
+        let backgroundHostLayer = backgroundHostLayerWrapped.wrappedObject!;
         
         /// Type: `_UIVisualEffectHost`
         /// `UIVisualEffectView._contentHost`
         ///
-        let contentHostWrapped: UVEHostWrapper! = effectView.wrapper.hostForContentWrapped!;
-        let contentHost = contentHostWrapped.wrappedObject!;
+        let contentHostWrapped: UVEHostWrapper? = effectView.wrapper.hostForContentWrapped;
+        let contentHost = contentHostWrapped?.wrappedObject;
+        
+        
+        let hostForContentWrapped =  effectView.hostForContentWrapped!.wrappedObject!;
         
         /// Type: `_UIVisualEffectContentView`
         /// `UIVisualEffectView._contentHost.contentView`
@@ -1429,16 +1435,17 @@ class Experiment03ViewController: UIViewController {
           shouldNormalizeEdges: false
         );
         
-        let blurFilterWrapped = blurFilterConfig.createFilterWrapper()!;
-        let blurFilter = blurFilterWrapped.wrappedObject!;
+        let blurFilterConfig2: LayerFilterType = .gaussianBlur(
+          radius: 16,
+          shouldNormalizeEdges: false
+        );
         
-        contentHostLayer.filters = [blurFilter];
+
         
         
         print(
-          "test45_1",
+          "test45_2",
           "\n - blurEffect:", blurEffect,
-          "\n - vibrancyEffect:", vibrancyEffect,
           "\n - UIVisualEffectView._backgroundHost:", backgroundHost,
           "\n - UIVisualEffectView._backgroundHost.contentView:", backgroundHostContentView,
           "\n - UIVisualEffectView._backgroundHost.contentView.backdropLayer:", backgroundHostLayer,
@@ -1524,6 +1531,7 @@ class Experiment03ViewController: UIViewController {
             let backdropLayerWrapped: LayerBackgroundWrapper = contentViewWrapped.backgroundLayerWrapped!;
             let backdropLayer = backdropLayerWrapped.wrappedObject!;
             
+            let hostForContentWrapped = effectViewWrapped.hostForContentWrapped!.wrappedObject;
             
             
             
@@ -1583,8 +1591,8 @@ class Experiment03ViewController: UIViewController {
               bgLayerWrapper.currentFiltersWrapped?.forEach {
                 return;
                 try! $0.setFilterValue(radius: 0);
-                try! effectView.removeTintingInSubviews();
-                effectView.setOpacityForOtherSubviews(newOpacity: 0);
+                try! effectView.clearTintColorInTintView();
+                effectView.setOpacityForTintView(newOpacity: 0);
                 
                 let currentQuality = ["high", "medium", "low"][cyclicIndex: 0];
                 $0.wrappedObject!.setValue("high", forKey: "inputQuality");
@@ -1610,8 +1618,8 @@ class Experiment03ViewController: UIViewController {
               bgLayerWrapper.currentFiltersWrapped?.forEach {
                 return;
                 try! $0.setFilterValue(radius: 0);
-                try! effectView.removeTintingInSubviews();
-                effectView.setOpacityForOtherSubviews(newOpacity: 0);
+                try! effectView.clearTintColorInTintView();
+                effectView.setOpacityForTintView(newOpacity: 0);
                 
                 let currentQuality = ["high", "medium", "low"][cyclicIndex: 0];
                 $0.wrappedObject!.setValue("high", forKey: "inputQuality");
@@ -1650,7 +1658,7 @@ class Experiment03ViewController: UIViewController {
         recursivelyDequeueAction();
       };
       
-      test45_1();
+      test45_2();
       
 
       effectView.layer.shadowRadius = 0;

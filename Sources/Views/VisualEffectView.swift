@@ -12,7 +12,7 @@ import DGSwiftUtilities
 open class VisualEffectView: UIVisualEffectView {
   
   public var wrapper: UVEViewWrapper!;
-  public var currentFilterTypes: [LayerFilterType] = [];
+  public var currentBackgroundFilterTypes: [LayerFilterType] = [];
   
   /// Old name: `shouldOnlyShowBackdropLayer`
   public var shouldOnlyShowBgLayer: Bool = false {
@@ -52,9 +52,10 @@ open class VisualEffectView: UIVisualEffectView {
   };
 
   /// Shorthand for setting the `UIView.alpha` for the subview that contains
-  /// the filters that affect the background (i.e. `UIVisualEffectView._backgroundHost.contentView`)
+  /// the filters that affect the background
+  /// (i.e. `UIVisualEffectView._backgroundHost.contentView`)
   ///
-  public var effectOpacity: CGFloat? {
+  public var backgroundEffectOpacity: CGFloat? {
     get {
       self.wrapper.backgroundViewWrapped?.wrappedObject?.alpha;
     }
@@ -138,6 +139,8 @@ open class VisualEffectView: UIVisualEffectView {
     .init(objectToWrap: self.contentView.layer);
   };
   
+  /// Full Path: `UIVisualEffectView.contentView`
+  ///
   /// Contains the filter effect that only affects the content view
   /// Related: `allowsInPlaceFiltering`, `disableInPlaceFiltering`
   ///
@@ -209,13 +212,13 @@ open class VisualEffectView: UIVisualEffectView {
     if #available(iOS 13, *),
        shouldSetFiltersUsingEffectDesc
     {
-      try self.setFiltersViaEffectDesc(
+      try self.setBackgroundFiltersViaEffectDesc(
         withFilterTypes: filterTypes,
         shouldImmediatelyApplyFilter: true
       );
       
     } else {
-      try self.setFiltersViaLayers(
+      try self.setBackgroundFiltersViaLayers(
         withFilterTypes: filterTypes,
         shouldImmediatelyApplyFilter: true
       );
@@ -232,7 +235,7 @@ open class VisualEffectView: UIVisualEffectView {
   @available(iOS 13, *)
   public func createFilterMetadataMapForCurrentEffect() throws -> [String: FilterMetadata] {
     let filterEntries =
-      try self.getCurrentFilterEntriesFromCurrentEffectDescriptor();
+      try self.getCurrentFilterEntriesFromCurrentBackgroundEffectDescriptor();
       
     var filterMetadataMap: [String: FilterMetadata] = [:];
     
@@ -264,8 +267,7 @@ open class VisualEffectView: UIVisualEffectView {
     wrapper.backgroundLayerSamplingSizeScale = nextScale;
   };
   
-  // TODO: Rename: `setOpacityForTintView`
-  public func setOpacityForOtherSubviews(newOpacity: CGFloat){
+  public func setOpacityForTintView(newOpacity: CGFloat){
     guard let wrapper = self.wrapper,
           let tintViewWrapped = wrapper.tintViewWrapped,
           let tintView = tintViewWrapped.wrappedObject
@@ -276,8 +278,7 @@ open class VisualEffectView: UIVisualEffectView {
     tintView.alpha = newOpacity.clamped(min: 0, max: 1);
   };
   
-  // TODO: Rename: `clearTintColorInTintView`
-  public func removeTintingInSubviews() throws {
+  public func clearTintColorInTintView() throws {
     guard let wrapper = self.wrapper,
           let tintViewWrapped = wrapper.tintViewWrapped,
           let tintView = tintViewWrapped.wrappedObject
@@ -294,9 +295,8 @@ open class VisualEffectView: UIVisualEffectView {
   // MARK: - Methods for Background Effects
   // --------------------------------------
   
-  // TODO: Rename: `getCurrentBackgroundEffectDescriptor`
   @available(iOS 13, *)
-  public func getCurrentEffectDescriptor() throws -> UVEDescriptorWrapper {
+  public func getCurrentBackgroundEffectDescriptor() throws -> UVEDescriptorWrapper {
     guard let bgHostWrapper = self.hostForBackgroundWrapped else {
       throw VisualEffectBlurViewError(
         errorCode: .unexpectedNilValue,
@@ -315,10 +315,9 @@ open class VisualEffectView: UIVisualEffectView {
     return effectDescWrapped;
   };
   
-  // TODO: Rename: `getCurrentFilterEntriesFromCurrentBackgroundEffectDescriptor`
   @available(iOS 13, *)
-  public func getCurrentFilterEntriesFromCurrentEffectDescriptor() throws -> [UVEFilterEntryWrapper] {
-    let effectDescWrapped = try self.getCurrentEffectDescriptor();
+  public func getCurrentFilterEntriesFromCurrentBackgroundEffectDescriptor() throws -> [UVEFilterEntryWrapper] {
+    let effectDescWrapped = try self.getCurrentBackgroundEffectDescriptor();
   
     guard let filterItemsWrapped = effectDescWrapped.filterItemsWrapped else {
       throw VisualEffectBlurViewError(
@@ -330,9 +329,8 @@ open class VisualEffectView: UIVisualEffectView {
     return filterItemsWrapped;
   };
   
-  // TODO: Rename: `setBackgroundFiltersViaEffectDesc`
   @available(iOS 13, *)
-  public func setFiltersViaEffectDesc(
+  public func setBackgroundFiltersViaEffectDesc(
     withFilterEntryWrappers filterEntryWrappers: [UVEFilterEntryWrapper],
     shouldImmediatelyApplyFilter: Bool = true
   ) throws {
@@ -390,9 +388,8 @@ open class VisualEffectView: UIVisualEffectView {
     };
   };
   
-  // TODO: Rename: `setBackgroundFiltersViaEffectDesc`
   @available(iOS 13, *)
-  public func setFiltersViaEffectDesc(
+  public func setBackgroundFiltersViaEffectDesc(
     withFilterTypes filterTypes: [LayerFilterType],
     shouldImmediatelyApplyFilter: Bool = true
   ) throws {
@@ -408,16 +405,15 @@ open class VisualEffectView: UIVisualEffectView {
       );
     };
     
-    try self.setFiltersViaEffectDesc(
+    try self.setBackgroundFiltersViaEffectDesc(
       withFilterEntryWrappers: filterEntriesWrapped,
       shouldImmediatelyApplyFilter: shouldImmediatelyApplyFilter
     );
     
-    self.currentFilterTypes = filterTypes;
+    self.currentBackgroundFilterTypes = filterTypes;
   };
   
-  // TODO: Rename: `setBackgroundFiltersViaLayers`
-  public func setFiltersViaLayers(
+  public func setBackgroundFiltersViaLayers(
     withLayerFilterWrappers layerFilterWrappers: [LayerFilterWrapper],
     shouldImmediatelyApplyFilter: Bool = true
   ) throws {
@@ -451,8 +447,7 @@ open class VisualEffectView: UIVisualEffectView {
     };
   };
   
-  // TODO: Rename: `setBackgroundFiltersViaLayers`
-  public func setFiltersViaLayers(
+  public func setBackgroundFiltersViaLayers(
     withFilterTypes filterTypes: [LayerFilterType],
     shouldImmediatelyApplyFilter: Bool = true
   ) throws {
@@ -461,15 +456,14 @@ open class VisualEffectView: UIVisualEffectView {
       $0.createFilterWrapper();
     };
     
-    try self.setFiltersViaLayers(
+    try self.setBackgroundFiltersViaLayers(
       withLayerFilterWrappers: filterWrappers,
       shouldImmediatelyApplyFilter: shouldImmediatelyApplyFilter
     );
     
-    self.currentFilterTypes = filterTypes;
+    self.currentBackgroundFilterTypes = filterTypes;
   };
   
-  // TODO: Rename: `updateBackgroundFiltersViaEffectDesc`
   /// NOTE: Not all filters are animatable (see caveats below)
   ///
   /// * In order for the filter to animate, it has to be already set
@@ -482,7 +476,7 @@ open class VisualEffectView: UIVisualEffectView {
   ///   animated in/out.
   ///
   @available(iOS 13, *)
-  public func updateCurrentFiltersViaEffectDesc(
+  public func updateBackgroundFiltersViaEffectDesc(
     withFilterTypes updatedFilterTypes: [LayerFilterType],
     shouldAddMissingFilterTypes: Bool = false
   ) throws {
@@ -543,7 +537,7 @@ open class VisualEffectView: UIVisualEffectView {
         $0.isNotVisibleWhenIdentity ? $0 : nil;
       };
       
-      try self.setFiltersViaEffectDesc(
+      try self.setBackgroundFiltersViaEffectDesc(
         withFilterTypes: orphanedFilterTypesConvertedToIdentity,
         shouldImmediatelyApplyFilter: false
       );
@@ -557,31 +551,29 @@ open class VisualEffectView: UIVisualEffectView {
     };
   };
   
-  // TODO: Rename: `updateMatchingBackgroundFilter`
   @available(iOS 13, *)
-  public func updateMatchingFilter(
+  public func updateMatchingBackgroundFilter(
     with newFilter: LayerFilterType,
     shouldImmediatelyApply: Bool = true
   ) throws {
     
     let filterDescs: [UVEFilterEntryWrapper] =
-      try self.getCurrentFilterEntriesFromCurrentEffectDescriptor();
+      try self.getCurrentFilterEntriesFromCurrentBackgroundEffectDescriptor();
 
     try filterDescs.updateFilterValuesRequested(with: newFilter);
     
     if shouldImmediatelyApply {
-      try self.applyRequestedFilterEffects();
+      try self.applyRequestedBackgroundFilterEffects();
     };
   };
   
-  // TODO: Rename: `immediatelyRemoveBackgroundFilters`
   /// does not support animations, immediately applies the effect
   @available(iOS 13, *)
-  public func immediatelyRemoveFilters(
+  public func immediatelyRemoveBackgroundFilters(
     matching nameOfFiltersToRemove: [LayerFilterTypeName]
   ) throws {
 
-    guard let effectDescWrapper = try? self.getCurrentEffectDescriptor() else {
+    guard let effectDescWrapper = try? self.getCurrentBackgroundEffectDescriptor() else {
       throw VisualEffectBlurViewError(
         errorCode: .unexpectedNilValue,
         description: "Unable to create `effectDescWrapper` instance"
@@ -610,15 +602,14 @@ open class VisualEffectView: UIVisualEffectView {
       nextFilterItems.append(dummyFilterEntry);
     };
     
-    try self.setFiltersViaEffectDesc(
+    try self.setBackgroundFiltersViaEffectDesc(
       withFilterEntryWrappers: nextFilterItems,
       shouldImmediatelyApplyFilter: true
     );
   };
   
-  // TODO: Rename: `immediatelyRemoveAllBackgroundFilters`
   @available(iOS 13, *)
-  public func immediatelyRemoveAllFilters(
+  public func immediatelyRemoveAllBackgroundFilters(
     shouldResetEffectDescriptor: Bool = false
   ) throws {
     guard let bgHostWrapper = self.hostForBackgroundWrapped else {
@@ -644,23 +635,22 @@ open class VisualEffectView: UIVisualEffectView {
       };
     
       try bgHostWrapper.setEffectDescriptor(effectDescWrapper);
-      try self.applyRequestedFilterEffects();
+      try self.applyRequestedBackgroundFilterEffects();
       
-      self.currentFilterTypes = [];
+      self.currentBackgroundFilterTypes = [];
     };
     
     try? self.wrapper.setBGColorAlphaForBDView(0);
     try? self.wrapper.setOpacityForTint(0);
     
-    try self.removeTintingInSubviews();
+    try self.clearTintColorInTintView();
     
     // reset `CALayer.filters`
     try bgLayerWrapper.setValuesForFilters(newFilters: []);
     try self.viewContentLayerWrapped?.setValuesForFilters(newFilters: []);
   };
   
-  // TODO: Rename: `applyRequestedBackgroundFilterEffects`
-  public func applyRequestedFilterEffects() throws {
+  public func applyRequestedBackgroundFilterEffects() throws {
     guard let wrapper = self.wrapper,
           let backdropViewWrapped = wrapper.backgroundViewWrapped
     else {
@@ -671,6 +661,16 @@ open class VisualEffectView: UIVisualEffectView {
     };
     
     try backdropViewWrapped.applyFilterEffectsRequested();
+  };
+  
+    let filterEntriesWrapped = filterTypes.asFilterEntriesWrapped;
+    
+    try self.setBackgroundFiltersViaEffectDesc(
+      withFilterEntryWrappers: filterEntriesWrapped,
+      shouldImmediatelyApplyFilter: shouldImmediatelyApplyFilter
+    );
+    
+    self.currentBackgroundFilterTypes = filterTypes;
   };
   
   // MARK: - Methods - Animation Related
@@ -684,7 +684,7 @@ open class VisualEffectView: UIVisualEffectView {
   ) throws {
     
     let filterItemsWrapped =
-      try self.getCurrentFilterEntriesFromCurrentEffectDescriptor();
+      try self.getCurrentFilterEntriesFromCurrentBackgroundEffectDescriptor();
     
     guard let filterMetadataMap = self.filterMetadataMapForCurrentEffect else {
       throw VisualEffectBlurViewError(
@@ -723,13 +723,13 @@ open class VisualEffectView: UIVisualEffectView {
     };
     
     if shouldAdjustOpacityForOtherSubviews {
-      self.setOpacityForOtherSubviews(
+      self.setOpacityForTintView(
         newOpacity: intensityPercent.clamped(min: 0, max: 1)
       );
     };
     
     if shouldImmediatelyApply {
-      try self.applyRequestedFilterEffects();
+      try self.applyRequestedBackgroundFilterEffects();
     };
   };
   
@@ -757,8 +757,8 @@ open class VisualEffectView: UIVisualEffectView {
         );
       },
       end: {
-        try? self.applyRequestedFilterEffects();
-        self.setOpacityForOtherSubviews(
+        try? self.applyRequestedBackgroundFilterEffects();
+        self.setOpacityForTintView(
           newOpacity: nextEffectIntensity
         );
       }

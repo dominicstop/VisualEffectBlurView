@@ -126,7 +126,7 @@ public class VisualEffectBlurView: VisualEffectView {
     _ blurRadius: CGFloat,
     shouldImmediatelyApply: Bool = true
   ) throws {
-    try self.updateMatchingFilter(
+    try self.updateMatchingBackgroundFilter(
       with: .gaussianBlur(
         radius: blurRadius,
         shouldNormalizeEdges: true

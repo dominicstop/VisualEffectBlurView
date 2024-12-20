@@ -37,14 +37,14 @@ public class VisualEffectCustomFilterView: VisualEffectView {
     
     let isResettingFilters = nextFilters.count == 0;
     if isResettingFilters {
-      try self.immediatelyRemoveAllFilters();
-      self.effectOpacity = 0;
+      try self.immediatelyRemoveAllBackgroundFilters();
+      self.backgroundEffectOpacity = 0;
       
     } else {
-      self.effectOpacity = 1;
+      self.backgroundEffectOpacity = 1;
     };
     
-    try self.setFiltersViaEffectDesc(
+    try self.setBackgroundFiltersViaEffectDesc(
       withFilterTypes: filterTypes,
       shouldImmediatelyApplyFilter: true
     );

@@ -662,7 +662,7 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
       prevFilterType?.decodedFilterName != nextFilterType?.decodedFilterName;
       
     if shouldSetFilter {
-      try! visualEffectView.setFiltersViaEffectDesc(
+      try! visualEffectView.setBackgroundFiltersViaEffectDesc(
         withFilterTypes: nextFilterTypes,
         shouldImmediatelyApplyFilter: true
       );
@@ -670,12 +670,12 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
       self._didUpdateFilter();
       
     } else {
-      try! visualEffectView.updateCurrentFiltersViaEffectDesc(
+      try! visualEffectView.updateBackgroundFiltersViaEffectDesc(
         withFilterTypes: nextFilterTypes
       );
       
       UIView.animate(withDuration: 0.3){
-        try! visualEffectView.applyRequestedFilterEffects();
+        try! visualEffectView.applyRequestedBackgroundFilterEffects();
       } completion: { _ in
         self._didUpdateFilter();
       };

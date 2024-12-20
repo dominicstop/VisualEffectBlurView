@@ -137,7 +137,7 @@ public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
           shouldImmediatelyApply: false
         );
         
-        try self.applyRequestedFilterEffects();
+        try self.applyRequestedBackgroundFilterEffects();
     };
     
     self.previousBlurMode = currentBlurMode;
@@ -247,8 +247,8 @@ public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
             commonSetupBlock();
           },
           animation: {
-            try? self.applyRequestedFilterEffects();
-            self.setOpacityForOtherSubviews(newOpacity: 0);
+            try? self.applyRequestedBackgroundFilterEffects();
+            self.setOpacityForTintView(newOpacity: 0);
             commonAnimationBlock?();
           },
           completion: {
@@ -264,7 +264,7 @@ public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
           },
           animation: {
             self.blurEffectStyle = blurEffectNext;
-            self.setOpacityForOtherSubviews(newOpacity: 1);
+            self.setOpacityForTintView(newOpacity: 1);
             commonAnimationBlock?();
           },
           completion: {
@@ -280,7 +280,7 @@ public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
           },
           animation: {
             self.blurEffectStyle = blurEffectNext;
-            self.setOpacityForOtherSubviews(newOpacity: 1);
+            self.setOpacityForTintView(newOpacity: 1);
             commonAnimationBlock?();
           },
           completion: {
@@ -329,8 +329,8 @@ public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
             commonSetupBlock();
           },
           animation: {
-            try? self.applyRequestedFilterEffects();
-            self.setOpacityForOtherSubviews(newOpacity: 0);
+            try? self.applyRequestedBackgroundFilterEffects();
+            self.setOpacityForTintView(newOpacity: 0);
             commonAnimationBlock?();
           },
           completion: {
@@ -366,8 +366,8 @@ public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
             commonSetupBlock();
           },
           animation: {
-            try? self.applyRequestedFilterEffects();
-            self.setOpacityForOtherSubviews(newOpacity: customEffectIntensityNext);
+            try? self.applyRequestedBackgroundFilterEffects();
+            self.setOpacityForTintView(newOpacity: customEffectIntensityNext);
             commonAnimationBlock?();
           },
           completion: {
@@ -393,8 +393,8 @@ public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
             commonSetupBlock();
           },
           animation: {
-            try? self.applyRequestedFilterEffects();
-            self.setOpacityForOtherSubviews(newOpacity: nextEffectIntensity);
+            try? self.applyRequestedBackgroundFilterEffects();
+            self.setOpacityForTintView(newOpacity: nextEffectIntensity);
             commonAnimationBlock?();
           },
           completion: {
@@ -427,8 +427,8 @@ public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
             commonSetupBlock();
           },
           animation: {
-            try? self.applyRequestedFilterEffects();
-            self.setOpacityForOtherSubviews(newOpacity: customEffectIntensityNext);
+            try? self.applyRequestedBackgroundFilterEffects();
+            self.setOpacityForTintView(newOpacity: customEffectIntensityNext);
             commonAnimationBlock?();
           },
           completion: {
@@ -464,8 +464,8 @@ public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
             commonSetupBlock();
           },
           animation: {
-            try? self.applyRequestedFilterEffects();
-            self.setOpacityForOtherSubviews(newOpacity: nextEffectIntensity);
+            try? self.applyRequestedBackgroundFilterEffects();
+            self.setOpacityForTintView(newOpacity: nextEffectIntensity);
             commonAnimationBlock?();
           },
           completion: {

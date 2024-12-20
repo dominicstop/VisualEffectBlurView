@@ -105,7 +105,7 @@ class Experiment02ViewController: UIViewController {
         return try! imageConfig.makeImage();
       }();
       
-      try! effectView.setFiltersViaEffectDesc(
+      try! effectView.setBackgroundFiltersViaEffectDesc(
         withFilterTypes: [
           .gaussianBlur(radius: 0, shouldNormalizeEdges: true),
           .colorBlackAndWhite(amount: 0),
@@ -262,12 +262,12 @@ class Experiment02ViewController: UIViewController {
           let isLast = index == (batchesOfFiltersToApply1.count - 1);
           
           DispatchQueue.main.asyncAfter(deadline: .now() + waitTime) {
-            try! effectView.updateCurrentFiltersViaEffectDesc(
+            try! effectView.updateBackgroundFiltersViaEffectDesc(
               withFilterTypes: nextFilters
             );
             
             UIView.animate(withDuration: duration) {
-              try! effectView.applyRequestedFilterEffects();
+              try! effectView.applyRequestedBackgroundFilterEffects();
             }
             completion: { _ in
               print(index);
