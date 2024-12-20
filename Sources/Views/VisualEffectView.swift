@@ -127,6 +127,12 @@ open class VisualEffectView: UIVisualEffectView {
     }
   };
   
+  public var backgroundLayerSamplingSizeScale: CGFloat? {
+    didSet {
+      self.applyBackgroundLayerSamplingSizeScaleIfNeeded();
+    }
+  };
+  
   // MARK: - Init
   // ------------
   
@@ -185,20 +191,6 @@ open class VisualEffectView: UIVisualEffectView {
     fatalError("init(coder:) has not been implemented");
   };
   
-  // MARK: - View Lifecycle
-  // ----------------------
-  
-  open override func didMoveToWindow() {
-    super.didMoveToWindow();
-    
-    if let window = self.window,
-       let backdropLayerWrapped = self.bgLayerWrapper,
-       let backdropLayer = backdropLayerWrapped.wrappedObject
-    {
-      backdropLayer.setValue(window.screen.scale, forKey: "scale");
-    };
-  };
-  
   // MARK: - Methods
   // ---------------
   
@@ -222,6 +214,19 @@ open class VisualEffectView: UIVisualEffectView {
     };
       
     return filterMetadataMap;
+  };
+  
+  public func applyBackgroundLayerSamplingSizeScaleIfNeeded(){
+    
+    guard let nextScale = self.backgroundLayerSamplingSizeScale,
+          let currentScale = wrapper.backgroundLayerSamplingSizeScale,
+          currentScale != nextScale,
+          let wrapper = self.wrapper
+    else {
+      return;
+    };
+    
+    wrapper.backgroundLayerSamplingSizeScale = nextScale;
   };
   
   public func setOpacityForOtherSubviews(newOpacity: CGFloat){
