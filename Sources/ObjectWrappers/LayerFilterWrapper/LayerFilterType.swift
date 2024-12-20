@@ -1508,3 +1508,20 @@ extension LayerFilterType: EnumCaseStringRepresentable {
     self.associatedFilterTypeName.rawValue;
   };
 };
+
+// MARK: - `Array+LayerFilterType`
+// -------------------------------
+
+public extension Array where Element == LayerFilterType {
+  
+  var asFilterEntriesWrapped: [UVEFilterEntryWrapper] {
+    self.compactMap {
+      try? .init(
+        filterKind: $0.associatedFilterTypeName,
+        filterValuesConfig: $0.filterValuesConfig,
+        filterValuesRequested: $0.filterValuesRequested,
+        filterValuesIdentity: $0.filterValuesIdentity
+      );
+    };
+  };
+};
