@@ -1192,7 +1192,6 @@ class Experiment03ViewController: UIViewController {
         );
       };
       
-      
       // remove filters, failed
       func test39(){
         let colorTransform: ColorTransform =
@@ -1300,7 +1299,233 @@ class Experiment03ViewController: UIViewController {
         };
       };
       
-      test42();
+      // in place filtering tests
+      func test45_1(){
+        let blurEffect = UIBlurEffect(style: .prominent);
+        let vibrancyEffect = UIVibrancyEffect(blurEffect: blurEffect);
+      
+        effectView = try! .init(withEffect: vibrancyEffect);
+        self.visualEffectView = effectView;
+        
+        /// Type: `_UIVisualEffectHost`
+        /// Property: `UIVisualEffectView._backgroundHost`
+        ///
+        let effectHostWrapped: UVEHostWrapper = effectView.bgHostWrapper!;
+        let effectHost: NSObject = effectHostWrapped.wrappedObject!;
+        
+        
+        
+        /// Type: `_UIVisualEffectBackdropView`
+        /// Property: `_UIVisualEffectHost.contentView`
+        /// Full Path: `UIVisualEffectView._backgroundHost.contentView`
+        ///
+        let contentViewWrapped: UVEBackdropViewWrapper = effectView.wrapper.backdropViewWrapped!;
+        let contentView: NSObject = contentViewWrapped.wrappedObject!;
+        
+        /// Type: `UICABackdropLayer` - `CALayer` subclass
+        /// Property: `_UIVisualEffectBackdropView.backdropLayer`
+        /// Full Path: `UIVisualEffectView._backgroundHost.contentView.backdropLayer`
+        ///
+        let backdropLayerWrapped: LayerBackgroundWrapper = contentViewWrapped.bgLayerWrapper!;
+        let backdropLayer = backdropLayerWrapped.wrappedObject!;
+        
+      };
+      
+      func test46(){
+        effectView = try! VisualEffectCustomFilterView(withEffect: nil);
+        self.visualEffectView = effectView;
+      
+        let blurEffectStyles = UIBlurEffect.Style.allCases;
+        
+        var vibrancyEffectStyles: [UIVibrancyEffectStyle?] = [nil];
+        vibrancyEffectStyles += UIVibrancyEffectStyle.allCases;
+        
+        var actions: [() -> Void] = [];
+        
+        var combineEffects: [(
+          blurEffectStyle: UIBlurEffect.Style,
+          effect: UIVisualEffect
+        )] = [];
+        
+        combineEffects += blurEffectStyles.map {
+          (
+            $0,
+            UIBlurEffect(style: $0)
+          );
+        };
+        
+        combineEffects += blurEffectStyles.map {
+          (
+            $0,
+            UIVibrancyEffect(
+              blurEffect: UIBlurEffect(style: $0)
+            )
+          );
+        };
+        
+        let dummyFilter = LayerFilterWrapper(rawFilterType: "gaussianBlur")!;
+        
+        print(
+          "dummyFilter CAFilter:", dummyFilter.wrappedObject!,
+          "\n - CAFilter.inputKeys:", dummyFilter.wrappedObject!.value(forKey: "inputKeys"),
+          "\n - CAFilter.inputQuality:", dummyFilter.wrappedObject!.value(forKey: "inputQuality"),
+          "\n"
+        );
+        
+        
+        actions += combineEffects.enumerated().map {
+        let (index, (blurEffectStyle, effect)) = $0;
+          
+          return {
+            
+            effectView.effect = effect;
+            effectView.displayNow();
+            
+            let effectViewWrapped = effectView.wrapper!;
+            
+            /// Type: `_UIVisualEffectHost`
+            /// Property: `UIVisualEffectView._backgroundHost`
+            ///
+            let effectHostWrapped: UVEHostWrapper = effectView.bgHostWrapper!;
+            let effectHost: NSObject = effectHostWrapped.wrappedObject!;
+            
+            /// Type: `_UIVisualEffectBackdropView`
+            /// Property: `_UIVisualEffectHost.contentView`
+            /// Full Path: `UIVisualEffectView._backgroundHost.contentView`
+            ///
+            let contentViewWrapped: UVEBackdropViewWrapper = effectView.wrapper.backdropViewWrapped!;
+            let contentView: NSObject = contentViewWrapped.wrappedObject!;
+            
+            /// Type: `UICABackdropLayer` - `CALayer` subclass
+            /// Property: `_UIVisualEffectBackdropView.backdropLayer`
+            /// Full Path: `UIVisualEffectView._backgroundHost.contentView.backdropLayer`
+            ///
+            let backdropLayerWrapped: LayerBackgroundWrapper = contentViewWrapped.bgLayerWrapper!;
+            let backdropLayer = backdropLayerWrapped.wrappedObject!;
+            
+            
+            
+            
+            print(
+              "\(index + 1) of \(blurEffectStyles.count)",
+              "\n - effect:", effect,
+              "\n - blurEffectStyle:", blurEffectStyle.caseString,
+              "\n - UIVisualEffectView instance:", effectView,
+              "\n - UIVisualEffectView subview count:", effectView.subviews.count,
+              "\n - UIVisualEffectView subviews types:", effectView.subviews.map({ $0.className }),
+              "\n - UIVisualEffectView subviews:", effectView.subviews.enumerated().map({ "\n   - \($0.offset) subview:" + $0.element.debugDescription + " - backgroundColor: \($0.element.backgroundColor) - layer.filters: \($0.element.layer.filters) - layer.compositingFilter: \($0.element.layer.compositingFilter)" }).reduce(into: "", { $0 += $1 }),
+              
+              "\n - UIVisualEffectView._contentHost:", effectViewWrapped.hostForContentWrapped!.wrappedObject!,
+              "\n - UIVisualEffectView._contentHost.contentView:", effectViewWrapped.hostForContentWrapped!.viewContent,
+              
+              "\n - UIVisualEffectView.contentView:", effectViewWrapped.viewContentWrapped!.wrappedObject!,
+              "\n - UIVisualEffectView.contentView.filters:", try? effectViewWrapped.viewContentWrapped!.getCurrentFilters(),
+              "\n - UIVisualEffectView.contentView.viewEffects:", try? effectViewWrapped.viewContentWrapped!.getEffectsForView(),
+              "\n - UIVisualEffectView.contentView.containedView:", try? effectViewWrapped.viewContentWrapped!.getViewContained(),
+              "\n - UIVisualEffectView.contentView.disableGroupFiltering:", try! effectViewWrapped.viewContentWrapped!.getShouldDisableFilteringTheGroup(),
+              
+              "\n - UIVisualEffectView._backgroundHost:", effectViewWrapped.hostForBgWrapped!.wrappedObject!,
+              "\n - UIVisualEffectView._backgroundHost.contentView:", effectViewWrapped.hostForBgWrapped!.viewContent!,
+              "\n - UIVisualEffectView._backgroundHost.contentView.filters:", try? effectViewWrapped.backdropViewWrapped!.getCurrentFilters(),
+              "\n - UIVisualEffectView._backgroundHost.contentView.viewEffects:", try? effectViewWrapped.backdropViewWrapped!.getEffectsForView(),
+              "\n - UIVisualEffectView._backgroundHost.contentView.containedView:", try? effectViewWrapped.backdropViewWrapped!.getViewContained(),
+              "\n - UIVisualEffectView._backgroundHost.contentView.disableGroupFiltering:", try! effectViewWrapped.backdropViewWrapped!.getShouldDisableFilteringTheGroup(),
+              
+              
+              "\n - UIVisualEffectView.contentView:", effectView.contentView
+            );
+            
+            let compositingFilters = effectView.subviews.compactMap {
+              $0.layer.compositingFilter;
+            };
+            
+            if let compositingFilter = compositingFilters.first as? NSObject {
+              print(
+                " - UIVisualEffectView middle subview (tint layer)",
+                "\n   - compositingFilter:", compositingFilter.debugDescription,
+                "\n   - compositingFilter.className:", compositingFilter.className
+              );
+            };
+            
+            let bgLayerWrapper = effectViewWrapped.backdropViewWrapped!.bgLayerWrapper!;
+            if let bgLayer = bgLayerWrapper.wrappedObject {
+              print(
+                " - UIVisualEffectView._backgroundHost.contentView.backdropLayer.allowsInPlaceFiltering:", try? bgLayerWrapper.getShouldAllowFilteringInPlace(),
+                "\n - UIVisualEffectView._backgroundHost.contentView.backdropLayer.scale:", try? bgLayerWrapper.wrappedObject!.value(forKey: "scale")
+              );
+              // bgLayerWrapper.setShouldAllowFilteringInPlace(t)
+              
+              bgLayerWrapper.currentFiltersWrapped?.forEach {
+                return;
+                try! $0.setFilterValue(radius: 0);
+                try! effectView.removeTintingInSubviews();
+                effectView.setOpacityForOtherSubviews(newOpacity: 0);
+                
+                let currentQuality = ["high", "medium", "low"][cyclicIndex: 0];
+                $0.wrappedObject!.setValue("high", forKey: "inputQuality");
+              };
+            
+              print(
+                " - UIVisualEffectView._backgroundHost.contentView.backdropLayer:",
+                "\n   - UICABackdropLayer:", bgLayer,
+                "\n   - UICABackdropLayer.filters:", bgLayer.filters,
+                "\n   - UICABackdropLayer.filters:", bgLayerWrapper.currentFiltersWrapped!.enumerated().map({
+                    "\n - \($0.offset) filter: " + $0.element.wrappedObject!.debugDescription
+                  + " - filter inputs:: " + $0.element.filterInputs.debugDescription
+                }).reduce(into: "", { $0 += $1 })
+              );
+            };
+            
+            //
+            // UIVisualEffectView.contentView.layer
+            let viewContentLayer = effectViewWrapped.viewContentWrapped?.wrappedObject?.layer;
+            if let viewContentLayer = viewContentLayer,
+               let viewContentLayerWrapped = LayerWrapper(objectToWrap: viewContentLayer)
+            {
+              bgLayerWrapper.currentFiltersWrapped?.forEach {
+                return;
+                try! $0.setFilterValue(radius: 0);
+                try! effectView.removeTintingInSubviews();
+                effectView.setOpacityForOtherSubviews(newOpacity: 0);
+                
+                let currentQuality = ["high", "medium", "low"][cyclicIndex: 0];
+                $0.wrappedObject!.setValue("high", forKey: "inputQuality");
+              };
+            
+              print(
+                " - UIVisualEffectView.contentView.layer:",
+                "\n   - CALayer:", viewContentLayer,
+                "\n   - CALayer.filters:", viewContentLayer.filters,
+                "\n   - CALayer.compositingFilter:", viewContentLayer.compositingFilter,
+                "\n   - CALayer.filters:", (viewContentLayerWrapped.currentFiltersWrapped ?? []).enumerated().map({
+                    "\n - \($0.offset) filter: " + $0.element.wrappedObject!.debugDescription
+                  + " - filter inputs:: " + $0.element.filterInputs.debugDescription
+                }).reduce(into: "", { $0 += $1 })
+              );
+            };
+            
+            
+            
+            print("\n\n");
+          };
+        };
+        
+        func recursivelyDequeueAction(){
+          guard actions.count > 0 else {
+            return;
+          };
+          
+          let action = actions.removeFirst();
+          DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            action();
+            recursivelyDequeueAction();
+          };
+        };
+        
+        recursivelyDequeueAction();
+      };
+      
+      test46();
       
 
       effectView.layer.shadowRadius = 0;
@@ -1398,7 +1623,7 @@ class Experiment03ViewController: UIViewController {
       ),
     ]);
     
-    // self.setupEffectContents();
+    self.setupEffectContents();
   };
   
   func setupBackgroundView(){
