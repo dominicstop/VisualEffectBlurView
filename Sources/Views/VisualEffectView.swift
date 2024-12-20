@@ -264,6 +264,7 @@ open class VisualEffectView: UIVisualEffectView {
     wrapper.backgroundLayerSamplingSizeScale = nextScale;
   };
   
+  // TODO: Rename: `setOpacityForTintView`
   public func setOpacityForOtherSubviews(newOpacity: CGFloat){
     guard let wrapper = self.wrapper,
           let tintViewWrapped = wrapper.tintViewWrapped,
@@ -275,6 +276,7 @@ open class VisualEffectView: UIVisualEffectView {
     tintView.alpha = newOpacity.clamped(min: 0, max: 1);
   };
   
+  // TODO: Rename: `clearTintColorInTintView`
   public func removeTintingInSubviews() throws {
     guard let wrapper = self.wrapper,
           let tintViewWrapped = wrapper.tintViewWrapped,
@@ -292,6 +294,7 @@ open class VisualEffectView: UIVisualEffectView {
   // MARK: - Methods for Background Effects
   // --------------------------------------
   
+  // TODO: Rename: `getCurrentBackgroundEffectDescriptor`
   @available(iOS 13, *)
   public func getCurrentEffectDescriptor() throws -> UVEDescriptorWrapper {
     guard let bgHostWrapper = self.hostForBackgroundWrapped else {
@@ -312,7 +315,7 @@ open class VisualEffectView: UIVisualEffectView {
     return effectDescWrapped;
   };
   
-  
+  // TODO: Rename: `getCurrentFilterEntriesFromCurrentBackgroundEffectDescriptor`
   @available(iOS 13, *)
   public func getCurrentFilterEntriesFromCurrentEffectDescriptor() throws -> [UVEFilterEntryWrapper] {
     let effectDescWrapped = try self.getCurrentEffectDescriptor();
@@ -327,6 +330,7 @@ open class VisualEffectView: UIVisualEffectView {
     return filterItemsWrapped;
   };
   
+  // TODO: Rename: `setBackgroundFiltersViaEffectDesc`
   @available(iOS 13, *)
   public func setFiltersViaEffectDesc(
     withFilterEntryWrappers filterEntryWrappers: [UVEFilterEntryWrapper],
@@ -386,6 +390,7 @@ open class VisualEffectView: UIVisualEffectView {
     };
   };
   
+  // TODO: Rename: `setBackgroundFiltersViaEffectDesc`
   @available(iOS 13, *)
   public func setFiltersViaEffectDesc(
     withFilterTypes filterTypes: [LayerFilterType],
@@ -411,6 +416,7 @@ open class VisualEffectView: UIVisualEffectView {
     self.currentFilterTypes = filterTypes;
   };
   
+  // TODO: Rename: `setBackgroundFiltersViaLayers`
   public func setFiltersViaLayers(
     withLayerFilterWrappers layerFilterWrappers: [LayerFilterWrapper],
     shouldImmediatelyApplyFilter: Bool = true
@@ -445,6 +451,7 @@ open class VisualEffectView: UIVisualEffectView {
     };
   };
   
+  // TODO: Rename: `setBackgroundFiltersViaLayers`
   public func setFiltersViaLayers(
     withFilterTypes filterTypes: [LayerFilterType],
     shouldImmediatelyApplyFilter: Bool = true
@@ -462,6 +469,7 @@ open class VisualEffectView: UIVisualEffectView {
     self.currentFilterTypes = filterTypes;
   };
   
+  // TODO: Rename: `updateBackgroundFiltersViaEffectDesc`
   /// NOTE: Not all filters are animatable (see caveats below)
   ///
   /// * In order for the filter to animate, it has to be already set
@@ -549,6 +557,7 @@ open class VisualEffectView: UIVisualEffectView {
     };
   };
   
+  // TODO: Rename: `updateMatchingBackgroundFilter`
   @available(iOS 13, *)
   public func updateMatchingFilter(
     with newFilter: LayerFilterType,
@@ -565,6 +574,7 @@ open class VisualEffectView: UIVisualEffectView {
     };
   };
   
+  // TODO: Rename: `immediatelyRemoveBackgroundFilters`
   /// does not support animations, immediately applies the effect
   @available(iOS 13, *)
   public func immediatelyRemoveFilters(
@@ -606,6 +616,7 @@ open class VisualEffectView: UIVisualEffectView {
     );
   };
   
+  // TODO: Rename: `immediatelyRemoveAllBackgroundFilters`
   @available(iOS 13, *)
   public func immediatelyRemoveAllFilters(
     shouldResetEffectDescriptor: Bool = false
@@ -648,6 +659,7 @@ open class VisualEffectView: UIVisualEffectView {
     try self.viewContentLayerWrapped?.setValuesForFilters(newFilters: []);
   };
   
+  // TODO: Rename: `applyRequestedBackgroundFilterEffects`
   public func applyRequestedFilterEffects() throws {
     guard let wrapper = self.wrapper,
           let backdropViewWrapped = wrapper.backgroundViewWrapped
