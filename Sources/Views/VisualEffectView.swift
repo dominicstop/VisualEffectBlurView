@@ -106,7 +106,16 @@ open class VisualEffectView: UIVisualEffectView {
   /// Property: `UIVisualEffectView._contentHost`
   ///
   public var hostForContentWrapped: UVEHostWrapper? {
-    self.wrapper?.hostForContentWrapped;
+    guard let wrapper = self.wrapper else {
+      return nil;
+    };
+  
+    if let contentHost = wrapper.hostForContentWrapped {
+      return contentHost;
+    };
+    
+    try? wrapper.setViewForContent(self.contentView);
+    return wrapper.hostForContentWrapped;
   };
   
   /// Type: `_UIVisualEffectContentView`
