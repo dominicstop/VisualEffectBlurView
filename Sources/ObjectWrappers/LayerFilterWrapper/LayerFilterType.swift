@@ -1480,8 +1480,7 @@ extension LayerFilterType: EnumCaseStringRepresentable {
 
 public extension Array where Element == LayerFilterType {
   
-  // TODO: Rename to `asForegroundFilterEntriesWrapped`
-  var asFilterEntriesWrapped: [UVEFilterEntryWrapper] {
+  var asBackgroundFilterEntriesWrapped: [UVEFilterEntryWrapper] {
     self.compactMap {
       try? .init(
         filterKind: $0.associatedFilterTypeName,

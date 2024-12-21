@@ -396,7 +396,7 @@ open class VisualEffectView: UIVisualEffectView {
     shouldImmediatelyApplyFilter: Bool = true
   ) throws {
       
-    let filterEntriesWrapped = filterTypes.asFilterEntriesWrapped;
+    let filterEntriesWrapped = filterTypes.asBackgroundFilterEntriesWrapped;
 
     try self.setBackgroundFiltersViaEffectDesc(
       withFilterEntryWrappers: filterEntriesWrapped,
@@ -640,7 +640,7 @@ open class VisualEffectView: UIVisualEffectView {
     shouldImmediatelyApplyFilter: Bool = true
   ) throws {
       
-    let filterEntriesWrapped = filterTypes.asFilterEntriesWrapped;
+    let filterEntriesWrapped = filterTypes.asBackgroundFilterEntriesWrapped;
 
     try self.setForegroundFiltersViaEffectDesc(
       withFilterEntryWrappers: filterEntriesWrapped,
