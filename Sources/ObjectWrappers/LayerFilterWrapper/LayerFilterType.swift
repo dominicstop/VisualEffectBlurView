@@ -171,7 +171,7 @@ public enum LayerFilterType {
     self.associatedFilterTypeName.decodedString;
   };
   
-  public var identity: Self {
+  public var asIdentityForBackground: Self {
     let identity = self.associatedFilterTypeName.identityBackgroundFilter!;
     
     switch(self, identity){
@@ -1491,7 +1491,7 @@ public extension Array where Element == LayerFilterType {
   
   var asIdentity: Self {
     self.map {
-      $0.identity;
+      $0.asIdentityForBackground;
     };
   };
 };

@@ -795,7 +795,7 @@ open class VisualEffectView: UIVisualEffectView {
       
       
       let filterTypeInterpolated = try? LayerFilterType.lerp(
-        valueStart: currentFilterType.identity,
+        valueStart: currentFilterType.asIdentityForBackground,
         valueEnd: filterTypeEnd,
         percent: intensityPercent,
         easing: .linear
