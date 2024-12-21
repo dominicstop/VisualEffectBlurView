@@ -854,6 +854,19 @@ open class VisualEffectView: UIVisualEffectView {
     );
   };
   
+  public func applyRequestedForegroundFilterEffects() throws {
+    guard let wrapper = self.wrapper,
+          let backdropViewWrapped = wrapper.backgroundViewWrapped
+    else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to get `backdropViewWrapped`"
+      );
+    };
+    
+    try backdropViewWrapped.applyFilterEffectsRequested();
+  };
+  
   // does not support animations
   public func setEffectIntensityViaAnimator(_ percent: CGFloat){
     let animatorWrapper: ViewPropertyAnimatorWrapper = {
