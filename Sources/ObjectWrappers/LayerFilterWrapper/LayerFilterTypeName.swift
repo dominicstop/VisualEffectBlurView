@@ -233,3 +233,15 @@ public enum LayerFilterTypeName: String, CaseIterable, HashedStringDecodable {
     };
   };
 };
+
+// MARK: - `Array+LayerFilterType`
+// -------------------------------
+
+public extension Array where Element == LayerFilterTypeName {
+  
+  var asIdentityFilterTypes: [LayerFilterType] {
+    self.compactMap {
+      $0.identityFilter;
+    };
+  };
+};
