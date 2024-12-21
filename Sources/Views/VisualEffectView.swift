@@ -856,15 +856,15 @@ open class VisualEffectView: UIVisualEffectView {
   
   public func applyRequestedForegroundFilterEffects() throws {
     guard let wrapper = self.wrapper,
-          let backdropViewWrapped = wrapper.backgroundViewWrapped
+          let foregroundContentWrapped = wrapper.viewContentWrapped
     else {
       throw VisualEffectBlurViewError(
         errorCode: .unexpectedNilValue,
-        description: "Unable to get `backdropViewWrapped`"
+        description: "Unable to get `wrapper.viewContentWrapped`"
       );
     };
     
-    try backdropViewWrapped.applyFilterEffectsRequested();
+    try foregroundContentWrapped.applyFilterEffectsRequested();
   };
   
   // does not support animations
