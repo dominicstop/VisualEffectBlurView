@@ -1487,4 +1487,10 @@ public extension Array where Element == LayerFilterType {
       );
     };
   };
+  
+  var asIdentity: Self {
+    self.map {
+      $0.identity;
+    };
+  };
 };
