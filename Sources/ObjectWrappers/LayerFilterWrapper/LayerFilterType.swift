@@ -172,72 +172,35 @@ public enum LayerFilterType {
   };
   
   public var identity: Self {
-    switch self {
-      case .alphaFromLuminance:
-        return .alphaFromLuminance;
-        
-      case .averagedColor:
-        return .averagedColor;
-        
-      case .invertColors:
-        return .invertColors;
-        
-      case .distanceField:
-        return .distanceField;
-        
-      case .luminosityCurveMap:
-        return .luminosityCurveMap(amount: 0, values: [0, 0, 0, 0]);
-        
-      case .colorBlackAndWhite:
-        return .colorBlackAndWhite(amount: 0);
-        
-      case .saturateColors:
-        return .saturateColors(amount: 1);
-        
-      case .brightenColors:
-        return .brightenColors(amount: 0);
-        
-      case .contrastColors:
-        return .contrastColors(amount: 1);
-        
-      case .colorHueAdjust:
-        return .colorHueAdjust(angle: .zero);
-        
-      case .luminanceCompression:
-        return .luminanceCompression(amount: 1);
-        
-      case .bias:
-        return .bias(amount: 0.5);
-        
-      case .gaussianBlur:
-        return .gaussianBlur(radius: 0, shouldNormalizeEdges: true);
-        
-      case .darkVibrant:
-        return .darkVibrant(
-          isReversed: true,
-          color0: UIColor.white.cgColor,
-          color1: UIColor.white.cgColor
-        );
-        
-      case .lightVibrant:
-        return .lightVibrant(
-          isReversed: true,
-          color0: UIColor.white.cgColor,
-          color1: UIColor.white.cgColor
-        );
-        
-      case .colorMatrixVibrant:
-        return .colorMatrixVibrant(ColorMatrixRGBA.identity);
-        
-      case .colorMatrix:
-        return .colorMatrix(ColorMatrixRGBA.identity);
-        
-      case .variadicBlur:
+    let identity = self.associatedFilterTypeName.identityFilter!;
+    
+    switch(self, identity){
+      case (
+        let .luminosityCurveMap(_, values),
+        let .luminosityCurveMap(amount, _)
+      ):
+        return .luminosityCurveMap(amount: amount, values: values);
+    
+      case (
+        let .variadicBlur(_, maskImage, _, _, _),
+        let .variadicBlur(
+          radius,
+          _,
+          shouldNormalizeEdges,
+          shouldNormalizeEdgesToTransparent,
+          shouldUseHardEdges
+        )
+      ):
         return .variadicBlur(
-          radius: 0,
-          maskImage: nil,
-          shouldNormalizeEdges: true
+          radius: radius,
+          maskImage: maskImage,
+          shouldNormalizeEdges: shouldNormalizeEdges,
+          shouldNormalizeEdgesToTransparent: shouldNormalizeEdgesToTransparent,
+          shouldUseHardEdges: shouldUseHardEdges
         );
+        
+      default:
+        return identity
     };
   };
   

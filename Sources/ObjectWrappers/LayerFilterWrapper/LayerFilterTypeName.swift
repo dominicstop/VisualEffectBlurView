@@ -5,8 +5,9 @@
 //  Created by Dominic Go on 6/21/24.
 //
 
-import Foundation
+import UIKit
 import DGSwiftUtilities
+
 
 public enum LayerFilterTypeName: String, CaseIterable, HashedStringDecodable {
 
@@ -153,5 +154,82 @@ public enum LayerFilterTypeName: String, CaseIterable, HashedStringDecodable {
     };
 };
   
-
+  public var identityFilter: LayerFilterType? {
+    switch self {
+      case .alphaFromLuminance:
+        return .alphaFromLuminance;
+        
+      case .averagedColor:
+        return .averagedColor;
+        
+      case .invertColors:
+        return .invertColors;
+        
+      case .distanceField:
+        return .distanceField;
+        
+      case .luminosityCurveMap:
+        // TODO: is this correct?
+        return .luminosityCurveMap(
+          amount: 0,
+          values: [0, 0.25, 0.5, 1]
+        );
+        
+      case .colorBlackAndWhite:
+        return .colorBlackAndWhite(amount: 0);
+        
+      case .saturateColors:
+        return .saturateColors(amount: 1);
+        
+      case .brightenColors:
+        return .brightenColors(amount: 0);
+        
+      case .contrastColors:
+        return .contrastColors(amount: 1);
+        
+      case .colorHueAdjust:
+        return .colorHueAdjust(angle: .zero);
+        
+      case .luminanceCompression:
+        return .luminanceCompression(amount: 1);
+        
+      case .bias:
+        return .bias(amount: 0.5);
+        
+      case .gaussianBlur:
+        return .gaussianBlur(radius: 0, shouldNormalizeEdges: true);
+        
+      case .darkVibrant:
+        // TODO: is this correct?
+        return .darkVibrant(
+          isReversed: true,
+          color0: UIColor.white.cgColor,
+          color1: UIColor.white.cgColor
+        );
+        
+      case .lightVibrant:
+        // TODO: is this correct?
+        return .lightVibrant(
+          isReversed: true,
+          color0: UIColor.white.cgColor,
+          color1: UIColor.white.cgColor
+        );
+        
+      case .colorMatrixVibrant:
+        return .colorMatrixVibrant(ColorMatrixRGBA.identity);
+        
+      case .colorMatrix:
+        return .colorMatrix(ColorMatrixRGBA.identity);
+        
+      case .variadicBlur:
+        return .variadicBlur(
+          radius: 0,
+          maskImage: nil,
+          shouldNormalizeEdges: true
+        );
+        
+      default:
+        return nil;
+    };
+  };
 };
