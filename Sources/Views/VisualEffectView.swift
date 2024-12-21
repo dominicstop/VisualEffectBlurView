@@ -565,7 +565,7 @@ open class VisualEffectView: UIVisualEffectView {
     
     if nextFilterItems.isEmpty {
       let dummyFilter: LayerFilterType = .saturateColors(amount: 1);
-      let dummyFilterEntry = try dummyFilter.createFilterEntry();
+      let dummyFilterEntry = try dummyFilter.createFilterEntryForBackground();
       
       nextFilterItems.append(dummyFilterEntry);
     };

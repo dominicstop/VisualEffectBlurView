@@ -792,9 +792,8 @@ public enum LayerFilterType {
       );
     };
   };
-  
-  // TODO: Rename to `createFilterEntryForBackground`
-  public func createFilterEntry() throws -> UVEFilterEntryWrapper {
+
+  public func createFilterEntryForBackground() throws -> UVEFilterEntryWrapper {
     let instance = try UVEFilterEntryWrapper(
       filterKind: self.associatedFilterTypeName,
       filterValuesConfig: self.filterValuesConfig,
