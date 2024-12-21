@@ -203,9 +203,8 @@ public enum LayerFilterType {
         return identity
     };
   };
-  
-  // TODO: Rename to `filterValuesIdentityForBackground`
-  public var filterValuesIdentity: Dictionary<String, Any> {
+
+  public var filterValuesIdentityForBackground: Dictionary<String, Any> {
     var identityValues: Dictionary<String, Any> = [:];
     
     switch self {
@@ -722,7 +721,6 @@ public enum LayerFilterType {
     };
   };
   
-  // TODO: Rename to `applyToBackground`
   public func applyTo(
     filterEntryWrapper: UVEFilterEntryWrapper,
     identityValuesSource identityValuesKeyPath: KeyPath<Self, Dictionary<String, Any>>?,
@@ -798,7 +796,7 @@ public enum LayerFilterType {
       filterKind: self.associatedFilterTypeName,
       filterValuesConfig: self.filterValuesConfig,
       filterValuesRequested: self.filterValuesRequested,
-      filterValuesIdentity: self.filterValuesIdentity
+      filterValuesIdentity: self.filterValuesIdentityForBackground
     );
     
     guard let instance = instance else {
@@ -1486,7 +1484,7 @@ public extension Array where Element == LayerFilterType {
         filterKind: $0.associatedFilterTypeName,
         filterValuesConfig: $0.filterValuesConfig,
         filterValuesRequested: $0.filterValuesRequested,
-        filterValuesIdentity: $0.filterValuesIdentity
+        filterValuesIdentity: $0.filterValuesIdentityForBackground
       );
     };
   };

@@ -439,7 +439,7 @@ public class CustomEffect: UIVisualEffect {
     let filter: LayerFilterType = .colorBlackAndWhite(amount: 1);
     try! filter.applyTo(
       filterEntryWrapper: filterEntryWrapped,
-      identityValuesSource: \.filterValuesIdentity
+      identityValuesSource: \.filterValuesIdentityForBackground
     );
     
     try! effectDescWrapped.setFilterItems([filterEntryWrapped]);
