@@ -204,7 +204,7 @@ public enum LayerFilterType {
     };
   };
   
-  // TODO: Rename
+  // TODO: Rename to `filterValuesIdentityForBackground`
   public var filterValuesIdentity: Dictionary<String, Any> {
     var identityValues: Dictionary<String, Any> = [:];
     
@@ -722,6 +722,7 @@ public enum LayerFilterType {
     };
   };
   
+  // TODO: Rename to `applyToBackground`
   public func applyTo(
     filterEntryWrapper: UVEFilterEntryWrapper,
     shouldSetValuesIdentity: Bool,
@@ -791,6 +792,7 @@ public enum LayerFilterType {
     };
   };
   
+  // TODO: Rename to `createFilterEntryForBackground`
   public func createFilterEntry() throws -> UVEFilterEntryWrapper {
     let instance = try UVEFilterEntryWrapper(
       filterKind: self.associatedFilterTypeName,
@@ -1478,6 +1480,7 @@ extension LayerFilterType: EnumCaseStringRepresentable {
 
 public extension Array where Element == LayerFilterType {
   
+  // TODO: Rename to `asForegroundFilterEntriesWrapped`
   var asFilterEntriesWrapped: [UVEFilterEntryWrapper] {
     self.compactMap {
       try? .init(
@@ -1489,6 +1492,7 @@ public extension Array where Element == LayerFilterType {
     };
   };
   
+  // TODO: Rename to `asIdentityForBackground`
   var asIdentity: Self {
     self.map {
       $0.asIdentityForBackground;
