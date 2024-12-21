@@ -264,4 +264,10 @@ public extension Array where Element == LayerFilterTypeName {
       $0.identityBackgroundFilter;
     };
   };
+  
+  var asForegroundIdentityFilterTypes: [LayerFilterType] {
+    self.compactMap {
+      $0.identityForegroundFilter;
+    };
+  }; 
 };
