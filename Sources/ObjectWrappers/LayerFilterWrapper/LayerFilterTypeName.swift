@@ -232,6 +232,26 @@ public enum LayerFilterTypeName: String, CaseIterable, HashedStringDecodable {
         return nil;
     };
   };
+  
+  public var identityForegroundFilter: LayerFilterType? {
+    switch self {
+      case .gaussianBlur:
+        return .gaussianBlur(
+          radius: 0,
+          shouldNormalizeEdges: false
+        );
+        
+      case .variadicBlur:
+        return .variadicBlur(
+          radius: 0,
+          maskImage: nil,
+          shouldNormalizeEdges: false
+        );
+        
+      default:
+        return self.identityBackgroundFilter;
+    };
+  };
 };
 
 // MARK: - `Array+LayerFilterType`
