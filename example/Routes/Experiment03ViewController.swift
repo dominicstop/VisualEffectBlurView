@@ -1375,8 +1375,9 @@ class Experiment03ViewController: UIViewController {
         
       };
       
-      // in place filtering tests via vibrancy effect
-      // result:
+      /// in place filtering tests via vibrancy effect
+      /// use effect desc to set effect
+      /// result: works
       func test45_2(){
         let blurEffect = UIBlurEffect(style: .regular);
         // let vibrancyEffect = UIVibrancyEffect(blurEffect: blurEffect);
@@ -1429,18 +1430,27 @@ class Experiment03ViewController: UIViewController {
         let contentHostLayer = contentHostContentView.layer;
         let contentHostLayerWrapped: LayerWrapper! = .init(objectToWrap: contentHostLayer);
         
-        
-        let blurFilterConfig: LayerFilterType = .gaussianBlur(
-          radius: 8,
-          shouldNormalizeEdges: false
+        try! effectView.setBackgroundFiltersViaLayers(
+          withFilterTypes: [
+            .gaussianBlur(
+              radius: 16,
+              shouldNormalizeEdges: false
+            ),
+          ],
+          shouldImmediatelyApplyFilter: true
         );
         
-        let blurFilterConfig2: LayerFilterType = .gaussianBlur(
-          radius: 16,
-          shouldNormalizeEdges: false
+        try! effectView.setForegroundFiltersViaEffectDesc(
+          withFilterTypes: [
+            .gaussianBlur(
+              radius: 4,
+              shouldNormalizeEdges: false
+            ),
+          ],
+          shouldImmediatelyApplyFilter: true
         );
         
-
+        
         
         
         print(
@@ -1454,8 +1464,208 @@ class Experiment03ViewController: UIViewController {
           "\n - UIVisualEffectView._contentHost.contentView.layer:", contentHostLayer,
           "\n"
         );
+      };
+      
+      /// in place filtering tests via vibrancy effect
+      /// use effect desc to set effect, and change multiple times
+      /// result:
+      func test45_3(){
+        let blurEffect = UIBlurEffect(style: .regular);
+        // let vibrancyEffect = UIVibrancyEffect(blurEffect: blurEffect);
+      
+        effectView = try! .init(withEffect: blurEffect);
+        self.visualEffectView = effectView;
+
+        /// Type: `_UIVisualEffectHost`
+        /// Property: `UIVisualEffectView._backgroundHost`
+        ///
+        let backgroundHostWrapped: UVEHostWrapper? = effectView.hostForBackgroundWrapped;
+        let backgroundHost: NSObject? = backgroundHostWrapped?.wrappedObject;
+        
+        /// Type: `_UIVisualEffectBackdropView`
+        /// Property: `_UIVisualEffectHost.contentView`
+        /// Full Path: `UIVisualEffectView._backgroundHost.contentView`
+        ///
+        let backgroundHostContentViewWrapped: UVEBackdropViewWrapper = effectView.wrapper.backgroundViewWrapped!;
+        let backgroundHostContentView: NSObject = backgroundHostContentViewWrapped.wrappedObject!;
+        
+        /// Type: `UICABackdropLayer` - `CALayer` subclass
+        /// Property: `_UIVisualEffectBackdropView.backdropLayer`
+        /// Full Path: `UIVisualEffectView._backgroundHost.contentView.backdropLayer`
+        ///
+        let backgroundHostLayerWrapped: LayerBackgroundWrapper = backgroundHostContentViewWrapped.backgroundLayerWrapped!;
+        let backgroundHostLayer = backgroundHostLayerWrapped.wrappedObject!;
+        
+        /// Type: `_UIVisualEffectHost`
+        /// `UIVisualEffectView._contentHost`
+        ///
+        let contentHostWrapped: UVEHostWrapper? = effectView.wrapper.hostForContentWrapped;
+        let contentHost = contentHostWrapped?.wrappedObject;
+        
+        let hostForContentWrapped =  effectView.hostForContentWrapped!.wrappedObject!;
+        
+        /// Type: `_UIVisualEffectContentView`
+        /// `UIVisualEffectView._contentHost.contentView`
+        ///
+        let contentHostContentViewWrapped: UVEContentViewWrapper! = effectView.wrapper.viewContentWrapped;
+        let contentHostContentView = contentHostContentViewWrapped!.wrappedObject!;
+        
+        /// Type: `_UIVisualEffectContentView`
+        /// `UIVisualEffectView._contentHost.contentView.layer`
+        ///
+        let contentHostLayer = contentHostContentView.layer;
+        let contentHostLayerWrapped: LayerWrapper! = .init(objectToWrap: contentHostLayer);
+        
+        let baseBackgroundFilterNames: [LayerFilterTypeName] = [
+          .gaussianBlur,
+          .colorBlackAndWhite,
+          .contrastColors,
+          .saturateColors,
+          .variadicBlur,
+          .brightenColors,
+          .colorMatrix,
+          .luminanceCompression,
+          .luminosityCurveMap,
+        ];
+        
+        let baseForegroundFilterNames: [LayerFilterTypeName] = [
+          .gaussianBlur,
+      
+        ];
+        
+        try! effectView.setBackgroundFiltersViaEffectDesc(
+          withFilterTypes: baseBackgroundFilterNames.asIdentityFilterTypes,
+          shouldImmediatelyApplyFilter: true
+        );
+        
+        try! effectView.setForegroundFiltersViaEffectDesc(
+          withFilterTypes: baseForegroundFilterNames.asIdentityFilterTypes,
+          shouldImmediatelyApplyFilter: true
+        );
+        
+        //contentHostLayer.compositingFilter = LayerFilterWrapper(rawFilterType: "multiplyBlendMode")!.wrappedObject!;
+        //contentHostLayer.compositingFilter = LayerFilterWrapper(rawFilterType: LayerFilterTypeName.colorBlendingModeMultiply.decodedString!)!.wrappedObject!;
+        //contentHostLayer.compositingFilter = NSString(string: "sourceOver");
+        
+        let DEFAULT_DURATION: CGFloat = 1.25;
+        let DEFAULT_DELAY: CGFloat = 0.25;
+        
+        let batchesOfFilterConfigToApply: Array<(
+          duration: CGFloat,
+          delay: CGFloat,
+          backgroundFilters: [LayerFilterConfig],
+          foregroundFilters: [LayerFilterConfig]
+        )> = [
+          (
+            duration: DEFAULT_DURATION,
+            delay: 1,
+            backgroundFilters: [],
+            foregroundFilters: [
+              .gaussianBlur(
+                radius: 16,
+                shouldNormalizeEdges: true
+              )
+            ]
+          ),
+          (
+            duration: DEFAULT_DURATION,
+            delay: DEFAULT_DELAY,
+            backgroundFilters: [
+              .gaussianBlur(
+                radius: 16,
+                shouldNormalizeEdges: true
+              )
+            ],
+            foregroundFilters: [
+              .gaussianBlur(
+                radius: 0,
+                shouldNormalizeEdges: false
+              )
+            ]
+          ),
+          (
+            duration: DEFAULT_DURATION,
+            delay: DEFAULT_DELAY,
+            backgroundFilters: [
+              .gaussianBlur(
+                radius: 0,
+                shouldNormalizeEdges: false
+              )
+            ],
+            foregroundFilters: []
+          ),
+        ];
+        
+        var queueForFilterConfigBatch = batchesOfFilterConfigToApply;
+        
+        func recursivelyDequeue(){
+          guard queueForFilterConfigBatch.count > 0 else {
+            return;
+          };
+          
+          let queueCount = queueForFilterConfigBatch.count;
+          let filterConfigBatch = queueForFilterConfigBatch.removeFirst();
+          
+          let animationEasing: UIView.AnimationCurve = (queueCount % 2 == 0)
+            ? .easeIn
+            : .easeOut;
+            
+          try! effectView.updateBackgroundFiltersViaEffectDesc(
+            withFilterTypes: filterConfigBatch.backgroundFilters.associatedFilterType
+          );
+          
+          try! effectView.updateForegroundFiltersViaEffectDesc(
+            withFilterTypes: filterConfigBatch.foregroundFilters.associatedFilterType
+          );
+          
+          let performAnimation = {
+            try! effectView.applyRequestedBackgroundFilterEffects();
+            try! effectView.applyRequestedForegroundFilterEffects();
+            recursivelyDequeue();
+            return;
+            UIView.animate(
+              withDuration: filterConfigBatch.duration,
+              delay: 0,
+              options: animationEasing.asAnimationOptions
+            ) {
+              
+            
+            } completion: { _ in
+              
+            };
+          };
+          
+          if filterConfigBatch.delay > 0 {
+            DispatchQueue.main.asyncAfter(
+              deadline: .now() + filterConfigBatch.delay
+            ) {
+              performAnimation();
+            };
+            
+          } else {
+            performAnimation();
+          };
+        };
+        
+        recursivelyDequeue();
+
+        return;
+        
+
         
         
+        
+        print(
+          "test45_2",
+          "\n - blurEffect:", blurEffect,
+          "\n - UIVisualEffectView._backgroundHost:", backgroundHost,
+          "\n - UIVisualEffectView._backgroundHost.contentView:", backgroundHostContentView,
+          "\n - UIVisualEffectView._backgroundHost.contentView.backdropLayer:", backgroundHostLayer,
+          "\n - UIVisualEffectView._contentHost:", contentHost,
+          "\n - UIVisualEffectView._contentHost.contentView:", contentHostContentView,
+          "\n - UIVisualEffectView._contentHost.contentView.layer:", contentHostLayer,
+          "\n"
+        );
       };
       
       // log blur + vibrancy effect
@@ -1658,7 +1868,7 @@ class Experiment03ViewController: UIViewController {
         recursivelyDequeueAction();
       };
       
-      test45_2();
+      test45_3();
       
 
       effectView.layer.shadowRadius = 0;
