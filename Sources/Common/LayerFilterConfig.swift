@@ -269,3 +269,15 @@ extension LayerFilterConfig: EnumCaseStringRepresentable {
     self.associatedFilterTypeName.rawValue;
   };
 };
+
+// MARK: - `Array+LayerFilterConfig`
+// ---------------------------------
+
+public extension Array where Element == LayerFilterConfig {
+  
+  var associatedFilterType: [LayerFilterType] {
+    self.map {
+      $0.associatedFilterType;
+    };
+  };
+};
