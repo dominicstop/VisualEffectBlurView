@@ -172,7 +172,7 @@ public enum LayerFilterType {
   };
   
   public var identity: Self {
-    let identity = self.associatedFilterTypeName.identityFilter!;
+    let identity = self.associatedFilterTypeName.identityBackgroundFilter!;
     
     switch(self, identity){
       case (
@@ -204,6 +204,7 @@ public enum LayerFilterType {
     };
   };
   
+  // TODO: Rename
   public var filterValuesIdentity: Dictionary<String, Any> {
     var identityValues: Dictionary<String, Any> = [:];
     

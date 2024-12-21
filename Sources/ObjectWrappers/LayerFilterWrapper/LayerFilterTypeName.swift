@@ -154,7 +154,7 @@ public enum LayerFilterTypeName: String, CaseIterable, HashedStringDecodable {
     };
 };
   
-  public var identityFilter: LayerFilterType? {
+  public var identityBackgroundFilter: LayerFilterType? {
     switch self {
       case .alphaFromLuminance:
         return .alphaFromLuminance;
@@ -239,9 +239,9 @@ public enum LayerFilterTypeName: String, CaseIterable, HashedStringDecodable {
 
 public extension Array where Element == LayerFilterTypeName {
   
-  var asIdentityFilterTypes: [LayerFilterType] {
+  var asBackgroundIdentityFilterTypes: [LayerFilterType] {
     self.compactMap {
-      $0.identityFilter;
+      $0.identityBackgroundFilter;
     };
   };
 };

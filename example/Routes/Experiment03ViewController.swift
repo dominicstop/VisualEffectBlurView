@@ -1534,12 +1534,12 @@ class Experiment03ViewController: UIViewController {
         ];
         
         try! effectView.setBackgroundFiltersViaEffectDesc(
-          withFilterTypes: baseBackgroundFilterNames.asIdentityFilterTypes,
+          withFilterTypes: baseBackgroundFilterNames.asBackgroundIdentityFilterTypes,
           shouldImmediatelyApplyFilter: true
         );
         
         try! effectView.setForegroundFiltersViaEffectDesc(
-          withFilterTypes: baseForegroundFilterNames.asIdentityFilterTypes,
+          withFilterTypes: baseForegroundFilterNames.asBackgroundIdentityFilterTypes,
           shouldImmediatelyApplyFilter: true
         );
         
@@ -1614,9 +1614,15 @@ class Experiment03ViewController: UIViewController {
             withFilterTypes: filterConfigBatch.backgroundFilters.associatedFilterType
           );
           
-          try! effectView.updateForegroundFiltersViaEffectDesc(
-            withFilterTypes: filterConfigBatch.foregroundFilters.associatedFilterType
-          );
+          // try! effectView.setForegroundFiltersViaEffectDesc(withFilterTypes: [
+          //   .gaussianBlur(radius: 8, shouldNormalizeEdges: false)
+          // ])
+          
+          try! effectView.setForegroundFiltersViaEffectDesc(withFilterTypes: filterConfigBatch.foregroundFilters.associatedFilterType)
+
+          // try! effectView.updateForegroundFiltersViaEffectDesc(
+          //   withFilterTypes: filterConfigBatch.foregroundFilters.associatedFilterType
+          // );
           
           let performAnimation = {
             try! effectView.applyRequestedBackgroundFilterEffects();
