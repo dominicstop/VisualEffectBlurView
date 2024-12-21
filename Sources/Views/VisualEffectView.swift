@@ -707,6 +707,61 @@ open class VisualEffectView: UIVisualEffectView {
     };
   };
   
+  
+  /// NOTE: Not all filters are animatable.
+  ///
+  @available(iOS 13, *)
+  public func updateForegroundFiltersViaEffectDesc(
+    withFilterTypes updatedFilterTypes: [LayerFilterType],
+    shouldAddMissingFilterTypes: Bool = false
+  ) throws {
+  
+    guard let foregroundHostWrapped = self.hostForContentWrapped else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to get `self.hostForContentWrapped`"
+      );
+    };
+    
+    guard let effectDescWrapped = try? foregroundHostWrapped.getEffectDescriptorCurrent() else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to create `effectDescWrapper` instance"
+      );
+    };
+    
+    guard let filterItemsWrapped = effectDescWrapped.filterItemsWrapped else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to create `filterItemsWrapped` instance"
+      );
+    };
+    
+    let (_, orphanedFilterTypes, filterPairs) =
+      filterItemsWrapped.paired(withFilterTypes: updatedFilterTypes);
+    
+    if shouldAddMissingFilterTypes,
+       orphanedFilterTypes.count > 0
+    {
+      let orphanedFilterTypesConvertedToIdentity = orphanedFilterTypes.compactMap {
+        $0.isNotVisibleWhenIdentity ? $0 : nil;
+      };
+      
+      try self.setBackgroundFiltersViaEffectDesc(
+        withFilterTypes: orphanedFilterTypesConvertedToIdentity,
+        shouldImmediatelyApplyFilter: false
+      );
+    };
+    
+    filterPairs.forEach {
+      try? $0.filterType.applyTo(
+        filterEntryWrapper: $0.filterEntryWrapped,
+        shouldSetValuesIdentity: true
+      );
+    };
+  };
+  
+  
   // MARK: - Methods - Animation Related
   // -----------------------------------
   
