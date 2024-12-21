@@ -12,7 +12,9 @@ import DGSwiftUtilities
 open class VisualEffectView: UIVisualEffectView {
   
   public var wrapper: UVEViewWrapper!;
+  
   public var currentBackgroundFilterTypes: [LayerFilterType] = [];
+  public var currentForegroundFilterTypes: [LayerFilterType] = [];
   
   /// Old name: `shouldOnlyShowBackdropLayer`
   public var shouldOnlyShowBgLayer: Bool = false {
@@ -654,14 +656,80 @@ open class VisualEffectView: UIVisualEffectView {
     try backdropViewWrapped.applyFilterEffectsRequested();
   };
   
+  // MARK: - Methods for Foreground Content
+  // --------------------------------------
+  
+  @available(iOS 13, *)
+  public func setForegroundFiltersViaEffectDesc(
+    withFilterTypes filterTypes: [LayerFilterType],
+    shouldImmediatelyApplyFilter: Bool = true
+  ) throws {
+      
     let filterEntriesWrapped = filterTypes.asFilterEntriesWrapped;
-    
-    try self.setBackgroundFiltersViaEffectDesc(
+
+    try self.setForegroundFiltersViaEffectDesc(
       withFilterEntryWrappers: filterEntriesWrapped,
       shouldImmediatelyApplyFilter: shouldImmediatelyApplyFilter
     );
     
-    self.currentBackgroundFilterTypes = filterTypes;
+    self.currentForegroundFilterTypes = filterTypes;
+  };
+  
+  @available(iOS 13, *)
+  public func setForegroundFiltersViaEffectDesc(
+    withFilterEntryWrappers filterEntryWrappers: [UVEFilterEntryWrapper],
+    shouldImmediatelyApplyFilter: Bool = true
+  ) throws {
+  
+    guard let contentHostWrapped = self.hostForContentWrapped else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to get `self.hostForContentWrapped`"
+      );
+    };
+    
+    if shouldImmediatelyApplyFilter {
+      var acc: [UVEFilterEntryWrapper] = [];
+      for filterEntryWrapper in filterEntryWrappers {
+        acc.append(filterEntryWrapper);
+        
+        guard let effectDescWrapped = UVEDescriptorWrapper(),
+              effectDescWrapped.wrappedObject != nil
+        else {
+          throw VisualEffectBlurViewError(
+            errorCode: .unexpectedNilValue,
+            description: "Unable to create `UVEDescriptorWrapper` instance"
+          );
+        };
+        
+        try effectDescWrapped.setFilterItems(acc);
+        try contentHostWrapped.setEffectDescriptor(effectDescWrapped);
+      };
+      
+    } else {
+      guard let effectDescWrapped = try contentHostWrapped.getEffectDescriptorCurrent(),
+            effectDescWrapped.wrappedObject != nil
+      else {
+        throw VisualEffectBlurViewError(
+          errorCode: .unexpectedNilValue,
+          description: "Unable to create `UVEDescriptorWrapper` instance"
+        );
+      };
+      
+      try effectDescWrapped.setFilterItems(filterEntryWrappers);
+      try contentHostWrapped.setEffectDescriptor(effectDescWrapped);
+    };
+    
+    if shouldImmediatelyApplyFilter {
+      guard let viewContentWrapped = self.viewContentWrapped else {
+        throw VisualEffectBlurViewError(
+          errorCode: .unexpectedNilValue,
+          description: "Unable to get `self.viewContentWrapped`"
+        );
+      };
+    
+      try viewContentWrapped.applyFilterEffectsRequested();
+    };
   };
   
   // MARK: - Methods - Animation Related
