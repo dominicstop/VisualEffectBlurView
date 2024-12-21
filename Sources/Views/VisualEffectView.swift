@@ -494,34 +494,9 @@ open class VisualEffectView: UIVisualEffectView {
         description: "Unable to create `filterItemsWrapped` instance"
       );
     };
-
-    var filterTypesWithMatches: [LayerFilterType] = [];
     
-    typealias FilterPair = (
-      filterType: LayerFilterType,
-      filterEntryWrapped: UVEFilterEntryWrapper
-    );
-    
-    let filterTypesPaired: [FilterPair] = filterItemsWrapped.compactMap { wrappedFilterItem in
-      let match = updatedFilterTypes.first {
-        $0.decodedFilterName == wrappedFilterItem.filterKind;
-      };
-      
-      guard let match = match else {
-        return nil;
-      };
-      
-      filterTypesWithMatches.append(match);
-      return (match, wrappedFilterItem);
-    };
-    
-    let orphanedFilterTypes = updatedFilterTypes.filter { filter in
-      let match = filterTypesPaired.first {
-        filter.decodedFilterName == $0.filterType.decodedFilterName;
-      };
-      
-      return match == nil;
-    };
+    let (_, orphanedFilterTypes, filterPairs) =
+      filterItemsWrapped.paired(withFilterTypes: updatedFilterTypes);
     
     if shouldAddMissingFilterTypes,
        orphanedFilterTypes.count > 0
@@ -536,7 +511,7 @@ open class VisualEffectView: UIVisualEffectView {
       );
     };
     
-    filterTypesPaired.forEach {
+    filterPairs.forEach {
       try? $0.filterType.applyTo(
         filterEntryWrapper: $0.filterEntryWrapped,
         shouldSetValuesIdentity: true

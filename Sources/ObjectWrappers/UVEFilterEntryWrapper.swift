@@ -321,3 +321,53 @@ public class UVEFilterEntryWrapper: PrivateObjectWrapper<
     );
   };
 };
+
+// MARK: - Array+UVEFilterEntryWrapper
+// -----------------------------------
+
+public extension Array where Element == UVEFilterEntryWrapper {
+
+  typealias FilterEntryTypePair = (
+    filterType: LayerFilterType,
+    filterEntryWrapped: Element
+  );
+  
+  func paired(withFilterTypes filterTypes: [LayerFilterType]) -> (
+    orphanedFilterEntries: Self,
+    orphanedFilterTypes: [LayerFilterType],
+    matches: [FilterEntryTypePair]
+  ) {
+    var orphanedFilterEntries: Self = [];
+    
+    let matches: [FilterEntryTypePair] = self.compactMap { filterEntryWrapped in
+      let match = filterTypes.first {
+        $0.decodedFilterName == filterEntryWrapped.filterKind;
+      };
+      
+      guard let match = match else {
+        orphanedFilterEntries.append(filterEntryWrapped);
+        return nil;
+      };
+      
+      return (match, filterEntryWrapped);
+    };
+    
+    let orphanedFilterTypes = filterTypes.filter { filter in
+      let match = matches.first {
+        filter.decodedFilterName == $0.filterType.decodedFilterName;
+      };
+      
+      return match == nil;
+    };
+    
+    return (orphanedFilterEntries, orphanedFilterTypes, matches);
+  };
+  
+  func onlyElementsWithMatches(
+    withFilterTypes filterTypes: [LayerFilterType]
+  ) -> Self {
+    self.paired(withFilterTypes: filterTypes).matches.map {
+      $0.filterEntryWrapped;
+    };
+  };
+};
