@@ -7,6 +7,8 @@
 
 import UIKit
 
+var RouteManagerShared = RouteManager.sharedInstance;
+
 class RouteManager {
   static let sharedInstance = RouteManager();
   
@@ -15,13 +17,11 @@ class RouteManager {
   var shouldUseNavigationController = true;
   var navController: UINavigationController?;
   
-  var routes: [Route] = [
-    //.experiment03,
-    //.experiment02,
-    .routeList,
-  ];
-  
   var routeCounter = 0;
+  var routes: [Route] = .Element.allCases;
+  
+  var rootRoute: Route = Route.routeList;
+  var initialRoute: Route? = nil//.experiment03
   
   var currentRouteIndex: Int {
     self.routeCounter % self.routes.count;
@@ -43,16 +43,24 @@ class RouteManager {
     
     let navVC: UINavigationController? = {
       guard self.shouldUseNavigationController else {
-        return nil;
+        fatalError();
       };
       
       if let navController = self.navController {
         return navController;
       };
       
-      let navVC = UINavigationController(
-        rootViewController: self.currentRoute.viewController
-      );
+      var routes = [self.rootRoute];
+      if let initialRoute = self.initialRoute {
+        routes.append(initialRoute);
+      };
+      
+      let routeViewControllers = routes.map {
+        $0.viewController;
+      };
+      
+      let navVC = UINavigationController();
+      navVC.setViewControllers(routeViewControllers, animated: false);
       
       self.navController = navVC;
       return navVC;
