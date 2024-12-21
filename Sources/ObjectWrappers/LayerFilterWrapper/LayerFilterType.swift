@@ -1491,8 +1491,7 @@ public extension Array where Element == LayerFilterType {
     };
   };
   
-  // TODO: Rename to `asIdentityForBackground`
-  var asIdentity: Self {
+  var asIdentityForBackground: Self {
     self.map {
       $0.asIdentityForBackground;
     };
