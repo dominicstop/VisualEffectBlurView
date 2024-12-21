@@ -1526,20 +1526,28 @@ class Experiment03ViewController: UIViewController {
           .colorMatrix,
           .luminanceCompression,
           .luminosityCurveMap,
+          .bias,
         ];
         
         let baseForegroundFilterNames: [LayerFilterTypeName] = [
           .gaussianBlur,
-      
+          .colorBlackAndWhite,
+          .contrastColors,
+          .saturateColors,
+          .variadicBlur,
+          .brightenColors,
+          .colorMatrix,
+          .luminosityCurveMap,
+          .bias,
         ];
         
         try! effectView.setBackgroundFiltersViaEffectDesc(
-          withFilterTypes: baseBackgroundFilterNames.asBackgroundIdentityFilterTypes,
+          withFilterTypes: baseForegroundFilterNames.asBackgroundIdentityFilterTypes,
           shouldImmediatelyApplyFilter: true
         );
         
         try! effectView.setForegroundFiltersViaEffectDesc(
-          withFilterTypes: baseForegroundFilterNames.asBackgroundIdentityFilterTypes,
+          withFilterTypes: baseForegroundFilterNames.asForegroundIdentityFilterTypes,
           shouldImmediatelyApplyFilter: true
         );
         
@@ -1548,7 +1556,7 @@ class Experiment03ViewController: UIViewController {
         //contentHostLayer.compositingFilter = NSString(string: "sourceOver");
         
         let DEFAULT_DURATION: CGFloat = 1.25;
-        let DEFAULT_DELAY: CGFloat = 0.25;
+        let DEFAULT_DELAY: CGFloat = 0.5;
         
         let batchesOfFilterConfigToApply: Array<(
           duration: CGFloat,
@@ -1563,7 +1571,7 @@ class Experiment03ViewController: UIViewController {
             foregroundFilters: [
               .gaussianBlur(
                 radius: 16,
-                shouldNormalizeEdges: true
+                shouldNormalizeEdges: false
               )
             ]
           ),
@@ -1618,26 +1626,22 @@ class Experiment03ViewController: UIViewController {
           //   .gaussianBlur(radius: 8, shouldNormalizeEdges: false)
           // ])
           
-          try! effectView.setForegroundFiltersViaEffectDesc(withFilterTypes: filterConfigBatch.foregroundFilters.associatedFilterType)
-
-          // try! effectView.updateForegroundFiltersViaEffectDesc(
-          //   withFilterTypes: filterConfigBatch.foregroundFilters.associatedFilterType
-          // );
+  
+          try! effectView.updateForegroundFiltersViaEffectDesc(
+           withFilterTypes: filterConfigBatch.foregroundFilters.associatedFilterType
+          );
           
           let performAnimation = {
-            try! effectView.applyRequestedBackgroundFilterEffects();
-            try! effectView.applyRequestedForegroundFilterEffects();
-            recursivelyDequeue();
-            return;
             UIView.animate(
               withDuration: filterConfigBatch.duration,
               delay: 0,
               options: animationEasing.asAnimationOptions
             ) {
+              try! effectView.applyRequestedBackgroundFilterEffects();
+              try! effectView.applyRequestedForegroundFilterEffects();
               
-            
             } completion: { _ in
-              
+              recursivelyDequeue();
             };
           };
           
