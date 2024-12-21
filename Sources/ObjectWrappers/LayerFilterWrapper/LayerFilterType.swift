@@ -725,7 +725,7 @@ public enum LayerFilterType {
   // TODO: Rename to `applyToBackground`
   public func applyTo(
     filterEntryWrapper: UVEFilterEntryWrapper,
-    shouldSetValuesIdentity: Bool,
+    identityValuesSource identityValuesKeyPath: KeyPath<Self, Dictionary<String, Any>>?,
     shouldSetValuesRequested: Bool = true,
     shouldSetValuesConfig: Bool = true
   ) throws {
@@ -748,13 +748,14 @@ public enum LayerFilterType {
     let identityValuesPrev =
       filterEntryWrapper.filterValuesIdentity as? Dictionary<String, Any> ?? [:];
       
-    let identityValuesNext = self.filterValuesIdentity;
+    var identityValuesNext: [String: Any]? = nil;
     
-    let didIdentityValuesChange =
-      identityValuesPrev != identityValuesNext;
+    if let identityValuesKeyPath = identityValuesKeyPath {
+      identityValuesNext = self[keyPath: identityValuesKeyPath];
+    };
     
-    if shouldSetValuesIdentity,
-       didFilterTypeChange || didIdentityValuesChange
+    if let identityValuesNext = identityValuesNext,
+       didFilterTypeChange || identityValuesPrev != identityValuesNext
     {
       try filterEntryWrapper.setFilterValuesIdentity(
         identityValuesNext as NSDictionary

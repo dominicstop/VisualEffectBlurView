@@ -514,7 +514,7 @@ open class VisualEffectView: UIVisualEffectView {
     filterPairs.forEach {
       try? $0.filterType.applyTo(
         filterEntryWrapper: $0.filterEntryWrapped,
-        shouldSetValuesIdentity: true
+        identityValuesSource: \.filterValuesIdentity
       );
     };
   };
@@ -756,7 +756,7 @@ open class VisualEffectView: UIVisualEffectView {
     filterPairs.forEach {
       try? $0.filterType.applyTo(
         filterEntryWrapper: $0.filterEntryWrapped,
-        shouldSetValuesIdentity: true
+        identityValuesSource: \.filterValuesIdentity
       );
     };
   };
