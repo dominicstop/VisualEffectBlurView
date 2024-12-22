@@ -1192,6 +1192,9 @@ class Experiment01ViewController: UIViewController {
   func startAnimation(){
     var queueForKeyframes = Self.keyframes;
     
+    let currentIndex = Self.keyframes.count - queueForKeyframes.count;
+    self.navigationController?.navigationItem.title = "\(currentIndex)/\(Self.keyframes.count - 1)";
+    
     let effectViewsPaired = self.effectViewRegistry.keys.map {
       let registryEntry = self.effectViewRegistry[$0]!;
       return (key: $0, effectView: registryEntry.associatedEffectView);
@@ -1214,7 +1217,7 @@ class Experiment01ViewController: UIViewController {
         shouldImmediatelyApplyFilter: true
       );
       
-      $0.effectView.backgroundLayerSamplingSizeScale = 1.5;
+      // $0.effectView.backgroundLayerSamplingSizeScale = 1.5;
     };
 
     func recursivelyDequeue(){
