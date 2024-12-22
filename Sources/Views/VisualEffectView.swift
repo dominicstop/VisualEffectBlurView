@@ -248,10 +248,6 @@ open class VisualEffectView: UIVisualEffectView {
       try? self.reapplyEffects()
     };
   };
-  
-  public override func didMoveToWindow() {
-    print("didMoveToWindow");
-  };
 
   // MARK: - Methods
   // ---------------
