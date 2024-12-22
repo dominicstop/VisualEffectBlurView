@@ -479,23 +479,6 @@ open class VisualEffectView: UIVisualEffectView {
     };
   };
   
-  public func setBackgroundFiltersViaLayers(
-    withFilterTypes filterTypes: [LayerFilterType],
-    shouldImmediatelyApplyFilter: Bool = true
-  ) throws {
-  
-    let filterWrappers = filterTypes.compactMap {
-      $0.createFilterWrapper();
-    };
-    
-    try self.setBackgroundFiltersViaLayers(
-      withLayerFilterWrappers: filterWrappers,
-      shouldImmediatelyApplyFilter: shouldImmediatelyApplyFilter
-    );
-    
-    self.currentBackgroundFilterTypes = filterTypes;
-  };
-  
   /// NOTE: Not all filters are animatable (see caveats below)
   ///
   /// * In order for the filter to animate, it has to be already set
@@ -745,7 +728,6 @@ open class VisualEffectView: UIVisualEffectView {
       try viewContentWrapped.applyFilterEffectsRequested();
     };
   };
-  
   
   /// NOTE: Not all filters are animatable.
   ///
