@@ -380,7 +380,7 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
     let overlayContainerView: UIView = {
       let containerView = UIView();
       
-      let visualEffectView = try? VisualEffectView(filterTypes: []);
+      let visualEffectView = try? VisualEffectView(filterTypesForBackground: []);
       visualEffectView?.backgroundLayerSamplingSizeScale = 1;
       self.visualEffectView = visualEffectView;
       

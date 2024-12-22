@@ -207,7 +207,8 @@ open class VisualEffectView: UIVisualEffectView {
   };
   
   public convenience init(
-    filterTypes: [LayerFilterType],
+    filterTypesForBackground: [LayerFilterType],
+    filterTypesForForeground: [LayerFilterType]? = nil,
     shouldSetFiltersUsingEffectDesc: Bool = true
   ) throws {
   
@@ -217,13 +218,20 @@ open class VisualEffectView: UIVisualEffectView {
        shouldSetFiltersUsingEffectDesc
     {
       try self.setBackgroundFiltersViaEffectDesc(
-        withFilterTypes: filterTypes,
+        withFilterTypes: filterTypesForBackground,
         shouldImmediatelyApplyFilter: true
       );
       
+      if let filterTypesForForeground = filterTypesForForeground {
+        try self.setBackgroundFiltersViaEffectDesc(
+          withFilterTypes: filterTypesForForeground,
+          shouldImmediatelyApplyFilter: true
+        );
+      };
+      
     } else {
       try self.setBackgroundFiltersViaLayers(
-        withFilterTypes: filterTypes,
+        withFilterTypes: filterTypesForBackground,
         shouldImmediatelyApplyFilter: true
       );
     };
@@ -414,6 +422,23 @@ open class VisualEffectView: UIVisualEffectView {
 
     try self.setBackgroundFiltersViaEffectDesc(
       withFilterEntryWrappers: filterEntriesWrapped,
+      shouldImmediatelyApplyFilter: shouldImmediatelyApplyFilter
+    );
+    
+    self.currentBackgroundFilterTypes = filterTypes;
+  };
+  
+  public func setBackgroundFiltersViaLayers(
+    withFilterTypes filterTypes: [LayerFilterType],
+    shouldImmediatelyApplyFilter: Bool = true
+  ) throws {
+  
+    let filterWrappers = filterTypes.compactMap {
+      $0.createFilterWrapper();
+    };
+    
+    try self.setBackgroundFiltersViaLayers(
+      withLayerFilterWrappers: filterWrappers,
       shouldImmediatelyApplyFilter: shouldImmediatelyApplyFilter
     );
     
