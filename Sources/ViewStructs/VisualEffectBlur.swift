@@ -40,7 +40,7 @@ public struct VisualEffectBlur: UIViewRepresentable {
     };
     
     if let backgroundLayerSamplingSizeScale = self.backgroundLayerSamplingSizeScale {
-      view.blurRadius = CGFloat(backgroundLayerSamplingSizeScale);
+      view.backgroundLayerSamplingSizeScale = CGFloat(backgroundLayerSamplingSizeScale);
     };
   };
 };
