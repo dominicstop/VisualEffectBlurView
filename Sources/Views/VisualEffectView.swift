@@ -16,6 +16,8 @@ open class VisualEffectView: UIVisualEffectView {
   public var currentBackgroundFilterTypes: [LayerFilterType] = [];
   public var currentForegroundFilterTypes: [LayerFilterType] = [];
   
+  open var shouldAutomaticallyReApplyEffects = true;
+  
   /// Old name: `shouldOnlyShowBackdropLayer`
   public var shouldOnlyShowBgLayer: Bool = false {
     willSet {
@@ -229,6 +231,18 @@ open class VisualEffectView: UIVisualEffectView {
   
   required public init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented");
+  };
+  
+  public override func layoutSubviews() {
+    if #available(iOS 13, *),
+       self.shouldAutomaticallyReApplyEffects
+    {
+      try? self.reapplyEffects()
+    };
+  };
+  
+  public override func didMoveToWindow() {
+    print("didMoveToWindow");
   };
 
   // MARK: - Methods
@@ -768,6 +782,21 @@ open class VisualEffectView: UIVisualEffectView {
   public func applyRequestedFilterEffects() throws {
     try self.applyRequestedBackgroundFilterEffects();
     try self.applyRequestedForegroundFilterEffects();
+  };
+  
+  @available(iOS 13, *)
+  public func reapplyEffects() throws {
+    try self.setBackgroundFiltersViaEffectDesc(
+      withFilterTypes: self.currentBackgroundFilterTypes,
+      shouldImmediatelyApplyFilter: true
+    );
+    
+    try self.setForegroundFiltersViaEffectDesc(
+      withFilterTypes: self.currentForegroundFilterTypes,
+      shouldImmediatelyApplyFilter: true
+    );
+    
+    try self.applyRequestedFilterEffects();
   };
   
   // MARK: - Methods - Animation Related

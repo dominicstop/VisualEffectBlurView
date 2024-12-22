@@ -112,6 +112,7 @@ public class VisualEffectBlurView: VisualEffectView {
     self.blurEffectStyle = blurEffectStyle;
     
     try super.init(withEffect: blurEffect);
+    self.shouldAutomaticallyReApplyEffects = false;
   };
   
   public required init?(coder: NSCoder) {
@@ -126,6 +127,7 @@ public class VisualEffectBlurView: VisualEffectView {
     _ blurRadius: CGFloat,
     shouldImmediatelyApply: Bool = true
   ) throws {
+  
     try self.updateMatchingBackgroundFilter(
       with: .gaussianBlur(
         radius: blurRadius,
