@@ -63,6 +63,13 @@ public class VisualEffectCustomFilterView: VisualEffectView {
       $0.associatedFilterType;
     };
     
+    let isResettingForegroundFilters = foregroundFilterTypes.count == 0;
+    
+    if isResettingForegroundFilters {
+      try self.immediatelyRemoveAllForegroundFilters();
+      print(isResettingForegroundFilters);
+    };
+    
     try self.setForegroundFiltersViaEffectDesc(
       withFilterTypes: foregroundFilterTypes,
       shouldImmediatelyApplyFilter: true
