@@ -827,6 +827,55 @@ open class VisualEffectView: UIVisualEffectView {
     };
   };
   
+  @available(iOS 13, *)
+  public func immediatelyRemoveAllForegroundFilters(
+    shouldResetEffectDescriptor: Bool = false
+  ) throws {
+    guard let hostForContentWrapped = self.hostForContentWrapped else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to get `self.hostForContentWrapped`"
+      );
+    };
+    
+    guard let viewContentLayerWrapped = self.viewContentLayerWrapped else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to get `self.viewContentLayerWrapped`"
+      );
+    };
+        
+    if shouldResetEffectDescriptor {
+      guard let effectDescWrapper = UVEDescriptorWrapper() else {
+        throw VisualEffectBlurViewError(
+          errorCode: .unexpectedNilValue,
+          description: "Unable to create `effectDescWrapper` instance"
+        );
+      };
+    
+      try hostForContentWrapped.setEffectDescriptor(effectDescWrapper);
+      try self.applyRequestedForegroundFilterEffects();
+      
+      self.currentForegroundFilterTypes = [];
+    };
+
+    // reset `CALayer.filters`
+    try viewContentLayerWrapped.setValuesForFilters(newFilters: []);
+  };
+  
+  public func applyRequestedForegroundFilterEffects() throws {
+    guard let wrapper = self.wrapper,
+          let foregroundContentWrapped = wrapper.viewContentWrapped
+    else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to get `wrapper.viewContentWrapped`"
+      );
+    };
+    
+    try foregroundContentWrapped.applyFilterEffectsRequested();
+  };
+  
   // MARK: - Methods for Effects (Common)
   // ------------------------------------
   
@@ -940,19 +989,6 @@ open class VisualEffectView: UIVisualEffectView {
         );
       }
     );
-  };
-  
-  public func applyRequestedForegroundFilterEffects() throws {
-    guard let wrapper = self.wrapper,
-          let foregroundContentWrapped = wrapper.viewContentWrapped
-    else {
-      throw VisualEffectBlurViewError(
-        errorCode: .unexpectedNilValue,
-        description: "Unable to get `wrapper.viewContentWrapped`"
-      );
-    };
-    
-    try foregroundContentWrapped.applyFilterEffectsRequested();
   };
   
   // does not support animations
