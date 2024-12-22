@@ -277,6 +277,10 @@ public struct ColorMatrixRGBA: Equatable, MutableReference {
     );
   };
   
+  public init(fromPreset colorMatrixPreset: ColorMatrixRGBAPreset) {
+    self = colorMatrixPreset.colorMatrix;
+  }
+  
   // MARK: - Functions (Matrix)
   // --------------------------
   
