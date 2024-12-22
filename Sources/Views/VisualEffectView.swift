@@ -762,6 +762,14 @@ open class VisualEffectView: UIVisualEffectView {
   };
   
   
+  // MARK: - Methods for Effects (Common)
+  // ------------------------------------
+  
+  public func applyRequestedFilterEffects() throws {
+    try self.applyRequestedBackgroundFilterEffects();
+    try self.applyRequestedForegroundFilterEffects();
+  };
+  
   // MARK: - Methods - Animation Related
   // -----------------------------------
   
