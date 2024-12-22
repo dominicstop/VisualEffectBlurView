@@ -24,7 +24,7 @@ struct SwiftUIBasicUsage01: View {
   var overlay: some View {
     VisualEffectBlur(
       blurEffectStyle: .constant(.regular),
-      blurRadius: .constant(nil),
+      blurRadius: .constant(16),
       backgroundLayerSamplingSizeScale: .constant(1)
     )
   };

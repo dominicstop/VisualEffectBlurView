@@ -1537,6 +1537,7 @@ class Experiment03ViewController: UIViewController {
           .variadicBlur,
           .brightenColors,
           .colorMatrix,
+          //.luminanceCompression,
           .luminosityCurveMap,
           .bias,
         ];

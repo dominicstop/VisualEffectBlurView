@@ -1213,6 +1213,8 @@ class Experiment01ViewController: UIViewController {
           FilterGroupEntry.foregroundFilterNames.asForegroundIdentityFilterTypes,
         shouldImmediatelyApplyFilter: true
       );
+      
+      $0.effectView.backgroundLayerSamplingSizeScale = 1.5;
     };
 
     func recursivelyDequeue(){

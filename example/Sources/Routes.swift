@@ -100,6 +100,9 @@ enum Route: String, CaseIterable {
       case .blurViewSwiftUIBasicUsage01:
         return "VisualEffectBlurView SwiftUI";
         
+      case .experiment01:
+        return "Background + Foreground filter animation";
+        
       case .experiment02:
         return "Background filter animation";
         
@@ -184,6 +187,13 @@ enum Route: String, CaseIterable {
       case .blurViewSwiftUIBasicUsage01:
         return [
           .init(text: "Example - Basic usage for VisualEffectBlurView in SwiftUI")
+        ];
+        
+      case .experiment01:
+        return [
+          .init(text: "Test for animating the background + foreground filters"),
+          .newLines(2),
+          .init(text: "batches of filters get applied and animated in/out on a set duration"),
         ];
         
       case .experiment02:
