@@ -30,7 +30,10 @@ class Experiment03ViewController: UIViewController {
     let blurContainerView: UIView = {
       let containerView = UIView();
       
-      var effectView = try! VisualEffectCustomFilterView(withInitialFilters: [])
+      var effectView = try! VisualEffectCustomFilterView(
+        withInitialBackgroundFilters: []
+      );
+      
       self.visualEffectView = effectView;
       
       func test01(){
@@ -1267,7 +1270,7 @@ class Experiment03ViewController: UIViewController {
       };
       
       func test42(){
-        effectView = try! .init(withInitialFilters: [
+        effectView = try! .init(withInitialBackgroundFilters: [
           .colorBlackAndWhite(amount: 1)
         ]);
         
@@ -1281,19 +1284,19 @@ class Experiment03ViewController: UIViewController {
             .withSaturation(-1)
             //.withHueRotate(.degrees(90));
           
-          try! effectView.immediatelyApplyFilters([
+          try! effectView.immediatelyApplyFilters(backgroundFilters: [
             .colorMatrix(colorTransform.colorMatrix),
           ]);
         };
         
         waitTime += 1;
         DispatchQueue.main.asyncAfter(deadline: .now() + waitTime) {
-          try! effectView.immediatelyApplyFilters([]);
+          try! effectView.immediatelyApplyFilters(backgroundFilters: []);
         };
         
         waitTime += 1;
         DispatchQueue.main.asyncAfter(deadline: .now() + waitTime) {
-          try! effectView.immediatelyApplyFilters([
+          try! effectView.immediatelyApplyFilters(backgroundFilters: [
              .colorBlackAndWhite(amount: 1)
           ]);
         };

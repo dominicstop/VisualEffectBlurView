@@ -198,7 +198,7 @@ class VisualEffectCustomFilterViewTest01Controller: UIViewController {
       let containerView = UIView();
       
       let effectView = try! VisualEffectCustomFilterView(
-        withInitialFilters: self.currentEffectGroup
+        withInitialBackgroundFilters: self.currentEffectGroup
       );
       
       self.visualEffectView = effectView;
@@ -350,6 +350,8 @@ class VisualEffectCustomFilterViewTest01Controller: UIViewController {
       "\n"
     );
     
-    try! self.visualEffectView!.immediatelyApplyFilters(self.currentEffectGroup);
+    try! self.visualEffectView!.immediatelyApplyFilters(
+      backgroundFilters: self.currentEffectGroup
+    );
   };
 };

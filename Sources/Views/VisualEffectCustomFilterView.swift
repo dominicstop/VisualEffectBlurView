@@ -12,12 +12,16 @@ import DGSwiftUtilities
 public class VisualEffectCustomFilterView: VisualEffectView {
   
   public convenience init(
-    withInitialFilters initialFilters: [LayerFilterConfig]
+    withInitialBackgroundFilters initialBackgroundFilters: [LayerFilterConfig],
+    initialForegroundFilters: [LayerFilterConfig]? = nil
   ) throws {
     let dummyEffect = UIBlurEffect(style: .regular);
     try self.init(withEffect: dummyEffect);
     
-    try self.immediatelyApplyFilters(initialFilters);
+    try self.immediatelyApplyFilters(
+      backgroundFilters: initialBackgroundFilters,
+      foregroundFilters: initialForegroundFilters
+    );
   };
   
   public func prepareToApplyNewFilters(){
@@ -27,16 +31,18 @@ public class VisualEffectCustomFilterView: VisualEffectView {
   };
   
   public func immediatelyApplyFilters(
-    _ nextFilters: [LayerFilterConfig]
+    backgroundFilters backgroundFilterConfigs: [LayerFilterConfig],
+    foregroundFilters foregroundFilterConfigs: [LayerFilterConfig]? = nil
   ) throws {
     self.prepareToApplyNewFilters();
     
-    let filterTypes = nextFilters.map {
+    let backgroundFilterTypes = backgroundFilterConfigs.map {
       $0.associatedFilterType;
     };
     
-    let isResettingFilters = nextFilters.count == 0;
-    if isResettingFilters {
+    let isResettingBackgroundFilters = backgroundFilterTypes.count == 0;
+    
+    if isResettingBackgroundFilters {
       try self.immediatelyRemoveAllBackgroundFilters();
       self.backgroundEffectOpacity = 0;
       
@@ -45,7 +51,20 @@ public class VisualEffectCustomFilterView: VisualEffectView {
     };
     
     try self.setBackgroundFiltersViaEffectDesc(
-      withFilterTypes: filterTypes,
+      withFilterTypes: backgroundFilterTypes,
+      shouldImmediatelyApplyFilter: true
+    );
+    
+    guard let foregroundFilterConfigs = foregroundFilterConfigs else {
+      return;
+    };
+    
+    let foregroundFilterTypes = foregroundFilterConfigs.map {
+      $0.associatedFilterType;
+    };
+    
+    try self.setForegroundFiltersViaEffectDesc(
+      withFilterTypes: foregroundFilterTypes,
       shouldImmediatelyApplyFilter: true
     );
   };
