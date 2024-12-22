@@ -23,5 +23,5 @@ Pod::Spec.new do |s|
   s.source_files = 'Sources/**/*'
   s.frameworks = 'UIKit'
   
-  s.dependency 'DGSwiftUtilities', '~> 0.33'
+  s.dependency 'DGSwiftUtilities', '~> 0.37'
 end

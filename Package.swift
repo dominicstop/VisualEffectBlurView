@@ -16,7 +16,7 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/dominicstop/DGSwiftUtilities",
-      .upToNextMajor(from: "0.33.0")
+      .upToNextMajor(from: "0.37.0")
     ),
   ],
   targets: [
