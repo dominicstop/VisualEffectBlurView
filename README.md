@@ -38,6 +38,12 @@ Animation is supported for changing the blur radius (or blur percent intensity) 
 
 ![Render-03 - 2024-07-03-05-26-13 - 1080p Web - Gif-03](./assets/RNIVisualEffectCustomFilterViewTest01Screen.gif)
 
+<br>
+
+[`Experiment01ViewController.swift`](./example/Routes/Experiment02ViewController.swift)
+
+![Experiment01ViewController](./assets/Experiment01ViewController.gif)
+
 <br><br>
 
 ## Acknowledgements
