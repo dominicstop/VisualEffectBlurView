@@ -775,6 +775,54 @@ open class VisualEffectView: UIVisualEffectView {
     };
   };
   
+  public func setForegroundFiltersViaLayers(
+    withFilterTypes filterTypes: [LayerFilterType],
+    shouldImmediatelyApplyFilter: Bool = true
+  ) throws {
+  
+    let filterWrappers = filterTypes.compactMap {
+      $0.createFilterWrapper();
+    };
+    
+    try self.setBackgroundFiltersViaLayers(
+      withLayerFilterWrappers: filterWrappers,
+      shouldImmediatelyApplyFilter: shouldImmediatelyApplyFilter
+    );
+    
+    self.currentBackgroundFilterTypes = filterTypes;
+  };
+  
+  public func setForegroundFiltersViaLayers(
+    withLayerFilterWrappers layerFilterWrappers: [LayerFilterWrapper],
+    shouldImmediatelyApplyFilter: Bool = true
+  ) throws {
+    
+    guard let viewContentWrapped = self.viewContentWrapped else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to get `viewContentWrapped`"
+      );
+    };
+    
+    guard let viewContentLayerWrapped = self.viewContentLayerWrapped,
+          viewContentLayerWrapped.wrappedObject != nil
+    else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to get `self.viewContentLayerWrapped`"
+      );
+    };
+    
+    let filters = layerFilterWrappers.compactMap {
+      $0.wrappedObject;
+    };
+    
+    try viewContentLayerWrapped.setValuesForFilters(newFilters: filters);
+    
+    if shouldImmediatelyApplyFilter {
+      try viewContentWrapped.applyFilterEffectsRequested();
+    };
+  };
   
   // MARK: - Methods for Effects (Common)
   // ------------------------------------
