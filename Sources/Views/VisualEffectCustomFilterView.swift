@@ -32,7 +32,8 @@ public class VisualEffectCustomFilterView: VisualEffectView {
   
   public func immediatelyApplyFilters(
     backgroundFilters backgroundFilterConfigs: [LayerFilterConfig],
-    foregroundFilters foregroundFilterConfigs: [LayerFilterConfig]? = nil
+    foregroundFilters foregroundFilterConfigs: [LayerFilterConfig]? = nil,
+    tintConfig: TintConfig? = nil
   ) throws {
     self.prepareToApplyNewFilters();
     
@@ -55,24 +56,51 @@ public class VisualEffectCustomFilterView: VisualEffectView {
       shouldImmediatelyApplyFilter: true
     );
     
-    guard let foregroundFilterConfigs = foregroundFilterConfigs else {
-      return;
+    var error: Error? = nil;
+    
+    block:
+    if let tintConfig = tintConfig {
+      guard let tintViewWrapped = self.wrapper?.tintViewWrapped else {
+        error = VisualEffectBlurViewError(
+          errorCode: .unexpectedNilValue,
+          description: "Unable to get `tintViewWrapped`"
+        );
+        break block;
+      };
+      
+      if tintViewWrapped.wrappedObject == nil {
+        self.displayNow();
+      };
+      
+      guard let tintView = tintViewWrapped.wrappedObject else {
+        error = VisualEffectBlurViewError(
+          errorCode: .unexpectedNilValue,
+          description: "Unable to get `tintView`"
+        );
+        break block;
+      };
     };
     
-    let foregroundFilterTypes = foregroundFilterConfigs.map {
-      $0.associatedFilterType;
+    if let foregroundFilterConfigs = foregroundFilterConfigs {
+      let foregroundFilterTypes = foregroundFilterConfigs.map {
+        $0.associatedFilterType;
+      };
+      
+      let isResettingForegroundFilters = foregroundFilterTypes.count == 0;
+      
+      if isResettingForegroundFilters {
+        try self.immediatelyRemoveAllForegroundFilters();
+        print(isResettingForegroundFilters);
+      };
+      
+      try self.setForegroundFiltersViaEffectDesc(
+        withFilterTypes: foregroundFilterTypes,
+        shouldImmediatelyApplyFilter: true
+      );
     };
     
-    let isResettingForegroundFilters = foregroundFilterTypes.count == 0;
-    
-    if isResettingForegroundFilters {
-      try self.immediatelyRemoveAllForegroundFilters();
-      print(isResettingForegroundFilters);
+    if let error = error {
+      throw error;
     };
-    
-    try self.setForegroundFiltersViaEffectDesc(
-      withFilterTypes: foregroundFilterTypes,
-      shouldImmediatelyApplyFilter: true
-    );
   };
 };
