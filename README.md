@@ -44,6 +44,12 @@ Animation is supported for changing the blur radius (or blur percent intensity) 
 
 ![Experiment01ViewController](./assets/Experiment01ViewController.gif)
 
+<br>
+
+[`VisualEffectCustomFilterViewTest02Controller.swift`](./example/Routes/VisualEffectCustomFilterViewTest02Controller.swift)
+
+![VisualEffectCustomFilterViewTest02Controller](./assets/VisualEffectCustomFilterViewTest02Controller.gif)
+
 <br><br>
 
 ## Acknowledgements
