@@ -316,15 +316,17 @@ open class VisualEffectView: UIVisualEffectView {
     forConfig tintConfig: TintConfig,
     shouldForceToShowTintViewIfNeeded: Bool = true
   ) throws {
+    
+    // ugly workaround
+    if self.wrapper?.tintViewWrapped?.wrappedObject == nil {
+      self.displayNow();
+    };
+    
     guard let tintViewWrapped = self.wrapper?.tintViewWrapped else {
       throw VisualEffectBlurViewError(
         errorCode: .unexpectedNilValue,
         description: "Unable to get `tintViewWrapped`"
       );
-    };
-    
-    if tintViewWrapped.wrappedObject == nil {
-      self.displayNow();
     };
     
     guard let tintLayerWrapped = tintViewWrapped.layerWrapped else {
