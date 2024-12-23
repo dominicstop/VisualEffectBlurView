@@ -10,6 +10,8 @@ import DGSwiftUtilities
 
 @available(iOS 13, *)
 public class VisualEffectCustomFilterView: VisualEffectView {
+
+  private var _didSetup = false;
   
   public convenience init(
     withInitialBackgroundFilters initialBackgroundFilters: [LayerFilterConfig],
@@ -21,19 +23,11 @@ public class VisualEffectCustomFilterView: VisualEffectView {
     
     try self.immediatelyApplyFilters(
       backgroundFilters: initialBackgroundFilters,
-      foregroundFilters: initialForegroundFilters
+      foregroundFilters: initialForegroundFilters,
+      tintConfig: tintConfig
     );
     
-    // temp ugly workaround
-    if let tintConfig = tintConfig {
-      DispatchQueue.main.asyncAfter(deadline: .now()) {
-        try? self.immediatelyApplyFilters(
-          backgroundFilters: initialBackgroundFilters,
-          foregroundFilters: initialForegroundFilters,
-          tintConfig: tintConfig
-        );
-      };
-    };
+    self._didSetup = true;
   };
   
   public func prepareToApplyNewFilters(){
@@ -47,6 +41,7 @@ public class VisualEffectCustomFilterView: VisualEffectView {
     foregroundFilters foregroundFilterConfigs: [LayerFilterConfig]? = nil,
     tintConfig: TintConfig? = nil
   ) throws {
+    
     self.prepareToApplyNewFilters();
     
     let backgroundFilterTypes = backgroundFilterConfigs.map {
@@ -65,7 +60,7 @@ public class VisualEffectCustomFilterView: VisualEffectView {
     
     try self.setBackgroundFiltersViaEffectDesc(
       withFilterTypes: backgroundFilterTypes,
-      shouldImmediatelyApplyFilter: true
+      shouldImmediatelyApplyFilter: self._didSetup
     );
     
     if let foregroundFilterConfigs = foregroundFilterConfigs {
@@ -77,7 +72,6 @@ public class VisualEffectCustomFilterView: VisualEffectView {
       
       if isResettingForegroundFilters {
         try self.immediatelyRemoveAllForegroundFilters();
-        print(isResettingForegroundFilters);
       };
       
       try self.setForegroundFiltersViaEffectDesc(
