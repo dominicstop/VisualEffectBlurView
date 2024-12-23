@@ -35,6 +35,12 @@ public class UVEHostWrapper: PrivateObjectWrapper<
     /// `_applyEffectDescriptor`
     case methodApplyProvidedEffectDescriptor;
     
+    /// Selectors:
+    /// `@property (nonatomic,readonly) NSArray * views;`
+    /// `-(NSArray *)views;`
+    ///
+    case propertyGetterViews;
+    
     public var encodedString: String {
       switch self {
         case .className:
@@ -56,6 +62,10 @@ public class UVEHostWrapper: PrivateObjectWrapper<
         case .methodApplyProvidedEffectDescriptor:
           // `_applyEffectDescriptor:`
           return "X2FwcGx5RWZmZWN0RGVzY3JpcHRvcjo=";
+          
+        case .propertyGetterViews:
+          // `views`
+          return "dmlld3M=";
       };
     };
   };
@@ -137,5 +147,27 @@ public class UVEHostWrapper: PrivateObjectWrapper<
       usingEncodedString: .methodSetEffectDescriptor,
       withArg1: effectDescriptor
     );
+  };
+  
+  /// Selectors:
+  /// `@property (nonatomic,readonly) NSArray * views;`
+  /// `-(NSArray *)views;`
+  ///
+  public func getCurrentViews() throws -> [UIView] {
+    let viewsRaw = try self.performSelector(
+      usingEncodedString: .propertyGetterViews,
+      type: NSArray.self
+    );
+    
+    guard let viewsRaw = viewsRaw else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Result of invoked selector is nil"
+      );
+    };
+    
+    return viewsRaw.compactMap {
+      $0 as? UIView;
+    };
   };
 };
