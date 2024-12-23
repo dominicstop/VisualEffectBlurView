@@ -41,4 +41,20 @@ public class UVESubviewWrapper:
     
     return .init(objectToWrap: wrappedObject);
   }();
+  
+  private var _layerWrapped: LayerWrapper?;
+  public var layerWrapped: LayerWrapper? {
+    if let layerWrapped = self._layerWrapped {
+      return layerWrapped;
+    };
+    
+    guard let view = self.wrappedObject,
+          let layerWrapped = LayerWrapper(objectToWrap: view.layer)
+    else {
+      return nil;
+    };
+    
+    self._layerWrapped = layerWrapped;
+    return layerWrapped;
+  };
 };
