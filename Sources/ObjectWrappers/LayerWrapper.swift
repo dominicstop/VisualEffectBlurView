@@ -110,9 +110,9 @@ public class LayerWrapper: ObjectWrapper<
   };
   
   public func setValueForCompFilter(_ value: Any?) throws {
-    try self.performSelector(
-      usingEncodedString: .propertySetterCompFilter,
-      withArg1: value
+    try self.setValue(
+      forHashedString: .propertyGetterCompFilter,
+      value: value
     );
   };
   
