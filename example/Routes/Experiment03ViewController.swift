@@ -1608,10 +1608,12 @@ class Experiment03ViewController: UIViewController {
           ),
         ];
         
+        effectView.shouldAutomaticallyReApplyEffects = false;
         var queueForFilterConfigBatch = batchesOfFilterConfigToApply;
         
         func recursivelyDequeue(){
           guard queueForFilterConfigBatch.count > 0 else {
+            effectView.shouldAutomaticallyReApplyEffects = true;
             return;
           };
           
