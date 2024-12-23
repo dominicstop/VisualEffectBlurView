@@ -83,6 +83,8 @@ public class VisualEffectCustomFilterView: VisualEffectView {
     if let tintConfig = tintConfig {
       try self.directlySetTint(forConfig: tintConfig);
     };
+    
+    self.currentTintConfig = tintConfig;
   };
   
   override public func reapplyEffects() throws {

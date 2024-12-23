@@ -15,6 +15,7 @@ open class VisualEffectView: UIVisualEffectView {
   
   public var currentBackgroundFilterTypes: [LayerFilterType] = [];
   public var currentForegroundFilterTypes: [LayerFilterType] = [];
+  public var currentTintConfig: TintConfig?;
   
   open var shouldAutomaticallyReApplyEffects = true;
   
@@ -312,11 +313,7 @@ open class VisualEffectView: UIVisualEffectView {
     tintView.tintColor = nil;
   };
   
-  public func directlySetTint(
-    forConfig tintConfig: TintConfig,
-    shouldForceToShowTintViewIfNeeded: Bool = true
-  ) throws {
-        
+  public func directlySetTint(forConfig tintConfig: TintConfig) throws {
     guard let tintViewWrapped = self.wrapper?.tintViewWrapped else {
       throw VisualEffectBlurViewError(
         errorCode: .unexpectedNilValue,
@@ -925,6 +922,10 @@ open class VisualEffectView: UIVisualEffectView {
       withFilterTypes: self.currentForegroundFilterTypes,
       shouldImmediatelyApplyFilter: true
     );
+    
+    if let currentTintConfig = currentTintConfig {
+      try self.directlySetTint(forConfig: currentTintConfig);
+    };
     
     try self.applyRequestedFilterEffects();
   };
