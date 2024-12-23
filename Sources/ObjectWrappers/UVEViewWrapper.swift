@@ -314,23 +314,42 @@ public class UVEViewWrapper: ObjectWrapper<
   ///
   /// * Can't find a way to get this instance programmatically, so we just search
   ///   the subviews for now.
-  /// 
+  ///
+  /// * It seems that its inside: `UIVisualEffectView._backgroundHost.views`,
+  ///   alongside `_UIVisualEffectBackdropView`
+  ///
   public var tintViewWrapped: UVESubviewWrapper? {
     guard let instance = self.wrappedObject else {
       return nil;
     };
     
-    let bgLayer = self.backgroundViewWrapped?.backgroundLayerWrapped?.wrappedObject;
+    var tintView: UIView?;
+    
+    let bgLayer =
+      self.backgroundViewWrapped?.backgroundLayerWrapped?.wrappedObject;
     
     let match = instance.subviews.first {
       $0.layer !== bgLayer && $0 !== instance.contentView;
     };
     
-    guard let match = match else {
+    if let match = match {
+      tintView = match;
+    };
+    
+    if tintView == nil,
+      let hostForBgWrapped = self.hostForBgWrapped,
+      let backgroundViews = try? hostForBgWrapped.getCurrentViews()
+    {
+      tintView = backgroundViews.first {
+        $0.layer !== bgLayer;
+      };
+    };
+    
+    guard let tintView = tintView else {
       return nil;
     };
     
-    return .init(objectToWrap: match);
+    return .init(objectToWrap: tintView);
   };
   
   /// Property: `UIVisualEffectView.subviews`
