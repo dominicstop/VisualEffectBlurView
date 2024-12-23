@@ -28,8 +28,15 @@ public class UVEDescriptorWrapper: PrivateObjectWrapper<
     /// `setFilterEntries`
     case methodSetFilterItems;
     
+    /// Selectors:
+    /// `@property (nonatomic,copy) NSArray * viewEffects;`
+    /// `-(NSArray *)viewEffects;`
+    /// `-(void)setViewEffects:(NSArray *)arg1 ;`
+    ///
+    case propertyGetterEffectsForView;
+    case propertySetterEffectsForView;
+    
     // TODO:
-    // `setViewEffects`, `viewEffects`
     // `setUnderlays`, `underlays`
     // `setOverlays`, `overlays`
     
@@ -50,6 +57,14 @@ public class UVEDescriptorWrapper: PrivateObjectWrapper<
         case .methodSetFilterItems:
           // setFilterEntries:
           return "c2V0RmlsdGVyRW50cmllczo=";
+          
+        case .propertyGetterEffectsForView:
+          // viewEffects
+          return "dmlld0VmZmVjdHM=";
+          
+        case .propertySetterEffectsForView:
+          // setViewEffects:
+          return "c2V0Vmlld0VmZmVjdHM6";
       };
     };
   };
@@ -109,5 +124,16 @@ public class UVEDescriptorWrapper: PrivateObjectWrapper<
     };
     
     try self.setFilterItems(items);
+  };
+  
+  /// Selectors:
+  /// `@property (nonatomic,copy) NSArray * viewEffects;`
+  /// `-(void)setViewEffects:(NSArray *)arg1 ;`
+  ///
+  public func setEffectsForView(values: NSArray) throws {
+    try self.setValue(
+      forHashedString: .propertyGetterEffectsForView,
+      value: values
+    );
   };
 };
