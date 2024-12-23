@@ -316,12 +316,7 @@ open class VisualEffectView: UIVisualEffectView {
     forConfig tintConfig: TintConfig,
     shouldForceToShowTintViewIfNeeded: Bool = true
   ) throws {
-    
-    // ugly workaround
-    if self.wrapper?.tintViewWrapped?.wrappedObject == nil {
-      self.displayNow();
-    };
-    
+        
     guard let tintViewWrapped = self.wrapper?.tintViewWrapped else {
       throw VisualEffectBlurViewError(
         errorCode: .unexpectedNilValue,
@@ -336,6 +331,7 @@ open class VisualEffectView: UIVisualEffectView {
       );
     };
     
+    try tintViewWrapped.setEffectsForView([]);
     try tintConfig.apply(toLayerWrapper: tintLayerWrapped);
   };
   
