@@ -13,7 +13,8 @@ public class VisualEffectCustomFilterView: VisualEffectView {
   
   public convenience init(
     withInitialBackgroundFilters initialBackgroundFilters: [LayerFilterConfig],
-    initialForegroundFilters: [LayerFilterConfig]? = nil
+    initialForegroundFilters: [LayerFilterConfig]? = nil,
+    tintConfig: TintConfig? = nil
   ) throws {
     let dummyEffect = UIBlurEffect(style: .regular);
     try self.init(withEffect: dummyEffect);
@@ -22,6 +23,17 @@ public class VisualEffectCustomFilterView: VisualEffectView {
       backgroundFilters: initialBackgroundFilters,
       foregroundFilters: initialForegroundFilters
     );
+    
+    // temp ugly workaround
+    if let tintConfig = tintConfig {
+      DispatchQueue.main.asyncAfter(deadline: .now()) {
+        try? self.immediatelyApplyFilters(
+          backgroundFilters: initialBackgroundFilters,
+          foregroundFilters: initialForegroundFilters,
+          tintConfig: tintConfig
+        );
+      };
+    };
   };
   
   public func prepareToApplyNewFilters(){
