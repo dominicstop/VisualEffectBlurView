@@ -791,7 +791,7 @@ open class VisualEffectView: UIVisualEffectView {
         $0.isNotVisibleWhenIdentity ? $0 : nil;
       };
       
-      try self.setBackgroundFiltersViaEffectDesc(
+      try self.setForegroundFiltersViaEffectDesc(
         withFilterTypes: orphanedFilterTypesConvertedToIdentity,
         shouldImmediatelyApplyFilter: false
       );
