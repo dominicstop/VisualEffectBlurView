@@ -20,6 +20,9 @@ public class LayerWrapper: ObjectWrapper<
     case propertySetterFilters;
     case propertyGetterFilters;
     
+    case propertyGetterCompFilter;
+    case propertySetterCompFilter;
+    
     public var encodedString: String {
       switch self {
         case .propertySetterFilters:
@@ -29,6 +32,14 @@ public class LayerWrapper: ObjectWrapper<
         case .propertyGetterFilters:
           // filters
           return "ZmlsdGVycw==";
+          
+        case .propertyGetterCompFilter:
+          // compositingFilter
+          return "Y29tcG9zaXRpbmdGaWx0ZXI=";
+          
+        case .propertySetterCompFilter:
+          // setCompositingFilter:
+          return "c2V0Q29tcG9zaXRpbmdGaWx0ZXI6";
       };
     };
   };
@@ -97,6 +108,20 @@ public class LayerWrapper: ObjectWrapper<
       withArg1: newFilters
     );
   };
+  
+  public func setValueForCompFilter(_ value: Any?) throws {
+    try self.performSelector(
+      usingEncodedString: .propertySetterCompFilter,
+      withArg1: value
+    );
+  };
+  
+  // MARK: - Helpers
+  // ---------------
+  
+  public func setBlendModeForCompFilter(with blendMode: BlendMode?) throws {
+    try self.setValueForCompFilter(blendMode?.asCompositingFilterName);
+  };
 };
 
 // MARK: - `LayerWrappable`
@@ -125,7 +150,29 @@ public extension LayerWrappable {
   };
   
   func setValuesForFilters(newFilters: [AnyObject]) throws {
-    try self.asLayerWrapper?.setValuesForFilters(newFilters: newFilters);
+    guard let layerWrapped = self.asLayerWrapper else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to get wrapper for layer"
+      );
+    };
+    
+    try layerWrapped.setValuesForFilters(newFilters: newFilters);
+  };
+  
+  func setValueForCompFilter(_ value: Any) throws {
+    guard let layerWrapped = self.asLayerWrapper else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to get wrapper for layer"
+      );
+    };
+    
+    try layerWrapped.setValueForCompFilter(value);
+  };
+  
+  func setBlendModeForCompFilter(with blendMode: BlendMode) throws {
+    try self.setValueForCompFilter(blendMode.asCompositingFilterName);
   };
 };
 
