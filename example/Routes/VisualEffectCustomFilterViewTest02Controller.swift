@@ -38,9 +38,14 @@ class VisualEffectCustomFilterViewTest02Controller: UIViewController {
     self.effectGroups[self.indexForCurrentEffectGroup].foregroundFilters;
   };
   
+  var currentTintConfig: TintConfig? {
+    self.effectGroups[self.indexForCurrentEffectGroup].tintConfig;
+  };
+  
   var effectGroups: [(
     backgroundFilters: [LayerFilterConfig],
-    foregroundFilters: [LayerFilterConfig]
+    foregroundFilters: [LayerFilterConfig],
+    tintConfig: TintConfig?
   )] = {
     let gradientImageConfig1: ImageConfigGradient = ImageConfigGradient(
       colors: [.black, .clear],
@@ -73,12 +78,31 @@ class VisualEffectCustomFilterViewTest02Controller: UIViewController {
     return [
       (
         backgroundFilters: [
+          .gaussianBlur(radius: 4, shouldNormalizeEdges: true),
+          .colorBlackAndWhite(amount: 1),
+        ],
+        foregroundFilters: [
+          .brightenColors(amount: -1)
+        ],
+        tintConfig: .init(
+          tintColor: .red,
+          opacity: 0.25,
+          blendMode: .color
+        )
+      ),
+      (
+        backgroundFilters: [
           .gaussianBlur(radius: 32, shouldNormalizeEdges: true),
           .colorBlackAndWhite(amount: 1),
         ],
         foregroundFilters: [
           .brightenColors(amount: -1)
-        ]
+        ],
+        tintConfig: .init(
+          tintColor: .blue,
+          opacity: 1,
+          blendMode: .color
+        )
       ),
       (
         backgroundFilters: [
@@ -89,7 +113,8 @@ class VisualEffectCustomFilterViewTest02Controller: UIViewController {
         ],
         foregroundFilters: [
           .gaussianBlur(radius: 8, shouldNormalizeEdges: false),
-        ]
+        ],
+        tintConfig: .noTint
       ),
       (
         backgroundFilters: [
@@ -105,8 +130,9 @@ class VisualEffectCustomFilterViewTest02Controller: UIViewController {
         foregroundFilters: [
           .colorMatrixVibrant(
             ColorMatrixRGBAPreset.preset01.colorMatrix
-          )
-        ]
+          ),
+        ],
+        tintConfig: .noTint
       ),
       (
         backgroundFilters: [
@@ -122,7 +148,8 @@ class VisualEffectCustomFilterViewTest02Controller: UIViewController {
           .colorMatrixVibrant(
             ColorMatrixRGBAPreset.preset02.colorMatrix
           )
-        ]
+        ],
+        tintConfig: .noTint
       ),
       (
         backgroundFilters: [
@@ -136,7 +163,9 @@ class VisualEffectCustomFilterViewTest02Controller: UIViewController {
         foregroundFilters: [
         .colorMatrixVibrant(
             ColorMatrixRGBAPreset.preset03.colorMatrix
-          )]
+          )
+        ],
+        tintConfig: .noTint
       ),
       (
         backgroundFilters: [
@@ -151,7 +180,8 @@ class VisualEffectCustomFilterViewTest02Controller: UIViewController {
           .colorMatrixVibrant(
             ColorMatrixRGBAPreset.preset04.colorMatrix
           )
-        ]
+        ],
+        tintConfig: .noTint
       ),
       (
         backgroundFilters: [
@@ -167,7 +197,8 @@ class VisualEffectCustomFilterViewTest02Controller: UIViewController {
           .colorMatrixVibrant(
             ColorMatrixRGBAPreset.preset05.colorMatrix
           )
-        ]
+        ],
+        tintConfig: .noTint
       ),
       (
         backgroundFilters: [
@@ -182,7 +213,8 @@ class VisualEffectCustomFilterViewTest02Controller: UIViewController {
           .colorMatrixVibrant(
             ColorMatrixRGBAPreset.preset06.colorMatrix
           )
-        ]
+        ],
+        tintConfig: .noTint
       ),
       (
         backgroundFilters: [
@@ -197,7 +229,8 @@ class VisualEffectCustomFilterViewTest02Controller: UIViewController {
           .colorMatrixVibrant(
             ColorMatrixRGBAPreset.preset07.colorMatrix
           )
-        ]
+        ],
+        tintConfig: .noTint
       ),
       (
         backgroundFilters: [
@@ -212,7 +245,8 @@ class VisualEffectCustomFilterViewTest02Controller: UIViewController {
           .colorMatrixVibrant(
             ColorMatrixRGBAPreset.preset08.colorMatrix
           )
-        ]
+        ],
+        tintConfig: .noTint
       ),
       (
         backgroundFilters: [
@@ -227,7 +261,8 @@ class VisualEffectCustomFilterViewTest02Controller: UIViewController {
           .colorMatrixVibrant(
             ColorMatrixRGBAPreset.preset09.colorMatrix
           )
-        ]
+        ],
+        tintConfig: .noTint
       ),
       (
         backgroundFilters: [
@@ -242,7 +277,8 @@ class VisualEffectCustomFilterViewTest02Controller: UIViewController {
           .colorMatrixVibrant(
             ColorMatrixRGBAPreset.preset10.colorMatrix
           )
-        ]
+        ],
+        tintConfig: .noTint
       ),
       (
         backgroundFilters: [
@@ -257,7 +293,8 @@ class VisualEffectCustomFilterViewTest02Controller: UIViewController {
           .colorMatrixVibrant(
             ColorMatrixRGBAPreset.preset11.colorMatrix
           )
-        ]
+        ],
+        tintConfig: .noTint
       ),
       (
         backgroundFilters: [
@@ -272,31 +309,36 @@ class VisualEffectCustomFilterViewTest02Controller: UIViewController {
           .colorMatrixVibrant(
             ColorMatrixRGBAPreset.preset12.colorMatrix
           )
-        ]
+        ],
+        tintConfig: .noTint
       ),
       (
         backgroundFilters: [
           .colorMatrix(ColorMatrixRGBAPreset.preset11.colorMatrix),
         ],
-        foregroundFilters: []
+        foregroundFilters: [],
+        tintConfig: .noTint
       ),
       (
         backgroundFilters: [
           .colorMatrix(ColorMatrixRGBAPreset.preset12.colorMatrix),
         ],
-        foregroundFilters: []
+        foregroundFilters: [],
+        tintConfig: .noTint
       ),
       (
         backgroundFilters:[
           .colorMatrix(ColorMatrixRGBAPreset.preset14.colorMatrix),
         ],
-        foregroundFilters: []
+        foregroundFilters: [],
+        tintConfig: .noTint
       ),
       (
         backgroundFilters: [
           .colorMatrix(.identity),
         ],
-        foregroundFilters: []
+        foregroundFilters: [],
+        tintConfig: .noTint
       ),
     ];
   }();
@@ -310,7 +352,8 @@ class VisualEffectCustomFilterViewTest02Controller: UIViewController {
       
       let effectView = try! VisualEffectCustomFilterView(
         withInitialBackgroundFilters: self.currentBackgroundEffectGroup,
-        initialForegroundFilters: self.currentForegroundEffectGroup
+        initialForegroundFilters: self.currentForegroundEffectGroup,
+        tintConfig: self.currentTintConfig
       );
       
       self.visualEffectView = effectView;
@@ -523,7 +566,8 @@ class VisualEffectCustomFilterViewTest02Controller: UIViewController {
     
     try! self.visualEffectView!.immediatelyApplyFilters(
       backgroundFilters: self.currentBackgroundEffectGroup,
-      foregroundFilters: self.currentForegroundEffectGroup
+      foregroundFilters: self.currentForegroundEffectGroup,
+      tintConfig: self.currentTintConfig
     );
   };
 };
