@@ -312,6 +312,31 @@ open class VisualEffectView: UIVisualEffectView {
     tintView.tintColor = nil;
   };
   
+  public func directlySetTint(
+    forConfig tintConfig: TintConfig,
+    shouldForceToShowTintViewIfNeeded: Bool = true
+  ) throws {
+    guard let tintViewWrapped = self.wrapper?.tintViewWrapped else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to get `tintViewWrapped`"
+      );
+    };
+    
+    if tintViewWrapped.wrappedObject == nil {
+      self.displayNow();
+    };
+    
+    guard let tintLayerWrapped = tintViewWrapped.layerWrapped else {
+      throw VisualEffectBlurViewError(
+        errorCode: .unexpectedNilValue,
+        description: "Unable to get `tintView` layer wrapper"
+      );
+    };
+    
+    try tintConfig.apply(toLayerWrapper: tintLayerWrapped);
+  };
+  
   // MARK: - Methods for Background Effects
   // --------------------------------------
   

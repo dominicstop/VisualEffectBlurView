@@ -56,31 +56,6 @@ public class VisualEffectCustomFilterView: VisualEffectView {
       shouldImmediatelyApplyFilter: true
     );
     
-    var error: Error? = nil;
-    
-    block:
-    if let tintConfig = tintConfig {
-      guard let tintViewWrapped = self.wrapper?.tintViewWrapped else {
-        error = VisualEffectBlurViewError(
-          errorCode: .unexpectedNilValue,
-          description: "Unable to get `tintViewWrapped`"
-        );
-        break block;
-      };
-      
-      if tintViewWrapped.wrappedObject == nil {
-        self.displayNow();
-      };
-      
-      guard let tintView = tintViewWrapped.wrappedObject else {
-        error = VisualEffectBlurViewError(
-          errorCode: .unexpectedNilValue,
-          description: "Unable to get `tintView`"
-        );
-        break block;
-      };
-    };
-    
     if let foregroundFilterConfigs = foregroundFilterConfigs {
       let foregroundFilterTypes = foregroundFilterConfigs.map {
         $0.associatedFilterType;
@@ -99,8 +74,12 @@ public class VisualEffectCustomFilterView: VisualEffectView {
       );
     };
     
-    if let error = error {
-      throw error;
+    if let tintConfig = tintConfig {
+      try self.directlySetTint(forConfig: tintConfig);
     };
+  };
+  
+  override public func reapplyEffects() throws {
+    try super.reapplyEffects();
   };
 };
