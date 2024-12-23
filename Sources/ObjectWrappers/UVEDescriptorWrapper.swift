@@ -36,9 +36,16 @@ public class UVEDescriptorWrapper: PrivateObjectWrapper<
     case propertyGetterEffectsForView;
     case propertySetterEffectsForView;
     
+    /// Selectors:
+    /// `@property (nonatomic,copy) NSArray * overlays;`
+    /// `-(NSArray *)overlays;`
+    /// `-(void)setOverlays:(NSArray *)arg1 ;`
+    ///
+    case propertyGetterOverlay;
+    case propertySetterOverlay;
+    
     // TODO:
     // `setUnderlays`, `underlays`
-    // `setOverlays`, `overlays`
     
     public var encodedString: String {
       switch self {
@@ -65,6 +72,14 @@ public class UVEDescriptorWrapper: PrivateObjectWrapper<
         case .propertySetterEffectsForView:
           // setViewEffects:
           return "c2V0Vmlld0VmZmVjdHM6";
+          
+        case .propertyGetterOverlay:
+          // overlays
+          return "b3ZlcmxheXM=";
+          
+        case .propertySetterOverlay:
+          // setOverlays:
+          return "c2V0T3ZlcmxheXM6";
       };
     };
   };
@@ -133,6 +148,17 @@ public class UVEDescriptorWrapper: PrivateObjectWrapper<
   public func setEffectsForView(values: NSArray) throws {
     try self.setValue(
       forHashedString: .propertyGetterEffectsForView,
+      value: values
+    );
+  };
+  
+  /// Selectors:
+  /// `@property (nonatomic,copy) NSArray * overlays;`
+  /// `-(void)setOverlays:(NSArray *)arg1 ;`
+  ///
+  public func setCurrentOverlays(values: NSArray) throws {
+    try self.setValue(
+      forHashedString: .propertyGetterOverlay,
       value: values
     );
   };
