@@ -9,6 +9,83 @@ import UIKit
 import DGSwiftUtilities
 import VisualEffectBlurView
 
+
+fileprivate struct GradientPresets {
+
+  static let gradientLeftToRight: ImageConfigGradient = .leftToRightGradient(
+    colors: [
+      .init(white: 0, alpha: 0),
+      .init(white: 0, alpha: 0.2),
+      .init(white: 0, alpha: 1),
+    ],
+    size: UIScreen.main.bounds.size
+  );
+  
+  static let gradientRadial: ImageConfigGradient = .centerToOuterEdgeGradient(
+    colors: [
+      .init(white: 0, alpha: 0),
+      .init(white: 0, alpha: 0.15),
+      .init(white: 0, alpha: 1),
+    ],
+    size: UIScreen.main.bounds.size
+  );
+  
+  static let gradientLeftToRightSmall: ImageConfigGradient = .rightToLeftGradient(
+    colors: [
+      .init(white: 0, alpha: 0),
+      .init(white: 0, alpha: 0.25),
+      .init(white: 0, alpha: 1),
+    ],
+    size: .init(width: 400, height: 100)
+  );
+  
+  static let gradientRadial2: ImageConfigGradient = .centerToOuterEdgeGradient(
+    colors: [
+      .init(white: 0, alpha: 1),
+      .init(white: 0, alpha: 0.8),
+      .init(white: 0, alpha: 0),
+    ],
+    size: UIScreen.main.bounds.size
+  );
+  
+  static let topDownGradient: ImageConfigGradient = .topDownGradient(
+    colors: [
+      .init(white: 0, alpha: 0),
+      .init(white: 0, alpha: 0.2),
+      .init(white: 0, alpha: 1),
+    ],
+    size: UIScreen.main.bounds.size
+  );
+  
+  static let bottomToTopGradient: ImageConfigGradient = .topDownGradient(
+    colors: [
+      .init(white: 0, alpha: 1),
+      .init(white: 0, alpha: 0.1),
+      .init(white: 0, alpha: 0),
+    ],
+    size: UIScreen.main.bounds.size
+  );
+  
+  static let gradientLeftToRight2: ImageConfigGradient = .leftToRightGradient(
+    colors: [
+      .init(white: 0, alpha: 0),
+      .init(white: 0, alpha: 0.3),
+      .init(white: 0, alpha: 1),
+    ],
+    size: UIScreen.main.bounds.size
+  );
+  
+  static let gradientRightToLeft: ImageConfigGradient = .leftToRightGradient(
+    colors: [
+      .init(white: 0, alpha: 1),
+      .init(white: 0, alpha: 0.25),
+      .init(white: 0, alpha: 0),
+    ],
+    size: UIScreen.main.bounds.size
+  );
+};
+
+
 class Experiment01ViewController: UIViewController {
 
   enum ElementKey: String, CaseIterable {
@@ -35,44 +112,73 @@ class Experiment01ViewController: UIViewController {
   };
   
   public struct FilterGroupEntry {
-    static let backgroundFilterNames: [LayerFilterTypeName] = [
-      .gaussianBlur,
-      .colorBlackAndWhite,
-      .contrastColors,
-      .saturateColors,
-      .variadicBlur,
-      .brightenColors,
-      .colorMatrix,
-      .luminanceCompression,
-      .luminosityCurveMap,
-      .bias,
+    
+    
+    static let identityBackgroundFilterConfigs: [LayerFilterConfig] = [
+      .bias(amount: 0.5),
+      .luminanceCompression(amount: 1),
+      .gaussianBlur(
+        radius: 0,
+        shouldNormalizeEdges: true
+      ),
+      .colorBlackAndWhite(amount: 0),
+      .contrastColors(amount: 1),
+      .saturateColors(amount: 1),
+      
+      .brightenColors(amount: 0),
+      .colorMatrix(.identity),
+      .luminosityCurveMap(
+        amount: 0,
+        point1: 0,
+        point2: 0.3,
+        point3: 0.6,
+        point4: 1
+      ),
+      
+      .variadicBlur(
+        radius: 0,
+        imageGradientConfig: GradientPresets.gradientLeftToRight,
+        shouldNormalizeEdges: true
+      ),
+      .variadicBlur(
+        radius: 0,
+        imageGradientConfig: GradientPresets.gradientRadial,
+        shouldNormalizeEdges: true
+      ),
+      .variadicBlur(
+        radius: 0,
+        imageGradientConfig: GradientPresets.gradientLeftToRightSmall,
+        shouldNormalizeEdges: true
+      ),
+      .variadicBlur(
+        radius: 0,
+        imageGradientConfig: GradientPresets.gradientRadial2,
+        shouldNormalizeEdges: true
+      ),
+      .variadicBlur(
+        radius: 0,
+        imageGradientConfig: GradientPresets.bottomToTopGradient,
+        shouldNormalizeEdges: true
+      ),
+      .variadicBlur(
+        radius: 0,
+        imageGradientConfig: GradientPresets.gradientLeftToRight2,
+        shouldNormalizeEdges: true
+      ),
+      .variadicBlur(
+        radius: 0,
+        imageGradientConfig: GradientPresets.gradientRightToLeft,
+        shouldNormalizeEdges: true
+      ),
     ];
 
-    static let foregroundFilterNames: [LayerFilterTypeName] = [
-      .gaussianBlur,
-      .colorBlackAndWhite,
-      .contrastColors,
-      .saturateColors,
-      .variadicBlur,
-      .brightenColors,
-      .colorMatrix,
-      .luminosityCurveMap,
-      .bias,
+    static let identityForegroundFilterConfigs: [LayerFilterConfig] = [
+
     ];
   
     var elementKey: ElementKey;
-    var backgroundFilters: [LayerFilterType];
-    var foregroundFilters: [LayerFilterType];
-    
-    init(
-      elementKey: ElementKey,
-      backgroundFilterTypes: [LayerFilterType] = [],
-      foregroundFilterTypes: [LayerFilterType] = []
-    ) {
-      self.elementKey = elementKey;
-      self.backgroundFilters = backgroundFilterTypes;
-      self.foregroundFilters = foregroundFilterTypes;
-    }
+    var backgroundFilters: [LayerFilterConfig];
+    var foregroundFilters: [LayerFilterConfig];
     
     init(
       elementKey: ElementKey,
@@ -80,30 +186,15 @@ class Experiment01ViewController: UIViewController {
       foregroundFilters: [LayerFilterConfig] = []
     ) {
       self.elementKey = elementKey;
-      self.backgroundFilters = backgroundFilters.associatedFilterType;
-      self.foregroundFilters = foregroundFilters.associatedFilterType;
-    };
-    
-    func updateFilters(
-      toEffectView effectView: VisualEffectCustomFilterView
-    ) throws {
-      try effectView.updateBackgroundFiltersViaEffectDesc(
-        withFilterTypes: self.backgroundFilters
-      );
-
-      try effectView.updateForegroundFiltersViaEffectDesc(
-       withFilterTypes: self.foregroundFilters
-      );
+      self.backgroundFilters = backgroundFilters;
+      self.foregroundFilters = foregroundFilters;
     };
     
     static func resetToIdentity(forElementID elementKey: ElementKey) -> Self {
       .init(
         elementKey: elementKey,
-        backgroundFilterTypes:
-          Self.backgroundFilterNames.asBackgroundIdentityFilterTypes,
-          
-        foregroundFilterTypes:
-          Self.foregroundFilterNames.asForegroundIdentityFilterTypes
+        backgroundFilters: Self.identityBackgroundFilterConfigs,
+        foregroundFilters: Self.identityForegroundFilterConfigs
       );
     };
   };
@@ -173,7 +264,7 @@ class Experiment01ViewController: UIViewController {
       filterGroups: ElementKey.allCards.enumerated().map {
         .init(
           elementKey: $0.element,
-          foregroundFilterTypes: [
+          foregroundFilters: [
             .gaussianBlur(
               radius: .lerp(
                 valueStart: 3,
@@ -333,14 +424,7 @@ class Experiment01ViewController: UIViewController {
               .saturateColors(amount: 1),
               .variadicBlur(
                 radius: 16,
-                imageGradientConfig: .leftToRightGradient(
-                  colors: [
-                    .init(white: 0, alpha: 0),
-                    .init(white: 0, alpha: 0.2),
-                    .init(white: 0, alpha: 1),
-                  ],
-                  size: UIScreen.main.bounds.size
-                ),
+                imageGradientConfig: GradientPresets.gradientLeftToRight,
                 shouldNormalizeEdges: true
               ),
             ]
@@ -378,14 +462,7 @@ class Experiment01ViewController: UIViewController {
             backgroundFilters: [
               .variadicBlur(
                 radius: 0,
-                imageGradientConfig: .leftToRightGradient(
-                  colors: [
-                    .init(white: 0, alpha: 0),
-                    .init(white: 0, alpha: 0.2),
-                    .init(white: 0, alpha: 1),
-                  ],
-                  size: UIScreen.main.bounds.size
-                ),
+                imageGradientConfig: GradientPresets.gradientLeftToRight,
                 shouldNormalizeEdges: true
               ),
               .colorTransform(
@@ -430,14 +507,7 @@ class Experiment01ViewController: UIViewController {
               ),
               .variadicBlur(
                 radius: 12,
-                imageGradientConfig: .centerToOuterEdgeGradient(
-                  colors: [
-                    .init(white: 0, alpha: 0),
-                    .init(white: 0, alpha: 0.15),
-                    .init(white: 0, alpha: 1),
-                  ],
-                  size: UIScreen.main.bounds.size
-                ),
+                imageGradientConfig: GradientPresets.gradientRadial,
                 shouldNormalizeEdges: true
               ),
             ]
@@ -460,14 +530,7 @@ class Experiment01ViewController: UIViewController {
               .brightenColors(amount: 0.15),
               .variadicBlur(
                 radius: 8,
-                imageGradientConfig: .rightToLeftGradient(
-                  colors: [
-                    .init(white: 0, alpha: 0),
-                    .init(white: 0, alpha: 0.25),
-                    .init(white: 0, alpha: 1),
-                  ],
-                  size: .init(width: 400, height: 100)
-                ),
+                imageGradientConfig: GradientPresets.gradientLeftToRightSmall,
                 shouldNormalizeEdges: true
               ),
             ],
@@ -490,14 +553,7 @@ class Experiment01ViewController: UIViewController {
               // reset
               .variadicBlur(
                 radius: 0,
-                imageGradientConfig: .centerToOuterEdgeGradient(
-                  colors: [
-                    .init(white: 0, alpha: 0),
-                    .init(white: 0, alpha: 0.15),
-                    .init(white: 0, alpha: 1),
-                  ],
-                  size: UIScreen.main.bounds.size
-                ),
+                imageGradientConfig: GradientPresets.gradientRadial,
                 shouldNormalizeEdges: true
               ),
             ]
@@ -521,14 +577,7 @@ class Experiment01ViewController: UIViewController {
               .brightenColors(amount: 0),
               .variadicBlur(
                 radius: 0,
-                imageGradientConfig: .rightToLeftGradient(
-                  colors: [
-                    .init(white: 0, alpha: 0),
-                    .init(white: 0, alpha: 0.3),
-                    .init(white: 0, alpha: 1),
-                  ],
-                  size: .init(width: 400, height: 100)
-                ),
+                imageGradientConfig: GradientPresets.gradientLeftToRightSmall,
                 shouldNormalizeEdges: true
               ),
               
@@ -560,14 +609,7 @@ class Experiment01ViewController: UIViewController {
               .colorTransform(.init()),
               .variadicBlur(
                 radius: 12,
-                imageGradientConfig: .centerToOuterEdgeGradient(
-                  colors: [
-                    .init(white: 0, alpha: 1),
-                    .init(white: 0, alpha: 0.8),
-                    .init(white: 0, alpha: 0),
-                  ],
-                  size: UIScreen.main.bounds.size
-                ),
+                imageGradientConfig: GradientPresets.gradientRadial2,
                 shouldNormalizeEdges: false
               ),
               .contrastColors(amount: 0.75),
@@ -614,14 +656,7 @@ class Experiment01ViewController: UIViewController {
               // reset
               .variadicBlur(
                 radius: 0,
-                imageGradientConfig: .centerToOuterEdgeGradient(
-                  colors: [
-                    .init(white: 0, alpha: 1),
-                    .init(white: 0, alpha: 0.8),
-                    .init(white: 0, alpha: 0),
-                  ],
-                  size: UIScreen.main.bounds.size
-                ),
+                imageGradientConfig: GradientPresets.gradientRadial2,
                 shouldNormalizeEdges: false
               ),
               .contrastColors(amount: 1),
@@ -638,14 +673,7 @@ class Experiment01ViewController: UIViewController {
             backgroundFilters: [
               .variadicBlur(
                 radius: 12,
-                imageGradientConfig: .topDownGradient(
-                  colors: [
-                    .init(white: 0, alpha: 0),
-                    .init(white: 0, alpha: 0.2),
-                    .init(white: 0, alpha: 1),
-                  ],
-                  size: UIScreen.main.bounds.size
-                ),
+                imageGradientConfig: GradientPresets.topDownGradient,
                 shouldNormalizeEdges: true
               ),
             ]
@@ -687,14 +715,7 @@ class Experiment01ViewController: UIViewController {
             backgroundFilters: [
               .variadicBlur(
                 radius: 8,
-                imageGradientConfig: .topDownGradient(
-                  colors: [
-                    .init(white: 0, alpha: 1),
-                    .init(white: 0, alpha: 0.1),
-                    .init(white: 0, alpha: 0),
-                  ],
-                  size: UIScreen.main.bounds.size
-                ),
+                imageGradientConfig: GradientPresets.bottomToTopGradient,
                 shouldNormalizeEdges: true
               ),
             ],
@@ -710,14 +731,7 @@ class Experiment01ViewController: UIViewController {
             backgroundFilters: [
               .variadicBlur(
                 radius: 0,
-                imageGradientConfig: .topDownGradient(
-                  colors: [
-                    .init(white: 0, alpha: 0),
-                    .init(white: 0, alpha: 0.2),
-                    .init(white: 0, alpha: 1),
-                  ],
-                  size: UIScreen.main.bounds.size
-                ),
+                imageGradientConfig: GradientPresets.topDownGradient,
                 shouldNormalizeEdges: true
               ),
             ]
@@ -758,14 +772,7 @@ class Experiment01ViewController: UIViewController {
               // reset
               .variadicBlur(
                 radius: 0,
-                imageGradientConfig: .topDownGradient(
-                  colors: [
-                    .init(white: 0, alpha: 1),
-                    .init(white: 0, alpha: 0.1),
-                    .init(white: 0, alpha: 0),
-                  ],
-                  size: UIScreen.main.bounds.size
-                ),
+                imageGradientConfig: GradientPresets.bottomToTopGradient,
                 shouldNormalizeEdges: true
               ),
               
@@ -785,14 +792,7 @@ class Experiment01ViewController: UIViewController {
             backgroundFilters: [
               .variadicBlur(
                 radius: 10,
-                imageGradientConfig: .leftToRightGradient(
-                  colors: [
-                    .init(white: 0, alpha: 0),
-                    .init(white: 0, alpha: 0.3),
-                    .init(white: 0, alpha: 1),
-                  ],
-                  size: UIScreen.main.bounds.size
-                ),
+                imageGradientConfig: GradientPresets.gradientLeftToRight2,
                 shouldNormalizeEdges: true
               ),
             ]
@@ -874,18 +874,9 @@ class Experiment01ViewController: UIViewController {
               
               .variadicBlur(
                 radius: 8,
-                imageGradientConfig: .leftToRightGradient(
-                  colors: [
-                    .init(white: 0, alpha: 1),
-                    .init(white: 0, alpha: 0.25),
-                    .init(white: 0, alpha: 0),
-                  ],
-                  size: UIScreen.main.bounds.size
-                ),
+                imageGradientConfig: GradientPresets.gradientRightToLeft,
                 shouldNormalizeEdges: true
               ),
-              
-              
             ]
           )
         );
@@ -897,14 +888,7 @@ class Experiment01ViewController: UIViewController {
               // reset
               .variadicBlur(
                 radius: 0,
-                imageGradientConfig: .leftToRightGradient(
-                  colors: [
-                    .init(white: 0, alpha: 0),
-                    .init(white: 0, alpha: 0.3),
-                    .init(white: 0, alpha: 1),
-                  ],
-                  size: UIScreen.main.bounds.size
-                ),
+                imageGradientConfig: GradientPresets.gradientLeftToRight2,
                 shouldNormalizeEdges: true
               ),
             ]
@@ -946,14 +930,7 @@ class Experiment01ViewController: UIViewController {
               // reset
               .variadicBlur(
                 radius: 0,
-                imageGradientConfig: .leftToRightGradient(
-                  colors: [
-                    .init(white: 0, alpha: 1),
-                    .init(white: 0, alpha: 0.25),
-                    .init(white: 0, alpha: 0),
-                  ],
-                  size: UIScreen.main.bounds.size
-                ),
+                imageGradientConfig: GradientPresets.gradientRightToLeft,
                 shouldNormalizeEdges: true
               ),
               .colorTransform(
@@ -972,14 +949,7 @@ class Experiment01ViewController: UIViewController {
               // reset
               .variadicBlur(
                 radius: 0,
-                imageGradientConfig: .leftToRightGradient(
-                  colors: [
-                    .init(white: 0, alpha: 0),
-                    .init(white: 0, alpha: 0.3),
-                    .init(white: 0, alpha: 1),
-                  ],
-                  size: UIScreen.main.bounds.size
-                ),
+                imageGradientConfig: GradientPresets.gradientLeftToRight2,
                 shouldNormalizeEdges: true
               ),
             ]
@@ -1201,19 +1171,13 @@ class Experiment01ViewController: UIViewController {
     };
     
     effectViewsPaired.forEach {
-      print(
-        "Setting to identity:", $0.key
-      );
-    
       try! $0.effectView.setBackgroundFiltersViaEffectDesc(
-        withFilterTypes:
-          FilterGroupEntry.backgroundFilterNames.asBackgroundIdentityFilterTypes,
+        withFilterConfigItems: FilterGroupEntry.identityBackgroundFilterConfigs,
         shouldImmediatelyApplyFilter: true
       );
 
       try! $0.effectView.setForegroundFiltersViaEffectDesc(
-        withFilterTypes:
-          FilterGroupEntry.foregroundFilterNames.asForegroundIdentityFilterTypes,
+        withFilterConfigItems: FilterGroupEntry.identityForegroundFilterConfigs,
         shouldImmediatelyApplyFilter: true
       );
       
@@ -1240,13 +1204,13 @@ class Experiment01ViewController: UIViewController {
         effectViews.append(effectView);
         
         try! effectView.updateBackgroundFiltersViaEffectDesc(
-          withFilterTypes: $0.backgroundFilters
+          withFilterConfigItems: $0.backgroundFilters
         );
         
-        try! effectView.updateForegroundFiltersViaEffectDesc(
-          withFilterTypes: $0.foregroundFilters
-        );
-        
+        // try? effectView.updateForegroundFiltersViaEffectDesc(
+        //   withFilterConfigItems: $0.foregroundFilters
+        // );
+        // 
         print(
           "Setting filters",
           "\n - elementKey:", $0.elementKey,
