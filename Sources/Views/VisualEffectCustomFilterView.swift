@@ -133,4 +133,41 @@ public class VisualEffectCustomFilterView: VisualEffectView {
       options: options
     );
   };
+  
+  // MARK: - Methods - Foreground Filters
+  // ------------------------------------
+  
+  @available(iOS 13, *)
+  public func setForegroundFiltersViaEffectDesc(
+    withFilterConfigItems filterConfigItems: [LayerFilterConfig],
+    shouldImmediatelyApplyFilter: Bool = true
+  ) throws {
+  
+    let filterTypes = filterConfigItems.map {
+      $0.createAssociatedFilterType(gradientCache: &self.gradientCache);
+    };
+    
+    try self.setForegroundFiltersViaEffectDesc(
+      withFilterTypes: filterTypes,
+      shouldImmediatelyApplyFilter: shouldImmediatelyApplyFilter
+    );
+  };
+  
+  @available(iOS 13, *)
+  public func updateForegroundFiltersViaEffectDesc(
+    withFilterConfigItems updatedFilterConfigItems: [LayerFilterConfig],
+    options: EffectDescriptionUpdateOptions? = nil
+  ) throws {
+    
+    let updatedFilterTypes = updatedFilterConfigItems.map {
+      $0.createAssociatedFilterType(gradientCache: &self.gradientCache);
+    };
+    
+    let options = options ?? [.useReferenceEqualityForImageComparison];
+    
+    try self.updateForegroundFiltersViaEffectDesc(
+      withFilterTypes: updatedFilterTypes,
+      options: options
+    );
+  };
 };
