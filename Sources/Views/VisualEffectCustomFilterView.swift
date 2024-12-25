@@ -170,4 +170,27 @@ public class VisualEffectCustomFilterView: VisualEffectView {
       options: options
     );
   };
+  
+  // MARK: - Methods - Filters
+  // -------------------------
+  
+  public func setFiltersViaEffectDesc(
+    backgroundFilterConfigItems: [LayerFilterConfig],
+    foregroundFilterConfigItems: [LayerFilterConfig],
+    shouldImmediatelyApplyFilter: Bool = true
+  ) throws {
+  
+    try self.setBackgroundFiltersViaEffectDesc(
+      withFilterConfigItems: backgroundFilterConfigItems,
+      shouldImmediatelyApplyFilter: shouldImmediatelyApplyFilter
+    );
+    
+    try self.setForegroundFiltersViaEffectDesc(
+      withFilterConfigItems: foregroundFilterConfigItems,
+      shouldImmediatelyApplyFilter: shouldImmediatelyApplyFilter
+    );
+  };
+  
+  // MARK: - Methods - Animation Related
+  // -----------------------------------
 };
