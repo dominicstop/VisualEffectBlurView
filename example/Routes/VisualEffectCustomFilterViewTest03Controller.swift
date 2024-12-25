@@ -225,7 +225,7 @@ class VisualEffectCustomFilterViewTest03Controller: UIViewController {
             imageGradientConfig: GradientPresets.leftToRightGradient01,
             shouldNormalizeEdges: true
           ),
-          .colorBlackAndWhite(amount: 1),
+          .colorBlackAndWhite(amount: 1.25),
         ],
         foregroundFilters: [
           .brightenColors(amount: -1)
@@ -563,9 +563,7 @@ class VisualEffectCustomFilterViewTest03Controller: UIViewController {
       let containerView = UIView();
       
       let effectView = try! VisualEffectCustomFilterView(
-        withInitialBackgroundFilters: self.currentBackgroundEffectGroup,
-        initialForegroundFilters: self.currentForegroundEffectGroup,
-        tintConfig: self.currentTintConfig
+        withEffect: UIBlurEffect(style: .regular)
       );
       
       self.visualEffectView = effectView;
@@ -758,13 +756,6 @@ class VisualEffectCustomFilterViewTest03Controller: UIViewController {
     guard let effectView = self.visualEffectView else {
       return;
     };
-  
-    var queue = Self.effectGroups;
-    
-    try! effectView.immediatelyApplyFilters(
-      backgroundFilters: Self.identityBackgroundFilterConfigs,
-      foregroundFilters: Self.identityForegroundFilterConfigs
-    );
     
     print(
       "startAnimation",
@@ -772,6 +763,14 @@ class VisualEffectCustomFilterViewTest03Controller: UIViewController {
       "\n - gradientCache.keys:", effectView.gradientCache.keys,
       "\n - gradientCache.values:", effectView.gradientCache.values,
       "\n"
+    );
+  
+    var queue = Self.effectGroups;
+    
+    try! effectView.setFiltersViaEffectDesc(
+      backgroundFilterConfigItems: Self.identityBackgroundFilterConfigs,
+      foregroundFilterConfigItems: Self.identityForegroundFilterConfigs,
+      shouldImmediatelyApplyFilter: true
     );
   
     func recursivelyDequeue(){
@@ -784,10 +783,32 @@ class VisualEffectCustomFilterViewTest03Controller: UIViewController {
       
       let currentKeyframe = queue.removeFirst();
       
+      var gradientConfigs = currentKeyframe.backgroundFilters.compactMap {
+        switch $0 {
+          case let .variadicBlur(
+            radius,
+            imageGradientConfig,
+            shouldNormalizeEdges,
+            shouldNormalizeEdgesToTransparent,
+            shouldUseHardEdges
+          ):
+            return imageGradientConfig;
+        
+          default:
+            return nil;
+        };
+      };
+      
+      var gradientConfigsHasMatch = gradientConfigs.map {
+        effectView.gradientCache[$0] != nil;
+      };
+       
       print(
         "recursivelyDequeue",
         "\n - queueCount:", queueCount,
         "\n - currentIndex:", currentIndex,
+        "\n - gradientConfigs.count:", gradientConfigs.count,
+        "\n - gradientConfigsHasMatch:", gradientConfigsHasMatch,
         "\n"
       );
       
@@ -795,26 +816,34 @@ class VisualEffectCustomFilterViewTest03Controller: UIViewController {
         withFilterConfigItems: currentKeyframe.backgroundFilters
       );
       
-      let performAnimation = {
-        UIView.animateKeyframes(
-          withDuration: 1,
-          delay: 0,
-          options: []
-        ) {
-          try! effectView.applyRequestedBackgroundFilterEffects();
-          try! effectView.applyRequestedForegroundFilterEffects();
-          
-        } completion: { _ in
-          recursivelyDequeue();
-        };
+      // try! effectView.applyRequestedBackgroundFilterEffects();
+      // return;
+      
+      let animationConfig: AnimationConfig = .presetCurve(
+        duration: 1,
+        curve: .easeIn
+      );
+      
+      let animator = animationConfig.createAnimator();
+      
+      animator.addAnimations {
+        try! effectView.applyRequestedBackgroundFilterEffects();
+        // try! effectView.applyRequestedForegroundFilterEffects();
+      };
+      
+      animator.addCompletion { position in
+        recursivelyDequeue();
       };
       
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-        performAnimation();
+        // performAnimation();
+        animator.startAnimation();
       };
     };
     
-    recursivelyDequeue();
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+      recursivelyDequeue();
+    };
   };
 
   @objc func onPressButtonNextEffect(_ sender: UIButton){
