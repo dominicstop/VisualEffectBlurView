@@ -281,3 +281,43 @@ public extension Array where Element == LayerFilterConfig {
     };
   };
 };
+
+
+// MARK: - `ImageConfigGradient+Hashable`
+// --------------------------------------
+
+extension ImageConfigGradient: Hashable {
+
+  public func hash(into hasher: inout Hasher) {
+    let maxFractionDigits = 6;
+    
+    self.colors.hash(into: &hasher);
+    self.locations?.hash(into: &hasher);
+    
+    hasher.combine(
+      self.startPoint.x.cutOffDecimalsAfter(maxFractionDigits)
+    );
+    
+    hasher.combine(
+      self.startPoint.y.cutOffDecimalsAfter(maxFractionDigits)
+    );
+    
+    hasher.combine(
+      self.endPoint.x.cutOffDecimalsAfter(maxFractionDigits)
+    );
+    
+    hasher.combine(
+      self.endPoint.y.cutOffDecimalsAfter(maxFractionDigits)
+    );
+    
+    hasher.combine(
+      self.size.width.cutOffDecimalsAfter(maxFractionDigits)
+    );
+    
+    hasher.combine(
+      self.size.height.cutOffDecimalsAfter(maxFractionDigits)
+    );
+    
+    hasher.combine(self.cornerRadius);
+  };
+};
