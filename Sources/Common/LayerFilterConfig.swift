@@ -11,6 +11,17 @@ import DGSwiftUtilities
 
 public enum LayerFilterConfig: Equatable {
 
+  // MARK: - Embedded Types
+  // ----------------------
+  
+  public typealias GradientConfigImagePair = (
+    gradientConfig: ImageConfigGradient,
+    gradientImage: CGImage
+  );
+
+  public typealias ImageGradientCache =
+    Dictionary<ImageConfigGradient, GradientConfigImagePair>;
+
   // MARK: - Enum Members: Animatable Filters
   // ----------------------------------------
   
@@ -256,6 +267,55 @@ public enum LayerFilterConfig: Equatable {
       
       default:
         invokeCompletionIfNeeded();
+    };
+  };
+  
+  public func createAssociatedFilterType(
+    gradientCache: inout ImageGradientCache
+  ) -> LayerFilterType {
+    
+    switch self {
+      case let .variadicBlur(
+        radius,
+        imageGradientConfig,
+        shouldNormalizeEdges,
+        shouldNormalizeEdgesToTransparent,
+        shouldUseHardEdges
+      ):
+        
+        let maskImage: CGImage? = {
+          if let cachedEntry = gradientCache[imageGradientConfig] {
+            return cachedEntry.gradientImage;
+          };
+          
+        
+          if let image = imageGradientConfig.cachedImage,
+             let cgImage = image.cgImage
+          {
+            gradientCache[imageGradientConfig] = (imageGradientConfig, cgImage);
+            return cgImage;
+          };
+          
+          guard let image = try? imageGradientConfig.makeImage(),
+                let cgImage = image.cgImage
+          else {
+            return nil;
+          };
+          
+          gradientCache[imageGradientConfig] = (imageGradientConfig, cgImage);
+          return cgImage;
+        }();
+        
+        return .variadicBlur(
+          radius: radius,
+          maskImage: maskImage,
+          shouldNormalizeEdges: shouldNormalizeEdges,
+          shouldNormalizeEdgesToTransparent: shouldNormalizeEdgesToTransparent,
+          shouldUseHardEdges: shouldUseHardEdges
+        );
+    
+      default:
+        return self.associatedFilterType;
     };
   };
 };

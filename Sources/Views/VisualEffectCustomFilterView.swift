@@ -12,6 +12,10 @@ import DGSwiftUtilities
 public class VisualEffectCustomFilterView: VisualEffectView {
 
   private var _didSetup = false;
+  public var gradientCache: LayerFilterConfig.ImageGradientCache = [:];
+  
+  // MARK: - Init
+  // ------------
   
   public convenience init(
     withInitialBackgroundFilters initialBackgroundFilters: [LayerFilterConfig],
@@ -30,6 +34,9 @@ public class VisualEffectCustomFilterView: VisualEffectView {
     self._didSetup = true;
   };
   
+  // MARK: - Methods
+  // ---------------
+  
   public func prepareToApplyNewFilters(){
     self.effect = nil;
     let dummyEffect = UIBlurEffect(style: .regular);
@@ -45,7 +52,7 @@ public class VisualEffectCustomFilterView: VisualEffectView {
     self.prepareToApplyNewFilters();
     
     let backgroundFilterTypes = backgroundFilterConfigs.map {
-      $0.associatedFilterType;
+      $0.createAssociatedFilterType(gradientCache: &self.gradientCache);
     };
     
     let isResettingBackgroundFilters = backgroundFilterTypes.count == 0;
@@ -65,7 +72,7 @@ public class VisualEffectCustomFilterView: VisualEffectView {
     
     if let foregroundFilterConfigs = foregroundFilterConfigs {
       let foregroundFilterTypes = foregroundFilterConfigs.map {
-        $0.associatedFilterType;
+        $0.createAssociatedFilterType(gradientCache: &self.gradientCache);
       };
       
       let isResettingForegroundFilters = foregroundFilterTypes.count == 0;
