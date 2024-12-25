@@ -20,9 +20,10 @@ public class VisualEffectCustomFilterView: VisualEffectView {
   public convenience init(
     withInitialBackgroundFilters initialBackgroundFilters: [LayerFilterConfig],
     initialForegroundFilters: [LayerFilterConfig]? = nil,
-    tintConfig: TintConfig? = nil
+    tintConfig: TintConfig? = nil,
+    usingDummyFilter dummyEffect: UIVisualEffect? = nil
   ) throws {
-    let dummyEffect = UIBlurEffect(style: .regular);
+    let dummyEffect = dummyEffect ?? UIBlurEffect(style: .regular);
     try self.init(withEffect: dummyEffect);
     
     try self.immediatelyApplyFilters(
