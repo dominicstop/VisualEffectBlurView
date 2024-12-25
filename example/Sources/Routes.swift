@@ -24,6 +24,7 @@ enum Route: String, CaseIterable {
   
   case visualEffectCustomFilterViewTest01;
   case visualEffectCustomFilterViewTest02;
+  case visualEffectCustomFilterViewTest03;
   
   case blurViewBasicUsage01;
   case blurViewSwiftUIBasicUsage01;
@@ -60,6 +61,9 @@ enum Route: String, CaseIterable {
         
       case .visualEffectCustomFilterViewTest02:
         return VisualEffectCustomFilterViewTest02Controller();
+        
+      case .visualEffectCustomFilterViewTest03:
+        return VisualEffectCustomFilterViewTest03Controller();
         
       case .blurViewBasicUsage01:
         return BlurViewBasicUsage01ViewController();
