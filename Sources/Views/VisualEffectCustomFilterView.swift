@@ -97,4 +97,40 @@ public class VisualEffectCustomFilterView: VisualEffectView {
   override public func reapplyEffects() throws {
     try super.reapplyEffects();
   };
+  
+  // MARK: - Methods - Background Filters
+  // ------------------------------------
+  
+  @available(iOS 13, *)
+  public func setBackgroundFiltersViaEffectDesc(
+    withFilterConfigItems filterConfigItems: [LayerFilterConfig],
+    shouldImmediatelyApplyFilter: Bool = true
+  ) throws {
+  
+    let filterTypes = filterConfigItems.map {
+      $0.createAssociatedFilterType(gradientCache: &self.gradientCache);
+    };
+    
+    try self.setBackgroundFiltersViaEffectDesc(
+      withFilterTypes: filterTypes,
+      shouldImmediatelyApplyFilter: shouldImmediatelyApplyFilter
+    );
+  };
+  
+  public func updateBackgroundFiltersViaEffectDesc(
+    withFilterConfigItems updatedFilterConfigItems: [LayerFilterConfig],
+    options: EffectDescriptionUpdateOptions? = nil
+  ) throws {
+    
+    let updatedFilterTypes = updatedFilterConfigItems.map {
+      $0.createAssociatedFilterType(gradientCache: &self.gradientCache);
+    };
+    
+    let options = options ?? [.useReferenceEqualityForImageComparison];
+    
+    try self.updateBackgroundFiltersViaEffectDesc(
+      withFilterTypes: updatedFilterTypes,
+      options: options
+    );
+  };
 };
