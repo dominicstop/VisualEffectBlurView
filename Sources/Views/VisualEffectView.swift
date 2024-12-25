@@ -516,7 +516,7 @@ open class VisualEffectView: UIVisualEffectView {
   @available(iOS 13, *)
   public func updateBackgroundFiltersViaEffectDesc(
     withFilterTypes updatedFilterTypes: [LayerFilterType],
-    shouldAddMissingFilterTypes: Bool = false
+    options: EffectDescriptionUpdateOptions? = nil
   ) throws {
   
     guard let bgHostWrapper = self.hostForBackgroundWrapped else {
@@ -540,10 +540,14 @@ open class VisualEffectView: UIVisualEffectView {
       );
     };
     
-    let (_, orphanedFilterTypes, filterPairs) =
-      filterItemsWrapped.paired(withFilterTypes: updatedFilterTypes);
+    let options = options ?? [.useReferenceEqualityForImageComparison];
     
-    if shouldAddMissingFilterTypes,
+    let (_, orphanedFilterTypes, filterPairs) = filterItemsWrapped.paired(
+      withFilterTypes: updatedFilterTypes,
+      shouldUseReferenceEqualityForImageComparison: options.shouldUseReferenceEqualityForImageComparison
+    );
+    
+    if options.shouldAddMissingFilterTypes,
        orphanedFilterTypes.count > 0
     {
       let orphanedFilterTypesConvertedToIdentity = orphanedFilterTypes.compactMap {
@@ -559,7 +563,7 @@ open class VisualEffectView: UIVisualEffectView {
     filterPairs.forEach {
       try? $0.filterType.applyTo(
         filterEntryWrapper: $0.filterEntryWrapped,
-        identityValuesSource: \.filterValuesIdentityForBackground
+        identityValuesSource: nil
       );
     };
   };
@@ -757,7 +761,7 @@ open class VisualEffectView: UIVisualEffectView {
   @available(iOS 13, *)
   public func updateForegroundFiltersViaEffectDesc(
     withFilterTypes updatedFilterTypes: [LayerFilterType],
-    shouldAddMissingFilterTypes: Bool = false
+    options: EffectDescriptionUpdateOptions? = nil
   ) throws {
   
     guard let foregroundHostWrapped = self.hostForContentWrapped else {
@@ -781,10 +785,12 @@ open class VisualEffectView: UIVisualEffectView {
       );
     };
     
+    let options = options ?? [.useReferenceEqualityForImageComparison];
+
     let (_, orphanedFilterTypes, filterPairs) =
       filterItemsWrapped.paired(withFilterTypes: updatedFilterTypes);
     
-    if shouldAddMissingFilterTypes,
+    if options.shouldAddMissingFilterTypes,
        orphanedFilterTypes.count > 0
     {
       let orphanedFilterTypesConvertedToIdentity = orphanedFilterTypes.compactMap {
@@ -1065,6 +1071,28 @@ open class VisualEffectView: UIVisualEffectView {
         "\n - layer:", $0.element.layer.debugDescription,
         "\n"
       );
+    };
+  };
+  
+  // MARK: - Embedded Types
+  // ----------------------
+  
+  public struct EffectDescriptionUpdateOptions: OptionSet {
+    public let rawValue: Int;
+    
+    public static let addMissingFilterTypes = Self(rawValue: 1 << 0);
+    public static let useReferenceEqualityForImageComparison = Self(rawValue: 1 << 3);
+    
+    public var shouldAddMissingFilterTypes: Bool {
+      self.contains(.addMissingFilterTypes);
+    };
+    
+    public var shouldUseReferenceEqualityForImageComparison: Bool {
+      self.contains(.useReferenceEqualityForImageComparison);
+    };
+    
+    public init(rawValue: Int) {
+      self.rawValue = rawValue;
     };
   };
 };

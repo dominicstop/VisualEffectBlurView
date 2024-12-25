@@ -459,8 +459,7 @@ class Experiment03ViewController: UIViewController {
           try! effectView.updateBackgroundFiltersViaEffectDesc(
             withFilterTypes: [
               .colorBlackAndWhite(amount: 0)
-            ],
-            shouldAddMissingFilterTypes: false
+            ]
           );
           
           UIView.animate(withDuration: 1){
@@ -528,8 +527,7 @@ class Experiment03ViewController: UIViewController {
           try! effectView.updateBackgroundFiltersViaEffectDesc(
             withFilterTypes: [
               .colorBlackAndWhite(amount: 0)
-            ],
-            shouldAddMissingFilterTypes: false
+            ]
           );
           
           UIView.animate(withDuration: 1){
