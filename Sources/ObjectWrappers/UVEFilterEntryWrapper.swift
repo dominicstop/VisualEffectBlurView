@@ -332,7 +332,10 @@ public extension Array where Element == UVEFilterEntryWrapper {
     filterEntryWrapped: Element
   );
   
-  func paired(withFilterTypes filterTypes: [LayerFilterType]) -> (
+  func paired(
+    withFilterTypes filterTypes: [LayerFilterType],
+    shouldUseReferenceEqualityForImageComparison: Bool = false
+  ) -> (
     orphanedFilterEntries: Self,
     orphanedFilterTypes: [LayerFilterType],
     matches: [FilterEntryTypePair]
@@ -341,7 +344,27 @@ public extension Array where Element == UVEFilterEntryWrapper {
     
     let matches: [FilterEntryTypePair] = self.compactMap { filterEntryWrapped in
       let match = filterTypes.first {
-        $0.decodedFilterName == filterEntryWrapped.filterKind;
+        guard $0.decodedFilterName == filterEntryWrapped.filterKind else {
+          return false;
+        };
+        
+        if !shouldUseReferenceEqualityForImageComparison {
+          return true;
+        };
+        
+        let filterEntryAsLayerType =
+          LayerFilterType(fromWrapper: filterEntryWrapped);
+      
+        switch ($0, filterEntryAsLayerType) {
+          case (
+            let .variadicBlur(_, maskImageNext, _, _, _),
+            let .variadicBlur(_, maskImageCurrent, _, _, _)
+          ):
+            return maskImageNext === maskImageCurrent;
+            
+            default:
+              return true;
+        };
       };
       
       guard let match = match else {
