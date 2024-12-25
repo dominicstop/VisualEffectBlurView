@@ -172,7 +172,7 @@ public enum LayerFilterTypeName: String, CaseIterable, HashedStringDecodable {
         // TODO: is this correct?
         return .luminosityCurveMap(
           amount: 0,
-          values: [0, 0.25, 0.5, 1]
+          values: [0, 0.33, 0.66, 1]
         );
         
       case .colorBlackAndWhite:
