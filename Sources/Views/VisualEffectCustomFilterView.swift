@@ -8,6 +8,7 @@
 import UIKit
 import DGSwiftUtilities
 
+
 @available(iOS 13, *)
 public class VisualEffectCustomFilterView: VisualEffectView {
 
@@ -230,4 +231,74 @@ public class VisualEffectCustomFilterView: VisualEffectView {
   
   // MARK: - Methods - Animation Related
   // -----------------------------------
+  
+  public func createAnimationBlocks(
+    backgroundFilterConfigItems: [LayerFilterConfig],
+    foregroundFilterConfigItems: [LayerFilterConfig],
+    identityBackgroundFilterConfigItems: [LayerFilterConfig]? = nil,
+    identityForegroundFilterConfigItems: [LayerFilterConfig]? = nil,
+    shouldApplyIdentityFilters: Bool = false
+  ) throws -> (
+    prepare: () throws -> Void,
+    animations: () -> Void,
+    completion: () -> Void
+  ) {
+  
+    func applyIdentityFiltersIfNeeded() throws {
+      guard shouldApplyIdentityFilters else {
+        return;
+      };
+      
+      if let identityBackgroundFilterConfigItems = identityBackgroundFilterConfigItems {
+        try self.setBackgroundFiltersViaEffectDesc(
+          withFilterConfigItems: identityBackgroundFilterConfigItems,
+          shouldImmediatelyApplyFilter: true
+        );
+        
+      } else {
+        try self.setBackgroundFiltersToIdentityViaEffectDesc(
+          withFilterConfigItems: backgroundFilterConfigItems,
+          shouldImmediatelyApplyFilter: true
+        );
+      };
+      
+      if let identityForegroundFilterConfigItems = identityForegroundFilterConfigItems {
+        try self.setForegroundFiltersViaEffectDesc(
+          withFilterConfigItems: identityForegroundFilterConfigItems,
+          shouldImmediatelyApplyFilter: true
+        );
+        
+      } else {
+        try self.setForegroundFiltersToIdentityViaEffectDesc(
+          withFilterConfigItems: foregroundFilterConfigItems,
+          shouldImmediatelyApplyFilter: true
+        );
+      };
+    };
+    
+    return (
+      prepare: {
+        self.shouldAutomaticallyReApplyEffects = false;
+        try applyIdentityFiltersIfNeeded();
+        
+        if backgroundFilterConfigItems.count > 0 {
+          try self.updateBackgroundFiltersViaEffectDesc(
+            withFilterConfigItems: backgroundFilterConfigItems
+          );
+        };
+        
+        if foregroundFilterConfigItems.count > 0 {
+          try self.updateForegroundFiltersViaEffectDesc(
+            withFilterConfigItems: foregroundFilterConfigItems
+          );
+        };
+      },
+      animations: {
+        try? self.applyRequestedFilterEffects();
+      },
+      completion: {
+        self.shouldAutomaticallyReApplyEffects = true;
+      }
+    );
+  };
 };
