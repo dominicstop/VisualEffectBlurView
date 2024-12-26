@@ -186,6 +186,8 @@ class VisualEffectCustomFilterViewTest03Controller: UIViewController {
   weak var blurRadiusLabel: UILabel?;
   weak var intensityLabel: UILabel?;
   
+  var currentAnimator: UIViewPropertyAnimator?;
+  
   override func loadView() {
     let view = UIView();
     view.backgroundColor = .white;
@@ -819,19 +821,39 @@ class VisualEffectCustomFilterViewTest03Controller: UIViewController {
       // try! effectView.applyRequestedBackgroundFilterEffects();
       // return;
       
+      let animationBlocks = try! effectView.createAnimationBlocks(
+        backgroundFilterConfigItems: currentKeyframe.backgroundFilters,
+        foregroundFilterConfigItems: []
+      );
+      
+      try! animationBlocks.prepare();
+      
       let animationConfig: AnimationConfig = .presetCurve(
         duration: 1,
         curve: .easeIn
       );
       
       let animator = animationConfig.createAnimator();
+      self.currentAnimator = animator;
       
       animator.addAnimations {
-        try! effectView.applyRequestedBackgroundFilterEffects();
-        // try! effectView.applyRequestedForegroundFilterEffects();
+        animationBlocks.animations();
       };
       
-      animator.addCompletion { position in
+      animator.addCompletion { _ in
+        animationBlocks.completion();
+      };
+      
+      // animator.pausesOnCompletion = true;
+      // animator.isInterruptible = true;
+      
+      animator.addObserver(self,
+        forKeyPath: #keyPath(UIViewPropertyAnimator.isRunning),
+        options: [.new],
+        context: nil
+      );
+      
+      animator.addCompletion { _ in
         recursivelyDequeue();
       };
       
@@ -859,5 +881,40 @@ class VisualEffectCustomFilterViewTest03Controller: UIViewController {
       foregroundFilters: self.currentForegroundEffectGroup,
       tintConfig: self.currentTintConfig
     );
+  };
+  
+  @objc override func observeValue(
+    forKeyPath keyPath: String?,
+    of object: Any?,
+    change: [NSKeyValueChangeKey : Any]?,
+    context: UnsafeMutableRawPointer?
+  ) {
+  
+    print(
+      "observeValue",
+      "\n - keyPath:", keyPath,
+      "\n - object:", object,
+      "\n - change:", change,
+      "\n - change[kindKey]:", change![NSKeyValueChangeKey.kindKey],
+      "\n - change[notificationIsPriorKey]:", change![NSKeyValueChangeKey.notificationIsPriorKey],
+      "\n - change[indexesKey]:", change![NSKeyValueChangeKey.indexesKey],
+      "\n - change[oldKey]:", change![NSKeyValueChangeKey.oldKey],
+      "\n - change[newKey]:", change![NSKeyValueChangeKey.newKey],
+      "\n - context:", context,
+      "\n"
+    );
+    
+    guard let newValue = change![NSKeyValueChangeKey.newKey] as? Bool,
+          !newValue
+    else {
+      return;
+    };
+    
+    return;
+    
+    self.currentAnimator!.isReversed = true;
+    self.currentAnimator!.fractionComplete = 0;
+    self.currentAnimator!.pausesOnCompletion = false
+    self.currentAnimator?.startAnimation();
   };
 };
