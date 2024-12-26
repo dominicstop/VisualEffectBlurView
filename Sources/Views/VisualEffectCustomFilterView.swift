@@ -118,6 +118,24 @@ public class VisualEffectCustomFilterView: VisualEffectView {
     );
   };
   
+  @available(iOS 13, *)
+  public func setBackgroundFiltersToIdentityViaEffectDesc(
+    withFilterConfigItems filterConfigItems: [LayerFilterConfig],
+    shouldImmediatelyApplyFilter: Bool = true
+  ) throws {
+  
+    let filterTypes = filterConfigItems.map {
+      $0.createAssociatedFilterType(gradientCache: &self.gradientCache);
+    };
+    
+    let filterTypesIdentity = filterTypes.asIdentityForBackground;
+    
+    try self.setBackgroundFiltersViaEffectDesc(
+      withFilterTypes: filterTypesIdentity,
+      shouldImmediatelyApplyFilter: shouldImmediatelyApplyFilter
+    );
+  };
+  
   public func updateBackgroundFiltersViaEffectDesc(
     withFilterConfigItems updatedFilterConfigItems: [LayerFilterConfig],
     options: EffectDescriptionUpdateOptions? = nil
