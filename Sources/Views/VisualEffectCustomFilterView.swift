@@ -29,7 +29,8 @@ public class VisualEffectCustomFilterView: VisualEffectView {
     try self.immediatelyApplyFilters(
       backgroundFilters: initialBackgroundFilters,
       foregroundFilters: initialForegroundFilters,
-      tintConfig: tintConfig
+      tintConfig: tintConfig,
+      isSettingFiltersForTheFirstTime: true
     );
   };
   
@@ -71,7 +72,7 @@ public class VisualEffectCustomFilterView: VisualEffectView {
     
     try self.setBackgroundFiltersViaEffectDesc(
       withFilterTypes: backgroundFilterTypes,
-      shouldImmediatelyApplyFilter: isSettingFiltersForTheFirstTime
+      shouldImmediatelyApplyFilter: !isSettingFiltersForTheFirstTime
     );
     
     if let foregroundFilterConfigs = foregroundFilterConfigs {
