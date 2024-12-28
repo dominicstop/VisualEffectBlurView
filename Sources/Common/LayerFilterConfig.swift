@@ -373,6 +373,59 @@ public extension Array where Element == LayerFilterConfig {
       };
     };
   };
+  
+  func updateAndMergeElements(
+    withOther otherFilterTypes: [LayerFilterConfig]
+  ) -> (
+    updatedItems: Self,
+    orphanedItems: Self,
+    mergedItems: Self
+  ) {
+    var otherFilterTypes = otherFilterTypes;
+    var updatedItems: Self = [];
+    
+    for currentFilter in self {
+      switch currentFilter {
+        case let .variadicBlur(_, currentMaskConfig, _, _, _):
+          let match = otherFilterTypes.enumerated().first {
+            switch $0.element {
+              case let .variadicBlur(_, otherMaskConfig, _, _, _):
+                return currentMaskConfig.hashValue == otherMaskConfig.hashValue;
+              
+              default:
+                return false;
+            };
+          };
+          
+          guard let (indexOfOtherFilterType, otherFilterType) = match else {
+            updatedItems.append(currentFilter);
+            continue;
+          };
+          
+          otherFilterTypes.remove(at: indexOfOtherFilterType);
+          updatedItems.append(otherFilterType);
+      
+        default:
+          let match = otherFilterTypes.enumerated().first {
+            currentFilter.decodedFilterName == $0.element.decodedFilterName;
+          };
+          
+          guard let (indexOfOtherFilterType, otherFilterType) = match else {
+            updatedItems.append(currentFilter);
+            continue;
+          };
+          
+          otherFilterTypes.remove(at: indexOfOtherFilterType);
+          updatedItems.append(otherFilterType);
+      };
+    };
+    
+    return (
+      updatedItems: updatedItems,
+      orphanedItems: otherFilterTypes,
+      mergedItems: updatedItems + otherFilterTypes
+    );
+  };
 };
 
 
