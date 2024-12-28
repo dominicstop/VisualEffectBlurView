@@ -280,7 +280,7 @@ public class VisualEffectCustomFilterView: VisualEffectView {
     
     return (
       prepare: {
-        self.shouldAutomaticallyReApplyEffects = false;
+        self.isBeingAnimated = true;
         try applyIdentityFiltersIfNeeded();
         
         if backgroundFilterConfigItems.count > 0 {
@@ -299,7 +299,7 @@ public class VisualEffectCustomFilterView: VisualEffectView {
         try? self.applyRequestedFilterEffects();
       },
       completion: {
-        self.shouldAutomaticallyReApplyEffects = true;
+        self.isBeingAnimated = true;
       }
     );
   };
