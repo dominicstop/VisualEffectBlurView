@@ -12,7 +12,6 @@ import DGSwiftUtilities
 @available(iOS 13, *)
 public class VisualEffectCustomFilterView: VisualEffectView {
 
-  private var _didSetup = false;
   public var gradientCache: LayerFilterConfig.ImageGradientCache = [:];
   
   // MARK: - Init
@@ -32,8 +31,6 @@ public class VisualEffectCustomFilterView: VisualEffectView {
       foregroundFilters: initialForegroundFilters,
       tintConfig: tintConfig
     );
-    
-    self._didSetup = true;
   };
   
   // MARK: - Methods
@@ -48,10 +45,15 @@ public class VisualEffectCustomFilterView: VisualEffectView {
   public func immediatelyApplyFilters(
     backgroundFilters backgroundFilterConfigs: [LayerFilterConfig],
     foregroundFilters foregroundFilterConfigs: [LayerFilterConfig]? = nil,
-    tintConfig: TintConfig? = nil
+    tintConfig: TintConfig? = nil,
+    isSettingFiltersForTheFirstTime: Bool? = nil
   ) throws {
     
     self.prepareToApplyNewFilters();
+    
+    let isSettingFiltersForTheFirstTime =
+          isSettingFiltersForTheFirstTime
+       ?? !self.doesCurrentlyHaveCustomFilters;
     
     let backgroundFilterTypes = backgroundFilterConfigs.map {
       $0.createAssociatedFilterType(gradientCache: &self.gradientCache);
@@ -69,7 +71,7 @@ public class VisualEffectCustomFilterView: VisualEffectView {
     
     try self.setBackgroundFiltersViaEffectDesc(
       withFilterTypes: backgroundFilterTypes,
-      shouldImmediatelyApplyFilter: self._didSetup
+      shouldImmediatelyApplyFilter: isSettingFiltersForTheFirstTime
     );
     
     if let foregroundFilterConfigs = foregroundFilterConfigs {
