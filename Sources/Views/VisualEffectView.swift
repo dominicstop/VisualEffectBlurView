@@ -171,6 +171,11 @@ open class VisualEffectView: UIVisualEffectView {
     );
   };
   
+  public var doesCurrentlyHaveCustomFilters: Bool {
+       self.currentBackgroundFilterTypes.count > 0
+    || self.currentForegroundFilterTypes.count > 0;
+  };
+  
   // MARK: - Properties
   // ------------------
   
