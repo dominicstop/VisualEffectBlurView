@@ -1,8 +1,8 @@
 //
-//  VisualEffectCustomFilterViewTest03Controller.swift
+//  VisualEffectAnimatableCustomFilterViewTest01Controller.swift
 //  VisualEffectBlurViewExample
 //
-//  Created by Dominic Go on 12/25/24.
+//  Created by Dominic Go on 12/28/24.
 //
 
 import UIKit
@@ -144,7 +144,7 @@ fileprivate struct GradientPresets {
 };
 
 
-class VisualEffectCustomFilterViewTest03Controller: UIViewController {
+class VisualEffectAnimatableCustomFilterViewTest01Controller: UIViewController {
   
   static let identityBackgroundFilterConfigs: [LayerFilterConfig] = [
     .bias(amount: 0.5),
@@ -174,15 +174,20 @@ class VisualEffectCustomFilterViewTest03Controller: UIViewController {
     );
   };
   
-  static let identityForegroundFilterConfigs: [LayerFilterConfig] = [
-    // .bias(amount: 0.5),
-    // .luminanceCompression(amount: 1),
-    .colorMatrixVibrant(.identity),
+  static var identityForegroundFilterConfigs: [LayerFilterConfig] {
+    Self.identityBackgroundFilterConfigs.filter {
+      switch $0 {
+        case .variadicBlur,
+             .luminanceCompression:
+          return false;
+        
+        default:
+          return true;
+      };
+    };
+  };
 
-
-  ];
-
-  weak var visualEffectView: VisualEffectCustomFilterView?;
+  weak var visualEffectView: VisualEffectAnimatableCustomFilterView?;
   
   weak var blurRadiusLabel: UILabel?;
   weak var intensityLabel: UILabel?;
@@ -196,51 +201,33 @@ class VisualEffectCustomFilterViewTest03Controller: UIViewController {
     self.view = view;
   };
   
-  var counterForCurrentEffectGroup: Int = 0;
-  
-  var indexForCurrentEffectGroup: Int {
-    self.counterForCurrentEffectGroup % Self.effectGroups.count;
-  };
-  
-  var currentBackgroundEffectGroup: [LayerFilterConfig] {
-    Self.effectGroups[self.indexForCurrentEffectGroup].backgroundFilters;
-  };
-  
-  var currentForegroundEffectGroup: [LayerFilterConfig] {
-    Self.effectGroups[self.indexForCurrentEffectGroup].foregroundFilters;
-  };
-  
-  var currentTintConfig: TintConfig? {
-    Self.effectGroups[self.indexForCurrentEffectGroup].tintConfig;
-  };
-  
-  static var effectGroups: [(
-    backgroundFilters: [LayerFilterConfig],
-    foregroundFilters: [LayerFilterConfig],
-    tintConfig: TintConfig?
-  )] = {
-
-    return [
-      (
+  static var filterKeyframes: [CustomFilterKeyframeConfig] {
+    [
+      .init(
+        rootKeyframe: nil,
+        contentKeyframe: nil,
+        backdropKeyframe: nil,
         backgroundFilters: [
           .variadicBlur(
             radius: 8,
             imageGradientConfig: GradientPresets.leftToRightGradient01,
             shouldNormalizeEdges: true
           ),
-          .colorBlackAndWhite(amount: 1.25),
+          .colorBlackAndWhite(amount: 1),
         ],
         foregroundFilters: [
           .colorMatrixVibrant(ColorMatrixRGBAPreset.preset01.colorMatrix),
-          // .brightenColors(amount: -1),
         ],
         tintConfig: .init(
           tintColor: .red,
-          opacity: 0.25,
+          opacity: 1,
           blendMode: .color
         )
       ),
-      (
+      .init(
+        rootKeyframe: nil,
+        contentKeyframe: nil,
+        backdropKeyframe: nil,
         backgroundFilters: [
           // reset
           .variadicBlur(
@@ -254,10 +241,9 @@ class VisualEffectCustomFilterViewTest03Controller: UIViewController {
             imageGradientConfig: GradientPresets.rightToLeftGradient01,
             shouldNormalizeEdges: true
           ),
-          .colorBlackAndWhite(amount: 1),
+          .colorBlackAndWhite(amount: 0),
         ],
         foregroundFilters: [
-          // .brightenColors(amount: 0)
           .colorMatrixVibrant(ColorMatrixRGBAPreset.preset02.colorMatrix),
         ],
         tintConfig: .init(
@@ -266,7 +252,10 @@ class VisualEffectCustomFilterViewTest03Controller: UIViewController {
           blendMode: .color
         )
       ),
-      (
+      .init(
+        rootKeyframe: nil,
+        contentKeyframe: nil,
+        backdropKeyframe: nil,
         backgroundFilters: [
           // reset
           .variadicBlur(
@@ -284,13 +273,19 @@ class VisualEffectCustomFilterViewTest03Controller: UIViewController {
           .saturateColors(amount: 2),
           .contrastColors(amount: 2),
         ],
-        foregroundFilters: [
-          // .gaussianBlur(radius: 8, shouldNormalizeEdges: false),
+        foregroundFilters:  [
           .colorMatrixVibrant(ColorMatrixRGBAPreset.preset03.colorMatrix),
         ],
-        tintConfig: .noTint
+        tintConfig: .init(
+          tintColor: .clear,
+          opacity: 0,
+          blendMode: nil
+        )
       ),
-      (
+      .init(
+        rootKeyframe: nil,
+        contentKeyframe: nil,
+        backdropKeyframe: nil,
         backgroundFilters: [
           // reset
           .variadicBlur(
@@ -309,12 +304,14 @@ class VisualEffectCustomFilterViewTest03Controller: UIViewController {
           .brightenColors(amount: -0.5),
         ],
         foregroundFilters: [
-          // .gaussianBlur(radius: 0, shouldNormalizeEdges: false),
           .colorMatrixVibrant(ColorMatrixRGBAPreset.preset04.colorMatrix),
         ],
-        tintConfig: .noTint
+        tintConfig: nil
       ),
-      (
+      .init(
+        rootKeyframe: nil,
+        contentKeyframe: nil,
+        backdropKeyframe: nil,
         backgroundFilters: [
           // old
           .variadicBlur(
@@ -336,9 +333,12 @@ class VisualEffectCustomFilterViewTest03Controller: UIViewController {
             ColorMatrixRGBAPreset.preset05.colorMatrix
           )
         ],
-        tintConfig: .noTint
+        tintConfig: nil
       ),
-      (
+      .init(
+        rootKeyframe: nil,
+        contentKeyframe: nil,
+        backdropKeyframe: nil,
         backgroundFilters: [
           // old
           .variadicBlur(
@@ -355,14 +355,17 @@ class VisualEffectCustomFilterViewTest03Controller: UIViewController {
           .brightenColors(amount: 0),
         ],
         foregroundFilters: [
-        .colorMatrixVibrant(
+          .colorMatrixVibrant(
             ColorMatrixRGBAPreset.preset06.colorMatrix
           )
         ],
-        tintConfig: .noTint
+        tintConfig: nil
       ),
-      (
-        backgroundFilters: [
+      .init(
+        rootKeyframe: nil,
+        contentKeyframe: nil,
+        backdropKeyframe: nil,
+        backgroundFilters:  [
           // old
           .variadicBlur(
             radius: 0,
@@ -376,15 +379,18 @@ class VisualEffectCustomFilterViewTest03Controller: UIViewController {
             shouldNormalizeEdges: true
           ),
           .luminanceCompression(amount: 0.4),
-        ],
-        foregroundFilters: [
-          .colorMatrixVibrant(
-            ColorMatrixRGBAPreset.preset07.colorMatrix
-          )
-        ],
-        tintConfig: .noTint
+          ],
+          foregroundFilters: [
+            .colorMatrixVibrant(
+              ColorMatrixRGBAPreset.preset07.colorMatrix
+            )
+          ],
+        tintConfig: nil
       ),
-      (
+      .init(
+        rootKeyframe: nil,
+        contentKeyframe: nil,
+        backdropKeyframe: nil,
         backgroundFilters: [
           // old
           .variadicBlur(
@@ -406,9 +412,12 @@ class VisualEffectCustomFilterViewTest03Controller: UIViewController {
             ColorMatrixRGBAPreset.preset08.colorMatrix
           )
         ],
-        tintConfig: .noTint
+        tintConfig: nil
       ),
-      (
+      .init(
+        rootKeyframe: nil,
+        contentKeyframe: nil,
+        backdropKeyframe: nil,
         backgroundFilters: [
           // old
           .variadicBlur(
@@ -429,10 +438,13 @@ class VisualEffectCustomFilterViewTest03Controller: UIViewController {
             ColorMatrixRGBAPreset.preset09.colorMatrix
           )
         ],
-        tintConfig: .noTint
+        tintConfig: nil
       ),
-      (
-        backgroundFilters: [
+      .init(
+        rootKeyframe: nil,
+        contentKeyframe: nil,
+        backdropKeyframe: nil,
+        backgroundFilters:  [
            // old
           .variadicBlur(
             radius: 0,
@@ -452,9 +464,12 @@ class VisualEffectCustomFilterViewTest03Controller: UIViewController {
             ColorMatrixRGBAPreset.preset10.colorMatrix
           )
         ],
-        tintConfig: .noTint
+        tintConfig: nil
       ),
-      (
+      .init(
+        rootKeyframe: nil,
+        contentKeyframe: nil,
+        backdropKeyframe: nil,
         backgroundFilters: [
            // old
           .variadicBlur(
@@ -475,9 +490,12 @@ class VisualEffectCustomFilterViewTest03Controller: UIViewController {
             ColorMatrixRGBAPreset.preset11.colorMatrix
           )
         ],
-        tintConfig: .noTint
+        tintConfig: nil
       ),
-      (
+      .init(
+        rootKeyframe: nil,
+        contentKeyframe: nil,
+        backdropKeyframe: nil,
         backgroundFilters: [
            // old
           .variadicBlur(
@@ -498,9 +516,12 @@ class VisualEffectCustomFilterViewTest03Controller: UIViewController {
             ColorMatrixRGBAPreset.preset12.colorMatrix
           )
         ],
-        tintConfig: .noTint
+        tintConfig: nil
       ),
-      (
+      .init(
+        rootKeyframe: nil,
+        contentKeyframe: nil,
+        backdropKeyframe: nil,
         backgroundFilters: [
            // old
           .variadicBlur(
@@ -521,9 +542,12 @@ class VisualEffectCustomFilterViewTest03Controller: UIViewController {
             ColorMatrixRGBAPreset.preset13.colorMatrix
           )
         ],
-        tintConfig: .noTint
+        tintConfig: nil
       ),
-      (
+      .init(
+        rootKeyframe: nil,
+        contentKeyframe: nil,
+        backdropKeyframe: nil,
         backgroundFilters: [
            // old
           .variadicBlur(
@@ -534,32 +558,56 @@ class VisualEffectCustomFilterViewTest03Controller: UIViewController {
           .colorMatrix(ColorMatrixRGBAPreset.preset07.colorMatrix),
         ],
         foregroundFilters: [
+          .gaussianBlur(
+            radius: 6,
+            shouldNormalizeEdges: false
+          ),
           .colorMatrixVibrant(
             ColorMatrixRGBAPreset.preset14.colorMatrix
-          )
+          ),
         ],
-        tintConfig: .noTint
+        tintConfig: .init(
+          tintColor: .yellow,
+          opacity: 0.5,
+          blendMode: .colorBurn
+        )
       ),
-      (
+      .init(
+        rootKeyframe: nil,
+        contentKeyframe: nil,
+        backdropKeyframe: nil,
         backgroundFilters: [
           .colorMatrix(ColorMatrixRGBAPreset.preset09.colorMatrix),
         ],
         foregroundFilters: [
+          .gaussianBlur(
+            radius: 0,
+            shouldNormalizeEdges: false
+          ),
           .colorMatrixVibrant(
             ColorMatrixRGBAPreset.preset15.colorMatrix
           )
         ],
-        tintConfig: .noTint
+        tintConfig: .init(
+          tintColor: .green,
+          opacity: 0.75,
+          blendMode: .hardLight
+        )
       ),
-      (
+      .init(
+        rootKeyframe: nil,
+        contentKeyframe: nil,
+        backdropKeyframe: nil,
         backgroundFilters: [
           .colorMatrix(.identity),
         ],
-        foregroundFilters: [],
+        foregroundFilters: [
+          .colorMatrixVibrant(.identity),
+        ],
         tintConfig: .noTint
       ),
-    ];
-  }();
+    ]
+  };
   
   override func viewDidLoad() {
     self.setupBackgroundView();
@@ -567,8 +615,10 @@ class VisualEffectCustomFilterViewTest03Controller: UIViewController {
     let blurContainerView: UIView = {
       let containerView = UIView();
       
-      let effectView = try! VisualEffectCustomFilterView(
-        withEffect: UIBlurEffect(style: .regular)
+      let effectView = try! VisualEffectAnimatableCustomFilterView(
+        identityBackgroundFilters: Self.identityBackgroundFilterConfigs,
+        identityForegroundFilters: Self.identityForegroundFilterConfigs,
+        initialKeyframe: Self.filterKeyframes.first!
       );
       
       self.visualEffectView = effectView;
@@ -614,60 +664,61 @@ class VisualEffectCustomFilterViewTest03Controller: UIViewController {
       ),
     ]);
     
-    let nextBlurEffectButton: UIButton = {
-      let button = UIButton();
-      
-      button.setTitle("Next Effect", for: .normal);
-      
-      if #available(iOS 15.0, *) {
-        button.configuration = .filled();
+    if false {
+      let nextBlurEffectButton: UIButton = {
+        let button = UIButton();
         
-      } else {
-        button.backgroundColor = .blue;
-      };
+        button.setTitle("Next Effect", for: .normal);
+        
+        if #available(iOS 15.0, *) {
+          button.configuration = .filled();
+          
+        } else {
+          button.backgroundColor = .blue;
+        };
+        
+        button.addTarget(
+          self,
+          action: #selector(self.onPressButtonNextEffect(_:)),
+          for: .touchUpInside
+        );
+        
+        return button;
+      }();
       
-      button.addTarget(
-        self,
-        action: #selector(self.onPressButtonNextEffect(_:)),
-        for: .touchUpInside
-      );
+      let controlStack: UIStackView = {
+        let stack = UIStackView();
+        
+        stack.axis = .vertical;
+        stack.distribution = .equalSpacing;
+        stack.alignment = .fill;
+        stack.spacing = 20;
+        
+        stack.addArrangedSubview(nextBlurEffectButton);
       
-      return button;
-    }();
-    
-    let controlStack: UIStackView = {
-      let stack = UIStackView();
+        return stack;
+      }();
       
-      stack.axis = .vertical;
-      stack.distribution = .equalSpacing;
-      stack.alignment = .fill;
-      stack.spacing = 20;
+      controlStack.translatesAutoresizingMaskIntoConstraints = false;
+      self.view.addSubview(controlStack);
       
-      stack.addArrangedSubview(nextBlurEffectButton);
-    
-      return stack;
-    }();
-    
-    controlStack.translatesAutoresizingMaskIntoConstraints = false;
-    self.view.addSubview(controlStack);
-    
-    NSLayoutConstraint.activate([
-      controlStack.bottomAnchor.constraint(
-        equalTo: self.view.safeAreaLayoutGuide.bottomAnchor,
-        constant: -20
-      ),
-      controlStack.leadingAnchor.constraint(
-        equalTo: self.view.safeAreaLayoutGuide.leadingAnchor,
-        constant: 20
-      ),
-      controlStack.trailingAnchor.constraint(
-        equalTo: self.view.safeAreaLayoutGuide.trailingAnchor,
-        constant: -20
-      ),
-    ]);
+      NSLayoutConstraint.activate([
+        controlStack.bottomAnchor.constraint(
+          equalTo: self.view.safeAreaLayoutGuide.bottomAnchor,
+          constant: -20
+        ),
+        controlStack.leadingAnchor.constraint(
+          equalTo: self.view.safeAreaLayoutGuide.leadingAnchor,
+          constant: 20
+        ),
+        controlStack.trailingAnchor.constraint(
+          equalTo: self.view.safeAreaLayoutGuide.trailingAnchor,
+          constant: -20
+        ),
+      ]);
+    };
     
     self.setupEffectContents();
-    
     self.startAnimation();
   };
   
@@ -768,66 +819,19 @@ class VisualEffectCustomFilterViewTest03Controller: UIViewController {
       "\n"
     );
   
-    var queue = Self.effectGroups;
+    var queue = Self.filterKeyframes;
+    queue.remove(at: 0);
     
-    try! effectView.setFiltersViaEffectDesc(
-      backgroundFilterConfigItems: Self.identityBackgroundFilterConfigs,
-      foregroundFilterConfigItems: Self.identityForegroundFilterConfigs,
-      shouldImmediatelyApplyFilter: true
-    );
-  
+
     func recursivelyDequeue(){
       guard queue.count > 0 else {
         return;
       };
       
       let queueCount = queue.count;
-      let currentIndex = Self.effectGroups.count - queueCount;
+      let currentIndex = Self.filterKeyframes.count - queueCount;
       
       let currentKeyframe = queue.removeFirst();
-      
-      var gradientConfigs = currentKeyframe.backgroundFilters.compactMap {
-        switch $0 {
-          case let .variadicBlur(
-            radius,
-            imageGradientConfig,
-            shouldNormalizeEdges,
-            shouldNormalizeEdgesToTransparent,
-            shouldUseHardEdges
-          ):
-            return imageGradientConfig;
-        
-          default:
-            return nil;
-        };
-      };
-      
-      var gradientConfigsHasMatch = gradientConfigs.map {
-        effectView.gradientCache[$0] != nil;
-      };
-       
-      print(
-        "recursivelyDequeue",
-        "\n - queueCount:", queueCount,
-        "\n - currentIndex:", currentIndex,
-        "\n - gradientConfigs.count:", gradientConfigs.count,
-        "\n - gradientConfigsHasMatch:", gradientConfigsHasMatch,
-        "\n"
-      );
-      
-      try! effectView.updateBackgroundFiltersViaEffectDesc(
-        withFilterConfigItems: currentKeyframe.backgroundFilters
-      );
-      
-      // try! effectView.applyRequestedBackgroundFilterEffects();
-      // return;
-      
-      let animationBlocks = try! effectView.createAnimationBlocks(
-        backgroundFilterConfigItems: currentKeyframe.backgroundFilters,
-        foregroundFilterConfigItems: currentKeyframe.foregroundFilters
-      );
-      
-      try! animationBlocks.prepare();
       
       let animationConfig: AnimationConfig = .presetCurve(
         duration: 1,
@@ -837,39 +841,29 @@ class VisualEffectCustomFilterViewTest03Controller: UIViewController {
       let animator = animationConfig.createAnimator();
       self.currentAnimator = animator;
       
+      let animationBlocks = try! currentKeyframe.createAnimations(
+        forTarget: effectView,
+        withPrevKeyframe: nil,
+        forPropertyAnimator: animator
+      );
+      
+      try! animationBlocks.setup();
+      
       animator.addAnimations {
-        animationBlocks.animations();
+        animationBlocks.applyKeyframe();
       };
       
-      
+      animator.addCompletion {
+        animationBlocks.completion($0 == .end);
+      };
       
       animator.addCompletion { _ in
-        animationBlocks.completion();
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+          recursivelyDequeue();
+        };
       };
       
-      // animator.pausesOnCompletion = true;
-      // animator.isInterruptible = true;
-      
-      animator.addObserver(self,
-        forKeyPath: #keyPath(UIViewPropertyAnimator.isRunning),
-        options: [.new],
-        context: nil
-      );
-      
-      animator.addObserver(self,
-        forKeyPath: #keyPath(UIViewPropertyAnimator.fractionComplete),
-        options: [.new],
-        context: nil
-      );
-      
-      animator.addCompletion { _ in
-        recursivelyDequeue();
-      };
-      
-      DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-        // performAnimation();
-        animator.startAnimation();
-      };
+      animator.startAnimation();
     };
     
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -878,52 +872,6 @@ class VisualEffectCustomFilterViewTest03Controller: UIViewController {
   };
 
   @objc func onPressButtonNextEffect(_ sender: UIButton){
-    self.counterForCurrentEffectGroup += 1;
-    print(
-      "counterForCurrentEffectGroup:", self.counterForCurrentEffectGroup,
-      "currentEffectGroup:", self.currentBackgroundEffectGroup,
-      "\n"
-    );
-    
-    try! self.visualEffectView!.immediatelyApplyFilters(
-      backgroundFilters: self.currentBackgroundEffectGroup,
-      foregroundFilters: self.currentForegroundEffectGroup,
-      tintConfig: self.currentTintConfig
-    );
-  };
-  
-  @objc override func observeValue(
-    forKeyPath keyPath: String?,
-    of object: Any?,
-    change: [NSKeyValueChangeKey : Any]?,
-    context: UnsafeMutableRawPointer?
-  ) {
-  
-    print(
-      "observeValue",
-      "\n - keyPath:", keyPath,
-      "\n - object:", object,
-      "\n - change:", change,
-      "\n - change[kindKey]:", change![NSKeyValueChangeKey.kindKey],
-      "\n - change[notificationIsPriorKey]:", change![NSKeyValueChangeKey.notificationIsPriorKey],
-      "\n - change[indexesKey]:", change![NSKeyValueChangeKey.indexesKey],
-      "\n - change[oldKey]:", change![NSKeyValueChangeKey.oldKey],
-      "\n - change[newKey]:", change![NSKeyValueChangeKey.newKey],
-      "\n - context:", context,
-      "\n"
-    );
-    
-    guard let newValue = change![NSKeyValueChangeKey.newKey] as? Bool,
-          !newValue
-    else {
-      return;
-    };
-    
-    return;
-    
-    self.currentAnimator!.isReversed = true;
-    self.currentAnimator!.fractionComplete = 0;
-    self.currentAnimator!.pausesOnCompletion = false
-    self.currentAnimator?.startAnimation();
+    // no-op
   };
 };
