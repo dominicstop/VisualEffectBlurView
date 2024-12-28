@@ -1477,7 +1477,7 @@ extension LayerFilterType: EnumCaseStringRepresentable {
 // -------------------------------
 
 public extension Array where Element == LayerFilterType {
-  
+
   var asBackgroundFilterEntriesWrapped: [UVEFilterEntryWrapper] {
     self.compactMap {
       try? .init(
@@ -1492,6 +1492,62 @@ public extension Array where Element == LayerFilterType {
   var asIdentityForBackground: Self {
     self.map {
       $0.asIdentityForBackground;
+    };
+  };
+  
+  func replaceMatchingElements(
+    withOther otherFilterTypes: [LayerFilterType],
+    shouldUseReferenceEqualityForImageComparison: Bool? = nil
+  ) -> Self {
+  
+    let useReferenceEqualityForImageComparison: Bool = {
+      if let explicitFlag = shouldUseReferenceEqualityForImageComparison {
+        return explicitFlag;
+      };
+      
+      let variadicFilterCountCurrent = self.filter {
+        $0.associatedFilterTypeName == .variadicBlur;
+      };
+      
+      if variadicFilterCountCurrent.count > 1 {
+        return true;
+      };
+      
+      let variadicFilterCountOther = otherFilterTypes.filter {
+        $0.associatedFilterTypeName == .variadicBlur;
+      };
+      
+      if variadicFilterCountOther.count > 1 {
+        return true;
+      };
+      
+      return false;
+    }();
+  
+    return self.map { currentFilter in
+      switch currentFilter {
+        case let .variadicBlur(_, currentMaskImage, _, _, _):
+          let otherFilter = otherFilterTypes.first {
+            switch $0 {
+              case let .variadicBlur(_, otherMaskImage, _, _, _):
+                return useReferenceEqualityForImageComparison
+                  ? currentMaskImage === otherMaskImage
+                  : true;
+              
+              default:
+                return false;
+            };
+          };
+          
+          return otherFilter ?? currentFilter;
+      
+        default:
+          let otherFilter = otherFilterTypes.first {
+            currentFilter.decodedFilterName == $0.decodedFilterName;
+          };
+          
+          return otherFilter ?? currentFilter;
+      };
     };
   };
 };
