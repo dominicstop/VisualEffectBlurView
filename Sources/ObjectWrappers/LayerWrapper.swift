@@ -116,6 +116,10 @@ public class LayerWrapper: ObjectWrapper<
     );
   };
   
+  public func getValueForCompFilter() throws -> Any? {
+    try self.getValue(forHashedString: .propertyGetterCompFilter);
+  };
+  
   // MARK: - Helpers
   // ---------------
   
