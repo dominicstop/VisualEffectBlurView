@@ -659,7 +659,8 @@ class VisualEffectViewExperiment01ViewController: UIViewController {
       : [nextFilterType!];
     
     let shouldSetFilter =
-      prevFilterType?.decodedFilterName != nextFilterType?.decodedFilterName;
+         prevFilterType?.decodedFilterName != nextFilterType?.decodedFilterName
+      || nextFilterType?.associatedFilterTypeName == .variadicBlur;
       
     if shouldSetFilter {
       try! visualEffectView.setBackgroundFiltersViaEffectDesc(
