@@ -17,7 +17,8 @@ open class VisualEffectView: UIVisualEffectView {
   public var currentForegroundFilterTypes: [LayerFilterType] = [];
   public var currentTintConfig: TintConfig?;
   
-  open var shouldAutomaticallyReApplyEffects = true;
+  public var isBeingAnimated = false;
+  public var shouldAutomaticallyReApplyEffects = true;
   
   /// Old name: `shouldOnlyShowBackdropLayer`
   public var shouldOnlyShowBgLayer: Bool = false {
@@ -244,7 +245,8 @@ open class VisualEffectView: UIVisualEffectView {
   
   public override func layoutSubviews() {
     if #available(iOS 13, *),
-       self.shouldAutomaticallyReApplyEffects
+       self.shouldAutomaticallyReApplyEffects,
+       !self.isBeingAnimated
     {
       try? self.reapplyEffects()
     };
