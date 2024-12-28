@@ -340,6 +340,39 @@ public extension Array where Element == LayerFilterConfig {
       $0.associatedFilterType;
     };
   };
+  
+  func replaceMatchingElements(
+    withOther otherFilterTypes: [LayerFilterConfig]
+  ) -> Self {
+
+    self.map { currentFilter in
+      switch currentFilter {
+        case let .variadicBlur(_, currentMaskConfig, _, _, _):
+          let otherFilterType = otherFilterTypes.first {
+            switch $0 {
+              case let .variadicBlur(_, otherMaskConfig, _, _, _):
+                return currentMaskConfig.hashValue == otherMaskConfig.hashValue;
+              
+              default:
+                return false;
+            };
+          };
+          
+          guard let otherFilterType = otherFilterType else {
+            return currentFilter;
+          };
+
+          return otherFilterType;
+      
+        default:
+          let otherFilter = otherFilterTypes.first {
+            currentFilter.decodedFilterName == $0.decodedFilterName;
+          };
+          
+          return otherFilter ?? currentFilter;
+      };
+    };
+  };
 };
 
 
