@@ -25,6 +25,17 @@ class Experiment03ViewController: UIViewController {
   
   override func viewDidLoad() {
   
+    // let displayLink = InLineDisplayLink(shouldRetain: true) {
+    //   print("InLineDisplayLink",
+    //     "\n - timestamp:", $0.displayLink.timestamp,
+    //     "\n - elapsedTime:", $0.sender.elapsedTime,
+    //     "\n - frameCounter:", $0.sender.frameCounter,
+    //     "\n - frameDuration:", $0.sender.frameDuration,
+    //     "\n - frameTimestampDelta:", $0.sender.frameTimestampDelta,
+    //     "\n"
+    //   );
+    // };
+
     self.setupBackgroundView();
     
     let blurContainerView: UIView = {
@@ -1726,7 +1737,7 @@ class Experiment03ViewController: UIViewController {
         
         
         actions += combineEffects.enumerated().map {
-        let (index, (blurEffectStyle, effect)) = $0;
+          let (index, (blurEffectStyle, effect)) = $0;
           
           return {
             
@@ -1766,7 +1777,7 @@ class Experiment03ViewController: UIViewController {
               "\n - UIVisualEffectView instance:", effectView,
               "\n - UIVisualEffectView subview count:", effectView.subviews.count,
               "\n - UIVisualEffectView subviews types:", effectView.subviews.map({ $0.className }),
-              "\n - UIVisualEffectView subviews:", effectView.subviews.enumerated().map({ "\n   - \($0.offset) subview:" + $0.element.debugDescription + " - backgroundColor: \($0.element.backgroundColor) - layer.filters: \($0.element.layer.filters) - layer.compositingFilter: \($0.element.layer.compositingFilter)" }).reduce(into: "", { $0 += $1 }),
+              "\n - UIVisualEffectView subviews:", effectView.subviews.enumerated().map({ "\n   - \($0.offset) subview:" + $0.element.debugDescription + " - backgroundColor: \($0.element.backgroundColor) - layer.filters: \($0.element.layer.filters) - layer.compositingFilter: \($0.element.layer.compositingFilter) - layer.backgroundFilters: \($0.element.layer.backgroundFilters)" }).reduce(into: "", { $0 += $1 }),
               
               "\n - UIVisualEffectView._contentHost:", effectViewWrapped.hostForContentWrapped!.wrappedObject!,
               "\n - UIVisualEffectView._contentHost.contentView:", effectViewWrapped.hostForContentWrapped!.viewContent,
@@ -1774,6 +1785,20 @@ class Experiment03ViewController: UIViewController {
               "\n - UIVisualEffectView.contentView:", effectViewWrapped.viewContentWrapped!.wrappedObject!,
               "\n - UIVisualEffectView.contentView.filters:", try? effectViewWrapped.viewContentWrapped!.getCurrentFilters(),
               "\n - UIVisualEffectView.contentView.viewEffects:", try? effectViewWrapped.viewContentWrapped!.getEffectsForView(),
+              "\n - UIVisualEffectView.contentView.viewEffects as filter entry:", {
+                guard let effects = try? effectViewWrapped.viewContentWrapped!.getEffectsForView(),
+                      let effect = effects.firstObject as? AnyObject
+                else {
+                  return "N/A";
+                };
+                
+                return "N/A";
+                
+                // return "  - wrapper.filterKind: \(effect.value(forKey: "filterType"))"
+                //  + "\n  - configurationValues: \(effect.value(forKey: "configurationValues"))"
+                //  + "\n  - requestedValues: \(effect.value(forKey: "requestedValues"))"
+                //  + "\n  - identityValues: \(effect.value(forKey: "identityValues"))"
+              }(),
               "\n - UIVisualEffectView.contentView.containedView:", try? effectViewWrapped.viewContentWrapped!.getViewContained(),
               "\n - UIVisualEffectView.contentView.disableGroupFiltering:", try! effectViewWrapped.viewContentWrapped!.getShouldDisableFilteringTheGroup(),
               
@@ -1853,6 +1878,7 @@ class Experiment03ViewController: UIViewController {
                 " - UIVisualEffectView.contentView.layer:",
                 "\n   - CALayer:", viewContentLayer,
                 "\n   - CALayer.filters:", viewContentLayer.filters,
+                "\n   - CALayer.backgroundFilters:", viewContentLayer.backgroundFilters,
                 "\n   - CALayer.compositingFilter:", viewContentLayer.compositingFilter,
                 "\n   - CALayer.filters:", (viewContentLayerWrapped.currentFiltersWrapped ?? []).enumerated().map({
                     "\n - \($0.offset) filter: " + $0.element.wrappedObject!.debugDescription
@@ -1866,6 +1892,10 @@ class Experiment03ViewController: UIViewController {
             print("\n\n");
           };
         };
+        
+        //
+        actions = [actions.first!];
+        
         
         func recursivelyDequeueAction(){
           guard actions.count > 0 else {
@@ -1882,7 +1912,257 @@ class Experiment03ViewController: UIViewController {
         recursivelyDequeueAction();
       };
       
+      //
+      func test47(){
+        let blurEffect = UIBlurEffect(style: .regular);
+        
+        effectView = try! .init(withEffect: blurEffect);
+        self.visualEffectView = effectView;
+
+        /// Type: `_UIVisualEffectHost`
+        /// Property: `UIVisualEffectView._backgroundHost`
+        ///
+        let backgroundHostWrapped: UVEHostWrapper? = effectView.hostForBackgroundWrapped;
+        let backgroundHost: NSObject? = backgroundHostWrapped?.wrappedObject;
+        
+        /// Type: `_UIVisualEffectBackdropView`
+        /// Property: `_UIVisualEffectHost.contentView`
+        /// Full Path: `UIVisualEffectView._backgroundHost.contentView`
+        ///
+        let backgroundHostContentViewWrapped: UVEBackdropViewWrapper = effectView.wrapper.backgroundViewWrapped!;
+        let backgroundHostContentView: NSObject = backgroundHostContentViewWrapped.wrappedObject!;
+        
+        /// Type: `UICABackdropLayer` - `CALayer` subclass
+        /// Property: `_UIVisualEffectBackdropView.backdropLayer`
+        /// Full Path: `UIVisualEffectView._backgroundHost.contentView.backdropLayer`
+        ///
+        let backgroundHostLayerWrapped: LayerBackgroundWrapper = backgroundHostContentViewWrapped.backgroundLayerWrapped!;
+        let backgroundHostLayer = backgroundHostLayerWrapped.wrappedObject!;
+        
+        /// Type: `_UIVisualEffectHost`
+        /// `UIVisualEffectView._contentHost`
+        ///
+        let contentHostWrapped: UVEHostWrapper? = effectView.wrapper.hostForContentWrapped;
+        let contentHost = contentHostWrapped?.wrappedObject;
+        
+        let hostForContentWrapped =  effectView.hostForContentWrapped!.wrappedObject!;
+        
+        /// Type: `_UIVisualEffectContentView`
+        /// `UIVisualEffectView._contentHost.contentView`
+        ///
+        let contentHostContentViewWrapped: UVEContentViewWrapper! = effectView.wrapper.viewContentWrapped;
+        let contentHostContentView = contentHostContentViewWrapped!.wrappedObject!;
+        
+        /// Type: `_UIVisualEffectContentView`
+        /// `UIVisualEffectView._contentHost.contentView.layer`
+        ///
+        let contentHostLayer = contentHostContentView.layer;
+        let contentHostLayerWrapped: LayerWrapper! = .init(objectToWrap: contentHostLayer);
+        
+        try! effectView.immediatelyRemoveAllBackgroundFilters();
+        try! effectView.directlySetTint(forConfig: .init(tintColor: .red, opacity: 1, blendMode: .color))
+        
+        let tintLayerWrapped = effectView.wrapper!.tintViewWrapped!.layerWrapped!;
+        let tintLayer = tintLayerWrapped.wrappedObject!;
+        
+        let animationConfig: AnimationConfig = .presetCurve(duration: 2, curve: .easeIn);
+        
+        if false  {
+          let animation = animationConfig.createBasicAnimation()!;
+          animation.keyPath = "compositingFilter";
+          animation.fromValue = BlendMode.color.asCompositingFilterName;
+          animation.toValue = BlendMode.darken.asCompositingFilterName;
+          tintLayer.add(animation, forKey: "compositingFilter");
+        };
+        
+        let animator = animationConfig.createAnimator();
+        animator.addAnimations {
+          let blankTime = 0.0;
+          
+          UIView.animateKeyframes(
+            withDuration: UIView.inheritedAnimationDuration,
+            delay: 0
+          ) {
+            UIView.addKeyframe(
+              withRelativeStartTime: 0,
+              relativeDuration: (1/2) - (blankTime/2)
+            ) {
+              tintLayer.opacity = 0;
+            };
+            UIView.addKeyframe(
+              withRelativeStartTime: (1/2) + (blankTime/2),
+              relativeDuration: (1/2) - (blankTime/2)
+            ) {
+              tintLayer.opacity = 1;
+            };
+          };
+        };
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+          animator.startAnimation();
+        };
+        
+      };
+      
+      func test48(){
+        let blurEffect = UIBlurEffect(style: .regular);
+        
+        let tintConfigStart: TintConfig = .init(tintColor: .red, opacity: 1, blendMode: .darken);
+        let tintConfigEnd: TintConfig = .init(tintColor: .blue, opacity: 1, blendMode: .color);
+        
+        let animatableEffectView = try! VisualEffectAnimatableCustomFilterView(
+          withInitialBackgroundFilters: [],
+          tintConfig: tintConfigStart
+        );
+        
+        effectView = animatableEffectView;
+        self.visualEffectView = animatableEffectView;
+        
+        let animationConfig: AnimationConfig = .presetCurve(duration: 2, curve: .easeIn);
+        let animator = animationConfig.createAnimator();
+        
+        let animationBlocks = try! tintConfigEnd.createAnimations(
+          forTarget: animatableEffectView,
+          withPrevKeyframe: nil,
+          forPropertyAnimator: animator
+        );
+        
+        try! animationBlocks.setup();
+        
+        animator.addAnimations {
+          animationBlocks.applyKeyframe();
+        };
+        
+        animator.addCompletion { _ in
+          animationBlocks.completion(false);
+        };
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+          animator.startAnimation();
+        };
+        
+      };
+      
+      func test49(){
+      
+        let identityVariableBlurFilterConfigs: [LayerFilterConfig] = GradientPresets.allGradients.map {
+          .variadicBlur(
+            radius: 0,
+            imageGradientConfig: $0,
+            shouldNormalizeEdges: true
+          );
+        };
+      
+        let baseIdentityBackgroundFilterConfigs: [LayerFilterConfig] = [
+          .bias(amount: 0.5),
+          .luminanceCompression(amount: 1),
+          .gaussianBlur(
+            radius: 0,
+            shouldNormalizeEdges: true
+          ),
+          .colorBlackAndWhite(amount: 0),
+          .contrastColors(amount: 1),
+          .saturateColors(amount: 1),
+          
+          .brightenColors(amount: 0),
+          .colorMatrix(.identity),
+          .luminosityCurveMap(
+            amount: 0,
+            point1: 0,
+            point2: 0.3,
+            point3: 0.6,
+            point4: 1
+          ),
+        ];
+        
+        let identityBackgroundFilterConfigs =
+          baseIdentityBackgroundFilterConfigs + identityVariableBlurFilterConfigs;
+          
+        let identityForegroundFilterConfigs = baseIdentityBackgroundFilterConfigs.filter {
+          switch $0 {
+            case .variadicBlur,
+                 .luminanceCompression:
+              return false;
+            
+            default:
+              return true;
+          };
+        };
+        
+        
+        // let blurEffect = UIBlurEffect(style: .regular);
+        
+        let tintConfigStart: TintConfig = .init(tintColor: .red, opacity: 1, blendMode: .darken);
+        let tintConfigEnd: TintConfig = .init(tintColor: .blue, opacity: 1, blendMode: .color);
+        
+        
+        let keyframeStart: CustomFilterKeyframeConfig = .init(
+          rootKeyframe: nil,
+          contentKeyframe: nil,
+          backdropKeyframe: nil,
+          backgroundFilters: [
+            .gaussianBlur(
+              radius: 8,
+              shouldNormalizeEdges: true
+            ),
+          ],
+          foregroundFilters: [
+            .colorMatrixVibrant(ColorMatrixRGBAPreset.preset06.colorMatrix),
+          ],
+          tintConfig: tintConfigStart
+        );
+        
+        let keyframeEnd: CustomFilterKeyframeConfig = .init(
+          rootKeyframe: nil,
+          contentKeyframe: nil,
+          backdropKeyframe: nil,
+          backgroundFilters: [
+            .gaussianBlur(
+              radius: 0,
+              shouldNormalizeEdges: true
+            ),
+          ],
+          foregroundFilters: nil,
+          tintConfig: tintConfigEnd
+        );
+        
+        let animatableEffectView = try! VisualEffectAnimatableCustomFilterView(
+          identityBackgroundFilters: identityBackgroundFilterConfigs,
+          identityForegroundFilters: identityForegroundFilterConfigs,
+          initialKeyframe: keyframeStart
+        );
+        
+        effectView = animatableEffectView;
+        self.visualEffectView = animatableEffectView;
+        
+        
+        let animationConfig: AnimationConfig = .presetCurve(duration: 2, curve: .easeIn);
+        let animator = animationConfig.createAnimator();
+        
+        let animationBlocks = try! keyframeEnd.createAnimations(
+          forTarget: animatableEffectView,
+          withPrevKeyframe: nil,
+          forPropertyAnimator: animator
+        );
+        
+        try! animationBlocks.setup();
+        
+        animator.addAnimations {
+          animationBlocks.applyKeyframe();
+        };
+        
+        animator.addCompletion { _ in
+          animationBlocks.completion(false);
+        };
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+          animator.startAnimation();
+        };
+        
+      };
+      
       test45_3();
+      // test49();
       
 
       effectView.layer.shadowRadius = 0;
@@ -2046,7 +2326,7 @@ class Experiment03ViewController: UIViewController {
       
       return label;
     }();
-  
+    
     contentView.translatesAutoresizingMaskIntoConstraints = false;
     visualEffectView.contentView.addSubview(contentView)
     return;
@@ -2071,4 +2351,137 @@ class Experiment03ViewController: UIViewController {
 
   @objc func onPressButtonNextEffect(_ sender: UIButton){
   };
+};
+
+fileprivate struct GradientPresets {
+
+  static var allGradients = [
+    Self.leftToRightGradient01,
+    Self.leftToRightGradient02,
+    Self.leftToRightGradient03,
+    Self.rightToLeftGradient01,
+    Self.rightToLeftGradient02,
+    Self.radialGradient01,
+    Self.radialGradient02,
+    Self.radialGradient03,
+    Self.radialGradient04,
+    Self.topDownGradient01,
+    Self.topDownGradient02,
+    Self.bottomToTopGradient01,
+    Self.bottomToTopGradient02,
+  ];
+  
+
+  static let leftToRightGradient01: ImageConfigGradient = .leftToRightGradient(
+    colors: [
+      .init(white: 0, alpha: 0),
+      .init(white: 0, alpha: 0.2),
+      .init(white: 0, alpha: 1),
+    ],
+    size: UIScreen.main.bounds.size
+  );
+  
+  static let leftToRightGradient02: ImageConfigGradient = .leftToRightGradient(
+    colors: [
+      .init(white: 0, alpha: 0),
+      .init(white: 0, alpha: 0.3),
+      .init(white: 0, alpha: 1),
+    ],
+    size: UIScreen.main.bounds.size
+  );
+  
+  static let leftToRightGradient03: ImageConfigGradient = .leftToRightGradient(
+    colors: [
+      .init(white: 0, alpha: 0),
+      .init(white: 0, alpha: 0.3),
+      .init(white: 0, alpha: 1),
+    ],
+    size: UIScreen.main.bounds.size
+  );
+  
+  static let rightToLeftGradient01: ImageConfigGradient = .leftToRightGradient(
+    colors: [
+      .init(white: 0, alpha: 1),
+      .init(white: 0, alpha: 0.25),
+      .init(white: 0, alpha: 0),
+    ],
+    size: UIScreen.main.bounds.size
+  );
+  
+  static let rightToLeftGradient02: ImageConfigGradient = .leftToRightGradient(
+    colors: [
+      .init(white: 0, alpha: 1),
+      .init(white: 0, alpha: 0),
+    ],
+    size: UIScreen.main.bounds.size
+  );
+  
+  static let radialGradient01: ImageConfigGradient = .centerToOuterEdgeGradient(
+    colors: [
+      .init(white: 0, alpha: 0),
+      .init(white: 0, alpha: 0.15),
+      .init(white: 0, alpha: 1),
+    ],
+    size: UIScreen.main.bounds.size
+  );
+  
+  static let radialGradient02: ImageConfigGradient = .centerToOuterEdgeGradient(
+    colors: [
+      .init(white: 0, alpha: 1),
+      .init(white: 0, alpha: 0.8),
+      .init(white: 0, alpha: 0),
+    ],
+    size: UIScreen.main.bounds.size
+  );
+  
+  static let radialGradient03: ImageConfigGradient = .centerToOuterEdgeGradient(
+    colors: [
+      .init(white: 0, alpha: 0),
+      .init(white: 0, alpha: 1),
+    ],
+    size: UIScreen.main.bounds.size
+  );
+  
+  static let radialGradient04: ImageConfigGradient = .centerToOuterEdgeGradient(
+    colors: [
+      .init(white: 0, alpha: 1),
+      .init(white: 0, alpha: 0),
+    ],
+    size: UIScreen.main.bounds.size
+  );
+  
+  static let topDownGradient01: ImageConfigGradient = .topDownGradient(
+    colors: [
+      .init(white: 0, alpha: 0),
+      .init(white: 0, alpha: 0.2),
+      .init(white: 0, alpha: 1),
+    ],
+    size: UIScreen.main.bounds.size
+  );
+  
+  static let topDownGradient02: ImageConfigGradient = .topDownGradient(
+    colors: [
+      .init(white: 0, alpha: 0),
+      .init(white: 0, alpha: 1),
+    ],
+    size: UIScreen.main.bounds.size
+  );
+  
+  static let bottomToTopGradient01: ImageConfigGradient = .topDownGradient(
+    colors: [
+      .init(white: 0, alpha: 1),
+      .init(white: 0, alpha: 0.1),
+      .init(white: 0, alpha: 0),
+    ],
+    size: UIScreen.main.bounds.size
+  );
+  
+  static let bottomToTopGradient02: ImageConfigGradient = .topDownGradient(
+    colors: [
+      .init(white: 0, alpha: 1),
+      .init(white: 0, alpha: 0),
+    ],
+    size: UIScreen.main.bounds.size
+  );
+
 };
