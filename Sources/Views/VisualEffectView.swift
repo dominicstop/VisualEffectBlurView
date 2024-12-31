@@ -250,6 +250,7 @@ open class VisualEffectView: UIVisualEffectView {
   
   public override func layoutSubviews() {
     if #available(iOS 13, *),
+       self.window != nil,
        self.shouldAutomaticallyReApplyEffects,
        !self.isBeingAnimated
     {
