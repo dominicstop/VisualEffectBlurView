@@ -573,6 +573,14 @@ open class VisualEffectView: UIVisualEffectView {
         identityValuesSource: nil
       );
     };
+    
+    let backgroundFilterTypesUpdated = self.currentBackgroundFilterTypes.replaceMatchingElements(
+      withOther: updatedFilterTypes,
+      shouldUseReferenceEqualityForImageComparison: true
+    );
+    
+    // overwrite
+    self.currentBackgroundFilterTypes = backgroundFilterTypesUpdated;
   };
   
   @available(iOS 13, *)
@@ -816,6 +824,14 @@ open class VisualEffectView: UIVisualEffectView {
         identityValuesSource: \.filterValuesIdentityForBackground
       );
     };
+    
+    let currentFilterTypesUpdated = self.currentForegroundFilterTypes.replaceMatchingElements(
+      withOther: updatedFilterTypes,
+      shouldUseReferenceEqualityForImageComparison: true
+    );
+    
+    // overwrite
+    self.currentForegroundFilterTypes = currentFilterTypesUpdated;
   };
   
   public func setForegroundFiltersViaLayers(
