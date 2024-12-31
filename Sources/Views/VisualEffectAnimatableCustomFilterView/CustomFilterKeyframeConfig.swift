@@ -29,9 +29,6 @@ public struct CustomFilterKeyframeConfig: BaseKeyframeConfig {
 
   public var tintConfig: TintConfig?;
   
-  public var contentOpacity: CGFloat?;
-  public var backdropOpacity: CGFloat?;
-  
   // MARK: - Init
   // ------------
   
