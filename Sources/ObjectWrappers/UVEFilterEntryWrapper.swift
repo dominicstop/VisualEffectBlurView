@@ -329,6 +329,7 @@ public extension Array where Element == UVEFilterEntryWrapper {
 
   typealias FilterEntryTypePair = (
     filterType: LayerFilterType,
+    filterTypeIndex: Int,
     filterEntryWrapped: Element
   );
   
@@ -343,8 +344,8 @@ public extension Array where Element == UVEFilterEntryWrapper {
     var orphanedFilterEntries: Self = [];
     
     let matches: [FilterEntryTypePair] = self.compactMap { filterEntryWrapped in
-      let match = filterTypes.first {
-        guard $0.decodedFilterName == filterEntryWrapped.filterKind else {
+      let match = filterTypes.enumerated().first {
+        guard $0.element.decodedFilterName == filterEntryWrapped.filterKind else {
           return false;
         };
         
@@ -355,7 +356,7 @@ public extension Array where Element == UVEFilterEntryWrapper {
         let filterEntryAsLayerType =
           LayerFilterType(fromWrapper: filterEntryWrapped);
       
-        switch ($0, filterEntryAsLayerType) {
+        switch ($0.element, filterEntryAsLayerType) {
           case (
             let .variadicBlur(_, maskImageNext, _, _, _),
             let .variadicBlur(_, maskImageCurrent, _, _, _)
@@ -372,7 +373,11 @@ public extension Array where Element == UVEFilterEntryWrapper {
         return nil;
       };
       
-      return (match, filterEntryWrapped);
+      return (
+        filterType: match.element,
+        filterTypeIndex: match.offset,
+        filterEntryWrapped: filterEntryWrapped
+      );
     };
     
     let orphanedFilterTypes = filterTypes.filter { filter in
