@@ -1495,10 +1495,13 @@ public extension Array where Element == LayerFilterType {
     };
   };
   
-  func replaceMatchingElements(
+  func paired(
     withOther otherFilterTypes: [LayerFilterType],
     shouldUseReferenceEqualityForImageComparison: Bool? = nil
-  ) -> Self {
+  ) -> Array<(
+    current: LayerFilterType,
+    other: LayerFilterType?
+  )> {
   
     let useReferenceEqualityForImageComparison: Bool = {
       if let explicitFlag = shouldUseReferenceEqualityForImageComparison {
@@ -1539,15 +1542,31 @@ public extension Array where Element == LayerFilterType {
             };
           };
           
-          return otherFilter ?? currentFilter;
+          return (currentFilter, otherFilter);
       
         default:
           let otherFilter = otherFilterTypes.first {
             currentFilter.decodedFilterName == $0.decodedFilterName;
           };
           
-          return otherFilter ?? currentFilter;
+          return (currentFilter, otherFilter);
       };
+    };
+  };
+  
+  // Rename to: `replacingMatchingElements`
+  func replaceMatchingElements(
+    withOther otherFilterTypes: [LayerFilterType],
+    shouldUseReferenceEqualityForImageComparison: Bool? = nil
+  ) -> Self {
+  
+    let pairedElements = self.paired(
+      withOther: otherFilterTypes,
+      shouldUseReferenceEqualityForImageComparison: shouldUseReferenceEqualityForImageComparison
+    );
+    
+    return pairedElements.map {
+      $0.other ?? $0.current;
     };
   };
 };
