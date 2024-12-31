@@ -111,7 +111,7 @@ extension CustomFilterKeyframeConfig: KeyframeConfigAnimating {
     forPropertyAnimator propertyAnimator: UIViewPropertyAnimator?
   ) throws -> Keyframeable.PropertyAnimatorAnimationBlocks {
   
-    let tintAnimationBlock = try self.tintConfig?.createAnimations(
+    let tintAnimationBlock = try? self.tintConfig?.createAnimations(
       forTarget: keyframeTarget,
       withPrevKeyframe: keyframeConfigPrev?.tintConfig,
       forPropertyAnimator: propertyAnimator
