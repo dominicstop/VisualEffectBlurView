@@ -192,6 +192,10 @@ extension TintConfig: KeyframeConfigAnimating {
         let nextCompositingFilterName = self.blendMode?.asCompositingFilterName;
         
         inlinedDisplayLink.updateBlock = { _ in
+          guard keyframeTarget.window != nil else {
+            return;
+          };
+        
           let shouldApplyNextFrame = propertyAnimator.isReversed
             ? propertyAnimator.fractionComplete <= relativeCrossFadeDuration
             : propertyAnimator.fractionComplete >= relativeCrossFadeDuration;
@@ -249,7 +253,8 @@ extension TintConfig: KeyframeConfigAnimating {
         keyframeTarget.currentTintConfig = keyframeConfigCurrent;
       
         if shouldImmediatelyApplyCompFilter,
-           let currentBlendMode = keyframeConfigCurrent?.blendMode?.asCompositingFilterName
+           let currentBlendMode = keyframeConfigCurrent?.blendMode?.asCompositingFilterName,
+           keyframeTarget.window != nil
         {
           try? tintLayerWrapped.setValueForCompFilter(currentBlendMode)
         };
