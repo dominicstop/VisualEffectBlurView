@@ -1554,8 +1554,7 @@ public extension Array where Element == LayerFilterType {
     };
   };
   
-  // Rename to: `replacingMatchingElements`
-  func replaceMatchingElements(
+  func replacingMatchingElements(
     withOther otherFilterTypes: [LayerFilterType],
     shouldUseReferenceEqualityForImageComparison: Bool? = nil
   ) -> Self {

@@ -574,7 +574,7 @@ open class VisualEffectView: UIVisualEffectView {
       );
     };
     
-    let backgroundFilterTypesUpdated = self.currentBackgroundFilterTypes.replaceMatchingElements(
+    let backgroundFilterTypesUpdated = self.currentBackgroundFilterTypes.replacingMatchingElements(
       withOther: updatedFilterTypes,
       shouldUseReferenceEqualityForImageComparison: true
     );
@@ -825,7 +825,7 @@ open class VisualEffectView: UIVisualEffectView {
       );
     };
     
-    let currentFilterTypesUpdated = self.currentForegroundFilterTypes.replaceMatchingElements(
+    let currentFilterTypesUpdated = self.currentForegroundFilterTypes.replacingMatchingElements(
       withOther: updatedFilterTypes,
       shouldUseReferenceEqualityForImageComparison: true
     );
