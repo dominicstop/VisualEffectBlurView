@@ -1568,4 +1568,23 @@ public extension Array where Element == LayerFilterType {
       $0.other ?? $0.current;
     };
   };
+  
+  mutating func replaceMatchingElements(
+    withOther otherFilterTypes: [LayerFilterType],
+    shouldUseReferenceEqualityForImageComparison: Bool? = nil
+  ) {
+  
+    let pairedElements = self.paired(
+      withOther: otherFilterTypes,
+      shouldUseReferenceEqualityForImageComparison: shouldUseReferenceEqualityForImageComparison
+    );
+    
+    pairedElements.enumerated().forEach {
+      guard let newElement = $0.element.other else {
+        return;
+      };
+      
+      self[$0.offset] = newElement;
+    };
+  };
 };
