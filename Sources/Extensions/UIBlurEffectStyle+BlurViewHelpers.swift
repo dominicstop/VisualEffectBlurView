@@ -133,7 +133,7 @@ extension UIBlurEffect.Style {
     print(
       "UIBlurEffect.Style - defaultBlurRadius",
       "\n- get defaultFilterEntriesCache",
-      "\n- could not set for item:", self.description,
+      "\n- could not set for item:", self.caseString,
       "\n"
     );
     #endif
