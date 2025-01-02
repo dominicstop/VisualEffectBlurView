@@ -22,7 +22,8 @@ public struct ColorTransform: Equatable, MutableReference {
     brightness: 0,
     saturation: 1,
     invert: 0,
-    hueRotate: .zero
+    hueRotate: .zero,
+    opacity: 1
   );
 
   // MARK: - Properties
@@ -42,6 +43,8 @@ public struct ColorTransform: Equatable, MutableReference {
   public var saturation: Float;
   public var invert: Float;
   public var hueRotate: Angle<Float>;
+  
+  public var opacity: Float;
   
   // MARK: - Computed Properties
   // ---------------------------
@@ -76,6 +79,9 @@ public struct ColorTransform: Equatable, MutableReference {
       )
       .concatByAddingLastColumn(
         with: .hueRotate(withAngle: self.hueRotate)
+      )
+      .concatByAddingLastColumn(
+        with: .opacity(withPercent: self.opacity)
       );
   };
   
@@ -97,7 +103,8 @@ public struct ColorTransform: Equatable, MutableReference {
     brightness: Float,
     saturation: Float,
     invert: Float,
-    hueRotate: Angle<Float>
+    hueRotate: Angle<Float>,
+    opacity: Float
   ) {
     self.intensityRed = intensityRed;
     self.intensityGreen = intensityGreen;
@@ -113,6 +120,8 @@ public struct ColorTransform: Equatable, MutableReference {
     self.saturation = saturation;
     self.invert = invert;
     self.hueRotate = hueRotate;
+    
+    self.opacity = opacity;
   };
   
   // MARK: - Chain Functions
@@ -199,6 +208,12 @@ public struct ColorTransform: Equatable, MutableReference {
   public func withHueRotate(_ value: Angle<Float>) -> Self {
     var copy = self;
     copy.hueRotate = value;
+    return copy;
+  };
+  
+  public func withOpacity(_ percent: Float) -> Self {
+    var copy = self;
+    copy.opacity = percent;
     return copy;
   };
 };
@@ -291,6 +306,12 @@ public extension UnsafeMutablePointer<ColorTransform> {
     self.pointee.hueRotate = value;
     return self;
   };
+  
+  @discardableResult
+  func withOpacity(_ percent: Float) -> Self {
+    self.pointee.opacity = percent;
+    return self;
+  };
 };
 
 // MARK: - ColorTransform+ElementInterpolatable
@@ -312,6 +333,7 @@ extension ColorTransform: ElementInterpolatable {
     public static let saturation     = Self(rawValue: 1 << 10);
     public static let invert         = Self(rawValue: 1 << 11);
     public static let hueRotate      = Self(rawValue: 1 << 12);
+    public static let opacity        = Self(rawValue: 1 << 13);
 
     public var associatedAnyKeyPaths: [AnyKeyPath] {
       guard !self.isEmpty else {
@@ -384,5 +406,6 @@ extension ColorTransform: ElementInterpolatable {
     \.saturation: Float.self,
     \.invert: Float.self,
     \.hueRotate: Angle<Float>.self,
+    \.opacity: Float.self,
   ];
 };
