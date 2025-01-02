@@ -468,6 +468,14 @@ public struct ColorMatrixRGBA: Equatable, MutableReference {
     self = .init(fromColorMatrix5x4: invertMatrix);
   };
   
+  public mutating func setOpacity(withPercent percent: Float){
+    let percentClamped = percent.clamped(min: 0, max: 1);
+    let opacityMatrix =
+      ColorMatrixRGBA.createOpacityColorMatrix5x4(amount: percentClamped);
+    
+    self = .init(fromColorMatrix5x4: opacityMatrix);
+  };
+  
   public func concatByAddingLastColumn(with otherColorMatrix: Self) -> Self {
     let matrixA = self.matrix4x5;
     let matrixB = otherColorMatrix.matrix4x5;
@@ -643,6 +651,12 @@ public extension ColorMatrixRGBA {
       shouldSaturate: shouldSaturate
     );
     
+    return matrix;
+  };
+  
+  static func opacity(withPercent percent: Float) -> Self {
+    var matrix: Self = .identity;
+    matrix.setOpacity(withPercent: percent);
     return matrix;
   };
 };
