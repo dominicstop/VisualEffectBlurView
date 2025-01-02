@@ -154,7 +154,7 @@ public enum LayerFilterConfig: Equatable {
         return .colorMatrix(colorMatrix);
         
       case let .colorTransformVibrant(colorTransform):
-        return .colorMatrix(colorTransform.colorMatrix);
+        return .colorMatrixVibrant(colorTransform.colorMatrix);
         
       case let .colorTransform(colorTransform):
         return .colorMatrix(colorTransform.colorMatrix);
