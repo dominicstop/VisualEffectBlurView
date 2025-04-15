@@ -395,17 +395,17 @@ extension ColorTransform: ElementInterpolatable {
   };
 
   public static var interpolatablePropertiesMap: InterpolatableValuesMap = [
-    \.intensityRed: Float.self,
-    \.intensityGreen: Float.self,
-    \.intensityBlue: Float.self,
-    \.shiftRed: Float.self,
-    \.shiftGreen: Float.self,
-    \.shiftBlue: Float.self,
-    \.contrast: Float.self,
-    \.brightness: Float.self,
-    \.saturation: Float.self,
-    \.invert: Float.self,
-    \.hueRotate: Angle<Float>.self,
-    \.opacity: Float.self,
+    .init(keyPath: \.intensityRed): Float.self,
+    .init(keyPath: \.intensityGreen): Float.self,
+    .init(keyPath: \.intensityBlue): Float.self,
+    .init(keyPath: \.shiftRed): Float.self,
+    .init(keyPath: \.shiftGreen): Float.self,
+    .init(keyPath: \.shiftBlue): Float.self,
+    .init(keyPath: \.contrast): Float.self,
+    .init(keyPath: \.brightness): Float.self,
+    .init(keyPath: \.saturation): Float.self,
+    .init(keyPath: \.invert): Float.self,
+    .init(keyPath: \.hueRotate): Angle<Float>.self,
+    .init(keyPath: \.opacity): Float.self,
   ];
 };
