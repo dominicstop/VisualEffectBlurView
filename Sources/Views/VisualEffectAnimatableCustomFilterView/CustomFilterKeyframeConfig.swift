@@ -9,7 +9,7 @@ import UIKit
 import DGSwiftUtilities
 
 
-public struct CustomFilterKeyframeConfig: BaseKeyframeConfig {
+public struct CustomFilterKeyframeConfig: KeyframeAppliable {
 
   @available(iOS 13, *)
   public typealias KeyframeTarget = VisualEffectAnimatableCustomFilterView;
@@ -26,7 +26,7 @@ public struct CustomFilterKeyframeConfig: BaseKeyframeConfig {
   
   public var backgroundFilters: [LayerFilterConfig]?;
   public var foregroundFilters: [LayerFilterConfig]?;
-
+  
   public var tintConfig: TintConfig?;
   
   // MARK: - Init
@@ -54,7 +54,7 @@ public struct CustomFilterKeyframeConfig: BaseKeyframeConfig {
 // ----------------------------------------------------------
 
 @available(iOS 13, *)
-extension CustomFilterKeyframeConfig: KeyframeConfigAnimating {
+extension CustomFilterKeyframeConfig: KeyframeAnimating {
 
   public func applyBaseKeyframe(toView targetView: KeyframeTarget) {
     if let rootKeyframe = self.rootKeyframe {

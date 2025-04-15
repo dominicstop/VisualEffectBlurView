@@ -63,7 +63,7 @@ public struct TintConfig: Comparable {
 // -------------------------------------
 
 @available(iOS 13, *)
-extension TintConfig: BaseKeyframeConfig {
+extension TintConfig: KeyframeAppliable {
   
   public func apply(toTarget target: KeyframeTarget) throws {
     guard let tintViewWrapped = target.wrapper?.tintViewWrapped,
@@ -93,7 +93,7 @@ extension TintConfig: BaseKeyframeConfig {
 // ------------------------------------------
 
 @available(iOS 13, *)
-extension TintConfig: KeyframeConfigAnimating {
+extension TintConfig: KeyframeAnimating {
 
   public typealias KeyframeTarget = VisualEffectAnimatableCustomFilterView;
   
