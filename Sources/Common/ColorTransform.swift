@@ -314,6 +314,30 @@ public extension UnsafeMutablePointer<ColorTransform> {
   };
 };
 
+// MARK: - ColorTransform+ZeroRepresentable
+// --------------------------------------------
+
+
+extension ColorTransform: ZeroRepresentable {
+  public static var zero: ColorTransform {
+    .init(
+      intensityRed: 0,
+      intensityGreen: 0,
+      intensityBlue: 0,
+      shiftRed: 0,
+      shiftGreen: 0,
+      shiftBlue: 0,
+      contrast: 0,
+      brightness: 0,
+      saturation: 0,
+      invert: 0,
+      hueRotate: .zero,
+      opacity: 0
+    );
+  };
+};
+
+
 // MARK: - ColorTransform+ElementInterpolatable
 // --------------------------------------------
 
