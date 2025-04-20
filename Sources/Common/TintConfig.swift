@@ -9,7 +9,7 @@ import UIKit
 import DGSwiftUtilities
 
 
-public struct TintConfig {
+public struct TintConfig: Equatable {
 
   public static let noTint: Self = .init(
     tintColor: .clear,
