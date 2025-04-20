@@ -432,7 +432,7 @@ public extension Array where Element == LayerFilterConfig {
 // MARK: - `ImageConfigGradient+Hashable`
 // --------------------------------------
 
-extension ImageConfigGradient: Hashable {
+extension ImageConfigGradient: Swift.Hashable {
 
   public func hash(into hasher: inout Hasher) {
     let maxFractionDigits = 6;
