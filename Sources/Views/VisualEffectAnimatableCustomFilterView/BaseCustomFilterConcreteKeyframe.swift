@@ -31,7 +31,11 @@ public extension BaseCustomFilterConcreteKeyframe {
     toTarget keyframeTarget: KeyframeTarget
   ) throws {
     
-    try self.applyBaseCustomFilterKeyframe(toTarget: keyframeTarget);
+    try? self.applyBaseCustomFilterKeyframe(toTarget: keyframeTarget);
+    
+    if let keyframe = self as? (any BaseVisualEffectSubviewConcreteKeyframe) {
+      try? keyframe.applyBaseVisualEffectSubviewKeyframe(toTarget: keyframeTarget);
+    };
   };
   
   func createBaseViewCustomAnimations(
@@ -40,10 +44,37 @@ public extension BaseCustomFilterConcreteKeyframe {
     forPropertyAnimator propertyAnimator: UIViewPropertyAnimator?
   ) throws -> Keyframeable.PropertyAnimatorAnimationBlocks {
     
-    try self.createBaseCustomFilterKeyframeAnimations(
+    let customFilterAnimations = try self.createBaseCustomFilterKeyframeAnimations(
       forTarget: keyframeTarget,
       withPrevKeyframe: keyframeConfigPrev,
       forPropertyAnimator: propertyAnimator
+    );
+    
+    let effectSubviewAnimations: Keyframeable.PropertyAnimatorAnimationBlocks? = {
+      guard let keyframe = self as? (any BaseVisualEffectSubviewConcreteKeyframe) else {
+        return nil
+      };
+      
+      return try? keyframe.createVisualEffectSubviewFilterKeyframeAnimations(
+        forTarget: keyframeTarget,
+        withPrevKeyframe: keyframeConfigPrev as? (any BaseVisualEffectSubviewConcreteKeyframe),
+        forPropertyAnimator: propertyAnimator
+      );
+    }();
+    
+    return (
+      setup: {
+        try? customFilterAnimations.setup();
+        try? effectSubviewAnimations?.setup();
+      },
+      applyKeyframe: {
+        customFilterAnimations.applyKeyframe();
+        effectSubviewAnimations?.applyKeyframe();
+      },
+      completion: {
+        customFilterAnimations.completion($0);
+        effectSubviewAnimations?.completion($0);
+      }
     );
   };
 };
@@ -137,7 +168,6 @@ public extension BaseCustomFilterConcreteKeyframe {
         };
       },
       applyKeyframe: {
-        self.applyBaseKeyframe(toView: keyframeTarget);
         tintAnimationBlock?.applyKeyframe();
         try? keyframeTarget.applyRequestedFilterEffects();
       },
@@ -174,7 +204,3 @@ public extension BaseCustomFilterConcreteKeyframe {
     return copy;
   };
 };
-
-
-
-
