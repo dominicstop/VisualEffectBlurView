@@ -22,7 +22,9 @@ extension UIBlurEffect.Style {
           #available(iOS 13, *)
     else { return };
     
-    Self.didSetDefaultCache = true;
+    if Thread.isMainThread {
+      Self.didSetDefaultCache = true;
+    };
     
     Self.allCases.forEach { blurStyle in
       guard let blurView = try? VisualEffectBlurView(blurEffectStyle: blurStyle),
@@ -33,11 +35,14 @@ extension UIBlurEffect.Style {
         return;
       };
       
-      Self.defaultFilterEntriesCache[blurStyle] = filterItemsWrapped.compactMap {
+      let filterEntries: [FilterMetadata] = filterItemsWrapped.compactMap {
         .init(fromWrapper: $0);
       };
       
-      self.defaultBlurRadiusCache[blurStyle] = blurView.blurRadius;
+      if Thread.isMainThread {
+        Self.defaultFilterEntriesCache[blurStyle] = filterEntries;
+        self.defaultBlurRadiusCache[blurStyle] = blurView.blurRadius;
+      };
     };
     return;
   };
