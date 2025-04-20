@@ -12,7 +12,7 @@ import DGSwiftUtilities
  @available(iOS 13, *)
  public class VisualEffectAnimatableCustomFilterView: VisualEffectCustomFilterView {
 
-  public typealias KeyframeConfig = CustomFilterKeyframeConfig;
+  public typealias KeyframeConfig = StandardCustomFilterConcreteKeyframe;
   
   public var identityBackgroundFilters: [LayerFilterConfig] = [];
   public var identityForegroundFilters: [LayerFilterConfig] = [];
@@ -56,7 +56,7 @@ import DGSwiftUtilities
   
   public func immediatelyApplyKeyframe(_ keyframeConfig: KeyframeConfig) throws {
     try self.immediatelyApplyFilters(
-      backgroundFilters: keyframeConfig.backgroundFilters ?? [],
+      backgroundFilters: keyframeConfig.backgroundFilters,
       foregroundFilters: keyframeConfig.foregroundFilters,
       tintConfig: keyframeConfig.tintConfig
     );
