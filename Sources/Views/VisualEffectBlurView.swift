@@ -152,7 +152,6 @@ public class VisualEffectBlurView: VisualEffectView {
     self.blurEffectStyle = blurEffectStyle;
     
     try super.init(withEffect: blurEffect);
-    self.shouldAutomaticallyReApplyEffects = false;
   };
   
   public required init?(coder: NSCoder) {
@@ -176,5 +175,22 @@ public class VisualEffectBlurView: VisualEffectView {
       shouldImmediatelyApply: shouldImmediatelyApply
     );
   };
+  
+  @available(iOS 13, *)
+  public override func reapplyEffects() throws {
+    
+    if let prevBlurIntensity = self._blurIntensity {
+      self.blurIntensity = prevBlurIntensity;
+      
+    } else if let prevBlurRadius = self._blurRadius {
+      try self.setBlurRadius(
+        prevBlurRadius,
+        shouldImmediatelyApply: true
+      );
+      
+    } else {
+      // no-op
+    };
+  }
 };
 
