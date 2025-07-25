@@ -48,6 +48,8 @@ open class VisualEffectView: UIVisualEffectView {
     }
   };
   
+  var currentEffectIntensityViaAnimator: CGFloat?;
+  
   open override var effect: UIVisualEffect? {
     get {
       super.effect;
@@ -304,7 +306,7 @@ open class VisualEffectView: UIVisualEffectView {
     let repeatedExecution = RepeatedExecution(
       limit: .maxTimeInterval(1.5),
       debounce: .minTimeInterval(0.1),
-      executeBlock: { _ in
+      executeBlock: {
         guard self.window != nil,
               self.shouldAutomaticallyReApplyEffects,
               !self.isBeingAnimated,
@@ -313,6 +315,7 @@ open class VisualEffectView: UIVisualEffectView {
           return;
         };
         try? self.reapplyEffects();
+        $0.end(successfully: true);
       },
       executionEndConditionBlock: { _ in
         UIApplication.shared.applicationState == .active;
@@ -1003,10 +1006,27 @@ open class VisualEffectView: UIVisualEffectView {
   
   @available(iOS 13, *)
   public final func baseReapplyEffects() throws {
-    if let animatorWrapper = self.animatorWrapper {
-      let prevEffectIntensity = animatorWrapper.animator.fractionComplete
+    if let animatorWrapper = self.animatorWrapper,
+       let prevEffectIntensity = self.currentEffectIntensityViaAnimator
+    {
+      
+      let effect: UIVisualEffect? = {
+        if let _self = self as? VisualEffectBlurView,
+           let blurStyle = _self.blurEffectStyle
+        {
+          return UIBlurEffect(style: blurStyle);
+        };
+        
+        return self.effect;
+      }();
+      
+      guard let effect = effect else {
+        return;
+      };
+      
       self.clearAnimator();
       
+      self.effect = effect;
       self.setEffectIntensityViaAnimator(prevEffectIntensity);
       
     } else {
@@ -1127,6 +1147,8 @@ open class VisualEffectView: UIVisualEffectView {
   
   // does not support animations
   public func setEffectIntensityViaAnimator(_ percent: CGFloat){
+    self.currentEffectIntensityViaAnimator = percent;
+    
     let animatorWrapper: ViewPropertyAnimatorWrapper = {
       if let animatorWrapper = self.animatorWrapper {
         return animatorWrapper;
