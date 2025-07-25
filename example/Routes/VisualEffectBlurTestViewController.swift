@@ -72,8 +72,6 @@ class VisualEffectBlurTestViewController: UIViewController {
       let bgBlurView = try! VisualEffectBlurView(blurEffectStyle: .dark);
       self.visualEffectBlurView = bgBlurView;
       
-      bgBlurView.blurIntensity = 0.5;
-    
       bgBlurView.translatesAutoresizingMaskIntoConstraints = false;
       containerView.addSubview(bgBlurView);
       
