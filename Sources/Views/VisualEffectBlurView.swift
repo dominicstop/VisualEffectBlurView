@@ -93,6 +93,17 @@ public class VisualEffectBlurView: VisualEffectView {
     return 30;
   };
   
+  public var currentBlurRadius: CGFloat? {
+    guard let bgLayerWrapper = self.backgroundLayerWrapped,
+          let gaussianBlurFilterWrapper = bgLayerWrapper.gaussianBlurFilterWrapper,
+          let inputRadius = gaussianBlurFilterWrapper.inputRadius
+    else {
+      return nil;
+    };
+    
+    return inputRadius;
+  };
+  
   public var blurIntensity: CGFloat {
     set {
       let defaultBlurRadius = self.defaultBlurRadius;
