@@ -192,5 +192,20 @@ public class VisualEffectBlurView: VisualEffectView {
       // no-op
     };
   }
+  @available(iOS 13, *)
+  public override func setEffectIntensityViaEffectDescriptor(
+    intensityPercent: CGFloat,
+    shouldImmediatelyApply: Bool = true,
+    shouldAdjustOpacityForOtherSubviews: Bool = true
+  ) throws {
+    self._blurRadius = nil;
+    self._blurIntensity = nil;
+    
+    try super.setEffectIntensityViaEffectDescriptor(
+      intensityPercent: intensityPercent,
+      shouldImmediatelyApply: shouldImmediatelyApply,
+      shouldAdjustOpacityForOtherSubviews: shouldAdjustOpacityForOtherSubviews
+    );
+  }
 };
 
