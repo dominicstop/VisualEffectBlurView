@@ -104,6 +104,15 @@ public class VisualEffectBlurView: VisualEffectView {
     return inputRadius;
   };
   
+  public var currentBlurIntensity: CGFloat? {
+    guard let currentBlurRadius = self.currentBlurRadius else {
+      return nil;
+    };
+    
+    let defaultBlurRadius = self.defaultBlurRadius;
+    return currentBlurRadius / defaultBlurRadius;
+  };
+  
   public var blurIntensity: CGFloat {
     set {
       let defaultBlurRadius = self.defaultBlurRadius;
