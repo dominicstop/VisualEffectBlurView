@@ -19,6 +19,8 @@ public class VisualEffectBlurView: VisualEffectView {
   public var blurEffectStyle: UIBlurEffect.Style? {
     willSet {
       self.clearAnimator();
+      self._blurRadius = nil;
+      self._blurIntensity = nil;
       
       guard let newValue = newValue else {
         self.effect = nil;
@@ -43,7 +45,7 @@ public class VisualEffectBlurView: VisualEffectView {
   // MARK: Computed Properties
   // -------------------------
   
-  private var _blurRadius: CGFloat?;
+  internal var _blurRadius: CGFloat?;
   public var blurRadius: CGFloat {
     set {
       self._blurRadius = newValue;
@@ -113,10 +115,19 @@ public class VisualEffectBlurView: VisualEffectView {
     return currentBlurRadius / defaultBlurRadius;
   };
   
+  internal var _blurIntensity: CGFloat?;
+  @available(iOS 13, *)
   public var blurIntensity: CGFloat {
     set {
       let defaultBlurRadius = self.defaultBlurRadius;
-      self.blurRadius = defaultBlurRadius * newValue;
+      let derivedBlurRadius = defaultBlurRadius * newValue;
+      
+      self._blurIntensity = newValue;
+      
+      try? self.setBlurRadius(
+        derivedBlurRadius,
+        shouldImmediatelyApply: true
+      );
     }
     get {
       let defaultBlurRadius = self.defaultBlurRadius;
