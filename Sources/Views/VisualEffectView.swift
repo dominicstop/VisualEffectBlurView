@@ -938,22 +938,35 @@ open class VisualEffectView: UIVisualEffectView {
   };
   
   @available(iOS 13, *)
-  public func reapplyEffects() throws {
-    try self.setBackgroundFiltersViaEffectDesc(
-      withFilterTypes: self.currentBackgroundFilterTypes,
-      shouldImmediatelyApplyFilter: true
-    );
-    
-    try self.setForegroundFiltersViaEffectDesc(
-      withFilterTypes: self.currentForegroundFilterTypes,
-      shouldImmediatelyApplyFilter: true
-    );
-    
-    if let currentTintConfig = currentTintConfig {
-      try self.directlySetTint(forConfig: currentTintConfig);
+  public final func baseReapplyEffects() throws {
+    if let animatorWrapper = self.animatorWrapper {
+      let prevEffectIntensity = animatorWrapper.animator.fractionComplete
+      self.clearAnimator();
+      
+      self.setEffectIntensityViaAnimator(prevEffectIntensity);
+      
+    } else {
+      try self.setBackgroundFiltersViaEffectDesc(
+        withFilterTypes: self.currentBackgroundFilterTypes,
+        shouldImmediatelyApplyFilter: true
+      );
+      
+      try self.setForegroundFiltersViaEffectDesc(
+        withFilterTypes: self.currentForegroundFilterTypes,
+        shouldImmediatelyApplyFilter: true
+      );
+      
+      if let currentTintConfig = currentTintConfig {
+        try self.directlySetTint(forConfig: currentTintConfig);
+      };
+      
+      try self.applyRequestedFilterEffects();
     };
-    
-    try self.applyRequestedFilterEffects();
+  };
+  
+  @available(iOS 13, *)
+  public func reapplyEffects() throws {
+    try self.baseReapplyEffects();
   };
   
   // MARK: - Methods - Animation Related
