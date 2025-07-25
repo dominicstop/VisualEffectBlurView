@@ -178,7 +178,6 @@ public class VisualEffectBlurView: VisualEffectView {
   
   @available(iOS 13, *)
   public override func reapplyEffects() throws {
-    
     if let prevBlurIntensity = self._blurIntensity {
       self.blurIntensity = prevBlurIntensity;
       
@@ -189,9 +188,17 @@ public class VisualEffectBlurView: VisualEffectView {
       );
       
     } else {
-      // no-op
+      try super.reapplyEffects();
     };
   }
+  
+  public override func setEffectIntensityViaAnimator(_ percent: CGFloat) {
+    self._blurRadius = nil;
+    self._blurIntensity = nil;
+    
+    super.setEffectIntensityViaAnimator(percent);
+  };
+  
   @available(iOS 13, *)
   public override func setEffectIntensityViaEffectDescriptor(
     intensityPercent: CGFloat,
