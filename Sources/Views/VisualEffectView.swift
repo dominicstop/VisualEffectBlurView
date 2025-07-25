@@ -18,7 +18,16 @@ open class VisualEffectView: UIVisualEffectView {
   public var currentTintConfig: TintConfig?;
   
   public var isBeingAnimated = false;
-  public var shouldAutomaticallyReApplyEffects = true;
+  
+  internal var _shouldAutomaticallyReApplyEffects: Bool?;
+  public var shouldAutomaticallyReApplyEffects: Bool {
+    get {
+      self._shouldAutomaticallyReApplyEffects ?? true;
+    }
+    set {
+      self._shouldAutomaticallyReApplyEffects = newValue;
+    }
+  };
   
   /// Old name: `shouldOnlyShowBackdropLayer`
   public var shouldOnlyShowBgLayer: Bool = false {
