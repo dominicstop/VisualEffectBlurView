@@ -8,7 +8,10 @@
 import UIKit
 import DGSwiftUtilities
 
-
+///
+/// * `UIVisualEffectView` -> `VisualEffectView`
+///   -> `VisualEffectCustomFilterView`
+///
 @available(iOS 13, *)
 public class VisualEffectCustomFilterView: VisualEffectView {
 

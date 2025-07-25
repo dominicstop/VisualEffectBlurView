@@ -9,6 +9,9 @@ import UIKit
 import DGSwiftUtilities
 
 
+///
+/// * `UIVisualEffectView` -> `VisualEffectView` -> `VisualEffectBlurView`
+///
 public class VisualEffectBlurView: VisualEffectView {
 
   // MARK: - Properties
