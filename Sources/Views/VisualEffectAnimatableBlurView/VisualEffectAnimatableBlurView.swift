@@ -16,6 +16,16 @@ public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
   public var previousBlurMode: BlurMode?;
   public var currentBlurMode: BlurMode = .blurEffectNone;
   
+  public override var shouldAutomaticallyReApplyEffects: Bool {
+    get {
+      self._shouldAutomaticallyReApplyEffects ?? true;
+    }
+    set {
+      self._shouldAutomaticallyReApplyEffects = newValue;
+    }
+  };
+  
+  
   public init(blurMode: BlurMode) throws {
     let blurEffectStyle = blurMode.blurEffectStyle;
     let blurEffectStyleInitial = blurEffectStyle ?? .regular;
@@ -162,6 +172,7 @@ public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
     );
     
     let commonSetupBlock = {
+      self.isBeingAnimated = true;
       self.alpha = 1;
       self.applyBackgroundLayerSamplingSizeScaleIfNeeded();
     }
@@ -213,6 +224,7 @@ public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
     }();
     
     let commonCompletionBlock = {
+      self.isBeingAnimated = false;
       self.previousBlurMode = currentBlurMode;
       self.currentBlurMode = nextBlurMode;
       
@@ -528,5 +540,10 @@ public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
         cancelAnimationBlocks.completion();
       }
     );
+  };
+  
+  @available(iOS 13, *)
+  public override func reapplyEffects() throws {
+    try self.applyBlurMode(self.currentBlurMode);
   };
 };
