@@ -31,6 +31,15 @@ public class VisualEffectBlurView: VisualEffectView {
     }
   };
   
+  public override var shouldAutomaticallyReApplyEffects: Bool {
+    get {
+      self._shouldAutomaticallyReApplyEffects ?? true;
+    }
+    set {
+      self._shouldAutomaticallyReApplyEffects = newValue;
+    }
+  };
+  
   // MARK: Computed Properties
   // -------------------------
   
