@@ -211,6 +211,7 @@ open class VisualEffectView: UIVisualEffectView {
   
   public init(withEffect effect: UIVisualEffect?) throws {
     super.init(effect: effect);
+    self.setupObservers();
     
     guard let wrapper = UVEViewWrapper(objectToWrap: self) else {
       throw VisualEffectBlurViewError(
@@ -257,19 +258,73 @@ open class VisualEffectView: UIVisualEffectView {
     fatalError("init(coder:) has not been implemented");
   };
   
+  deinit {
+    self.clearAnimator();
+    self.clearObservers();
+  }
+  
+  // MARK: - View Lifecycle
+  // ---------------------
+  
   public override func layoutSubviews() {
     if #available(iOS 13, *),
        self.window != nil,
+       UIApplication.shared.applicationState == .active,
        self.shouldAutomaticallyReApplyEffects,
        !self.isBeingAnimated
     {
-      try? self.reapplyEffects()
+      try? self.reapplyEffects();
     };
   };
 
   // MARK: - Methods
   // ---------------
   
+  internal func setupObservers(){
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(Self._handleOnAppWillEnterForeground),
+      name: UIApplication.willEnterForegroundNotification,
+      object: nil
+    );
+  };
+  
+  internal func clearObservers(){
+    NotificationCenter.default.removeObserver(self);
+  }
+  
+  // MARK: - Event Listeners
+  // -----------------------
+  
+  @objc func _handleOnAppWillEnterForeground() {
+    guard #available(iOS 13, *) else {
+      return;
+    };
+    
+    let repeatedExecution = RepeatedExecution(
+      limit: .maxTimeInterval(1.5),
+      debounce: .minTimeInterval(0.1),
+      executeBlock: { _ in
+        guard self.window != nil,
+              self.shouldAutomaticallyReApplyEffects,
+              !self.isBeingAnimated,
+              UIApplication.shared.applicationState == .active
+        else {
+          return;
+        };
+        try? self.reapplyEffects();
+      },
+      executionEndConditionBlock: { _ in
+        UIApplication.shared.applicationState == .active;
+      }
+    );
+    
+    repeatedExecution.start();
+  };
+  
+  // MARK: - Public Methods
+  // ----------------------
+
   @available(iOS 13, *)
   public func createFilterMetadataMapForCurrentEffect() throws -> [String: FilterMetadata] {
     let filterEntries =
