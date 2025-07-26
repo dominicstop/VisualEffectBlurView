@@ -1005,7 +1005,7 @@ open class VisualEffectView: UIVisualEffectView {
   
   @available(iOS 13, *)
   public final func baseReapplyEffects() throws {
-    if let animatorWrapper = self.animatorWrapper,
+    if let _ = self.animatorWrapper,
        let prevEffectIntensity = self.currentEffectIntensityViaAnimator
     {
       
