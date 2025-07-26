@@ -306,16 +306,15 @@ open class VisualEffectView: UIVisualEffectView {
     let repeatedExecution = RepeatedExecution(
       limit: .maxTimeInterval(1.5),
       debounce: .minTimeInterval(0.1),
-      executeBlock: {
+      executeBlock: { _ in
         guard self.window != nil,
               self.shouldAutomaticallyReApplyEffects,
-              !self.isBeingAnimated,
-              UIApplication.shared.applicationState == .active
+              !self.isBeingAnimated
         else {
           return;
         };
+        
         try? self.reapplyEffects();
-        $0.end(successfully: true);
       },
       executionEndConditionBlock: { _ in
         UIApplication.shared.applicationState == .active;
