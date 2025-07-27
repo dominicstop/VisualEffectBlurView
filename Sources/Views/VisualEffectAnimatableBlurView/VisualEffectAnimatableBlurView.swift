@@ -25,7 +25,6 @@ public class VisualEffectAnimatableBlurView: VisualEffectBlurView {
     }
   };
   
-  
   public init(blurMode: BlurMode) throws {
     let blurEffectStyle = blurMode.blurEffectStyle;
     let blurEffectStyleInitial = blurEffectStyle ?? .regular;

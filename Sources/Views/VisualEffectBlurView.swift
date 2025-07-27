@@ -33,18 +33,6 @@ public class VisualEffectBlurView: VisualEffectView {
     }
   };
   
-  public override var shouldAutomaticallyReApplyEffects: Bool {
-    get {
-      self._shouldAutomaticallyReApplyEffects ?? true;
-    }
-    set {
-      self._shouldAutomaticallyReApplyEffects = newValue;
-    }
-  };
-  
-  // MARK: Computed Properties
-  // -------------------------
-  
   internal var _blurRadius: CGFloat?;
   public var blurRadius: CGFloat {
     set {
@@ -79,9 +67,43 @@ public class VisualEffectBlurView: VisualEffectView {
       return inputRadius;
     }
   };
+  
+  internal var _blurIntensity: CGFloat?;
+  public var blurIntensity: CGFloat {
+    set {
+      let defaultBlurRadius = self.defaultBlurRadius;
+      let derivedBlurRadius = defaultBlurRadius * newValue;
+      
+      self._blurIntensity = newValue;
+      
+      guard #available(iOS 13, *) else {
+        return;
+      };
+      
+      try? self.setBlurRadius(
+        derivedBlurRadius,
+        shouldImmediatelyApply: true
+      );
+    }
+    get {
+      let defaultBlurRadius = self.defaultBlurRadius;
+      let currentBlurRadius = self.blurRadius;
+      
+      return currentBlurRadius / defaultBlurRadius;
+    }
+  };
 
   // MARK: - Computed Properties
   // ---------------------------
+  
+  public override var shouldAutomaticallyReApplyEffects: Bool {
+    get {
+      self._shouldAutomaticallyReApplyEffects ?? true;
+    }
+    set {
+      self._shouldAutomaticallyReApplyEffects = newValue;
+    }
+  };
   
   public var defaultBlurRadius: CGFloat {
     if let defaultBlurRadius = self.blurEffectStyle?.defaultBlurRadius {
@@ -113,28 +135,6 @@ public class VisualEffectBlurView: VisualEffectView {
     
     let defaultBlurRadius = self.defaultBlurRadius;
     return currentBlurRadius / defaultBlurRadius;
-  };
-  
-  internal var _blurIntensity: CGFloat?;
-  @available(iOS 13, *)
-  public var blurIntensity: CGFloat {
-    set {
-      let defaultBlurRadius = self.defaultBlurRadius;
-      let derivedBlurRadius = defaultBlurRadius * newValue;
-      
-      self._blurIntensity = newValue;
-      
-      try? self.setBlurRadius(
-        derivedBlurRadius,
-        shouldImmediatelyApply: true
-      );
-    }
-    get {
-      let defaultBlurRadius = self.defaultBlurRadius;
-      let currentBlurRadius = self.blurRadius;
-      
-      return currentBlurRadius / defaultBlurRadius;
-    }
   };
   
   // MARK: - Init
