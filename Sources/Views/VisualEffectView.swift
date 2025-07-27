@@ -29,6 +29,16 @@ open class VisualEffectView: UIVisualEffectView {
     }
   };
   
+  internal var _shouldAutomaticallyReApplyEffectsDuringLayout: Bool?;
+  public var shouldAutomaticallyReApplyEffectsDuringLayout: Bool {
+    get {
+      self._shouldAutomaticallyReApplyEffectsDuringLayout ?? false;
+    }
+    set {
+      self._shouldAutomaticallyReApplyEffectsDuringLayout = newValue;
+    }
+  };
+  
   /// Old name: `shouldOnlyShowBackdropLayer`
   public var shouldOnlyShowBgLayer: Bool = false {
     willSet {
@@ -270,9 +280,9 @@ open class VisualEffectView: UIVisualEffectView {
   
   public override func layoutSubviews() {
     if #available(iOS 13, *),
+       self.shouldAutomaticallyReApplyEffectsDuringLayout,
        self.window != nil,
        UIApplication.shared.applicationState == .active,
-       self.shouldAutomaticallyReApplyEffects,
        !self.isBeingAnimated
     {
       try? self.reapplyEffects();
