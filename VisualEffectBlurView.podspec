@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'VisualEffectBlurView'
-  s.version          = '7.3.0'
+  s.version          = '7.3.1'
   s.summary          = 'UIVisualEffectView blur w/ custom blur radius.'
 
   s.description      = <<-DESC
